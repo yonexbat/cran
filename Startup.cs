@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 
 namespace cran
 {
@@ -20,6 +23,13 @@ namespace cran
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
+                
+            //add secrets.
+            if (env.IsDevelopment())
+            {
+                builder.AddUserSecrets<Startup>();
+            }
+
             Configuration = builder.Build();
         }
 
@@ -30,6 +40,9 @@ namespace cran
         {
             // Add framework services.
             services.AddMvc();
+            
+            //Cookies Authentication
+            services.AddAuthentication(options => options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +64,39 @@ namespace cran
             }
 
             app.UseStaticFiles();
+
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationScheme = "Cookies",
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true
+            });  
+
+            string clientId = Configuration["ClientId"];
+            string clientSecret = Configuration["ClientSecret"];
+
+            app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
+            {
+                ClientId = clientId,
+                ClientSecret = clientSecret,
+                Authority = "https://accounts.google.com",
+                ResponseType = OpenIdConnectResponseType.Code,
+                GetClaimsFromUserInfoEndpoint = true,
+                SaveTokens = true,
+                Events = new OpenIdConnectEvents()
+                {
+                    OnRedirectToIdentityProvider = (context) =>
+                    {
+                        if (context.Request.Path != "/account/external")
+                        {
+                            context.Response.Redirect("/account/login");
+                            context.HandleResponse();
+                        }
+ 
+                        return Task.FromResult(0);
+                    }
+                }
+            });          
 
             app.UseMvc(routes =>
             {
