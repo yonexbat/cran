@@ -1,12 +1,21 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 
  
 namespace cran.Controllers
 {
     public class AccountController : Controller
     {
+        private SignInManager<string> _signInManager; 
+
+        public AccountController(SignInManager<string>  signinManager)
+        {
+            this._signInManager = signinManager;
+        }
+
         public IActionResult Login()
         {
             return View();
@@ -22,11 +31,10 @@ namespace cran.Controllers
             return new ChallengeResult(provider, authProperties);
         }
 
-        public async Task<IActionResult> SignOut()
-        {
-            await HttpContext.Authentication.SignOutAsync("Cookies");
+        public IActionResult SignOut()
+        {            
         
-            return RedirectToAction(nameof(Login));
+            return View(nameof(Login));
         }
     }
 }

@@ -4,14 +4,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace cran.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
+
+        private readonly ILogger _logger;
+        
+        public HomeController(ILogger<HomeController> logger)
+        {
+            _logger = logger;
+        }        
+        
+        [Authorize]
         public IActionResult Index()
         {
+            string userid = User.Identity.Name;
+            _logger.LogInformation($"userid is {userid}");
             return View();
         }
 

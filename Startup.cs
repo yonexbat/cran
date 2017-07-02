@@ -11,6 +11,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace cran
 {
@@ -40,6 +42,14 @@ namespace cran
         {
             // Add framework services.
             services.AddMvc();
+
+            //Add logging
+            services.AddLogging();
+            services.AddSingleton<ILoggerFactory, LoggerFactory>();
+            services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+
+            services.AddScoped<SignInManager<string>, SignInManager<string>>();
+            services.AddScoped<UserManager<string>, UserManager<string>>();
             
             //Cookies Authentication
             services.AddAuthentication(options => options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
@@ -67,7 +77,7 @@ namespace cran
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
-                AuthenticationScheme = "Cookies",
+                AuthenticationScheme = CookieAuthenticationDefaults.AuthenticationScheme,
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true
             });  
@@ -75,6 +85,16 @@ namespace cran
             string clientId = Configuration["ClientId"];
             string clientSecret = Configuration["ClientSecret"];
 
+            
+            app.UseGoogleAuthentication(new GoogleOptions()
+            {
+                ClientId = clientId,
+                ClientSecret = clientSecret,
+            });
+
+            
+            /* 
+            
             app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
             {
                 ClientId = clientId,
@@ -85,7 +105,8 @@ namespace cran
                 SaveTokens = true,
                 Events = new OpenIdConnectEvents()
                 {
-                    OnRedirectToIdentityProvider = (context) =>
+              
+                    OnRedirectToIdentityProvider = (RedirectContext context) =>
                     {
                         if (context.Request.Path != "/account/external")
                         {
@@ -94,9 +115,17 @@ namespace cran
                         }
  
                         return Task.FromResult(0);
+                    },
+
+                    OnTicketReceived =  (context) =>
+                    {
+                        ClaimsIdentity identity = (ClaimsIdentity)context.Principal.Identity;
+                        return Task.FromResult(0);                        
                     }
+                    
+                    
                 }
-            });          
+            });   */ 
 
             app.UseMvc(routes =>
             {
