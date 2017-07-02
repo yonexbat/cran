@@ -13,9 +13,9 @@ namespace cran.Controllers
 
         private readonly ILogger _logger;
         
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILoggerFactory loggerFactory)
         {
-            _logger = logger;
+            _logger = loggerFactory.CreateLogger<HomeController>();
         }        
         
         [Authorize]

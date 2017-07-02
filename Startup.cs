@@ -13,6 +13,8 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using cran.Model;
+using cran.Security;
 
 namespace cran
 {
@@ -24,13 +26,8 @@ namespace cran
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-                
-            //add secrets.
-            if (env.IsDevelopment())
-            {
-                builder.AddUserSecrets<Startup>();
-            }
+                .AddEnvironmentVariables()
+                .AddUserSecrets<Startup>();         
 
             Configuration = builder.Build();
         }
@@ -43,16 +40,12 @@ namespace cran
             // Add framework services.
             services.AddMvc();
 
-            //Add logging
-            services.AddLogging();
-            services.AddSingleton<ILoggerFactory, LoggerFactory>();
-            services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
-
-            services.AddScoped<SignInManager<string>, SignInManager<string>>();
-            services.AddScoped<UserManager<string>, UserManager<string>>();
-            
-            //Cookies Authentication
-            services.AddAuthentication(options => options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
+             
+            services.AddIdentity<CranUser, CranRole>()
+                .AddUserStore<CranUserStore>()
+                .AddRoleStore<CranRoleStore>()
+                .AddDefaultTokenProviders();
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,13 +67,8 @@ namespace cran
             }
 
             app.UseStaticFiles();
+            app.UseIdentity();
 
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
-            {
-                AuthenticationScheme = CookieAuthenticationDefaults.AuthenticationScheme,
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = true
-            });  
 
             string clientId = Configuration["ClientId"];
             string clientSecret = Configuration["ClientSecret"];
@@ -92,40 +80,9 @@ namespace cran
                 ClientSecret = clientSecret,
             });
 
-            
-            /* 
-            
-            app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
-            {
-                ClientId = clientId,
-                ClientSecret = clientSecret,
-                Authority = "https://accounts.google.com",
-                ResponseType = OpenIdConnectResponseType.Code,
-                GetClaimsFromUserInfoEndpoint = true,
-                SaveTokens = true,
-                Events = new OpenIdConnectEvents()
-                {
-              
-                    OnRedirectToIdentityProvider = (RedirectContext context) =>
-                    {
-                        if (context.Request.Path != "/account/external")
-                        {
-                            context.Response.Redirect("/account/login");
-                            context.HandleResponse();
-                        }
- 
-                        return Task.FromResult(0);
-                    },
+           
 
-                    OnTicketReceived =  (context) =>
-                    {
-                        ClaimsIdentity identity = (ClaimsIdentity)context.Principal.Identity;
-                        return Task.FromResult(0);                        
-                    }
-                    
-                    
-                }
-            });   */ 
+     
 
             app.UseMvc(routes =>
             {
