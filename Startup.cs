@@ -13,8 +13,12 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using cran.Model;
 using cran.Security;
+using cran.Data;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using cran.Model.Entities;
 
 namespace cran
 {
@@ -39,13 +43,18 @@ namespace cran
         {
             // Add framework services.
             services.AddMvc();
+            
+            string connString = Configuration["ConnectionString"];
 
-             
-            services.AddIdentity<CranUser, CranRole>()
-                .AddUserStore<CranUserStore>()
-                .AddRoleStore<CranRoleStore>()
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connString));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-           
+
+            services.AddScoped<SignInManager<ApplicationUser>, SignInManager<ApplicationUser>>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
