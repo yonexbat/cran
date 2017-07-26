@@ -43,9 +43,11 @@
     "webpack": "2.5.1",
     "webpack-hot-middleware": "2.18.0",
     "webpack-merge": "4.1.0",
+    "webpack-node-externals": "^1.4.3",
     "zone.js": "0.8.10"
   },
   "devDependencies": {
+    "@angular/cli": "^1.2.4",
     "@types/chai": "3.5.2",
     "@types/jasmine": "2.5.47",
     "chai": "3.5.0",

@@ -18,7 +18,7 @@ namespace cran.Controllers
             _logger = loggerFactory.CreateLogger<HomeController>();
         }        
         
-        [Authorize]
+        //[Authorize]
         public IActionResult Index()
         {
             string userid = User.Identity.Name;
