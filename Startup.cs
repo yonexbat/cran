@@ -15,7 +15,6 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using cran.Model;
-using cran.Security;
 using cran.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using cran.Model.Entities;
