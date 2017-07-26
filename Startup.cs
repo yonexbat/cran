@@ -62,6 +62,7 @@ namespace cran
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            //Exception page
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();               
@@ -72,13 +73,11 @@ namespace cran
             }
 
             app.UseStaticFiles();
+
+            //Google login
             app.UseIdentity();
-
-
             string clientId = Configuration["ClientId"];
-            string clientSecret = Configuration["ClientSecret"];
-
-            
+            string clientSecret = Configuration["ClientSecret"];            
             app.UseGoogleAuthentication(new GoogleOptions()
             {
                 ClientId = clientId,
@@ -87,8 +86,7 @@ namespace cran
 
            
 
-     
-
+            //Routes
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
