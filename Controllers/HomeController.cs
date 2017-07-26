@@ -18,12 +18,10 @@ namespace cran.Controllers
             _logger = loggerFactory.CreateLogger<HomeController>();
         }        
         
-        //[Authorize]
+        [Authorize]
         public IActionResult Index()
         {
-            string userid = User.Identity.Name;
-            _logger.LogInformation($"userid is {userid}");
-            return View();
+            return Redirect("./jsclient/index.html");
         }
 
         public IActionResult Error()
