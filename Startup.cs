@@ -18,11 +18,15 @@ using cran.Model;
 using cran.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using cran.Model.Entities;
+using Microsoft.Extensions.FileProviders;
 
 namespace cran
 {
     public class Startup
     {
+
+        private IFileProvider _physicalProvider;
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -30,7 +34,9 @@ namespace cran
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables()
-                .AddUserSecrets<Startup>();         
+                .AddUserSecrets<Startup>();
+
+            _physicalProvider = env.ContentRootFileProvider;
 
             Configuration = builder.Build();
         }
@@ -54,6 +60,8 @@ namespace cran
             
 
             services.AddScoped<SignInManager<ApplicationUser>, SignInManager<ApplicationUser>>();
+
+            services.AddSingleton(_physicalProvider);
 
         }
 
@@ -97,6 +105,7 @@ namespace cran
                 routes.MapSpaFallbackRoute(
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
+                
             });
         }
     }

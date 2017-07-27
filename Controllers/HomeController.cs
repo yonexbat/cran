@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace cran.Controllers
 {
@@ -12,16 +14,20 @@ namespace cran.Controllers
     {
 
         private readonly ILogger _logger;
+        private readonly IFileProvider _fileProvider;
         
-        public HomeController(ILoggerFactory loggerFactory)
+        public HomeController(ILoggerFactory loggerFactory, IFileProvider fileProvider)
         {
             _logger = loggerFactory.CreateLogger<HomeController>();
+            _fileProvider = fileProvider;
         }        
         
         [Authorize]
         public IActionResult Index()
         {
-            return Redirect("/jsclient/index.html");
+            IFileInfo fileInfo = _fileProvider.GetFileInfo("wwwroot/jsclient/index.html");
+            Stream stream = fileInfo.CreateReadStream();
+            return File(stream, "text/html");
         }
 
         public IActionResult Error()
