@@ -3,15 +3,18 @@
     "courses" : [
         {
             "id" : "1",
-            "title" : "Test Kurs 1"
+            "title" : "Test Kurs 1",
+            "description" : "ganz ganz simple"
         },
         {
             "id" : "2",
-            "title" : "Test Kurs 2"
+            "title" : "Test Kurs 2",
+            "description" : "level2"
         },
         {
             "id" : "3",
-            "title" :"Test Kurs 3"
+            "title" :"Test Kurs 3",
+            "description" : "Für fortgeschrittene"
         }        
     ]    
 }

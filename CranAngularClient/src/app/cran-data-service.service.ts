@@ -8,12 +8,12 @@ import {Course} from './model/course';
 @Injectable()
 export class CranDataServiceService {
 
-  private courseUrl = '/assets/navigation.json';
+  private courseUrl = '/assets/courses.json';
   constructor(private http: Http) {
 
   }
 
-   public getIndex(): Promise<Courses> {
+   public getCourses(): Promise<Courses> {
     return this.http.get(this.courseUrl)
                .toPromise()
                .then(response => {
@@ -24,8 +24,9 @@ export class CranDataServiceService {
   }
 
   private handleError(error: any): Promise<any> {
+    // tslint:disable-next-line:no-debugger
     debugger;
-    console.error('An error occurred', error); // for demo purposes only
+    console.error('An error occurred', error);
     return Promise.reject(error.message || error);
   }
 }
