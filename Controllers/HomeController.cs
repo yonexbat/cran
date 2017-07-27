@@ -21,7 +21,7 @@ namespace cran.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            return Redirect("./jsclient/index.html");
+            return Redirect("/jsclient/index.html");
         }
 
         public IActionResult Error()

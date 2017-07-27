@@ -41,7 +41,7 @@
   </ItemGroup>
 
 
-  <Target Name="CreateClient" AfterTargets="ComputeFilesToPublish">
+  <Target Name="CreateClient">
     <Message Text="Creating Angular Client" />
     <Exec Command="npm run installclient" WorkingDirectory=".\CranAngularClient" />    
   </Target>

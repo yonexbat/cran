@@ -8,19 +8,30 @@ import {Course} from './model/course';
 @Injectable()
 export class CranDataServiceService {
 
-  private courseUrl = '/assets/courses.json';
+  private courseUrl = '/api/Data/Courses';
+  private courseUrlMock = '/assets/courses.json';
+
   constructor(private http: Http) {
 
   }
 
    public getCourses(): Promise<Courses> {
-    return this.http.get(this.courseUrl)
+    const url = this.getUrl(this.courseUrl, this.courseUrlMock);
+    return this.http.get(url)
                .toPromise()
                .then(response => {
                  const data = response.json() as Courses;
                  return data;
                 })
                .catch(this.handleError);
+  }
+
+
+  private getUrl(urlServer: string, urlMock: string) {
+    if (window.location && window.location.port && window.location.port === '4200') {
+      return urlMock;
+    }
+    return urlServer;
   }
 
   private handleError(error: any): Promise<any> {
