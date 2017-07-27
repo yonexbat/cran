@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using cran.Model.ViewModel;
 using Microsoft.AspNetCore.Authorization;
+using cran.Data;
+using cran.Model.Entities;
 
 namespace cran.Controllers
 {
@@ -12,24 +14,33 @@ namespace cran.Controllers
     [Authorize]
     public class DataController : Controller
     {
+
+        private readonly ApplicationDbContext _dbContext;
+
+        public DataController(ApplicationDbContext context)
+        {
+            _dbContext = context;
+        }
+
+
         /// <summary>
         /// URL: http://localhost:5000/api/Data/Courses
         /// </summary>
         /// <returns></returns>
         [HttpGet("[action]")]
-        public CoursesList Courses()
+        public CoursesListViewModel Courses()
         {
-            CoursesList result = new CoursesList();
-            result.Courses.Add(new Course
+            CoursesListViewModel result = new CoursesListViewModel();
+            IList<Course> list = this._dbContext.Courses.ToList();
+            foreach(Course course in list)
             {
-                Title = "Javascript",
-                Description = "Einfacher Javascript Kurs",
-            });
-            result.Courses.Add(new Course
-            {
-                Title = ".net Core",
-                Description = "Dotnet Core Kurs",
-            });
+                result.Courses.Add(new CourseViewModel
+                {
+                    Id = course.Id,
+                    Title = course.Title,
+                    Description = course.Description,
+                });
+            }        
 
             return result;
         }

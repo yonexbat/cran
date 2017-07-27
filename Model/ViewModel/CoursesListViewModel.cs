@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace cran.Model.ViewModel
 {
-    public class CoursesList : Base
+    public class CoursesListViewModel : BaseViewModel
     {
-        public IList<Course> Courses { get; set; } = new List<Course>();
+        public IList<CourseViewModel> Courses { get; set; } = new List<CourseViewModel>();
     }
 }

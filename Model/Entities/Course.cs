@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace cran.Model.ViewModel
+namespace cran.Model.Entities
 {
     public class Course
     {
+        public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
     }
