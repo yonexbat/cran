@@ -42,7 +42,8 @@
 
 
   <Target Name="CreateClient" AfterTargets="ComputeFilesToPublish">
-    <Exec Command="ng build -base-href /jsclient/" WorkingDirectory=".\CranAngularClient" />    
+    <Message Text="Creating Angular Client" />
+    <Exec Command="npm run installclient" WorkingDirectory=".\CranAngularClient" />    
   </Target>
   
 </Project>

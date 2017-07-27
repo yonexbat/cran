@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build -base-href /jsclient/",
+    "installclient": "ng build -base-href /jsclient/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

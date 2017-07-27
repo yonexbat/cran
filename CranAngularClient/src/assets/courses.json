@@ -1,0 +1,19 @@
+{
+    "returnCode" : "OK",
+    "courses" : [
+        {
+            "id" : "1",
+            "title" : "Test Kurs 1"
+        },
+        {
+            "id" : "2",
+            "title" : "Test Kurs 2"
+        },
+        {
+            "id" : "3",
+            "title" :"Test Kurs 3"
+        }        
+    ]    
+}
+    
+
