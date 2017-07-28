@@ -12,6 +12,7 @@ namespace cran.Data
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Course> Courses { get; set; }
+        public DbSet<LogEntry> LogEntires { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -22,7 +23,15 @@ namespace cran.Data
         {
             base.OnModelCreating(builder);
             MapCourse(builder.Entity<Course>());
+            MapLogEntry(builder.Entity<LogEntry>());
             
+        }
+
+        private void MapLogEntry(EntityTypeBuilder<LogEntry> typeBuilder)
+        {
+            typeBuilder.ToTable("CranLogEntry");
+            typeBuilder.Property(x => x.Id).HasColumnName("Id");
+            typeBuilder.HasKey(x => x.Id);
         }
 
         private void MapCourse(EntityTypeBuilder<Course> typeBuilder)

@@ -19,6 +19,7 @@ using cran.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using cran.Model.Entities;
 using Microsoft.Extensions.FileProviders;
+using cran.Services;
 
 namespace cran
 {
@@ -60,6 +61,7 @@ namespace cran
             
 
             services.AddScoped<SignInManager<ApplicationUser>, SignInManager<ApplicationUser>>();
+            services.AddScoped<IDbLogService, DbLogService>();
 
             services.AddSingleton(_physicalProvider);
 

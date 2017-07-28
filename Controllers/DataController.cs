@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using cran.Data;
 using cran.Model.Entities;
 using Microsoft.EntityFrameworkCore;
+using cran.Services;
 
 namespace cran.Controllers
 {
@@ -17,10 +18,12 @@ namespace cran.Controllers
     {
 
         private readonly ApplicationDbContext _dbContext;
+        private readonly IDbLogService _logService;
 
-        public DataController(ApplicationDbContext context)
+        public DataController(ApplicationDbContext context, IDbLogService logService)
         {
             _dbContext = context;
+            _logService = logService;
         }
 
 
@@ -31,6 +34,7 @@ namespace cran.Controllers
         [HttpGet("[action]")]
         public async Task<CoursesListViewModel> Courses()
         {
+            await _logService.LogMessageAsync("courses");
             CoursesListViewModel result = new CoursesListViewModel();
             IList<Course> list = await this._dbContext.Courses.ToListAsync();
             foreach (Course course in list)
