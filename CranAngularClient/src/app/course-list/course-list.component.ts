@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpModule } from '@angular/http';
 
 import {CranDataServiceService} from '../cran-data-service.service';
 import {Courses} from '../model/courses';
