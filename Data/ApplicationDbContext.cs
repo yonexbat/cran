@@ -1,6 +1,7 @@
 ﻿using cran.Model.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,15 @@ namespace cran.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<Course>().ToTable("CranCourse");           
+            MapCourse(builder.Entity<Course>());
+            
+        }
+
+        private void MapCourse(EntityTypeBuilder<Course> typeBuilder)
+        {
+            typeBuilder.ToTable("CranCourse");
+            typeBuilder.Property(x => x.Id).HasColumnName("Id");           
+            typeBuilder.HasKey(x => x.Id);
         }
     }
 }

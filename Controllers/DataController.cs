@@ -7,6 +7,7 @@ using cran.Model.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using cran.Data;
 using cran.Model.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace cran.Controllers
 {
@@ -28,11 +29,11 @@ namespace cran.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("[action]")]
-        public CoursesListViewModel Courses()
+        public async Task<CoursesListViewModel> Courses()
         {
             CoursesListViewModel result = new CoursesListViewModel();
-            IList<Course> list = this._dbContext.Courses.ToList();
-            foreach(Course course in list)
+            IList<Course> list = await this._dbContext.Courses.ToListAsync();
+            foreach (Course course in list)
             {
                 result.Courses.Add(new CourseViewModel
                 {
