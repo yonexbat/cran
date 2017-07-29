@@ -6,7 +6,7 @@ import {Courses} from './model/courses';
 import {Course} from './model/course';
 
 @Injectable()
-export class CranDataServiceService {
+export class CranDataService {
 
   private courseUrl = '/api/Data/Courses';
   private courseUrlMock = '/assets/courses.json';

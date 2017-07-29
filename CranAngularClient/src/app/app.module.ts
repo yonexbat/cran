@@ -6,7 +6,7 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';
 import { CourseListComponent } from './course-list/course-list.component';
-import { CranDataServiceService } from './cran-data-service.service';
+import { CranDataService } from './cran-data.service';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { HomeComponent } from './home/home.component';
 
@@ -24,7 +24,7 @@ import { HomeComponent } from './home/home.component';
     HttpModule,
   ],
   providers: [
-    CranDataServiceService,
+    CranDataService,
     HttpModule,
   ],
   bootstrap: [AppComponent]

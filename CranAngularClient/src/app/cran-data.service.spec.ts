@@ -1,6 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { CranDataServiceService } from './cran-data-service.service';
+import { CranDataService } from './cran-data.service';
 
 describe('CranDataServiceService', () => {
 

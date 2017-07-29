@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpModule } from '@angular/http';
 
-import {CranDataServiceService} from '../cran-data-service.service';
+import {CranDataService} from '../cran-data.service';
 import {Courses} from '../model/courses';
 import {Course} from '../model/course';
 
@@ -14,7 +14,7 @@ export class CourseListComponent implements OnInit {
 
   courses: Course[] = [];
 
-  constructor(private cranDataServiceService: CranDataServiceService) { }
+  constructor(private cranDataServiceService: CranDataService) { }
 
   ngOnInit() {
     this.cranDataServiceService.getCourses()

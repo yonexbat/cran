@@ -3,7 +3,7 @@ import {MockBackend, MockConnection} from '@angular/http/testing';
 import { Http, BaseRequestOptions, ResponseOptions, Response } from '@angular/http';
 
 import { CourseListComponent } from './course-list.component';
-import { CranDataServiceService } from '../cran-data-service.service';
+import { CranDataService } from '../cran-data.service';
 
 
 describe('CourseListComponent', () => {
@@ -17,11 +17,12 @@ describe('CourseListComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ CourseListComponent ],
       providers: [
-        CranDataServiceService,
+        CranDataService,
         MockBackend,
         BaseRequestOptions,
         {
-          provide: Http, useFactory: (backend, options) => {
+          provide: Http,
+          useFactory: (backend, options) => {
             return new Http(backend, options);
           },
           deps: [MockBackend, BaseRequestOptions]
@@ -42,11 +43,20 @@ describe('CourseListComponent', () => {
   });
 
   it('should get value',
-    async(inject([CranDataServiceService, MockBackend], (service: CranDataServiceService, backend: MockBackend) => {
+    async(inject([CranDataService, MockBackend], (service: CranDataService, backend: MockBackend) => {
       backend.connections.subscribe((conn: MockConnection) => {
         const options: ResponseOptions = new ResponseOptions({body: '{}'});
         conn.mockRespond(new Response(options));
+        debugger;
       });
+      debugger;
+      fixture.detectChanges();
+      fixture.whenStable().then(() => { // wait for async getQuote
+        fixture.detectChanges();  
+        debugger;      // update view with quote
+        expect(true).toBe(true);
+    });
+
     }))
   );
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {CranDataServiceService} from './cran-data-service.service';
+import {CranDataService} from './cran-data.service';
 
 @Component({
   selector: 'app-root',
