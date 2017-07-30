@@ -18,7 +18,9 @@ export class CourseListComponent implements OnInit {
 
   ngOnInit() {
     this.cranDataServiceService.getCourses()
-      .then(courses => this.courses = courses.courses);
+      .then(courses => {
+          this.courses = courses.courses;
+      });
   }
 
 }

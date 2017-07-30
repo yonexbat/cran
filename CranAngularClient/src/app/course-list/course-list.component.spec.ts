@@ -1,32 +1,46 @@
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
-import {MockBackend, MockConnection} from '@angular/http/testing';
-import { Http, BaseRequestOptions, ResponseOptions, Response } from '@angular/http';
+import { async, ComponentFixture, TestBed, inject, } from '@angular/core/testing';
+import {MockBackend, MockConnection, } from '@angular/http/testing';
+import { Http, RequestOptions, ResponseOptions, Response, ConnectionBackend } from '@angular/http';
+import { By } from '@angular/platform-browser';
+import { DebugElement } from '@angular/core';
 
 import { CourseListComponent } from './course-list.component';
 import { CranDataService } from '../cran-data.service';
-
+import { Courses } from '../model/courses';
+import { Course } from '../model/course';
 
 describe('CourseListComponent', () => {
 
   let component: CourseListComponent;
   let fixture: ComponentFixture<CourseListComponent>;
+  let de: DebugElement;
+  let el: HTMLElement;
 
 
   beforeEach(async(() => {
 
+
+    class CranDataServiceSpy {
+
+      constructor() {
+        this.courses = new Courses();
+        this.courses.courses = [{id : 2, title : 'helo', description: 'mydescription'}];
+      }
+
+      courses = new Courses();
+
+      getCourses = jasmine.createSpy('getCourses').and.callFake(
+        () => Promise
+          .resolve(true)
+          .then(() => Object.assign({}, this.courses))
+      );
+
+    }
+
     TestBed.configureTestingModule({
       declarations: [ CourseListComponent ],
       providers: [
-        CranDataService,
-        MockBackend,
-        BaseRequestOptions,
-        {
-          provide: Http,
-          useFactory: (backend, options) => {
-            return new Http(backend, options);
-          },
-          deps: [MockBackend, BaseRequestOptions]
-        },
+        { provide: CranDataService, useClass: CranDataServiceSpy }
       ],
     })
     .compileComponents();
@@ -36,28 +50,22 @@ describe('CourseListComponent', () => {
     fixture = TestBed.createComponent(CourseListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    de = fixture.debugElement.query(By.css('div'));
+    el = de.nativeElement;
   });
 
-  it('should be created', () => {
+  it('CourseListComponent should be created', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should get value',
-    async(inject([CranDataService, MockBackend], (service: CranDataService, backend: MockBackend) => {
-      backend.connections.subscribe((conn: MockConnection) => {
-        const options: ResponseOptions = new ResponseOptions({body: '{}'});
-        conn.mockRespond(new Response(options));
-        debugger;
-      });
+  it('It is listed', async(() => {
+    debugger;
+    fixture.whenStable().then(() => {
       debugger;
       fixture.detectChanges();
-      fixture.whenStable().then(() => { // wait for async getQuote
-        fixture.detectChanges();  
-        debugger;      // update view with quote
-        expect(true).toBe(true);
+      const textContext = el.textContent;
+      expect(el.textContent).toContain('helo');
     });
-
-    }))
-  );
+  }));
 
 });
