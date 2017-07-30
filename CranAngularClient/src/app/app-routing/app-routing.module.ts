@@ -4,11 +4,13 @@ import { RouterModule, Routes } from '@angular/router';
 
 import {CourseListComponent} from '../course-list/course-list.component';
 import {HomeComponent} from '../home/home.component';
+import {ManageQuestionComponent} from '../manage-question/manage-question.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent},
   { path: 'home', component:  HomeComponent},
   { path: 'list', component:  CourseListComponent},
+  { path: 'addquestion', component:  ManageQuestionComponent},
 ];
 
 @NgModule({
