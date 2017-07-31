@@ -9,6 +9,7 @@ using cran.Data;
 using cran.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 using cran.Services;
+using cran.Filters;
 
 namespace cran.Controllers
 {
@@ -17,12 +18,12 @@ namespace cran.Controllers
     public class DataController : Controller
     {
 
-        private readonly ApplicationDbContext _dbContext;
         private readonly IDbLogService _logService;
+        private readonly ICraniumService _craninumService;
 
-        public DataController(ApplicationDbContext context, IDbLogService logService)
+        public DataController(ICraniumService craniumService, IDbLogService logService)
         {
-            _dbContext = context;
+            _craninumService = craniumService;
             _logService = logService;
         }
 
@@ -34,21 +35,27 @@ namespace cran.Controllers
         [HttpGet("[action]")]
         public async Task<CoursesListViewModel> Courses()
         {
-            await _logService.LogMessageAsync("courses");
-            CoursesListViewModel result = new CoursesListViewModel();
-            IList<Course> list = await this._dbContext.Courses.ToListAsync();
-            foreach (Course course in list)
-            {
-                result.Courses.Add(new CourseViewModel
-                {
-                    Id = course.Id,
-                    Title = course.Title,
-                    Description = course.Description,
-                });
-            }        
-
-            return result;
+            return await _craninumService.CoursesAsync();
         }
+
+        /// <summary>
+        /// URL: http://localhost:5000/api/Data/AddQuestion
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
+        [HttpPost("[action]")]
+        [ValidateModel]
+        public async Task<InsertActionViewModel> AddQuestion([FromBody] QuestionViewModel vm)
+        {
+
+            int id = await _craninumService.AddQuestionAsync(vm);
+
+            return new InsertActionViewModel
+            {
+                NewId = id,
+                Status = "Ok",
+            };
+        }       
        
     }
 }

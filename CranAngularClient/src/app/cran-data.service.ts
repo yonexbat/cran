@@ -4,6 +4,7 @@ import 'rxjs/add/operator/toPromise';
 
 import {Courses} from './model/courses';
 import {Course} from './model/course';
+import {Question} from './model/question';
 
 @Injectable()
 export class CranDataService {
@@ -24,6 +25,17 @@ export class CranDataService {
                  return data;
                 })
                .catch(this.handleError);
+  }
+
+  public insertQuestion(question: Question): Promise<number> {
+    const url = '/api/Data/AddQuestion';
+    return this.http.post(url, question)
+                    .toPromise()
+                    .then(  data => {
+                      const result = data.json();
+                      return result.newId;
+                    })
+                    .catch(this.handleError);
   }
 
 

@@ -20,6 +20,8 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using cran.Model.Entities;
 using Microsoft.Extensions.FileProviders;
 using cran.Services;
+using System.Security.Principal;
+using Microsoft.AspNetCore.Http;
 
 namespace cran
 {
@@ -58,10 +60,17 @@ namespace cran
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-            
+
+
+            //Transient: for every obejct that required it a (new instance).
+            //Scoped: once per request.
+            //Singleton: self explained.
+
+            services.AddTransient<IPrincipal>(provider => provider.GetService<IHttpContextAccessor>().HttpContext.User);
 
             services.AddScoped<SignInManager<ApplicationUser>, SignInManager<ApplicationUser>>();
             services.AddScoped<IDbLogService, DbLogService>();
+            services.AddScoped<ICraniumService, CraniumService>();
 
             services.AddSingleton(_physicalProvider);
 
