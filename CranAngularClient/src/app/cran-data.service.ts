@@ -37,7 +37,13 @@ export class CranDataService implements ICranDataService {
   }
 
   public getQuestion(id: number): Promise<Question> {
-    throw new TypeError('Not implemented');
+    return this.http.get('/api/Data/Question/' + id)
+                    .toPromise()
+                    .then(  response => {
+                      const result = response.json() as Question;
+                      return result;
+                    })
+                    .catch(this.handleError);
   }
 
 

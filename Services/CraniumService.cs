@@ -42,7 +42,7 @@ namespace cran.Services
             await _dbLogService.LogMessageAsync("Adding question");
             _context.Questions.Add(questionEntity);
             await _context.SaveChangesAsync();
-            return question.Id;
+            return questionEntity.Id;
         }
 
         public async Task<CoursesListViewModel> CoursesAsync()
@@ -61,6 +61,17 @@ namespace cran.Services
             }
 
             return result;
+        }
+
+        public async Task<QuestionViewModel> GetQuestionAsync(int id)
+        {
+            Question question = await _context.FindAsync<Question>(id);
+            return new QuestionViewModel
+            {
+                Id = question.Id,
+                Text = question.Text,
+                Title = question.Title,
+            };
         }
 
         public string GetUserId()

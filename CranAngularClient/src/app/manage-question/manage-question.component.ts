@@ -46,6 +46,8 @@ export class ManageQuestionComponent implements OnInit {
     if (id > 0) {
       this.buttonText = 'Speichern';
       this.headingText = 'Frage ' + id + ' editieren';
+      this.cranDataService.getQuestion(id)
+        .then(question => this.question = question);
     } else {
       this.buttonText = 'Hinzufügen';
       this.headingText = 'Frage hinzufügen';

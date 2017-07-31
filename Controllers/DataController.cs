@@ -39,6 +39,17 @@ namespace cran.Controllers
         }
 
         /// <summary>
+        /// URL: http://localhost:5000/api/Data/Question/3
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("[action]/{id?}")]
+        public async Task<QuestionViewModel> Question(int id)
+        {
+            return await _craninumService.GetQuestionAsync(id);
+        }
+
+        /// <summary>
         /// URL: http://localhost:5000/api/Data/AddQuestion
         /// </summary>
         /// <param name="vm"></param>
