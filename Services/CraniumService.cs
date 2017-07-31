@@ -66,12 +66,24 @@ namespace cran.Services
         public async Task<QuestionViewModel> GetQuestionAsync(int id)
         {
             Question question = await _context.FindAsync<Question>(id);
-            return new QuestionViewModel
+            QuestionViewModel vm = new QuestionViewModel
             {
                 Id = question.Id,
                 Text = question.Text,
-                Title = question.Title,
+                Title = question.Title,       
             };
+
+            foreach(QuestionOption option in _context.QuestionOptions.Where(x => x.IdQuestion == id))
+            {
+                vm.Options.Add(new QuestionOptionViewModel
+                {
+                    Id = option.Id,
+                    IsTrue = option.IsTrue,
+                    Text = option.Text,
+                });
+            }
+
+            return vm;
         }
 
         public string GetUserId()
@@ -84,8 +96,30 @@ namespace cran.Services
             Question questionEntity = await _context.FindAsync<Question>(question.Id);
             questionEntity.Title = question.Title;
             questionEntity.Text = question.Text;
+
+            foreach(QuestionOption optionEntity in questionEntity.Options)
+            {
+                _context.QuestionOptions.Remove(optionEntity);
+            }
+
+            foreach(QuestionOptionViewModel option in question.Options)
+            {
+                QuestionOption optionEntity = new QuestionOption();
+                optionEntity.Question = questionEntity;
+                optionEntity.IsTrue = option.IsTrue;
+                optionEntity.Text = option.Text;
+                optionEntity.InsertDate = DateTime.Now;
+                optionEntity.UpdateDate = DateTime.Now;
+                optionEntity.InsertUser = GetUserId();
+                optionEntity.UpdateUser = GetUserId();
+                questionEntity.Options.Add(optionEntity);
+                _context.QuestionOptions.Add(optionEntity);
+            }
+
             await _context.SaveChangesAsync();
 
         }
+
+        
     }
 }
