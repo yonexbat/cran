@@ -51,12 +51,59 @@
       </div>
     </div>
 
+    <div *ngFor="let option of question.options; let optionIndex=index">
+      <hr/>
+      <div class="row form-group">
+
+        <div class="col-md-4">
+          <label for="optionText{{optionIndex}}">Option {{optionIndex + 1}}</label>
+
+          <input type="text" class="form-control" id="optionText{{optionIndex}}"
+            required
+            [(ngModel)]="option.text" 
+            name="optionText{{optionIndex}}"
+            #optionText="ngModel">
+          
+          <div [hidden]="optionText.valid || optionText.pristine"
+                class="alert alert-danger">
+              Text ist ein Mussfeld
+          </div>
+          
+        </div>  
+
+        <div class="col-md-3">
+          <label for="checkBox{{optionIndex}}">Ist korrekt</label>
+          <input type="checkbox"
+            class="checkbox"
+            [(ngModel)]="option.isTrue" 
+            id="checkBox{{optionIndex}}"
+            name="checkBox{{optionIndex}}"
+            #optionChecked="ngModel">
+        </div>
+
+        <div class="col-md-5">
+          <button type="button" class="btn" (click)="removeOption(optionIndex)">
+            Entfernen
+          </button>
+        </div>
+
+
+      </div> 
+    </div>
+
     <button 
         type="button" 
         class="btn btn btn-success" 
-        (click)="addQuestion()" 
+        (click)="save()" 
         [disabled]="!questionForm.form.valid || actionInProgress">
       {{buttonText}}
+    </button>
+
+    <button 
+        type="button" 
+        class="btn btn btn-success" 
+        (click)="addOpton()">
+      Option hinzufügen
     </button>
 
 

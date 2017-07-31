@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 import {Question} from '../model/question';
+import {QuestionOption} from '../model/questionoption';
 import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.service';
 
@@ -13,7 +14,7 @@ import {CRAN_SERVICE_TOKEN} from '../cran-data.service';
 })
 export class ManageQuestionComponent implements OnInit {
 
-  public question = new Question;
+  public question: Question;
 
   public actionInProgress = false;
 
@@ -25,16 +26,27 @@ export class ManageQuestionComponent implements OnInit {
     @Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
     private router: Router,
     private activeRoute: ActivatedRoute) {
+
         this.activeRoute.paramMap.subscribe((params: ParamMap)  => {
           const id = params.get('id');
           this.handleRouteChanged(+id);
+        });
+
+        this.question = new Question();
+        this.question.options.push({
+          isTrue: true,
+          text: '',
+        });
+        this.question.options.push({
+          isTrue: false,
+          text: '',
         });
   }
 
   ngOnInit() {
   }
 
-  addQuestion() {
+  save() {
     this.actionInProgress = true;
 
     if (this.question && this.question.id > 0) {
@@ -60,6 +72,16 @@ export class ManageQuestionComponent implements OnInit {
       this.headingText = 'Frage hinzufügen';
     }
     this.actionInProgress = false;
+  }
+
+  public removeOption(index: number) {
+    this.question.options.splice(index, 1);
+  }
+
+  public addOpton() {
+    const option = new QuestionOption();
+    option.isTrue = true;
+    this.question.options.push(option);
   }
 
 }

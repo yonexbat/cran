@@ -68,7 +68,7 @@ export class CranDataService implements ICranDataService {
 export class CranDataServiceMock implements ICranDataService {
   updateQuestion(question: Question): Promise<any> {
       return new Promise<any>((resolve, reject) => {
-        resolve("Ok");
+        resolve('Ok');
       });
   }
 
