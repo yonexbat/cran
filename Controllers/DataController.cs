@@ -66,7 +66,21 @@ namespace cran.Controllers
                 NewId = id,
                 Status = "Ok",
             };
-        }       
-       
+        }
+
+        /// <summary>
+        /// URL: http://localhost:5000/api/Data/SaveQuestion
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
+        [HttpPost("[action]")]
+        [ValidateModel]
+        public async Task SaveQuestion([FromBody] QuestionViewModel vm)
+        {
+
+            await _craninumService.UpdateQuestionAsync(vm);
+        }
+
+
     }
 }

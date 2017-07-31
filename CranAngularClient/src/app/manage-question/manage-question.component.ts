@@ -36,10 +36,17 @@ export class ManageQuestionComponent implements OnInit {
 
   addQuestion() {
     this.actionInProgress = true;
-    this.cranDataService.insertQuestion(this.question)
-    .then(questionId => {
-      this.router.navigate(['/editquestion', questionId]);
-    });
+
+    if (this.question && this.question.id > 0) {
+      this.cranDataService.updateQuestion(this.question).then(status => {
+        this.actionInProgress = false;
+      });
+    } else {
+      this.cranDataService.insertQuestion(this.question)
+      .then(questionId => {
+        this.router.navigate(['/editquestion', questionId]);
+      });
+    }
   }
 
   private handleRouteChanged(id: number) {

@@ -8,4 +8,5 @@ export interface ICranDataService {
   getCourses(): Promise<Courses>;
   insertQuestion(question: Question): Promise<number>;
   getQuestion(id: number): Promise<Question>;
+  updateQuestion(question: Question): Promise<any>;
 }

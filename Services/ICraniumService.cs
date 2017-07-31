@@ -11,8 +11,12 @@ namespace cran.Services
     {
         Task<int> AddQuestionAsync(QuestionViewModel question);
 
+        Task UpdateQuestionAsync(QuestionViewModel question);
+
         Task<CoursesListViewModel> CoursesAsync();
 
         Task<QuestionViewModel> GetQuestionAsync(int id);
+
+        
     }
 }

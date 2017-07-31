@@ -26,12 +26,21 @@ export class CranDataService implements ICranDataService {
                .catch(this.handleError);
   }
 
-  public insertQuestion(question: Question): Promise<number> {  
+  public insertQuestion(question: Question): Promise<number> {
     return this.http.post('/api/Data/AddQuestion', question)
                     .toPromise()
                     .then(  data => {
                       const result = data.json();
                       return result.newId;
+                    })
+                    .catch(this.handleError);
+  }
+
+  public updateQuestion(question: Question): Promise<any> {
+    return this.http.post('/api/Data/SaveQuestion', question)
+                    .toPromise()
+                    .then(  data => {
+                      return 'Ok';
                     })
                     .catch(this.handleError);
   }
@@ -57,6 +66,11 @@ export class CranDataService implements ICranDataService {
 
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
+  updateQuestion(question: Question): Promise<any> {
+      return new Promise<any>((resolve, reject) => {
+        resolve("Ok");
+      });
+  }
 
   constructor(private http: Http) {
 

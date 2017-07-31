@@ -78,5 +78,14 @@ namespace cran.Services
         {
             return _currentPrincipal.Identity.Name;
         }
+
+        public async Task UpdateQuestionAsync(QuestionViewModel question)
+        {
+            Question questionEntity = await _context.FindAsync<Question>(question.Id);
+            questionEntity.Title = question.Title;
+            questionEntity.Text = question.Text;
+            await _context.SaveChangesAsync();
+
+        }
     }
 }
