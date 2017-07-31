@@ -1,6 +1,6 @@
 <div class="container">
   
-  <h1>Frage hinzufügen</h1>
+  <h1>{{headingText}}</h1>
 
   <form (ngSubmit)="onSubmit()" #questionForm="ngForm">
 
@@ -51,13 +51,12 @@
       </div>
     </div>
 
-
-  
-    
-
-
-    <button type="button" class="btn btn btn-success" (click)="addQuestion()" [disabled]="!questionForm.form.valid">
-      Hinzufügen
+    <button 
+        type="button" 
+        class="btn btn btn-success" 
+        (click)="addQuestion()" 
+        [disabled]="!questionForm.form.valid || actionInProgress">
+      {{buttonText}}
     </button>
 
 

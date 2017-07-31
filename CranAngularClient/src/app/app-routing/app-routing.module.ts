@@ -11,6 +11,7 @@ const routes: Routes = [
   { path: 'home', component:  HomeComponent},
   { path: 'list', component:  CourseListComponent},
   { path: 'addquestion', component:  ManageQuestionComponent},
+  { path: 'editquestion/:id', component: ManageQuestionComponent},
 ];
 
 @NgModule({

@@ -1,24 +1,23 @@
-import { Injectable } from '@angular/core';
+import { Injectable, InjectionToken  } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import {Courses} from './model/courses';
 import {Course} from './model/course';
 import {Question} from './model/question';
+import {ICranDataService} from './icrandataservice';
+
+export let CRAN_SERVICE_TOKEN = new InjectionToken<ICranDataService>('ICranDataService');
 
 @Injectable()
-export class CranDataService {
-
-  private courseUrl = '/api/Data/Courses';
-  private courseUrlMock = '/assets/courses.json';
+export class CranDataService implements ICranDataService {
 
   constructor(private http: Http) {
 
   }
 
    public getCourses(): Promise<Courses> {
-    const url = this.getUrl(this.courseUrl, this.courseUrlMock);
-    return this.http.get(url)
+    return this.http.get('/api/Data/Courses')
                .toPromise()
                .then(response => {
                  const data = response.json() as Courses;
@@ -27,9 +26,8 @@ export class CranDataService {
                .catch(this.handleError);
   }
 
-  public insertQuestion(question: Question): Promise<number> {
-    const url = '/api/Data/AddQuestion';
-    return this.http.post(url, question)
+  public insertQuestion(question: Question): Promise<number> {  
+    return this.http.post('/api/Data/AddQuestion', question)
                     .toPromise()
                     .then(  data => {
                       const result = data.json();
@@ -38,13 +36,10 @@ export class CranDataService {
                     .catch(this.handleError);
   }
 
-
-  private getUrl(urlServer: string, urlMock: string) {
-    if (window.location && window.location.port && window.location.port === '4200') {
-      return urlMock;
-    }
-    return urlServer;
+  public getQuestion(id: number): Promise<Question> {
+    throw new TypeError('Not implemented');
   }
+
 
   private handleError(error: any): Promise<any> {
     // tslint:disable-next-line:no-debugger
@@ -52,4 +47,37 @@ export class CranDataService {
     console.error('An error occurred', error);
     return Promise.reject(error.message || error);
   }
+}
+
+@Injectable()
+export class CranDataServiceMock implements ICranDataService {
+
+  constructor(private http: Http) {
+
+  }
+
+  getCourses(): Promise<Courses> {
+      return this.http.get('/assets/courses.json')
+               .toPromise()
+               .then(response => {
+                 const data = response.json() as Courses;
+                 return data;
+                });
+  }
+
+  insertQuestion(question: Question): Promise<number> {
+    return new Promise<number>((resolve, reject) => {
+      resolve(3);
+    });
+  }
+
+  getQuestion(id: number): Promise<Question> {
+    return new Promise<Question>((resolve, reject) => {
+        const question = new Question();
+        question.text = 'Hello';
+        question.title = 'MyTitle';
+        resolve(question);
+      });
+  }
+
 }
