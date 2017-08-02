@@ -28,8 +28,10 @@ namespace cran.Data
             MapLogEntry(builder.Entity<LogEntry>());
             MapQuestion(builder.Entity<Question>());
             MapQuestionOption(builder.Entity<QuestionOption>());
-            
-        }
+            MapTag(builder.Entity<Tag>());
+            MapRelCourseTag(builder.Entity<RelCourseTag>());
+            MapRelQuestionTag(builder.Entity<RelQuestionTag>());
+        }       
 
         private void MapLogEntry(EntityTypeBuilder<LogEntry> typeBuilder)
         {
@@ -48,7 +50,10 @@ namespace cran.Data
         private void MapQuestionOption(EntityTypeBuilder<QuestionOption> typeBuilder)
         {
             typeBuilder.ToTable("CranQuestionOption");                        
-            typeBuilder.HasOne(x => x.Question).WithMany(x => x.Options).HasForeignKey(o => o.IdQuestion);
+            typeBuilder
+                .HasOne(x => x.Question)
+                .WithMany(x => x.Options)
+                .HasForeignKey(o => o.IdQuestion);
         }
 
         private void MapQuestion(EntityTypeBuilder<Question> typeBuilder)
@@ -57,13 +62,24 @@ namespace cran.Data
             typeBuilder
                 .HasMany(x => x.Options)
                 .WithOne(o => o.Question)
-                .HasForeignKey(x => x.IdQuestion);
-
-            /*
-            typeBuilder.Property(x => x.Id).HasColumnName("Id");
-            typeBuilder.HasKey(x => x.Id);
-            typeBuilder.HasMany(x => x.Options).WithOne(x => x.Question).HasForeignKey("QuestionId");
-            */
+                .HasForeignKey(x => x.IdQuestion);            
         }
+
+        private void MapTag(EntityTypeBuilder<Tag> typeBuilder)
+        {
+            typeBuilder.ToTable("CranTag");            
+        }
+
+        private void MapRelCourseTag(EntityTypeBuilder<RelCourseTag> typeBuilder)
+        {
+            typeBuilder.ToTable("CranRelCourseTag");
+        }
+
+        private void MapRelQuestionTag(EntityTypeBuilder<RelQuestionTag> typeBuilder)
+        {
+            typeBuilder.ToTable("CranRelQuestionTag");
+        }
+
+
     }
 }

@@ -12,15 +12,14 @@ using System.Security.Principal;
 
 namespace cran.Services
 {
-    public class CraniumService : ICraniumService
+    public class CraniumService : Service, ICraniumService
     {
-        private ApplicationDbContext _context;
 
         private IDbLogService _dbLogService;
 
-        private IPrincipal _currentPrincipal;
 
-        public CraniumService(ApplicationDbContext context, IDbLogService dbLogService, IPrincipal principal)
+        public CraniumService(ApplicationDbContext context, IDbLogService dbLogService, IPrincipal principal) :
+            base(context, principal)
         {
             _context = context;
             _dbLogService = dbLogService;
@@ -32,12 +31,10 @@ namespace cran.Services
             Question questionEntity = new Question
             {
                 Title = question.Title,
-                Text = question.Text,
-                InsertDate = DateTime.Now,
-                UpdateDate = DateTime.Now,
-                InsertUser = GetUserId(),
-                UpdateUser = GetUserId(),
+                Text = question.Text,               
             };
+
+            InitTechnicalFields(questionEntity);
 
             await _dbLogService.LogMessageAsync("Adding question");
             _context.Questions.Add(questionEntity);
@@ -86,10 +83,7 @@ namespace cran.Services
             return vm;
         }
 
-        public string GetUserId()
-        {
-            return _currentPrincipal.Identity.Name;
-        }
+ 
 
         public async Task UpdateQuestionAsync(QuestionViewModel question)
         {
@@ -108,10 +102,8 @@ namespace cran.Services
                 optionEntity.Question = questionEntity;
                 optionEntity.IsTrue = option.IsTrue;
                 optionEntity.Text = option.Text;
-                optionEntity.InsertDate = DateTime.Now;
-                optionEntity.UpdateDate = DateTime.Now;
-                optionEntity.InsertUser = GetUserId();
-                optionEntity.UpdateUser = GetUserId();
+
+                InitTechnicalFields(optionEntity);
                 questionEntity.Options.Add(optionEntity);
                 _context.QuestionOptions.Add(optionEntity);
             }
@@ -120,6 +112,7 @@ namespace cran.Services
 
         }
 
+    
         
     }
 }

@@ -5,12 +5,11 @@ using System.Threading.Tasks;
 
 namespace cran.Model.Entities
 {
-    public class QuestionOption : CranEntity
+    public class RelQuestionTag : CranEntity
     {
-        public virtual int IdQuestion { get; set; }
-        public virtual bool IsTrue { get; set; }
-        public virtual string Text { get; set; }      
-
+        public virtual int IdCourse { get; set; }
+        public virtual int IdTag { get; set; }
+        public virtual Tag Tag { get; set; }
         public virtual Question Question { get; set; }
     }
 }

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace cran.Model.Entities
 {
-    public class LogEntry : CranEntity
+    public class Tag : CranEntity
     {
-        public string Message { get; set; }
-        public DateTime Created { get; set; }
+        public virtual string Name { get; set; }
+        public virtual string Description { get; set; }
     }
 }

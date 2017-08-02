@@ -5,18 +5,14 @@ using System.Threading.Tasks;
 
 namespace cran.Model.Entities
 {
-    public class Question
+    public class Question : CranEntity
     {
-        public virtual int Id { get; set; }
+
         public virtual string Title { get; set; }
         public virtual string Text { get; set; }
 
-        public virtual string InsertUser { get; set; }
-        public virtual DateTime InsertDate { get; set; }
-
-        public virtual string UpdateUser { get; set; }
-        public virtual DateTime UpdateDate { get; set; }
 
         public virtual IList<QuestionOption> Options { get; set; } = new List<QuestionOption>();
+        public virtual IList<RelQuestionTag> RelTags { get; set; } = new List<RelQuestionTag>();
     }
 }

@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 
 namespace cran.Model.Entities
 {
-    public class Course
+    public class Course : CranEntity
     {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
+        public virtual string Title { get; set; }
+        public virtual string Description { get; set; }
+
+        public virtual IList<RelCourseTag> RelTags { get; set; } = new List<RelCourseTag>();
     }
 }
