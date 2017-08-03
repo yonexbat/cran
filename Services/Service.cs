@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace cran.Services
 {
-    public class Service
+    public abstract class Service
     {
 
         protected ApplicationDbContext _context;

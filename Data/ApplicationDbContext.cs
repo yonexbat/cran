@@ -73,11 +73,26 @@ namespace cran.Data
         private void MapRelCourseTag(EntityTypeBuilder<RelCourseTag> typeBuilder)
         {
             typeBuilder.ToTable("CranRelCourseTag");
+
+            typeBuilder.HasOne(x => x.Course)
+                .WithMany(c => c.RelTags)
+                .HasForeignKey(rel => rel.IdCourse);
+
+            typeBuilder.HasOne(x => x.Tag)
+                .WithMany().HasForeignKey(rel => rel.IdTag);
         }
 
         private void MapRelQuestionTag(EntityTypeBuilder<RelQuestionTag> typeBuilder)
         {
             typeBuilder.ToTable("CranRelQuestionTag");
+
+            typeBuilder.HasOne(x => x.Question)
+                .WithMany(c => c.RelTags)
+                .HasForeignKey(rel => rel.IdQuestion);
+
+            typeBuilder.HasOne(x => x.Tag)
+                .WithMany()
+                .HasForeignKey(rel => rel.IdTag);
         }
 
 

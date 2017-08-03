@@ -46,15 +46,31 @@ namespace cran.Services
         {
             await _dbLogService.LogMessageAsync("courses");
             CoursesListViewModel result = new CoursesListViewModel();
-            IList<Course> list = await this._context.Courses.ToListAsync();
+            IList<Course> list = await this._context.Courses
+                .Include(x => x.RelTags)
+                .ThenInclude(x => x.Tag)                
+                .ToListAsync();
             foreach (Course course in list)
             {
-                result.Courses.Add(new CourseViewModel
+                CourseViewModel courseVm = new CourseViewModel
                 {
                     Id = course.Id,
                     Title = course.Title,
                     Description = course.Description,
-                });
+                };
+
+                foreach(RelCourseTag relTag in course.RelTags)
+                {
+                    Tag tag = relTag.Tag;
+                    TagViewModel tagVm = new TagViewModel
+                    {
+                        Description = tag.Description,
+                        Name = tag.Name,
+                    };
+                    courseVm.Tags.Add(tagVm);
+                }
+
+                result.Courses.Add(courseVm);
             }
 
             return result;
