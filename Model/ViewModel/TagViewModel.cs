@@ -7,6 +7,7 @@ namespace cran.Model.ViewModel
 {
     public class TagViewModel
     {
+        public int Id { get; set; }
         public virtual string Name { get; set; }
         public virtual string Description { get; set; }
     }

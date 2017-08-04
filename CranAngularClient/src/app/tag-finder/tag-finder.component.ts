@@ -57,4 +57,9 @@ export class TagFinderComponent implements OnInit {
     this.searchTerms.next('');
   }
 
+  public removeTag(tag: Tag) {
+    const index = this.question.tags.indexOf(tag);
+    this.question.tags.splice(index, 1);
+  }
+
 }

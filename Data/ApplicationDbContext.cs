@@ -15,6 +15,9 @@ namespace cran.Data
         public DbSet<LogEntry> LogEntires { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<QuestionOption> QuestionOptions { get; set; }
+        public DbSet<RelQuestionTag> RelQuestionTags { get; set; }
+        public DbSet<RelCourseTag> RelCourseTags { get; set; }
+        public DbSet<Tag> Tags { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

@@ -39,6 +39,7 @@ namespace cran.Services
             _context.Questions.Add(questionEntity);
 
             AddOptions(questionVm, questionEntity);
+            await AddTags(questionVm, questionEntity);
 
             await _context.SaveChangesAsync();
             return questionEntity.Id;
@@ -78,6 +79,24 @@ namespace cran.Services
             return result;
         }
 
+        public async Task<IList<TagViewModel>> FindTagsAsync(string searchTerm)
+        {
+            IList<Tag> tags = await _context.Tags.Where(x => x.Name.Contains(searchTerm)).ToListAsync();
+            IList<TagViewModel> result = new List<TagViewModel>();
+            
+            foreach(Tag tag in tags)
+            {
+                TagViewModel tagVm = new TagViewModel
+                {
+                    Id = tag.Id,
+                    Name = tag.Name,
+                    Description = tag.Description,
+                };
+                result.Add(tagVm);
+            }
+            return result;
+        }
+
         public async Task<QuestionViewModel> GetQuestionAsync(int id)
         {
             Question questionEntity = await _context.FindAsync<Question>(id);
@@ -98,6 +117,16 @@ namespace cran.Services
                 });
             }
 
+            foreach(RelQuestionTag relTag in _context.RelQuestionTags.Where(x => x.IdQuestion == id).Include(x => x.Tag))
+            {
+                questionVm.Tags.Add(new TagViewModel
+                {
+                    Id = relTag.Tag.Id,
+                    Name = relTag.Tag.Name,
+                    Description = relTag.Tag.Description,
+                });
+            }
+
             return questionVm;
         }
 
@@ -109,12 +138,18 @@ namespace cran.Services
             questionEntity.Title = questionVm.Title;
             questionEntity.Text = questionVm.Text;
 
-            foreach(QuestionOption optionEntity in questionEntity.Options)
+            foreach(QuestionOption optionEntity in _context.QuestionOptions.Where(x => x.IdQuestion == questionEntity.Id))
+            {                
+                _context.Remove(optionEntity);
+            }
+
+            foreach(RelQuestionTag relTagEntity in _context.RelQuestionTags.Where(x => x.IdQuestion == questionEntity.Id))
             {
-                _context.QuestionOptions.Remove(optionEntity);
+                _context.Remove(relTagEntity);
             }
 
             AddOptions(questionVm, questionEntity);
+            await AddTags(questionVm, questionEntity);
 
             await _context.SaveChangesAsync();
         }
@@ -134,6 +169,21 @@ namespace cran.Services
             }
         }
     
+        private async Task AddTags(QuestionViewModel questionVm, Question questionEntity)
+        {
+            foreach(TagViewModel tagVm in questionVm.Tags)
+            {
+                int tagId = tagVm.Id;
+                Tag tag = await _context.FindAsync<Tag>(tagId);
+
+                RelQuestionTag relTag = new RelQuestionTag();
+                relTag.Tag = tag;
+                relTag.Question = questionEntity;
+                questionEntity.RelTags.Add(relTag);
+                InitTechnicalFields(relTag);
+                _context.RelQuestionTags.Add(relTag);
+            }
+        }
         
     }
 }

@@ -1,5 +1,5 @@
 import { Injectable, InjectionToken  } from '@angular/core';
-import { Headers, Http } from '@angular/http';
+import { Headers, Http, RequestOptionsArgs } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import {Courses} from './model/courses';
@@ -13,12 +13,19 @@ export let CRAN_SERVICE_TOKEN = new InjectionToken<ICranDataService>('ICranDataS
 @Injectable()
 export class CranDataService implements ICranDataService {
 
-  getTags(name: string): Promise<Tag[]> {
-    throw new Error('Method not implemented.');
-  }
-
   constructor(private http: Http) {
 
+  }
+
+  getTags(name: string): Promise<Tag[]> {
+   const params: RequestOptionsArgs = {params: {searchTerm: name}};
+   return this.http.get('/api/Data/FindTags', params)
+               .toPromise()
+               .then(response => {
+                 const data = response.json() as Tag[];
+                 return data;
+                })
+               .catch(this.handleError);
   }
 
    public getCourses(): Promise<Courses> {

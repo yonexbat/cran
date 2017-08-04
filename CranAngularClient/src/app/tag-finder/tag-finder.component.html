@@ -21,8 +21,12 @@
   <!-- Auflistung -->
   <div  *ngIf="question">
     <div>
-      <span *ngFor="let tag of question.tags">
-        {{tag.name}}
+      <span *ngFor="let tag of question.tags" 
+            class="label label-info crantag">
+        {{tag.name}} 
+        <span class="glyphicon glyphicon-remove" aria-hidden="true" 
+          title="Tag entfernen"
+          (click)="removeTag(tag)"></span>
       </span>
     </div>
   </div>

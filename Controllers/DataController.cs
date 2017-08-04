@@ -50,6 +50,17 @@ namespace cran.Controllers
         }
 
         /// <summary>
+        /// URL: http://localhost:5000/api/Data/FindTags?searchTerm=Hello
+        /// </summary>
+        /// <param name="searchTerm"></param>
+        /// <returns></returns>
+        [HttpGet("[action]")]
+        public async Task<IList<TagViewModel>> FindTags(string searchTerm)
+        {
+            return await _craninumService.FindTagsAsync(searchTerm);
+        }
+
+        /// <summary>
         /// URL: http://localhost:5000/api/Data/AddQuestion
         /// </summary>
         /// <param name="vm"></param>
