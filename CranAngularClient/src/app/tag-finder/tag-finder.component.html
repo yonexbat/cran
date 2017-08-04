@@ -1,0 +1,30 @@
+<div>
+  
+  <!-- Search box -->
+  <div>
+    <label for="tagsearchbox">Tags</label>
+    <input #searchBox 
+          id="tagsearchbox"
+          (keyup)="search(searchBox.value)"
+          name="tagsearchbox"
+          class="form-control"
+          [(ngModel)]="searchText" />
+    <div>
+      <div *ngFor="let tag of tags | async" 
+           class="search-result" 
+           (click)="addTag(tag)">
+        {{tag.name}}
+      </div>
+    </div>
+  </div>
+
+  <!-- Auflistung -->
+  <div  *ngIf="question">
+    <div>
+      <span *ngFor="let tag of question.tags">
+        {{tag.name}}
+      </span>
+    </div>
+  </div>
+
+</div>

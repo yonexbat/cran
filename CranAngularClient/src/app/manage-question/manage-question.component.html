@@ -34,11 +34,11 @@
           
         <label for="title">Text</label>
 
-        <input type="text" class="form-control cranmultlinetextbox" id="text"
+        <textarea  class="form-control" id="text"
                 required
-                rows="12"
+                rows="5" 
                 [(ngModel)]="question.text" name="text"
-                #text="ngModel">
+                #text="ngModel"></textarea>
 
         <div [hidden]="text.valid || text.pristine"
               class="alert alert-danger">
@@ -47,7 +47,7 @@
       </div>
 
       <div class="col-md-8">
-        
+         <app-tag-finder [question]="question"></app-tag-finder>
       </div>
     </div>
 

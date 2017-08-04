@@ -12,6 +12,7 @@ import { CranDataService, CranDataServiceMock, CRAN_SERVICE_TOKEN } from './cran
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { HomeComponent } from './home/home.component';
 import { ManageQuestionComponent } from './manage-question/manage-question.component';
+import { TagFinderComponent } from './tag-finder/tag-finder.component';
 
 function isDevelopment() {
   return window.location && window.location.port && window.location.port === '4200';
@@ -29,6 +30,7 @@ if (isDevelopment()) {
     CourseListComponent,
     HomeComponent,
     ManageQuestionComponent,
+    TagFinderComponent,
   ],
   imports: [
     BrowserModule,

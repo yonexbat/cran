@@ -6,11 +6,16 @@ import {Courses} from './model/courses';
 import {Course} from './model/course';
 import {Question} from './model/question';
 import {ICranDataService} from './icrandataservice';
+import { Tag } from './model/tag';
 
 export let CRAN_SERVICE_TOKEN = new InjectionToken<ICranDataService>('ICranDataService');
 
 @Injectable()
 export class CranDataService implements ICranDataService {
+
+  getTags(name: string): Promise<Tag[]> {
+    throw new Error('Method not implemented.');
+  }
 
   constructor(private http: Http) {
 
@@ -66,6 +71,23 @@ export class CranDataService implements ICranDataService {
 
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
+
+  getTags(name: string): Promise<Tag[]> {
+    const tags: Tag[] = [];
+    tags.push({
+      id : 1,
+      name : 'JS',
+      description : 'Javascipt',
+    });
+
+    tags.push({
+      id : 1,
+      name : 'HTML',
+      description : 'Html',
+    });
+
+    return Promise.resolve(tags);
+  }
   updateQuestion(question: Question): Promise<any> {
       return new Promise<any>((resolve, reject) => {
         resolve('Ok');

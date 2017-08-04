@@ -26,18 +26,20 @@ namespace cran.Services
             _currentPrincipal = principal;
         }
 
-        public async Task<int> AddQuestionAsync(QuestionViewModel question)
+        public async Task<int> AddQuestionAsync(QuestionViewModel questionVm)
         {
             Question questionEntity = new Question
             {
-                Title = question.Title,
-                Text = question.Text,               
+                Title = questionVm.Title,
+                Text = questionVm.Text,               
             };
 
-            InitTechnicalFields(questionEntity);
-
+            InitTechnicalFields(questionEntity);           
             await _dbLogService.LogMessageAsync("Adding question");
             _context.Questions.Add(questionEntity);
+
+            AddOptions(questionVm, questionEntity);
+
             await _context.SaveChangesAsync();
             return questionEntity.Id;
         }
@@ -78,41 +80,48 @@ namespace cran.Services
 
         public async Task<QuestionViewModel> GetQuestionAsync(int id)
         {
-            Question question = await _context.FindAsync<Question>(id);
-            QuestionViewModel vm = new QuestionViewModel
+            Question questionEntity = await _context.FindAsync<Question>(id);
+            QuestionViewModel questionVm = new QuestionViewModel
             {
-                Id = question.Id,
-                Text = question.Text,
-                Title = question.Title,       
+                Id = questionEntity.Id,
+                Text = questionEntity.Text,
+                Title = questionEntity.Title,       
             };
 
-            foreach(QuestionOption option in _context.QuestionOptions.Where(x => x.IdQuestion == id))
+            foreach(QuestionOption optionEntity in _context.QuestionOptions.Where(x => x.IdQuestion == id))
             {
-                vm.Options.Add(new QuestionOptionViewModel
+                questionVm.Options.Add(new QuestionOptionViewModel
                 {
-                    Id = option.Id,
-                    IsTrue = option.IsTrue,
-                    Text = option.Text,
+                    Id = optionEntity.Id,
+                    IsTrue = optionEntity.IsTrue,
+                    Text = optionEntity.Text,
                 });
             }
 
-            return vm;
+            return questionVm;
         }
 
  
 
-        public async Task UpdateQuestionAsync(QuestionViewModel question)
+        public async Task UpdateQuestionAsync(QuestionViewModel questionVm)
         {
-            Question questionEntity = await _context.FindAsync<Question>(question.Id);
-            questionEntity.Title = question.Title;
-            questionEntity.Text = question.Text;
+            Question questionEntity = await _context.FindAsync<Question>(questionVm.Id);
+            questionEntity.Title = questionVm.Title;
+            questionEntity.Text = questionVm.Text;
 
             foreach(QuestionOption optionEntity in questionEntity.Options)
             {
                 _context.QuestionOptions.Remove(optionEntity);
             }
 
-            foreach(QuestionOptionViewModel option in question.Options)
+            AddOptions(questionVm, questionEntity);
+
+            await _context.SaveChangesAsync();
+        }
+
+        private void AddOptions(QuestionViewModel questionVm, Question questionEntity)
+        {
+            foreach (QuestionOptionViewModel option in questionVm.Options)
             {
                 QuestionOption optionEntity = new QuestionOption();
                 optionEntity.Question = questionEntity;
@@ -123,11 +132,7 @@ namespace cran.Services
                 questionEntity.Options.Add(optionEntity);
                 _context.QuestionOptions.Add(optionEntity);
             }
-
-            await _context.SaveChangesAsync();
-
         }
-
     
         
     }
