@@ -9,9 +9,9 @@
           name="tagsearchbox"
           class="form-control"
           [(ngModel)]="searchText" />
-    <div>
+    <div class="crantagresultanchor">
       <div *ngFor="let tag of tags | async" 
-           class="search-result" 
+           class="crantagresult" 
            (click)="addTag(tag)">
         {{tag.name}}
       </div>

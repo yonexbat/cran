@@ -1,10 +1,11 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 import {Question} from '../model/question';
 import {QuestionOption} from '../model/questionoption';
 import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.service';
+import {StatusMessageComponent} from '../status-message/status-message.component';
 
 
 @Component({
@@ -21,6 +22,8 @@ export class ManageQuestionComponent implements OnInit {
   public headingText: string;
 
   public buttonText: string;
+
+  @ViewChild('statusMessage') statusMessage: StatusMessageComponent;
 
   constructor(
     @Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
@@ -52,12 +55,14 @@ export class ManageQuestionComponent implements OnInit {
     if (this.question && this.question.id > 0) {
       this.cranDataService.updateQuestion(this.question).then(status => {
         this.actionInProgress = false;
-      });
+        this.statusMessage.showSaveSuccess();
+      }).catch(reason => this.statusMessage.showError(reason));
     } else {
       this.cranDataService.insertQuestion(this.question)
       .then(questionId => {
+        this.actionInProgress = false;
         this.router.navigate(['/editquestion', questionId]);
-      });
+      }).catch(reason => this.statusMessage.showError(reason));
     }
   }
 
@@ -66,7 +71,8 @@ export class ManageQuestionComponent implements OnInit {
       this.buttonText = 'Speichern';
       this.headingText = 'Frage ' + id + ' editieren';
       this.cranDataService.getQuestion(id)
-        .then(question => this.question = question);
+        .then(question => this.question = question)
+        .catch(reason => this.statusMessage.showError(reason));
     } else {
       this.buttonText = 'Hinzufügen';
       this.headingText = 'Frage hinzufügen';

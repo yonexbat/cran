@@ -23,7 +23,7 @@
       </div>
 
       <div class="col-md-8">
-        
+         <app-tag-finder [question]="question"></app-tag-finder>
       </div>
     </div>
 
@@ -47,7 +47,7 @@
       </div>
 
       <div class="col-md-8">
-         <app-tag-finder [question]="question"></app-tag-finder>
+         
       </div>
     </div>
 
@@ -90,6 +90,8 @@
 
       </div> 
     </div>
+
+    <app-status-message #statusMessage></app-status-message>
 
     <button 
         type="button" 

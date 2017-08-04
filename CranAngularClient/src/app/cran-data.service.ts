@@ -88,9 +88,21 @@ export class CranDataServiceMock implements ICranDataService {
     });
 
     tags.push({
-      id : 1,
+      id : 2,
       name : 'HTML',
       description : 'Html',
+    });
+
+     tags.push({
+      id : 3,
+      name : 'C#',
+      description : 'C SHarp',
+    });
+
+    tags.push({
+      id : 4,
+      name : 'Java',
+      description : '',
     });
 
     return Promise.resolve(tags);
@@ -125,6 +137,7 @@ export class CranDataServiceMock implements ICranDataService {
         const question = new Question();
         question.text = 'Hello';
         question.title = 'MyTitle';
+        question.id = id;
         resolve(question);
       });
   }
