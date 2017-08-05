@@ -16,7 +16,7 @@ import { Component, OnInit, trigger, state, animate, transition, style } from '@
 })
 export class StatusMessageComponent implements OnInit {
 
-  public messageVisible = true;
+  public messageVisible = false;
 
   visibility = 'hidden';
 
@@ -36,6 +36,7 @@ export class StatusMessageComponent implements OnInit {
     this.messageVisible = true;
     this.visibility = 'shown';
     this.clazzes = 'alert-success';
+    setTimeout(() => this.done(), 2000);
   }
 
   public showError(message: string) {
@@ -43,6 +44,11 @@ export class StatusMessageComponent implements OnInit {
     this.messageVisible = true;
     this.visibility = 'shown';
     this.clazzes = 'alert-danger';
+    setTimeout(() => this.done(), 2000);
+  }
+
+  public done() {
+    this.messageVisible = false;
   }
 
   public animationDone(event: any) {

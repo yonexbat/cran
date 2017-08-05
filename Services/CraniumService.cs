@@ -26,18 +26,11 @@ namespace cran.Services
 
         public async Task<int> AddQuestionAsync(QuestionViewModel questionVm)
         {
-            Question questionEntity = new Question
-            {
-                Title = questionVm.Title,
-                Text = questionVm.Text,               
-            };
-
-            InitTechnicalFields(questionEntity);           
             await _dbLogService.LogMessageAsync("Adding question");
-            _context.Questions.Add(questionEntity);
-
-            AddOptions(questionVm, questionEntity);
-            await AddTags(questionVm, questionEntity);
+            Question questionEntity = new Question();
+            await CopyData(questionVm, questionEntity);              
+            
+            _context.Questions.Add(questionEntity);           
 
             await _context.SaveChangesAsync();
             return questionEntity.Id;
@@ -103,6 +96,7 @@ namespace cran.Services
                 Id = questionEntity.Id,
                 Text = questionEntity.Text,
                 Title = questionEntity.Title,       
+                Explanation = questionEntity.Explanation,
             };
 
             foreach(QuestionOption optionEntity in _context.QuestionOptions.Where(x => x.IdQuestion == id))
@@ -132,10 +126,7 @@ namespace cran.Services
 
         public async Task UpdateQuestionAsync(QuestionViewModel questionVm)
         {
-            Question questionEntity = await _context.FindAsync<Question>(questionVm.Id);
-            questionEntity.Title = questionVm.Title;
-            questionEntity.Text = questionVm.Text;
-
+            Question questionEntity = await _context.FindAsync<Question>(questionVm.Id);         
             foreach(QuestionOption optionEntity in _context.QuestionOptions.Where(x => x.IdQuestion == questionEntity.Id))
             {                
                 _context.Remove(optionEntity);
@@ -145,11 +136,20 @@ namespace cran.Services
             {
                 _context.Remove(relTagEntity);
             }
+            
+            await CopyData(questionVm, questionEntity);
+            await _context.SaveChangesAsync();
+        }
 
+        private async Task CopyData(QuestionViewModel questionVm, Question questionEntity)
+        {
+            InitTechnicalFields(questionEntity);
+            questionEntity.Title = questionVm.Title;
+            questionEntity.Text = questionVm.Text;
+            questionEntity.Explanation = questionVm.Explanation;
+            
             AddOptions(questionVm, questionEntity);
             await AddTags(questionVm, questionEntity);
-
-            await _context.SaveChangesAsync();
         }
 
         private void AddOptions(QuestionViewModel questionVm, Question questionEntity)

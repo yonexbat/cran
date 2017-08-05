@@ -7,7 +7,7 @@
     <!-- Titel -->
     <div class="row form-group">
       
-      <div class="col-md-4">
+      <div class="col-md-8">
           
         <label for="title">Titel</label>
 
@@ -22,7 +22,7 @@
         </div>
       </div>
 
-      <div class="col-md-8">
+      <div class="col-md-4">
          <app-tag-finder [question]="question"></app-tag-finder>
       </div>
     </div>
@@ -30,7 +30,7 @@
     <!-- Text -->
     <div class="row form-group">
       
-      <div class="col-md-4">
+      <div class="col-md-12">
           
         <label for="title">Text</label>
 
@@ -45,17 +45,14 @@
             Text ist ein Mussfeld
         </div>
       </div>
-
-      <div class="col-md-8">
-         
-      </div>
+    
     </div>
 
     <div *ngFor="let option of question.options; let optionIndex=index">
       <hr/>
       <div class="row form-group">
 
-        <div class="col-md-4">
+        <div class="col-md-10">
           <label for="optionText{{optionIndex}}">Option {{optionIndex + 1}}</label>
 
           <input type="text" class="form-control" id="optionText{{optionIndex}}"
@@ -71,8 +68,8 @@
           
         </div>  
 
-        <div class="col-md-3">
-          <label for="checkBox{{optionIndex}}">Ist korrekt</label>
+        <div class="col-md-1">
+          <label for="checkBox{{optionIndex}}">Ok</label>
           <input type="checkbox"
             class="checkbox"
             [(ngModel)]="option.isTrue" 
@@ -81,9 +78,9 @@
             #optionChecked="ngModel">
         </div>
 
-        <div class="col-md-5">
-          <button type="button" class="btn" (click)="removeOption(optionIndex)">
-            Entfernen
+        <div class="col-md-1">
+          <button type="button" class="btn btn-default cranbutton" (click)="removeOption(optionIndex)">
+            <span class="glyphicon glyphicon-remove" title="Option entfernen"></span>
           </button>
         </div>
 
@@ -91,6 +88,41 @@
       </div> 
     </div>
 
+    <hr/>
+
+    <!-- Hinzufügen -->
+    <div class="row form-group">
+      <div class="col-md-1 col-md-offset-11">
+        <button 
+              type="button" 
+              class="btn btn-default" 
+              (click)="addOpton()">
+            <span class="glyphicon glyphicon-plus" title="Option hinzufügen"></span>
+          </button>
+      </div>
+    </div>
+
+    <!-- Erklärung -->
+    <div class="row form-group">
+      
+      <div class="col-md-12">
+          
+        <label for="explanation">Erklärung</label>
+
+        <textarea  class="form-control" id="explanation"
+                rows="5" 
+                [(ngModel)]="question.explanation" name="explanation"
+                #explanation="ngModel"></textarea>
+
+        <div [hidden]="explanation.valid || explanation.pristine"
+              class="alert alert-danger">
+            Validierung Erklärung
+        </div>
+      </div>
+    
+    </div>
+
+    <!-- Statusmessage -->
     <app-status-message #statusMessage></app-status-message>
 
     <button 
@@ -101,12 +133,6 @@
       {{buttonText}}
     </button>
 
-    <button 
-        type="button" 
-        class="btn btn btn-success" 
-        (click)="addOpton()">
-      Option hinzufügen
-    </button>
 
 
   </form>

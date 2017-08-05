@@ -16,6 +16,8 @@ namespace cran.Model.ViewModel
         [Required]
         public string Text { get; set; }
 
+        public string Explanation { get; set; }
+
         public IList<QuestionOptionViewModel> Options = new List<QuestionOptionViewModel>();
 
         public IList<TagViewModel> Tags = new List<TagViewModel>();

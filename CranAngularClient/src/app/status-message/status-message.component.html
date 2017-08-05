@@ -1,7 +1,5 @@
  <div class="alert fade-in"
         *ngIf="messageVisible"
-        [ngClass] = "clazzes"
-        [@visibilityChanged]="visibility"
-        (@visibilityChanged.done)="animationDone($event)">
+        [ngClass] = "clazzes">
       {{message}}
   </div>

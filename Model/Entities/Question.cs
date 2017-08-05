@@ -10,6 +10,7 @@ namespace cran.Model.Entities
 
         public virtual string Title { get; set; }
         public virtual string Text { get; set; }
+        public virtual string Explanation { get; set; }
 
 
         public virtual IList<QuestionOption> Options { get; set; } = new List<QuestionOption>();
