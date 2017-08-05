@@ -56,13 +56,19 @@ export class ManageQuestionComponent implements OnInit {
       this.cranDataService.updateQuestion(this.question).then(status => {
         this.actionInProgress = false;
         this.statusMessage.showSaveSuccess();
-      }).catch(reason => this.statusMessage.showError(reason));
+      }).catch(reason => {
+          this.statusMessage.showError(reason);
+          this.actionInProgress = false;
+      });
     } else {
       this.cranDataService.insertQuestion(this.question)
       .then(questionId => {
         this.actionInProgress = false;
         this.router.navigate(['/editquestion', questionId]);
-      }).catch(reason => this.statusMessage.showError(reason));
+      }).catch(reason => {
+          this.statusMessage.showError(reason);
+          this.actionInProgress = false;
+      });
     }
   }
 

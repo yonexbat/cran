@@ -11,3 +11,11 @@
     CONSTRAINT [FK_CranRelCourseTag_CranTag] FOREIGN KEY ([IdTag]) REFERENCES [CranTag]([Id]), 
     CONSTRAINT [FK_CranRelCourseTag_CranCourse] FOREIGN KEY ([IdCourse]) REFERENCES [CranCourse]([Id])
 )
+
+GO
+
+CREATE INDEX [IX_CranRelCourseTag_IdCourse] ON [dbo].[CranRelCourseTag] ([IdCourse])
+
+GO
+
+CREATE INDEX [IX_CranRelCourseTag_IdTag] ON [dbo].[CranRelCourseTag] ([IdTag])

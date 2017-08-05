@@ -77,5 +77,9 @@
     <Build Include="dbo\Tables\CranTag.sql" />
     <Build Include="dbo\Tables\CranRelQuestionTag.sql" />
     <Build Include="dbo\Tables\CranRelCourseTag.sql" />
+    <Build Include="dbo\Tables\CranUser.sql" />
+    <Build Include="dbo\Tables\CranCourseInstance.sql" />
+    <Build Include="dbo\Tables\CranCourseInstanceQuestion.sql" />
+    <Build Include="dbo\Tables\CranCourseInstanceQuestionOption.sql" />
   </ItemGroup>
 </Project>

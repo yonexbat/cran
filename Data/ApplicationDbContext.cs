@@ -18,6 +18,11 @@ namespace cran.Data
         public DbSet<RelQuestionTag> RelQuestionTags { get; set; }
         public DbSet<RelCourseTag> RelCourseTags { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<CranUser> CranUsers { get; set; }
+        public DbSet<CourseInstance> CourseInstances { get; set; }
+        public DbSet<CourseInstanceQuestion> CourseInstancesQuestion { get; set; }
+        public DbSet<CourseInstanceQuestionOption> CourseInstancesQuestionOption { get; set; }
+
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -34,7 +39,54 @@ namespace cran.Data
             MapTag(builder.Entity<Tag>());
             MapRelCourseTag(builder.Entity<RelCourseTag>());
             MapRelQuestionTag(builder.Entity<RelQuestionTag>());
-        }       
+            MapCranUser(builder.Entity<CranUser>());
+            MapCourseInstance(builder.Entity<CourseInstance>());
+            MapCourseInstanceQuestion(builder.Entity<CourseInstanceQuestion>());
+            MapCourseInstanceQuestionOption(builder.Entity<CourseInstanceQuestionOption>());
+        }    
+        
+        private void MapCranUser(EntityTypeBuilder<CranUser> typeBuilder)
+        {
+            typeBuilder.ToTable("CranUser");
+        }
+
+        private void MapCourseInstance(EntityTypeBuilder<CourseInstance> typeBuilder)
+        {
+            typeBuilder.ToTable("CranCourseInstance");
+
+            typeBuilder.HasOne(x => x.Course)
+                .WithMany(c => c.CourseInstances)
+                .HasForeignKey(x => x.IdCourse);
+
+            typeBuilder.HasOne(x => x.User)
+                .WithMany(u => u.CourseInstances)
+                .HasForeignKey(x => x.IdUser);
+        }
+
+        private void MapCourseInstanceQuestion(EntityTypeBuilder<CourseInstanceQuestion> typeBuilder)
+        {
+            typeBuilder.ToTable("CranCourseInstanceQuestion");
+
+            typeBuilder.HasOne(x => x.CourseInstance)
+                .WithMany(i => i.CourseInstancesQuestion)
+                .HasForeignKey(x => x.IdCourseInstance);
+
+            typeBuilder.HasOne(x => x.Question)
+                .WithMany(q => q.CourseInstancesQuestion).HasForeignKey(x => x.IdQuestion);
+        }
+
+        private void MapCourseInstanceQuestionOption(EntityTypeBuilder<CourseInstanceQuestionOption> typeBuilder)
+        {
+            typeBuilder.ToTable("CranCourseInstanceQuestionOption");
+
+            typeBuilder.HasOne(x => x.QuestionOption)
+                .WithMany(o => o.CourseInstancesQuestionOption)
+                .HasForeignKey(x => x.IdQuestionOption);
+
+            typeBuilder.HasOne(x => x.CourseInstanceQuestion)
+                .WithMany(io => io.CourseInstancesQuestionOption)
+                .HasForeignKey(x => x.IdCourseInstanceQuestion);
+        }
 
         private void MapLogEntry(EntityTypeBuilder<LogEntry> typeBuilder)
         {
@@ -62,6 +114,7 @@ namespace cran.Data
         private void MapQuestion(EntityTypeBuilder<Question> typeBuilder)
         {
             typeBuilder.ToTable("CranQuestion");
+
             typeBuilder
                 .HasMany(x => x.Options)
                 .WithOne(o => o.Question)

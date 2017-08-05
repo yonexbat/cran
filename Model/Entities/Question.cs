@@ -15,5 +15,6 @@ namespace cran.Model.Entities
 
         public virtual IList<QuestionOption> Options { get; set; } = new List<QuestionOption>();
         public virtual IList<RelQuestionTag> RelTags { get; set; } = new List<RelQuestionTag>();
+        public virtual IList<CourseInstanceQuestion> CourseInstancesQuestion { get; set; } = new List<CourseInstanceQuestion>();
     }
 }

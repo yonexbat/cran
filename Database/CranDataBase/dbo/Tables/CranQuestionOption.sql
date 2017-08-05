@@ -7,6 +7,11 @@
     [InsertDate]  DATETIME2 (7)  NOT NULL DEFAULT GETDATE(),
     [UpdateUser]  VARCHAR (1000) NOT NULL DEFAULT SYSTEM_USER,
     [UpdateDate]  DATETIME2 (7)  NOT NULL DEFAULT GETDATE(),
-	PRIMARY KEY CLUSTERED ([Id] ASC)
+	PRIMARY KEY CLUSTERED ([Id] ASC), 
+    CONSTRAINT [FK_CranQuestionOption_CranQuestion] FOREIGN KEY ([IdQuestion]) REFERENCES [CranQuestion]([Id])
 );
 
+
+GO
+
+CREATE INDEX [IX_CranQuestionOption_IdQuestion] ON [dbo].[CranQuestionOption] ([IdQuestion])
