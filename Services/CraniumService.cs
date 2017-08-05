@@ -182,6 +182,40 @@ namespace cran.Services
                 _context.RelQuestionTags.Add(relTag);
             }
         }
-        
+
+        public async Task<CourseInstanceViewModel> StartCourseAsync(int id)
+        {
+            Course courseEntity = await _context.FindAsync<Course>(id);
+            CranUser cranUserEntity = await GetCranUserAsync();
+
+            CourseInstance courseInstanceEntity = new CourseInstance
+            {
+                User = cranUserEntity,
+                Course = courseEntity,
+            };
+            InitTechnicalFields(courseInstanceEntity);
+
+            await _context.SaveChangesAsync();
+
+            return new CourseInstanceViewModel {
+                IdCourseInstance = courseInstanceEntity.Id,
+            };
+        }
+
+        private async Task<CranUser> GetCranUserAsync()
+        {
+            string userId = GetUserId();
+            CranUser cranUserEntity = await _context.CranUsers.Where(x => x.UserId == userId).SingleOrDefaultAsync();           
+            if(cranUserEntity == null)
+            {
+                cranUserEntity = new CranUser
+                {
+                    UserId = userId,
+                };
+                InitTechnicalFields(cranUserEntity);
+                _context.CranUsers.Add(cranUserEntity);
+            }
+            return cranUserEntity;
+        }
     }
 }

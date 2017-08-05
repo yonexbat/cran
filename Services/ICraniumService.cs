@@ -17,6 +17,8 @@ namespace cran.Services
 
         Task<QuestionViewModel> GetQuestionAsync(int id);
 
-        Task<IList<TagViewModel>> FindTagsAsync(string searchTerm);        
+        Task<IList<TagViewModel>> FindTagsAsync(string searchTerm);
+
+        Task<CourseInstanceViewModel> StartCourseAsync(int id);
     }
 }

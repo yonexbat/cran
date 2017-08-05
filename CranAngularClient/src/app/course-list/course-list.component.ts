@@ -24,4 +24,12 @@ export class CourseListComponent implements OnInit {
       });
   }
 
+  public startCourse(course: Course) {
+    debugger;
+    this.cranDataServiceService.startCourse(course.id)
+    .then(() => {
+
+    });
+  }
+
 }

@@ -7,6 +7,8 @@ import {Course} from './model/course';
 import {Question} from './model/question';
 import {ICranDataService} from './icrandataservice';
 import { Tag } from './model/tag';
+import {StartCourse} from './model/startcourse';
+import {CourseInstance} from './model/courseinstance';
 
 export let CRAN_SERVICE_TOKEN = new InjectionToken<ICranDataService>('ICranDataService');
 
@@ -15,6 +17,19 @@ export class CranDataService implements ICranDataService {
 
   constructor(private http: Http) {
 
+  }
+
+  startCourse(courseId: number): Promise<CourseInstance> {
+    const param = new StartCourse();
+    param.idCourse = courseId;
+    debugger;
+    return this.http.post('/api/Data/StartCourse', param)
+                .toPromise()
+                .then(  data => {
+                  const result = data.json() as CourseInstance;
+                  return result;
+                })
+                .catch(this.handleError);
   }
 
   getTags(name: string): Promise<Tag[]> {
@@ -78,6 +93,13 @@ export class CranDataService implements ICranDataService {
 
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
+
+  startCourse(courseId: number): Promise<CourseInstance> {
+    const result = new CourseInstance();
+    result.idCourseInstance = 234;
+    result.idCourseInstanceQuestion = 354;
+    return Promise.resolve(result);
+  }
 
   getTags(name: string): Promise<Tag[]> {
     const tags: Tag[] = [];

@@ -79,6 +79,12 @@ namespace cran.Controllers
             };
         }
 
+        [HttpPost("[action]")]
+        public async Task<CourseInstanceViewModel> StartCourse([FromBody] StartCourseViewModel vm)
+        {
+            return await _craninumService.StartCourseAsync(vm.IdCourse);
+        }
+
         /// <summary>
         /// URL: http://localhost:5000/api/Data/SaveQuestion
         /// </summary>
