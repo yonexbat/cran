@@ -1,6 +1,6 @@
 <div id="crancourses" class="crancourses container">
   <div class="list-group">
-    <div  *ngFor="let item of courses" class="list-group-item" (click)="startCourse(item)">
+    <div  *ngFor="let item of courses" class="list-group-item crancourse" (click)="startCourse(item)">
       <h4>{{item.title}}</h4>
       <p>{{item.description}}</p>
     </div>

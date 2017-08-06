@@ -52,6 +52,7 @@ export class ManageQuestionComponent implements OnInit {
   save() {
     this.actionInProgress = true;
 
+    // save current question
     if (this.question && this.question.id > 0) {
       this.cranDataService.updateQuestion(this.question).then(status => {
         this.actionInProgress = false;
@@ -60,7 +61,7 @@ export class ManageQuestionComponent implements OnInit {
           this.statusMessage.showError(reason);
           this.actionInProgress = false;
       });
-    } else {
+    } else { // crate new question
       this.cranDataService.insertQuestion(this.question)
       .then(questionId => {
         this.actionInProgress = false;

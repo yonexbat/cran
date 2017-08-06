@@ -15,6 +15,7 @@ import { HomeComponent } from './home/home.component';
 import { ManageQuestionComponent } from './manage-question/manage-question.component';
 import { TagFinderComponent } from './tag-finder/tag-finder.component';
 import { StatusMessageComponent } from './status-message/status-message.component';
+import { AskQuestionComponent } from './ask-question/ask-question.component';
 
 function isDevelopment() {
   return window.location && window.location.port && window.location.port === '4200';
@@ -34,6 +35,7 @@ if (isDevelopment()) {
     ManageQuestionComponent,
     TagFinderComponent,
     StatusMessageComponent,
+    AskQuestionComponent,
   ],
   imports: [
     BrowserModule,

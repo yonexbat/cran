@@ -22,7 +22,6 @@ export class CranDataService implements ICranDataService {
   startCourse(courseId: number): Promise<CourseInstance> {
     const param = new StartCourse();
     param.idCourse = courseId;
-    debugger;
     return this.http.post('/api/Data/StartCourse', param)
                 .toPromise()
                 .then(  data => {

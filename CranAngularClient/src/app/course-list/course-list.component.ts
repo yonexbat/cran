@@ -1,10 +1,12 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, } from '@angular/core';
 import { HttpModule } from '@angular/http';
 
 import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.service';
 import {Courses} from '../model/courses';
 import {Course} from '../model/course';
+import {CourseInstance} from '../model/courseinstance';
+import { Router, } from '@angular/router';
 
 @Component({
   selector: 'app-course-list',
@@ -15,7 +17,8 @@ export class CourseListComponent implements OnInit {
 
   courses: Course[] = [];
 
-  constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService) { }
+  constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
+    private router: Router) { }
 
   ngOnInit() {
     this.cranDataServiceService.getCourses()
@@ -25,10 +28,9 @@ export class CourseListComponent implements OnInit {
   }
 
   public startCourse(course: Course) {
-    debugger;
     this.cranDataServiceService.startCourse(course.id)
-    .then(() => {
-
+    .then((courseInstance: CourseInstance) => {
+      this.router.navigate(['/askquestion', courseInstance.idCourseInstanceQuestion]);
     });
   }
 
