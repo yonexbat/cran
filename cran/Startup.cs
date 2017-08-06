@@ -41,7 +41,7 @@ namespace cran
 
             _physicalProvider = env.ContentRootFileProvider;
 
-            Configuration = builder.Build();
+            Configuration = builder.Build();          
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -117,7 +117,7 @@ namespace cran
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
                 
-            });
+            });          
         }
     }
 }
