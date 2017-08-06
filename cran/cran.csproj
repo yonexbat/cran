@@ -27,16 +27,19 @@
     <!-- Files not to show in IDE -->
     <None Remove="yarn.lock" />
     <Compile Remove="CranAngularClient\node_modules\**" />
+    <Compile Remove="Database\**" />
     <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
     <Content Remove="CranAngularClient\**" />
+    <Content Remove="Database\**" />
     <EmbeddedResource Remove="CranAngularClient\node_modules\**" />
+    <EmbeddedResource Remove="Database\**" />
     <None Remove="CranAngularClient\node_modules\**" />
+    <None Remove="Database\**" />
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="1.0.1" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Database\" />
     <Folder Include="wwwroot\jsclient\" />
   </ItemGroup>
 
