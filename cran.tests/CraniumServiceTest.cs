@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using Moq;
 using System;
+using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using Xunit;
@@ -64,7 +65,25 @@ namespace cran.tests
             var testignObject = GetTestingObject();
             ICraniumService service = testignObject.GetResolvedTestingObject();
             var courses = await service.CoursesAsync();
-            var result = await service.StartCourseAsync(courses.Courses[0].Id);
+            int courseId = courses.Courses.Where(x => x.Title == "JS").Select(x => x.Id).First();
+            var result = await service.StartCourseAsync(courseId);
+            Assert.True(result.IdCourseInstance > 0);
+            Assert.True(result.IdCourse == courseId);
+            Assert.True(result.IdCourseInstanceQuestion > 0);
+            Assert.True(result.NumQuestionsAlreadyAsked == 0);
+            Assert.True(result.NumQuestionsTotal > 0);
+
+            var result2 = await service.NextQuestion(result.IdCourseInstance);
+            Assert.True(result2.IdCourse == courseId);
+            Assert.True(result2.IdCourseInstanceQuestion > 0);
+            Assert.True(result2.NumQuestionsAlreadyAsked == 1);
+            Assert.True(result2.NumQuestionsTotal > 0);
+
+            var result3 = await service.NextQuestion(result.IdCourseInstance);
+            Assert.True(result3.IdCourse == courseId);
+            Assert.True(result3.IdCourseInstanceQuestion > 0);
+            Assert.True(result3.NumQuestionsAlreadyAsked == 2);
+            Assert.True(result3.NumQuestionsTotal > 0);
         }
     }
 }

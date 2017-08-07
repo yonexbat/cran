@@ -14,6 +14,7 @@ namespace cran.Services
     {
 
         private IDbLogService _dbLogService;
+        private static Random random = new Random(98789);
 
 
         public CraniumService(ApplicationDbContext context, IDbLogService dbLogService, IPrincipal principal) :
@@ -183,23 +184,85 @@ namespace cran.Services
             }
         }
 
-        public async Task<CourseInstanceViewModel> StartCourseAsync(int id)
+        public async Task<CourseInstanceViewModel> StartCourseAsync(int courseId)
         {
-            Course courseEntity = await _context.FindAsync<Course>(id);
+            Course courseEntity = await _context.FindAsync<Course>(courseId);
             CranUser cranUserEntity = await GetCranUserAsync();
 
             CourseInstance courseInstanceEntity = new CourseInstance
             {
                 User = cranUserEntity,
                 Course = courseEntity,
+                IdCourse = courseId,
             };
             InitTechnicalFields(courseInstanceEntity);
+            _context.CourseInstances.Add(courseInstanceEntity);
 
             await _context.SaveChangesAsync();
+            CourseInstanceViewModel result = await GetNextQuestion(courseInstanceEntity);                        
 
-            return new CourseInstanceViewModel {
-                IdCourseInstance = courseInstanceEntity.Id,
-            };
+            return result;
+
+
+        }
+
+        private async Task<CourseInstanceViewModel> GetNextQuestion(CourseInstance courseInstanceEntity)
+        {
+            CourseInstanceViewModel result = new CourseInstanceViewModel();
+            result.IdCourse = courseInstanceEntity.IdCourse;
+            result.IdCourseInstance = courseInstanceEntity.Id;
+
+            Course courseEntity = _context.Find<Course>(courseInstanceEntity.IdCourse);
+
+            result.NumQuestionsAlreadyAsked = _context.CourseInstancesQuestion.Where(x => x.CourseInstance.Id == courseInstanceEntity.Id)
+                .Count();
+
+            result.NumQuestionsTotal = courseEntity.NumQuestionsToAsk;
+
+            //Get Tags of course
+            IQueryable<int> tagIds =  _context.RelCourseTags.Where(x => x.Course.Id == courseInstanceEntity.IdCourse)
+                .Select(x => x.Tag.Id);
+
+            //Questions already asked
+            IQueryable<int> questionIdsAlreadyAsked = _context.CourseInstancesQuestion
+                .Where(x => x.CourseInstance.Id == courseInstanceEntity.Id)
+                .Select(x => x.Question.Id);
+
+            //Possible Quetions Query
+            IQueryable<int> questionIds =_context.RelQuestionTags
+                .Where(x => tagIds.Contains(x.Tag.Id))
+                .Where(x => !questionIdsAlreadyAsked.Contains(x.Question.Id))
+                .Select(x => x.Question.Id);            
+
+            int count = await questionIds.CountAsync();
+            if(count == 0)
+            {
+                result.IdCourseInstanceQuestion = 0;
+                result.NumQuestionsTotal = result.NumQuestionsAlreadyAsked;
+                result.Done = true;                
+            }
+            else
+            {
+                if(count <= result.NumQuestionsTotal - result.NumQuestionsAlreadyAsked)
+                {
+                    result.NumQuestionsTotal = result.NumQuestionsAlreadyAsked + count;
+                }
+                int quesitonNo = random.Next(0, count - 1);
+                int questionId = await questionIds.Skip(quesitonNo).FirstAsync();
+                Question questionEntity = _context.Find<Question>(questionId);
+                CourseInstanceQuestion courseInstanceQuestionEntity = new CourseInstanceQuestion
+                {
+                    CourseInstance = courseInstanceEntity,
+                    Question = questionEntity,
+                };
+                InitTechnicalFields(courseInstanceQuestionEntity);
+                _context.CourseInstancesQuestion.Add(courseInstanceQuestionEntity);
+                await _context.SaveChangesAsync();
+                result.IdCourseInstanceQuestion = courseInstanceQuestionEntity.Id;
+            }
+            
+           
+            return result;
         }
 
         private async Task<CranUser> GetCranUserAsync()
@@ -216,6 +279,14 @@ namespace cran.Services
                 _context.CranUsers.Add(cranUserEntity);
             }
             return cranUserEntity;
+        }
+
+        public async Task<CourseInstanceViewModel> NextQuestion(int courseInstanceId)
+        {
+            CourseInstance courseInstanceEntity = _context.Find<CourseInstance>(courseInstanceId);          
+            CourseInstanceViewModel result = await GetNextQuestion(courseInstanceEntity);          
+            await _context.SaveChangesAsync();
+            return result;
         }
     }
 }
