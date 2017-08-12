@@ -1,12 +1,13 @@
 import { Component, OnInit, Inject, } from '@angular/core';
 import { HttpModule } from '@angular/http';
+import { Router, } from '@angular/router';
 
 import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.service';
 import {Courses} from '../model/courses';
 import {Course} from '../model/course';
 import {CourseInstance} from '../model/courseinstance';
-import { Router, } from '@angular/router';
+
 
 @Component({
   selector: 'app-course-list',

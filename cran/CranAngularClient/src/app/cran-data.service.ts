@@ -9,14 +9,28 @@ import {ICranDataService} from './icrandataservice';
 import { Tag } from './model/tag';
 import {StartCourse} from './model/startcourse';
 import {CourseInstance} from './model/courseinstance';
+import {QuestionToAsk} from './model/questiontoask';
+import {QuestionOptionToAsk} from './model/questionoptiontoask';
+import {QuestionAnswer} from './model/questionanswer';
+import {QuestionResult} from './model/questionresult';
 
 export let CRAN_SERVICE_TOKEN = new InjectionToken<ICranDataService>('ICranDataService');
 
 @Injectable()
 export class CranDataService implements ICranDataService {
 
+
+
   constructor(private http: Http) {
 
+  }
+
+  getQuestionToAsk(id: number): Promise<QuestionToAsk> {
+    throw new Error("Method not implemented.");
+  }
+
+  answerQuestion(answer: QuestionAnswer): Promise<QuestionResult> {
+    throw new Error("Method not implemented.");
   }
 
   startCourse(courseId: number): Promise<CourseInstance> {
@@ -92,6 +106,25 @@ export class CranDataService implements ICranDataService {
 
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
+  answerQuestion(answer: QuestionAnswer): Promise<QuestionResult> {
+    const questionResult = new QuestionResult();
+    questionResult.courseInstanceQuestionIdNext = 2432;
+    questionResult.isTrueList = [true, true, false, false];
+    return Promise.resolve(questionResult);   
+  }
+
+  getQuestionToAsk(id: number): Promise<QuestionToAsk> {
+    const questiontoask = new QuestionToAsk();
+    questiontoask.text = 'Wie alt ist unsere Karotte?';
+    const options = [
+      {text : '1 Jahr', isTrue: true, isChecked: false, },
+      {text : '2 Jahr', isTrue: true, isChecked: false, },
+      {text : '4 Jahr', isTrue: false, isChecked: false, },
+      {text : '8 Jahr', isTrue: true, isChecked: false, },
+    ];
+    questiontoask.options = options as QuestionOptionToAsk[];
+    return Promise.resolve(questiontoask);
+  }
 
   startCourse(courseId: number): Promise<CourseInstance> {
     const result = new CourseInstance();

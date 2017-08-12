@@ -1,3 +1,52 @@
-<p>
-  ask-question works!
-</p>
+<div>
+  <form (ngSubmit)="onSubmit()" #questionForm="ngForm">
+
+    <div class="row form-group">
+      <div class="col-md-12">
+        {{questionToAsk.text}}
+      </div>
+    </div>
+
+    <div>
+      <div *ngFor="let option of questionToAsk.options; let optionIndex=index" class="form-group form-inline">
+        
+
+        <div [class.crananswercorrect]="checkShown && (option.isChecked == option.isTrue)"
+             [class.crananswerwrong]="checkShown && !(option.isChecked == option.isTrue)"> 
+          <hr/>           
+          <label for="checkBox{{optionIndex}}">{{optionIndex+1}}</label>      
+          <input type="checkbox"
+            class="checkbox"
+            [(ngModel)]="option.isChecked" 
+            id="checkBox{{optionIndex}}"
+            name="checkBox{{optionIndex}}"
+            #optionChecked="ngModel">
+          <span class="glyphicon glyphicon-ok-circle" aria-hidden="true" *ngIf="checkShown && option.isTrue"></span> 
+          <span class="glyphicon glyphicon-ban-circle" aria-hidden="true" *ngIf="checkShown && !option.isTrue"></span>           
+          
+          {{option.text}}
+        </div>     
+
+      </div>
+    </div>
+     <!-- Statusmessage -->
+    <app-status-message #statusMessage></app-status-message>
+
+    <div class="btn-group pull-right">
+      <button 
+          type="button" 
+          class="btn btn btn-success"
+          (click)="check()">
+        Prüfen
+      </button>
+      
+      <button 
+          type="button" 
+          class="btn btn btn-success"
+          (click)="nextQuestion()"
+          >
+        Nächste Frage
+      </button>
+    </div>
+  </form>
+</div>
