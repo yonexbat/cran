@@ -5,6 +5,8 @@ import { HttpModule, } from '@angular/http';
 import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.service';
 import {QuestionToAsk} from '../model/questiontoask';
+import {Question} from '../model/question';
+import {QuestionOption} from '../model/questionoption';
 import {StatusMessageComponent} from '../status-message/status-message.component';
 import {QuestionAnswer} from '../model/questionanswer';
 import {QuestionResult} from '../model/questionresult';
@@ -15,8 +17,6 @@ import {QuestionResult} from '../model/questionresult';
   styleUrls: ['./ask-question.component.css']
 })
 export class AskQuestionComponent implements OnInit {
-
-  private courseInstanceQuestionId: number;
 
   public checkShown: boolean;
 
@@ -33,6 +33,8 @@ export class AskQuestionComponent implements OnInit {
       this.handleRouteChanged(+id);
     });
 
+    this.questionToAsk = new QuestionToAsk();
+
   }
 
   ngOnInit() {
@@ -41,13 +43,22 @@ export class AskQuestionComponent implements OnInit {
 
   public check()
   {
-    this.checkShown = true;
+    this.cranDataServiceService.getSolutionToAsnwer(this.questionToAsk.courseInstanceQuestionId)
+      .then((question: Question) => {
+        
+        for(let i=0; i<question.options.length; i++) {
+          this.questionToAsk.options[i].isTrue = question.options[i].isTrue;
+        }
+        
+        this.checkShown = true;     
+      })
+      .catch(reason => this.statusMessage.showError(reason));    
   }
 
   public nextQuestion()
   {
       const answer : QuestionAnswer = new QuestionAnswer();
-      answer.courseInstanceQuestionId = this.courseInstanceQuestionId;
+      answer.courseInstanceQuestionId = this.questionToAsk.courseInstanceQuestionId;
       this.questionToAsk.options.forEach(option => {
         answer.answers.push(option.isChecked);  
       });

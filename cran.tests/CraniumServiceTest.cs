@@ -35,7 +35,7 @@ namespace cran.tests
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseSqlServer(connString)
             .Options;
-            ApplicationDbContext context = new ApplicationDbContext(options);
+            ApplicationDbContext context = new ApplicationDbContext(options, GetPrincipalMock());
             return context;
         }
 
@@ -44,6 +44,17 @@ namespace cran.tests
             IConfiguration config = GetConfiguration();
             ApplicationDbContext context = CreateDbContext(config);        
 
+           
+
+            var testingObject = new TestingObject<CraniumService>();
+            testingObject.AddDependency(context);
+            testingObject.AddDependency(new Mock<IDbLogService>(MockBehavior.Loose));
+            testingObject.AddDependency(GetPrincipalMock());
+            return testingObject;
+        }
+
+        private IPrincipal GetPrincipalMock()
+        {
             var identityMock = new Mock<IIdentity>(MockBehavior.Loose);
             identityMock.Setup(x => x.Name).Returns("testuser");
             IIdentity identity = identityMock.Object;
@@ -51,12 +62,7 @@ namespace cran.tests
             var pricipalMock = new Mock<IPrincipal>(MockBehavior.Loose);
             pricipalMock.Setup(x => x.Identity).Returns(identity);
             IPrincipal principal = pricipalMock.Object;
-
-            var testingObject = new TestingObject<CraniumService>();
-            testingObject.AddDependency(context);
-            testingObject.AddDependency(new Mock<IDbLogService>(MockBehavior.Loose));
-            testingObject.AddDependency(principal);
-            return testingObject;
+            return principal;
         }
 
         [Fact]
@@ -84,6 +90,10 @@ namespace cran.tests
             Assert.True(result3.IdCourseInstanceQuestion > 0);
             Assert.True(result3.NumQuestionsAlreadyAsked == 2);
             Assert.True(result3.NumQuestionsTotal > 0);
+
+            var result4 = await service.QuestionToAsk(result.IdCourseInstanceQuestion);
+
+            var result5 = await service.GetSolutionToAsnwer(result.IdCourseInstanceQuestion);
         }
     }
 }

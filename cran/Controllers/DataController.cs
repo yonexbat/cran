@@ -49,6 +49,29 @@ namespace cran.Controllers
             return await _craninumService.GetQuestionAsync(id);
         }
 
+
+        /// <summary>
+        /// URL: http://localhost:5000/api/Data/QuestionToAsk/2
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("[action]/{id}")]
+        public async Task<QuestionToAskViewModel> QuestionToAsk(int id)
+        {
+            return await _craninumService.QuestionToAsk(id);
+        }
+
+        /// <summary>
+        /// URL: http://localhost:5000/api/Data/QuestionToAsk/2
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("[action]/{id}")]
+        public async Task<QuestionViewModel> GetSolutionToAsnwer(int id)
+        {
+            return await _craninumService.GetSolutionToAsnwer(id);
+        }
+
         /// <summary>
         /// URL: http://localhost:5000/api/Data/FindTags?searchTerm=Hello
         /// </summary>

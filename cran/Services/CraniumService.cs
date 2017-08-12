@@ -33,7 +33,7 @@ namespace cran.Services
             
             _context.Questions.Add(questionEntity);           
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesCranAsync(_currentPrincipal);
             return questionEntity.Id;
         }
 
@@ -139,12 +139,11 @@ namespace cran.Services
             }
             
             await CopyData(questionVm, questionEntity);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesCranAsync(_currentPrincipal); 
         }
 
         private async Task CopyData(QuestionViewModel questionVm, Question questionEntity)
         {
-            InitTechnicalFields(questionEntity);
             questionEntity.Title = questionVm.Title;
             questionEntity.Text = questionVm.Text;
             questionEntity.Explanation = questionVm.Explanation;
@@ -162,7 +161,6 @@ namespace cran.Services
                 optionEntity.IsTrue = option.IsTrue;
                 optionEntity.Text = option.Text;
 
-                InitTechnicalFields(optionEntity);
                 questionEntity.Options.Add(optionEntity);
                 _context.QuestionOptions.Add(optionEntity);
             }
@@ -179,7 +177,6 @@ namespace cran.Services
                 relTag.Tag = tag;
                 relTag.Question = questionEntity;
                 questionEntity.RelTags.Add(relTag);
-                InitTechnicalFields(relTag);
                 _context.RelQuestionTags.Add(relTag);
             }
         }
@@ -195,10 +192,9 @@ namespace cran.Services
                 Course = courseEntity,
                 IdCourse = courseId,
             };
-            InitTechnicalFields(courseInstanceEntity);
             _context.CourseInstances.Add(courseInstanceEntity);
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesCranAsync(_currentPrincipal);
             CourseInstanceViewModel result = await GetNextQuestion(courseInstanceEntity);                        
 
             return result;
@@ -250,14 +246,30 @@ namespace cran.Services
                 int quesitonNo = random.Next(0, count - 1);
                 int questionId = await questionIds.Skip(quesitonNo).FirstAsync();
                 Question questionEntity = _context.Find<Question>(questionId);
+
+                //Course instance question
                 CourseInstanceQuestion courseInstanceQuestionEntity = new CourseInstanceQuestion
                 {
                     CourseInstance = courseInstanceEntity,
                     Question = questionEntity,
                 };
-                InitTechnicalFields(courseInstanceQuestionEntity);
-                _context.CourseInstancesQuestion.Add(courseInstanceQuestionEntity);
-                await _context.SaveChangesAsync();
+                _context.CourseInstancesQuestion.Add(courseInstanceQuestionEntity);                
+
+                //Course instance question options
+                foreach (QuestionOption questionOptionEntity in _context.QuestionOptions.Where(option => option.Question.Id == questionEntity.Id))
+                {
+                    CourseInstanceQuestionOption courseInstanceQuestionOptionEntity = new CourseInstanceQuestionOption();
+
+                    courseInstanceQuestionOptionEntity.QuestionOption = questionOptionEntity;
+                    //questionOptionEntity.CourseInstancesQuestionOption.Add(courseInstanceQuestionOptionEntity);
+
+                    courseInstanceQuestionOptionEntity.CourseInstanceQuestion = courseInstanceQuestionEntity;
+                    courseInstanceQuestionEntity.CourseInstancesQuestionOption.Add(courseInstanceQuestionOptionEntity);
+
+                    _context.CourseInstancesQuestionOption.Add(courseInstanceQuestionOptionEntity);
+                }
+
+                await _context.SaveChangesCranAsync(_currentPrincipal);
                 result.IdCourseInstanceQuestion = courseInstanceQuestionEntity.Id;
             }
             
@@ -275,7 +287,6 @@ namespace cran.Services
                 {
                     UserId = userId,
                 };
-                InitTechnicalFields(cranUserEntity);
                 _context.CranUsers.Add(cranUserEntity);
             }
             return cranUserEntity;
@@ -285,8 +296,42 @@ namespace cran.Services
         {
             CourseInstance courseInstanceEntity = _context.Find<CourseInstance>(courseInstanceId);          
             CourseInstanceViewModel result = await GetNextQuestion(courseInstanceEntity);          
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesCranAsync(_currentPrincipal);
             return result;
+        }
+
+        public async Task<QuestionToAskViewModel> QuestionToAsk(int courseInstanceQuestionId)
+        {
+            QuestionToAskViewModel questionToAskVm = new QuestionToAskViewModel();
+            CourseInstanceQuestion questionInstanceEntity = await _context.FindAsync<CourseInstanceQuestion>(courseInstanceQuestionId);
+            
+            Question questionEntity = await _context.FindAsync<Question>(questionInstanceEntity.IdQuestion);
+
+            questionToAskVm.CourseInstanceQuestionId = courseInstanceQuestionId;
+
+            questionToAskVm.Text = questionEntity.Text;
+
+            foreach(var o in _context.CourseInstancesQuestionOption.Where( x => x.CourseInstanceQuestion.Id == courseInstanceQuestionId)
+                .Include(x => x.QuestionOption))
+            {
+
+                questionToAskVm.Options.Add(new QuestionOptionToAskViewModel
+                {
+                    CourseInstanceQuestionOptionId = o.Id,
+                    Text = o.QuestionOption.Text,
+                });
+
+            }
+
+            return questionToAskVm;
+        }
+
+        public async Task<QuestionViewModel> GetSolutionToAsnwer(int courseInstanceQuestionId)
+        {
+            int questionId = await _context.CourseInstancesQuestion.Where(x => x.Id == courseInstanceQuestionId)
+                .Select(x => x.Question.Id).SingleAsync();
+
+            return await this.GetQuestionAsync(questionId);
         }
     }
 }

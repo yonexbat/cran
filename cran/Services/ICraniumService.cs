@@ -22,5 +22,10 @@ namespace cran.Services
         Task<CourseInstanceViewModel> StartCourseAsync(int courseId);
 
         Task<CourseInstanceViewModel> NextQuestion(int courseInstanceId);
+
+        Task<QuestionToAskViewModel> QuestionToAsk(int courseInstanceQuestionId);
+
+        Task<QuestionViewModel> GetSolutionToAsnwer(int courseInstanceQuestionId);
+
     }
 }

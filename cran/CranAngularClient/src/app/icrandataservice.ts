@@ -18,5 +18,6 @@ export interface ICranDataService {
   updateQuestion(question: Question): Promise<any>;
   getTags(name: string): Promise<Tag[]>;
   startCourse(courseId: number): Promise<CourseInstance>;
+  getSolutionToAsnwer(id: number) : Promise<Question>;
   answerQuestion(answer: QuestionAnswer): Promise<QuestionResult>;
 }

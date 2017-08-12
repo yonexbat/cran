@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Threading;
+using System.Security.Principal;
 
 namespace cran.Data
 {
@@ -23,10 +25,65 @@ namespace cran.Data
         public DbSet<CourseInstanceQuestion> CourseInstancesQuestion { get; set; }
         public DbSet<CourseInstanceQuestionOption> CourseInstancesQuestionOption { get; set; }
 
+        protected IPrincipal _principal;
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IPrincipal principal)
             : base(options)
         {
+            this._principal = principal;
+        }
+
+        public async Task<int> SaveChangesCranAsync(IPrincipal principal)
+        {
+            _principal = principal;
+            return await SaveChangesAsync();
+        }
+
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+            InitTechnicalFields();
+            return base.SaveChanges(acceptAllChangesOnSuccess);
+        }
+
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            InitTechnicalFields();
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
+        protected void InitTechnicalFields()
+        {
+            ChangeTracker.DetectChanges();
+            DateTime now = DateTime.Now;
+            string user = GetUserId();
+
+            foreach (var entry in ChangeTracker.Entries().Where(e => e.State == EntityState.Added))
+            {
+                if (entry.Entity is CranEntity)
+                {
+
+                    CranEntity cranEntity = (CranEntity)entry.Entity;
+                    cranEntity.InsertDate = now;
+                    cranEntity.UpdateDate = now;
+                    cranEntity.InsertUser = user;
+                    cranEntity.UpdateUser = user;
+                }
+            }
+            foreach (var entry in ChangeTracker.Entries().Where(e => e.State == EntityState.Modified))
+            {
+                if (entry.Entity is CranEntity)
+                {
+
+                    CranEntity cranEntity = (CranEntity)entry.Entity;
+                    cranEntity.UpdateDate = now;
+                    cranEntity.UpdateUser = user;
+                }
+            }
+        }
+
+        protected string GetUserId()
+        {
+            return _principal.Identity.Name ?? string.Empty;
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

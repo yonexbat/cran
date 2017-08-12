@@ -18,15 +18,29 @@ export let CRAN_SERVICE_TOKEN = new InjectionToken<ICranDataService>('ICranDataS
 
 @Injectable()
 export class CranDataService implements ICranDataService {
-
-
-
+ 
   constructor(private http: Http) {
 
   }
 
+  getSolutionToAsnwer(id: number): Promise<Question> {
+     return this.http.get('/api/Data/GetSolutionToAsnwer/' + id)
+                    .toPromise()
+                    .then(  response => {
+                      const result = response.json() as Question;
+                      return result;
+                    })
+                    .catch(this.handleError);
+  }
+
   getQuestionToAsk(id: number): Promise<QuestionToAsk> {
-    throw new Error("Method not implemented.");
+    return this.http.get('/api/Data/QuestionToAsk/' + id)
+                    .toPromise()
+                    .then(  response => {
+                      const result = response.json() as QuestionToAsk;
+                      return result;
+                    })
+                    .catch(this.handleError);
   }
 
   answerQuestion(answer: QuestionAnswer): Promise<QuestionResult> {
@@ -106,6 +120,10 @@ export class CranDataService implements ICranDataService {
 
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
+  
+  getSolutionToAsnwer(id: number): Promise<Question> {
+    return this.getQuestion(id);
+  }
   answerQuestion(answer: QuestionAnswer): Promise<QuestionResult> {
     const questionResult = new QuestionResult();
     questionResult.courseInstanceQuestionIdNext = 2432;
@@ -117,10 +135,10 @@ export class CranDataServiceMock implements ICranDataService {
     const questiontoask = new QuestionToAsk();
     questiontoask.text = 'Wie alt ist unsere Karotte?';
     const options = [
-      {text : '1 Jahr', isTrue: true, isChecked: false, },
-      {text : '2 Jahr', isTrue: true, isChecked: false, },
+      {text : '1 Jahr', isTrue: false, isChecked: false, },
+      {text : '2 Jahr', isTrue: false, isChecked: false, },
       {text : '4 Jahr', isTrue: false, isChecked: false, },
-      {text : '8 Jahr', isTrue: true, isChecked: false, },
+      {text : '8 Jahr', isTrue: false, isChecked: false, },
     ];
     questiontoask.options = options as QuestionOptionToAsk[];
     return Promise.resolve(questiontoask);

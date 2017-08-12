@@ -19,17 +19,7 @@ namespace cran.Services
             this._context = context;
             this._currentPrincipal = principal;
         }
-
-        protected void InitTechnicalFields(ICraniumEntity entity)
-        {
-            if (entity.Id == 0)
-            {
-                entity.InsertDate = DateTime.Now;
-                entity.InsertUser = GetUserId();
-            }
-            entity.UpdateDate = DateTime.Now;
-            entity.UpdateUser = GetUserId();
-        }
+       
 
         public string GetUserId()
         {

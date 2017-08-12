@@ -10,6 +10,7 @@ namespace cran.Model.Entities
         public int IdCourseInstanceQuestion { get; set; }
         public int IdQuestionOption { get; set; }
         public bool Correct { get; set; }
+        public bool Checked { get; set; }
         public CourseInstanceQuestion CourseInstanceQuestion { get; set; }
         public QuestionOption QuestionOption { get; set; }
     }

@@ -10,6 +10,6 @@
     [UpdateUser]  VARCHAR (1000) NOT NULL DEFAULT SYSTEM_USER,
     [UpdateDate]  DATETIME2 (7)  NOT NULL DEFAULT GETDATE(),          
     PRIMARY KEY CLUSTERED ([Id] ASC), 
-    CONSTRAINT [FK_CranCourseInstanceQuestionOption_CranQuestionOption] FOREIGN KEY ([IdCourseInstanceQuestion]) REFERENCES [CranQuestionOption]([Id]), 
-    CONSTRAINT [FK_CranCourseInstanceQuestionOption_CranCourseInstanceQuestion] FOREIGN KEY ([IdQuestionOption]) REFERENCES [CranCourseInstanceQuestion]([Id])
+    CONSTRAINT [FK_CranCourseInstanceQuestionOption_CranQuestionOption] FOREIGN KEY ([IdQuestionOption]) REFERENCES [CranQuestionOption]([Id]), 
+    CONSTRAINT [FK_CranCourseInstanceQuestionOption_CranCourseInstanceQuestion] FOREIGN KEY ( [IdCourseInstanceQuestion]) REFERENCES [CranCourseInstanceQuestion]([Id])
 )

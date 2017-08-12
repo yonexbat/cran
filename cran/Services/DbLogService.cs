@@ -21,10 +21,9 @@ namespace cran.Services
             LogEntry logEntry = new LogEntry();
             logEntry.Created = DateTime.Now;
             logEntry.Message = message;
-            InitTechnicalFields(logEntry);
 
             _context.LogEntires.Add(logEntry);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesCranAsync(_currentPrincipal);
         }
     }
 }
