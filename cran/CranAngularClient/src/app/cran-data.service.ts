@@ -5,6 +5,7 @@ import 'rxjs/add/operator/toPromise';
 import {Courses} from './model/courses';
 import {Course} from './model/course';
 import {Question} from './model/question';
+import {QuestionOption} from './model/questionoption';
 import {ICranDataService} from './icrandataservice';
 import { Tag } from './model/tag';
 import {StartCourse} from './model/startcourse';
@@ -138,16 +139,17 @@ export class CranDataServiceMock implements ICranDataService {
   }
 
   getQuestionToAsk(id: number): Promise<QuestionToAsk> {
-    const questiontoask = new QuestionToAsk();
-    questiontoask.text = 'Wie alt ist unsere Karotte?';
-    const options = [
-      {text : '1 Jahr', isTrue: false, isChecked: false, },
-      {text : '2 Jahr', isTrue: false, isChecked: false, },
-      {text : '4 Jahr', isTrue: false, isChecked: false, },
-      {text : '8 Jahr', isTrue: false, isChecked: false, },
-    ];
-    questiontoask.options = options as QuestionOptionToAsk[];
-    return Promise.resolve(questiontoask);
+    return this.getQuestion(23).then((question: Question) => {
+      const questiontoask = new QuestionToAsk();
+      questiontoask.text = question.text;
+      for (const option of question.options) {
+        const ota = new QuestionOptionToAsk();
+        ota.text = option.text;
+        ota.isTrue = option.isTrue;
+        questiontoask.options.push(ota);
+      }
+      return questiontoask;
+    });
   }
 
   startCourse(courseId: number): Promise<CourseInstance> {
@@ -212,10 +214,20 @@ export class CranDataServiceMock implements ICranDataService {
 
   getQuestion(id: number): Promise<Question> {
     return new Promise<Question>((resolve, reject) => {
+
         const question = new Question();
-        question.text = 'Hello';
+        question.text = 'Wie alt ist unsere Karotte?';
         question.title = 'MyTitle';
         question.id = id;
+        question.explanation = 'My explanation';
+
+        question.options = [
+          {isTrue : true, text : '1 Jahr'},
+          {isTrue : false, text : '2 Jahre'},
+          {isTrue : true, text : '4 Jahre'},
+          {isTrue : false, text : '5 Jahre'},
+        ];
+
         resolve(question);
       });
   }

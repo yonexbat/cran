@@ -1,34 +1,44 @@
-<div>
+<div class="container">
   <form (ngSubmit)="onSubmit()" #questionForm="ngForm">
 
-    <div class="row form-group">
+    <!-- question text -->
+    <div class="row">
       <div class="col-md-12">
         {{questionToAsk.text}}
       </div>
     </div>
 
     <div>
-      <div *ngFor="let option of questionToAsk.options; let optionIndex=index" class="form-group form-inline">
+
+      <!-- iterate over options  -->
+      <div *ngFor="let option of questionToAsk.options; let optionIndex=index" class="row form-group form-inline">
         
+        <hr/>      
 
         <div [class.crananswercorrect]="checkShown && (option.isChecked == option.isTrue)"
-             [class.crananswerwrong]="checkShown && !(option.isChecked == option.isTrue)"> 
-          <hr/>           
+             [class.crananswerwrong]="checkShown && !(option.isChecked == option.isTrue)">                
           <label for="checkBox{{optionIndex}}">{{optionIndex+1}}</label>      
           <input type="checkbox"
-            class="checkbox"
-            [(ngModel)]="option.isChecked" 
-            id="checkBox{{optionIndex}}"
-            name="checkBox{{optionIndex}}"
-            #optionChecked="ngModel">
-          <span class="glyphicon glyphicon-ok-circle" aria-hidden="true" *ngIf="checkShown && option.isTrue"></span> 
-          <span class="glyphicon glyphicon-ban-circle" aria-hidden="true" *ngIf="checkShown && !option.isTrue"></span>           
-          
-          {{option.text}}
+              class="checkbox"
+              [(ngModel)]="option.isChecked" 
+              id="checkBox{{optionIndex}}"
+              name="checkBox{{optionIndex}}"
+              #optionChecked="ngModel">
+          <span class="glyphicon glyphicon-ok" aria-hidden="true" *ngIf="checkShown && option.isTrue"></span> 
+          <span class="glyphicon glyphicon-remove" aria-hidden="true" *ngIf="checkShown && !option.isTrue"></span>                       
+          <span>{{option.text}}</span>
         </div>     
 
       </div>
     </div>
+
+    <!-- question explanation -->
+    <div class="row" *ngIf="checkShown">
+      <div class="col-md-12">
+        {{questionToAsk.explanation}}
+      </div>
+    </div>
+
      <!-- Statusmessage -->
     <app-status-message #statusMessage></app-status-message>
 
