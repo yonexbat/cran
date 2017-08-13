@@ -8,6 +8,7 @@ import {StartCourse} from './model/startcourse';
 import {CourseInstance} from './model/courseinstance';
 import {QuestionToAsk} from './model/questiontoask';
 import {QuestionAnswer} from './model/questionanswer';
+import {QuestionListEntry} from './model/questionlistentry';
 
 export interface ICranDataService {
   getCourses(): Promise<Courses>;
@@ -19,4 +20,5 @@ export interface ICranDataService {
   startCourse(courseId: number): Promise<CourseInstance>;
   answerQuestionAndGetSolution(answer: QuestionAnswer): Promise<Question>;
   answerQuestionAndGetNextQuestion(answer: QuestionAnswer): Promise<CourseInstance>;
+  getMyQuestions(): Promise<QuestionListEntry[]>;
 }

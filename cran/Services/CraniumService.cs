@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using cran.Model.Entities;
-using cran.Model.ViewModel;
 using System.Security.Principal;
 using cran.Model.Dto;
 
@@ -29,7 +28,9 @@ namespace cran.Services
         public async Task<InsertActionDto> AddQuestionAsync(QuestionDto questionVm)
         {
             await _dbLogService.LogMessageAsync("Adding question");
+
             Question questionEntity = new Question();
+            questionEntity.User = await GetCranUserAsync();
             await CopyData(questionVm, questionEntity);              
             
             _context.Questions.Add(questionEntity);           
@@ -378,6 +379,15 @@ namespace cran.Services
             courseInstanceQuestionEntity.AnsweredAt = DateTime.Now;
 
             await _context.SaveChangesCranAsync(_currentPrincipal);
+        }
+
+        public async Task<IList<QuestionListEntryDto>> GetMyQuestionsAsync()
+        {
+            string userId = GetUserId();           
+            return await _context.Questions.Where(q => q.User.UserId == userId)
+                .OrderBy(q => q.Title)
+                .Select(q => new QuestionListEntryDto { Title = q.Title, Id = q.Id })
+                .ToListAsync();                
         }
     }
 }

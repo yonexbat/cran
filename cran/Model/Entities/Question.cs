@@ -11,8 +11,9 @@ namespace cran.Model.Entities
         public virtual string Title { get; set; }
         public virtual string Text { get; set; }
         public virtual string Explanation { get; set; }
+        public virtual int IdUser { get; set; }
 
-
+        public virtual CranUser User { get; set; }
         public virtual IList<QuestionOption> Options { get; set; } = new List<QuestionOption>();
         public virtual IList<RelQuestionTag> RelTags { get; set; } = new List<RelQuestionTag>();
         public virtual IList<CourseInstanceQuestion> CourseInstancesQuestion { get; set; } = new List<CourseInstanceQuestion>();

@@ -105,6 +105,10 @@ namespace cran.Data
         private void MapCranUser(EntityTypeBuilder<CranUser> typeBuilder)
         {
             typeBuilder.ToTable("CranUser");
+
+            typeBuilder.HasMany(u => u.Questions)
+                .WithOne(q => q.User)
+                .HasForeignKey(q => q.IdUser);
         }
 
         private void MapCourseInstance(EntityTypeBuilder<CourseInstance> typeBuilder)
@@ -155,8 +159,6 @@ namespace cran.Data
         private void MapCourse(EntityTypeBuilder<Course> typeBuilder)
         {
             typeBuilder.ToTable("CranCourse");
-            typeBuilder.Property(x => x.Id).HasColumnName("Id");           
-            typeBuilder.HasKey(x => x.Id);
         }
 
         private void MapQuestionOption(EntityTypeBuilder<QuestionOption> typeBuilder)
@@ -175,7 +177,12 @@ namespace cran.Data
             typeBuilder
                 .HasMany(x => x.Options)
                 .WithOne(o => o.Question)
-                .HasForeignKey(x => x.IdQuestion);            
+                .HasForeignKey(x => x.IdQuestion);
+
+            typeBuilder
+                .HasOne(q => q.User)
+                .WithMany(u => u.Questions)
+                .HasForeignKey(q => q.IdUser);
         }
 
         private void MapTag(EntityTypeBuilder<Tag> typeBuilder)

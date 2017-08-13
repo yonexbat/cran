@@ -16,6 +16,8 @@ namespace cran.Services
 
         Task<CoursesListDto> CoursesAsync();
 
+        Task<IList<QuestionListEntryDto>> GetMyQuestionsAsync();
+
         Task<QuestionDto> GetQuestionAsync(int id);
 
         Task<IList<TagDto>> FindTagsAsync(string searchTerm);

@@ -1,0 +1,7 @@
+<div class="container">
+  <div class="list-group">
+    <div  *ngFor="let item of questions" class="list-group-item" (click)="goToQuestion(item)">
+      <h4>{{item.title}}</h4>      
+    </div>
+  </div>
+</div>

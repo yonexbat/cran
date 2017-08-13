@@ -39,6 +39,17 @@ namespace cran.Controllers
             return await _craninumService.CoursesAsync();
         }
 
+
+        /// <summary>
+        /// URL: http://localhost:5000/api/Data/GetMyQuestions
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("[action]")]
+        public async Task<IList<QuestionListEntryDto>> GetMyQuestions()
+        {
+            return await _craninumService.GetMyQuestionsAsync();
+        }
+
         /// <summary>
         /// URL: http://localhost:5000/api/Data/Question/3
         /// </summary>

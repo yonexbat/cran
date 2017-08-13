@@ -13,6 +13,7 @@ import {CourseInstance} from './model/courseinstance';
 import {QuestionToAsk} from './model/questiontoask';
 import {QuestionOptionToAsk} from './model/questionoptiontoask';
 import {QuestionAnswer} from './model/questionanswer';
+import {QuestionListEntry} from './model/questionlistentry';
 
 
 export let CRAN_SERVICE_TOKEN = new InjectionToken<ICranDataService>('ICranDataService');
@@ -20,8 +21,19 @@ export let CRAN_SERVICE_TOKEN = new InjectionToken<ICranDataService>('ICranDataS
 @Injectable()
 export class CranDataService implements ICranDataService {
 
+
   constructor(private http: Http) {
 
+  }
+
+  getMyQuestions(): Promise<QuestionListEntry[]> {
+       return this.http.get('/api/Data/GetMyQuestions')
+               .toPromise()
+               .then(response => {
+                 const data = response.json() as QuestionListEntry[];
+                 return data;
+                })
+               .catch(this.handleError);
   }
 
   answerQuestionAndGetSolution(answer: QuestionAnswer): Promise<Question> {
@@ -127,6 +139,16 @@ export class CranDataService implements ICranDataService {
 
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
+
+  getMyQuestions(): Promise<QuestionListEntry[]> {
+    const myList: QuestionListEntry[]  = [
+      {id: 2, title: 'Hello'},
+      {id: 2, title: 'World'},
+      {id: 2, title: 'yep'},
+      {id: 2, title: 'zep'},
+    ];
+    return Promise.resolve(myList);
+  }
 
   answerQuestionAndGetSolution(answer: QuestionAnswer): Promise<Question> {
     return this.getQuestion(4);
