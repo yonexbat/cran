@@ -1,13 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using cran.Model.ViewModel;
 using Microsoft.AspNetCore.Authorization;
-using cran.Data;
-using cran.Model.Entities;
-using Microsoft.EntityFrameworkCore;
 using cran.Services;
 using cran.Filters;
 using cran.Model.Dto;
@@ -19,13 +14,11 @@ namespace cran.Controllers
     public class DataController : Controller
     {
 
-        private readonly IDbLogService _logService;
         private readonly ICraniumService _craninumService;
 
-        public DataController(ICraniumService craniumService, IDbLogService logService)
+        public DataController(ICraniumService craniumService)
         {
             _craninumService = craniumService;
-            _logService = logService;
         }
 
 
@@ -145,7 +138,7 @@ namespace cran.Controllers
         [ValidateModel]
         public async Task UpdateQuestion([FromBody] QuestionDto vm)
         {
-            await _craninumService.SaveQuestionAsync(vm);
+            await _craninumService.UpdateQuestionAsync(vm);
         }
 
 

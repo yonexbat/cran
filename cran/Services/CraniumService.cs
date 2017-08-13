@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using cran.Model.Entities;
 using System.Security.Principal;
 using cran.Model.Dto;
+using System.Security;
 
 namespace cran.Services
 {
@@ -131,8 +132,10 @@ namespace cran.Services
 
  
 
-        public async Task SaveQuestionAsync(QuestionDto questionVm)
+        public async Task UpdateQuestionAsync(QuestionDto questionVm)
         {
+            await CheckAccessToQuestion(questionVm.Id);
+
             Question questionEntity = await _context.FindAsync<Question>(questionVm.Id);         
             foreach(QuestionOption optionEntity in _context.QuestionOptions.Where(x => x.IdQuestion == questionEntity.Id))
             {                
@@ -410,9 +413,26 @@ namespace cran.Services
             return result;
         }
 
+        private async Task CheckAccessToQuestion(int idQuestion)
+        {
+            Question questionEntity = await _context.FindAsync<Question>(idQuestion);
+            CranUser userEntityOfQuestion = await _context.FindAsync<CranUser>(questionEntity.IdUser);
+
+            //Security Check
+            if (!(userEntityOfQuestion.UserId == GetUserId() || _currentPrincipal.IsInRole(Roles.Admin)))
+            {
+                throw new SecurityException("no access to this question");
+            }
+        }
+
         public async Task DeleteQuestionAsync(int idQuestion)
         {
+
+            await CheckAccessToQuestion(idQuestion);
+
             Question questionEntity =  await _context.FindAsync<Question>(idQuestion);
+                        
+
 
             //Options
             IList<QuestionOption> questionOptions = await _context.QuestionOptions.Where(x => x.Question.Id == questionEntity.Id).ToListAsync();

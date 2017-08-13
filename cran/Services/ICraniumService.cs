@@ -12,7 +12,7 @@ namespace cran.Services
     {
         Task<InsertActionDto> InsertQuestionAsync(QuestionDto question);
 
-        Task SaveQuestionAsync(QuestionDto question);
+        Task UpdateQuestionAsync(QuestionDto question);
 
         Task DeleteQuestionAsync(int idQuestion);
 
