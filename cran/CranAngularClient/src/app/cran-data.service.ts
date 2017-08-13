@@ -21,9 +21,13 @@ export let CRAN_SERVICE_TOKEN = new InjectionToken<ICranDataService>('ICranDataS
 @Injectable()
 export class CranDataService implements ICranDataService {
 
-
   constructor(private http: Http) {
 
+  }
+
+  deleteQuestion(id: number): Promise<any> {
+   return this.http.delete('/api/Data/DeleteQuestion/' + id)
+            .toPromise();
   }
 
   getMyQuestions(): Promise<QuestionListEntry[]> {
@@ -89,7 +93,7 @@ export class CranDataService implements ICranDataService {
                .catch(this.handleError);
   }
 
-   public getCourses(): Promise<Courses> {
+  public getCourses(): Promise<Courses> {
     return this.http.get('/api/Data/Courses')
                .toPromise()
                .then(response => {
@@ -139,6 +143,10 @@ export class CranDataService implements ICranDataService {
 
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
+
+  deleteQuestion(id: number): Promise<any> {
+    return Promise.resolve();
+  }
 
   getMyQuestions(): Promise<QuestionListEntry[]> {
     const myList: QuestionListEntry[]  = [

@@ -51,6 +51,17 @@ namespace cran.Controllers
         }
 
         /// <summary>
+        ///  URL: http://localhost:5000/api/Data/DeleteQuestion
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("[action]/{id}")]
+        public async Task DeleteQuestion(int id)
+        {
+            await _craninumService.DeleteQuestionAsync(id);
+        }
+
+        /// <summary>
         /// URL: http://localhost:5000/api/Data/Question/3
         /// </summary>
         /// <param name="id"></param>

@@ -20,11 +20,20 @@ export class QuestionListComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    this.cranDataServiceService.getMyQuestions()
-    .then(questions => this.questions = questions);
+    this.loadQuestions();
   }
 
   public goToQuestion(question: QuestionListEntry) {
     this.router.navigate(['/editquestion', question.id]);
+  }
+
+  public deleteQuestion(question: QuestionListEntry) {
+    this.cranDataServiceService.deleteQuestion(question.id)
+      .then(nores => this.loadQuestions());
+  }
+
+  private loadQuestions() {
+    this.cranDataServiceService.getMyQuestions()
+    .then(questions => this.questions = questions);
   }
 }

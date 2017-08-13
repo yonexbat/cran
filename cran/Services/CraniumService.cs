@@ -409,5 +409,41 @@ namespace cran.Services
             
             return result;
         }
+
+        public async Task DeleteQuestionAsync(int idQuestion)
+        {
+            Question questionEntity =  await _context.FindAsync<Question>(idQuestion);
+
+            //Options
+            IList<QuestionOption> questionOptions = await _context.QuestionOptions.Where(x => x.Question.Id == questionEntity.Id).ToListAsync();
+            foreach (QuestionOption questionOptionEntity in questionOptions)
+            {                
+                _context.Remove(questionOptionEntity);
+
+                //CourseInstanceQuestionOption
+                IList<CourseInstanceQuestionOption> courseInstacesQuestionOption = await _context.CourseInstancesQuestionOption.Where(x => x.QuestionOption.Id == questionOptionEntity.Id).ToListAsync();
+                foreach(CourseInstanceQuestionOption ciqo in courseInstacesQuestionOption)
+                {
+                    _context.Remove(ciqo);
+                }
+            }
+
+            //Tags
+            IList<RelQuestionTag> relTags = await _context.RelQuestionTags.Where(x => x.Question.Id == questionEntity.Id).ToListAsync();
+            foreach(RelQuestionTag relTagEntity in relTags)
+            {
+                _context.Remove(relTagEntity);
+            }
+
+            //Instances
+            IList<CourseInstanceQuestion> courseInstaceQuestions = await _context.CourseInstancesQuestion.Where(x => x.Question.Id == questionEntity.Id).ToListAsync();
+            foreach(CourseInstanceQuestion ciQ  in courseInstaceQuestions)
+            {
+                _context.Remove(ciQ);
+            }
+
+            _context.Remove(questionEntity);
+            await _context.SaveChangesAsync();
+        }
     }
 }
