@@ -9,7 +9,6 @@ import {Question} from '../model/question';
 import {QuestionOption} from '../model/questionoption';
 import {StatusMessageComponent} from '../status-message/status-message.component';
 import {QuestionAnswer} from '../model/questionanswer';
-import {QuestionResult} from '../model/questionresult';
 
 @Component({
   selector: 'app-ask-question',
@@ -58,8 +57,8 @@ export class AskQuestionComponent implements OnInit {
       this.cranDataServiceService.answerQuestionAndGetNextQuestion(answer)
       .then((data) => {
         this.checkShown = false;
-        if (data.idCourseInstanceQuestionNext > 0) {
-            this.router.navigate(['/askquestion', data.idCourseInstanceQuestionNext]);
+        if (data.idCourseInstanceQuestion > 0) {
+            this.router.navigate(['/askquestion', data.idCourseInstanceQuestion]);
         } else {
           this.router.navigate(['/list']);
         }

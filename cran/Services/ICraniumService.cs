@@ -10,7 +10,7 @@ namespace cran.Services
 {
     public interface ICraniumService
     {
-        Task<int> AddQuestionAsync(QuestionDto question);
+        Task<InsertActionDto> AddQuestionAsync(QuestionDto question);
 
         Task SaveQuestionAsync(QuestionDto question);
 
@@ -28,6 +28,6 @@ namespace cran.Services
 
         Task<QuestionDto> AnswerQuestionAndGetSolutionAsync(QuestionAnswerDto answer);
 
-        Task<QuestionResultDto> AnswerQuestionAndGetNextQuestionAsync(QuestionAnswerDto answer);
+        Task<CourseInstanceDto> AnswerQuestionAndGetNextQuestionAsync(QuestionAnswerDto answer);
     }
 }

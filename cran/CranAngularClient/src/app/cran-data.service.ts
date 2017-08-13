@@ -12,7 +12,7 @@ import {CourseInstance} from './model/courseinstance';
 import {QuestionToAsk} from './model/questiontoask';
 import {QuestionOptionToAsk} from './model/questionoptiontoask';
 import {QuestionAnswer} from './model/questionanswer';
-import {QuestionResult} from './model/questionresult';
+
 
 export let CRAN_SERVICE_TOKEN = new InjectionToken<ICranDataService>('ICranDataService');
 
@@ -33,11 +33,11 @@ export class CranDataService implements ICranDataService {
                     .catch(this.handleError);
   }
 
-  answerQuestionAndGetNextQuestion(answer: QuestionAnswer): Promise<QuestionResult> {
+  answerQuestionAndGetNextQuestion(answer: QuestionAnswer): Promise<CourseInstance> {
     return this.http.post('/api/Data/AnswerQuestionAndGetNextQuestion', answer)
                     .toPromise()
                     .then(  data => {
-                      const result = data.json() as QuestionResult;
+                      const result = data.json() as CourseInstance;
                       return result;
                     })
                     .catch(this.handleError);
@@ -131,9 +131,9 @@ export class CranDataServiceMock implements ICranDataService {
     return this.getQuestion(4);
   }
 
-  answerQuestionAndGetNextQuestion(answer: QuestionAnswer): Promise<QuestionResult> {
-    const questionResult = new QuestionResult();
-    questionResult.idCourseInstanceQuestionNext = 2432;
+  answerQuestionAndGetNextQuestion(answer: QuestionAnswer): Promise<CourseInstance> {
+    const questionResult = new CourseInstance();
+    questionResult.idCourseInstanceQuestion = 2432;
     return Promise.resolve(questionResult);
   }
 

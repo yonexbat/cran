@@ -26,7 +26,7 @@ namespace cran.Services
             _currentPrincipal = principal;
         }
 
-        public async Task<int> AddQuestionAsync(QuestionDto questionVm)
+        public async Task<InsertActionDto> AddQuestionAsync(QuestionDto questionVm)
         {
             await _dbLogService.LogMessageAsync("Adding question");
             Question questionEntity = new Question();
@@ -35,7 +35,11 @@ namespace cran.Services
             _context.Questions.Add(questionEntity);           
 
             await _context.SaveChangesCranAsync(_currentPrincipal);
-            return questionEntity.Id;
+            return new InsertActionDto
+            {
+                NewId = questionEntity.Id,
+                Status = "Ok",
+            };
         }
 
         public async Task<CoursesListDto> CoursesAsync()
@@ -329,31 +333,43 @@ namespace cran.Services
 
         public async Task<QuestionDto> AnswerQuestionAndGetSolutionAsync(QuestionAnswerDto answer)
         {
+            await SaveAnswers(answer);
+
             int questionId = await _context.CourseInstancesQuestion.Where(x => x.Id == answer.IdCourseInstanceQuestion)
                 .Select(x => x.Question.Id).SingleAsync();
 
             CourseInstanceQuestion courseInstanceQuestion = await _context.FindAsync<CourseInstanceQuestion>(answer.IdCourseInstanceQuestion);
-            courseInstanceQuestion.Correct = false;
             await _context.SaveChangesCranAsync(_currentPrincipal);
             
             return await GetQuestionAsync(questionId);
         }
 
-        public async Task<QuestionResultDto> AnswerQuestionAndGetNextQuestionAsync(QuestionAnswerDto answer)
+        public async Task<CourseInstanceDto> AnswerQuestionAndGetNextQuestionAsync(QuestionAnswerDto answer)
         {
+            await SaveAnswers(answer);
+
+            //Nächste Frage vorbereiten.
             CourseInstanceQuestion courseInstanceQuestionEntity = await _context.FindAsync<CourseInstanceQuestion>(answer.IdCourseInstanceQuestion);
             CourseInstance courseInstanceEntity = await _context.FindAsync<CourseInstance>(courseInstanceQuestionEntity.IdCourseInstance);
+            CourseInstanceDto result = await this.GetNextQuestion(courseInstanceEntity);           
+            result.AnsweredCorrectly = courseInstanceQuestionEntity.Correct;
+            return result;
+        }
 
+        private async Task SaveAnswers(QuestionAnswerDto answer)
+        {
+
+            CourseInstanceQuestion courseInstanceQuestionEntity = await _context.FindAsync<CourseInstanceQuestion>(answer.IdCourseInstanceQuestion);
             //Antworten abspeichern
             IList<CourseInstanceQuestionOption> options = await _context.CourseInstancesQuestionOption
                 .Where(x => x.CourseInstanceQuestion.Id == courseInstanceQuestionEntity.Id)
                 .OrderBy(x => x.Id)
                 .Include(x => x.QuestionOption).ToListAsync();
-            if(options.Count != answer.Answers.Count)
+            if (options.Count != answer.Answers.Count)
             {
                 throw new InvalidOperationException("something wrong");
             }
-            for(int i =0; i< options.Count; i++)
+            for (int i = 0; i < options.Count; i++)
             {
                 options[i].Checked = answer.Answers[i];
                 options[i].Correct = options[i].QuestionOption.IsTrue == answer.Answers[i];
@@ -362,13 +378,6 @@ namespace cran.Services
             courseInstanceQuestionEntity.AnsweredAt = DateTime.Now;
 
             await _context.SaveChangesCranAsync(_currentPrincipal);
-
-            //Nächste Frage vorbereiten.
-            var sdfsd = await this.GetNextQuestion(courseInstanceEntity);
-            QuestionResultDto result = new QuestionResultDto();
-            result.IdCourseInstanceQuestionNext = sdfsd.IdCourseInstanceQuestion;
-            result.AnsweredCorrectly = courseInstanceQuestionEntity.Correct;
-            return result;
         }
     }
 }

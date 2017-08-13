@@ -13,5 +13,6 @@ namespace cran.Model.Dto
         public int NumQuestionsTotal { get; set; }
         public int NumQuestionsAlreadyAsked { get; set; }
         public bool Done { get; set; }
+        public bool AnsweredCorrectly { get; set; }
     }
 }

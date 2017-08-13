@@ -93,14 +93,7 @@ namespace cran.Controllers
         [ValidateModel]
         public async Task<InsertActionDto> AddQuestion([FromBody] QuestionDto vm)
         {
-
-            int id = await _craninumService.AddQuestionAsync(vm);
-
-            return new InsertActionDto
-            {
-                NewId = id,
-                Status = "Ok",
-            };
+            return await _craninumService.AddQuestionAsync(vm);
         }
 
         /// <summary>
@@ -110,7 +103,7 @@ namespace cran.Controllers
         /// <returns></returns>
         [HttpPost("[action]")]
         [ValidateModel]
-        public async Task<QuestionResultDto> AnswerQuestion([FromBody] QuestionAnswerDto vm)
+        public async Task<CourseInstanceDto> AnswerQuestionAndGetNextQuestion([FromBody] QuestionAnswerDto vm)
         {
             return await _craninumService.AnswerQuestionAndGetNextQuestionAsync(vm);            
         }
