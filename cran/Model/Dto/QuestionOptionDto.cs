@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace cran.Model.ViewModel
+namespace cran.Model.Dto
 {
-    public class QuestionOptionViewModel
+    public class QuestionOptionDto
     {
         public int Id { get; set; }
 

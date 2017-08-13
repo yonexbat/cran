@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace cran.Model.ViewModel
+namespace cran.Model.Dto
 {
-    public class QuestionToAskViewModel
+    public class QuestionToAskDto
     {
         public int IdCourseInstanceQuestion { get; set; }
         public string Text { get; set; }
-        public IList<QuestionOptionToAskViewModel> Options = new List<QuestionOptionToAskViewModel>();
+        public IList<QuestionOptionToAskDto> Options = new List<QuestionOptionToAskDto>();
     }
 }

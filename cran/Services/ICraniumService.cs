@@ -1,4 +1,5 @@
-﻿using cran.Model.Entities;
+﻿using cran.Model.Dto;
+using cran.Model.Entities;
 using cran.Model.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -9,24 +10,24 @@ namespace cran.Services
 {
     public interface ICraniumService
     {
-        Task<InsertActionViewModel> AddQuestionAsync(QuestionViewModel question);
+        Task<int> AddQuestionAsync(QuestionDto question);
 
-        Task SaveQuestionAsync(QuestionViewModel question);
+        Task SaveQuestionAsync(QuestionDto question);
 
-        Task<CoursesListViewModel> CoursesAsync();
+        Task<CoursesListDto> CoursesAsync();
 
-        Task<QuestionViewModel> GetQuestionAsync(int id);
+        Task<QuestionDto> GetQuestionAsync(int id);
 
-        Task<IList<TagViewModel>> FindTagsAsync(string searchTerm);
+        Task<IList<TagDto>> FindTagsAsync(string searchTerm);
 
-        Task<CourseInstanceViewModel> StartCourseAsync(int courseId);
+        Task<CourseInstanceDto> StartCourseAsync(int courseId);
 
-        Task<CourseInstanceViewModel> NextQuestion(int courseInstanceId);
+        Task<CourseInstanceDto> NextQuestion(int courseInstanceId);
 
-        Task<QuestionToAskViewModel> GetQuestionToAskAsync(int courseInstanceQuestionId);
+        Task<QuestionToAskDto> GetQuestionToAskAsync(int courseInstanceQuestionId);
 
-        Task<QuestionViewModel> AnswerQuestionAndGetSolutionAsync(QuestionAnswerViewModel answer);
+        Task<QuestionDto> AnswerQuestionAndGetSolutionAsync(QuestionAnswerDto answer);
 
-        Task<QuestionResultViewModel> AnswerQuestionAndGetNextQuestionIdAsync(QuestionAnswerViewModel answer);
+        Task<QuestionResultDto> AnswerQuestionAndGetNextQuestionAsync(QuestionAnswerDto answer);
     }
 }

@@ -42,6 +42,9 @@
   <ItemGroup>
     <Folder Include="wwwroot\jsclient\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Model\Dto\CourseInstanceDto.cs" />
+  </ItemGroup>
 
 
   <Target Name="CreateClient">

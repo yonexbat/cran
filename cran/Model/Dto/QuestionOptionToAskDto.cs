@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace cran.Model.ViewModel
+namespace cran.Model.Dto
 {
-    public class QuestionOptionToAskViewModel
+    public class QuestionOptionToAskDto
     {
         public bool IsTrue { get; set; }
         public bool IsChecked { get; set; }

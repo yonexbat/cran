@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using cran.Model.Entities;
 using cran.Model.ViewModel;
 using System.Security.Principal;
+using cran.Model.Dto;
 
 namespace cran.Services
 {
@@ -25,7 +26,7 @@ namespace cran.Services
             _currentPrincipal = principal;
         }
 
-        public async Task<InsertActionViewModel> AddQuestionAsync(QuestionViewModel questionVm)
+        public async Task<int> AddQuestionAsync(QuestionDto questionVm)
         {
             await _dbLogService.LogMessageAsync("Adding question");
             Question questionEntity = new Question();
@@ -34,25 +35,20 @@ namespace cran.Services
             _context.Questions.Add(questionEntity);           
 
             await _context.SaveChangesCranAsync(_currentPrincipal);
-
-            return new InsertActionViewModel
-            {
-                NewId = questionEntity.Id,
-                Status = "Ok",
-            };
+            return questionEntity.Id;
         }
 
-        public async Task<CoursesListViewModel> CoursesAsync()
+        public async Task<CoursesListDto> CoursesAsync()
         {
             await _dbLogService.LogMessageAsync("courses");
-            CoursesListViewModel result = new CoursesListViewModel();
+            CoursesListDto result = new CoursesListDto();
             IList<Course> list = await this._context.Courses
                 .Include(x => x.RelTags)
                 .ThenInclude(x => x.Tag)                
                 .ToListAsync();
             foreach (Course course in list)
             {
-                CourseViewModel courseVm = new CourseViewModel
+                CourseDto courseVm = new CourseDto
                 {
                     Id = course.Id,
                     Title = course.Title,
@@ -62,7 +58,7 @@ namespace cran.Services
                 foreach(RelCourseTag relTag in course.RelTags)
                 {
                     Tag tag = relTag.Tag;
-                    TagViewModel tagVm = new TagViewModel
+                    TagDto tagVm = new TagDto
                     {
                         Description = tag.Description,
                         Name = tag.Name,
@@ -76,14 +72,14 @@ namespace cran.Services
             return result;
         }
 
-        public async Task<IList<TagViewModel>> FindTagsAsync(string searchTerm)
+        public async Task<IList<TagDto>> FindTagsAsync(string searchTerm)
         {
             IList<Tag> tags = await _context.Tags.Where(x => x.Name.Contains(searchTerm)).ToListAsync();
-            IList<TagViewModel> result = new List<TagViewModel>();
+            IList<TagDto> result = new List<TagDto>();
             
             foreach(Tag tag in tags)
             {
-                TagViewModel tagVm = new TagViewModel
+                TagDto tagVm = new TagDto
                 {
                     Id = tag.Id,
                     Name = tag.Name,
@@ -94,10 +90,10 @@ namespace cran.Services
             return result;
         }
 
-        public async Task<QuestionViewModel> GetQuestionAsync(int id)
+        public async Task<QuestionDto> GetQuestionAsync(int id)
         {
             Question questionEntity = await _context.FindAsync<Question>(id);
-            QuestionViewModel questionVm = new QuestionViewModel
+            QuestionDto questionVm = new QuestionDto
             {
                 Id = questionEntity.Id,
                 Text = questionEntity.Text,
@@ -107,7 +103,7 @@ namespace cran.Services
 
             foreach(QuestionOption optionEntity in _context.QuestionOptions.Where(x => x.IdQuestion == id))
             {
-                questionVm.Options.Add(new QuestionOptionViewModel
+                questionVm.Options.Add(new QuestionOptionDto
                 {
                     Id = optionEntity.Id,
                     IsTrue = optionEntity.IsTrue,
@@ -117,7 +113,7 @@ namespace cran.Services
 
             foreach(RelQuestionTag relTag in _context.RelQuestionTags.Where(x => x.IdQuestion == id).Include(x => x.Tag))
             {
-                questionVm.Tags.Add(new TagViewModel
+                questionVm.Tags.Add(new TagDto
                 {
                     Id = relTag.Tag.Id,
                     Name = relTag.Tag.Name,
@@ -130,7 +126,7 @@ namespace cran.Services
 
  
 
-        public async Task SaveQuestionAsync(QuestionViewModel questionVm)
+        public async Task SaveQuestionAsync(QuestionDto questionVm)
         {
             Question questionEntity = await _context.FindAsync<Question>(questionVm.Id);         
             foreach(QuestionOption optionEntity in _context.QuestionOptions.Where(x => x.IdQuestion == questionEntity.Id))
@@ -147,7 +143,7 @@ namespace cran.Services
             await _context.SaveChangesCranAsync(_currentPrincipal); 
         }
 
-        private async Task CopyData(QuestionViewModel questionVm, Question questionEntity)
+        private async Task CopyData(QuestionDto questionVm, Question questionEntity)
         {
             questionEntity.Title = questionVm.Title;
             questionEntity.Text = questionVm.Text;
@@ -157,9 +153,9 @@ namespace cran.Services
             await AddTags(questionVm, questionEntity);
         }
 
-        private void AddOptions(QuestionViewModel questionVm, Question questionEntity)
+        private void AddOptions(QuestionDto questionVm, Question questionEntity)
         {
-            foreach (QuestionOptionViewModel option in questionVm.Options)
+            foreach (QuestionOptionDto option in questionVm.Options)
             {
                 QuestionOption optionEntity = new QuestionOption();
                 optionEntity.Question = questionEntity;
@@ -171,9 +167,9 @@ namespace cran.Services
             }
         }
     
-        private async Task AddTags(QuestionViewModel questionVm, Question questionEntity)
+        private async Task AddTags(QuestionDto questionVm, Question questionEntity)
         {
-            foreach(TagViewModel tagVm in questionVm.Tags)
+            foreach(TagDto tagVm in questionVm.Tags)
             {
                 int tagId = tagVm.Id;
                 Tag tag = await _context.FindAsync<Tag>(tagId);
@@ -186,7 +182,7 @@ namespace cran.Services
             }
         }
 
-        public async Task<CourseInstanceViewModel> StartCourseAsync(int courseId)
+        public async Task<CourseInstanceDto> StartCourseAsync(int courseId)
         {
             Course courseEntity = await _context.FindAsync<Course>(courseId);
             CranUser cranUserEntity = await GetCranUserAsync();
@@ -200,16 +196,16 @@ namespace cran.Services
             _context.CourseInstances.Add(courseInstanceEntity);
 
             await _context.SaveChangesCranAsync(_currentPrincipal);
-            CourseInstanceViewModel result = await GetNextQuestion(courseInstanceEntity);                        
+            CourseInstanceDto result = await GetNextQuestion(courseInstanceEntity);                        
 
             return result;
 
 
         }
 
-        private async Task<CourseInstanceViewModel> GetNextQuestion(CourseInstance courseInstanceEntity)
+        private async Task<CourseInstanceDto> GetNextQuestion(CourseInstance courseInstanceEntity)
         {
-            CourseInstanceViewModel result = new CourseInstanceViewModel();
+            CourseInstanceDto result = new CourseInstanceDto();
             result.IdCourse = courseInstanceEntity.IdCourse;
             result.IdCourseInstance = courseInstanceEntity.Id;
 
@@ -297,17 +293,17 @@ namespace cran.Services
             return cranUserEntity;
         }
 
-        public async Task<CourseInstanceViewModel> NextQuestion(int courseInstanceId)
+        public async Task<CourseInstanceDto> NextQuestion(int courseInstanceId)
         {
             CourseInstance courseInstanceEntity = _context.Find<CourseInstance>(courseInstanceId);          
-            CourseInstanceViewModel result = await GetNextQuestion(courseInstanceEntity);          
+            CourseInstanceDto result = await GetNextQuestion(courseInstanceEntity);          
             await _context.SaveChangesCranAsync(_currentPrincipal);
             return result;
         }
 
-        public async Task<QuestionToAskViewModel> GetQuestionToAskAsync(int courseInstanceQuestionId)
+        public async Task<QuestionToAskDto> GetQuestionToAskAsync(int courseInstanceQuestionId)
         {
-            QuestionToAskViewModel questionToAskVm = new QuestionToAskViewModel();
+            QuestionToAskDto questionToAskVm = new QuestionToAskDto();
             CourseInstanceQuestion questionInstanceEntity = await _context.FindAsync<CourseInstanceQuestion>(courseInstanceQuestionId);
             
             Question questionEntity = await _context.FindAsync<Question>(questionInstanceEntity.IdQuestion);
@@ -320,7 +316,7 @@ namespace cran.Services
                 .Include(x => x.QuestionOption))
             {
 
-                questionToAskVm.Options.Add(new QuestionOptionToAskViewModel
+                questionToAskVm.Options.Add(new QuestionOptionToAskDto
                 {
                     CourseInstanceQuestionOptionId = o.Id,
                     Text = o.QuestionOption.Text,
@@ -331,7 +327,7 @@ namespace cran.Services
             return questionToAskVm;
         }
 
-        public async Task<QuestionViewModel> AnswerQuestionAndGetSolutionAsync(QuestionAnswerViewModel answer)
+        public async Task<QuestionDto> AnswerQuestionAndGetSolutionAsync(QuestionAnswerDto answer)
         {
             int questionId = await _context.CourseInstancesQuestion.Where(x => x.Id == answer.IdCourseInstanceQuestion)
                 .Select(x => x.Question.Id).SingleAsync();
@@ -343,7 +339,7 @@ namespace cran.Services
             return await GetQuestionAsync(questionId);
         }
 
-        public async Task<QuestionResultViewModel> AnswerQuestionAndGetNextQuestionIdAsync(QuestionAnswerViewModel answer)
+        public async Task<QuestionResultDto> AnswerQuestionAndGetNextQuestionAsync(QuestionAnswerDto answer)
         {
             CourseInstanceQuestion courseInstanceQuestionEntity = await _context.FindAsync<CourseInstanceQuestion>(answer.IdCourseInstanceQuestion);
             CourseInstance courseInstanceEntity = await _context.FindAsync<CourseInstance>(courseInstanceQuestionEntity.IdCourseInstance);
@@ -369,7 +365,7 @@ namespace cran.Services
 
             //Nächste Frage vorbereiten.
             var sdfsd = await this.GetNextQuestion(courseInstanceEntity);
-            QuestionResultViewModel result = new QuestionResultViewModel();
+            QuestionResultDto result = new QuestionResultDto();
             result.IdCourseInstanceQuestionNext = sdfsd.IdCourseInstanceQuestion;
             result.AnsweredCorrectly = courseInstanceQuestionEntity.Correct;
             return result;

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace cran.Model.ViewModel
+namespace cran.Model.Dto
 {
-    public class CourseInstanceViewModel
+    public class CourseInstanceDto
     {
         public int IdCourse { get; set; }
         public int IdCourseInstance { get; set; }

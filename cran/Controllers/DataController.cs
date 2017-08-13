@@ -10,6 +10,7 @@ using cran.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 using cran.Services;
 using cran.Filters;
+using cran.Model.Dto;
 
 namespace cran.Controllers
 {
@@ -33,7 +34,7 @@ namespace cran.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("[action]")]
-        public async Task<CoursesListViewModel> Courses()
+        public async Task<CoursesListDto> Courses()
         {
             return await _craninumService.CoursesAsync();
         }
@@ -44,7 +45,7 @@ namespace cran.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("[action]/{id?}")]
-        public async Task<QuestionViewModel> Question(int id)
+        public async Task<QuestionDto> Question(int id)
         {
             return await _craninumService.GetQuestionAsync(id);
         }
@@ -56,7 +57,7 @@ namespace cran.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("[action]/{id}")]
-        public async Task<QuestionToAskViewModel> QuestionToAsk(int id)
+        public async Task<QuestionToAskDto> QuestionToAsk(int id)
         {
             return await _craninumService.GetQuestionToAskAsync(id);
         }
@@ -67,7 +68,7 @@ namespace cran.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost("[action]")]
-        public async Task<QuestionViewModel> AnswerQuestionAndGetSolution([FromBody] QuestionAnswerViewModel vm)
+        public async Task<QuestionDto> AnswerQuestionAndGetSolution([FromBody] QuestionAnswerDto vm)
         {
             return await _craninumService.AnswerQuestionAndGetSolutionAsync(vm);
         }
@@ -78,7 +79,7 @@ namespace cran.Controllers
         /// <param name="searchTerm"></param>
         /// <returns></returns>
         [HttpGet("[action]")]
-        public async Task<IList<TagViewModel>> FindTags(string searchTerm)
+        public async Task<IList<TagDto>> FindTags(string searchTerm)
         {
             return await _craninumService.FindTagsAsync(searchTerm);
         }
@@ -90,9 +91,16 @@ namespace cran.Controllers
         /// <returns></returns>
         [HttpPost("[action]")]
         [ValidateModel]
-        public async Task<InsertActionViewModel> AddQuestion([FromBody] QuestionViewModel vm)
+        public async Task<InsertActionDto> AddQuestion([FromBody] QuestionDto vm)
         {
-            return await _craninumService.AddQuestionAsync(vm); 
+
+            int id = await _craninumService.AddQuestionAsync(vm);
+
+            return new InsertActionDto
+            {
+                NewId = id,
+                Status = "Ok",
+            };
         }
 
         /// <summary>
@@ -102,13 +110,13 @@ namespace cran.Controllers
         /// <returns></returns>
         [HttpPost("[action]")]
         [ValidateModel]
-        public async Task<QuestionResultViewModel> AnswerQuestionAndGetNextQuestion([FromBody] QuestionAnswerViewModel vm)
+        public async Task<QuestionResultDto> AnswerQuestion([FromBody] QuestionAnswerDto vm)
         {
-            return await _craninumService.AnswerQuestionAndGetNextQuestionIdAsync(vm);            
+            return await _craninumService.AnswerQuestionAndGetNextQuestionAsync(vm);            
         }
 
         [HttpPost("[action]")]
-        public async Task<CourseInstanceViewModel> StartCourse([FromBody] StartCourseViewModel vm)
+        public async Task<CourseInstanceDto> StartCourse([FromBody] StartCourseViewModel vm)
         {
             return await _craninumService.StartCourseAsync(vm.IdCourse);
         }
@@ -120,7 +128,7 @@ namespace cran.Controllers
         /// <returns></returns>
         [HttpPost("[action]")]
         [ValidateModel]
-        public async Task SaveQuestion([FromBody] QuestionViewModel vm)
+        public async Task SaveQuestion([FromBody] QuestionDto vm)
         {
             await _craninumService.SaveQuestionAsync(vm);
         }

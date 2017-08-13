@@ -1,4 +1,5 @@
 using cran.Data;
+using cran.Model.Dto;
 using cran.Model.ViewModel;
 using cran.Services;
 using Microsoft.EntityFrameworkCore;
@@ -94,7 +95,7 @@ namespace cran.tests
 
             var result4 = await service.GetQuestionToAskAsync(result.IdCourseInstanceQuestion);
 
-            QuestionAnswerViewModel answer = new QuestionAnswerViewModel();
+            QuestionAnswerDto answer = new QuestionAnswerDto();
             answer.IdCourseInstanceQuestion = result.IdCourseInstanceQuestion;
             answer.Answers.Add(true);
             answer.Answers.Add(false);
@@ -102,7 +103,7 @@ namespace cran.tests
             var result5 = await service.AnswerQuestionAndGetSolutionAsync(answer);
 
             
-            var result6 = await service.AnswerQuestionAndGetNextQuestionIdAsync(answer);
+            var result6 = await service.AnswerQuestionAndGetNextQuestionAsync(answer);
         }   
     }
 }
