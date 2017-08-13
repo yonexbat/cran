@@ -9,5 +9,6 @@ namespace cran.Model.Dto
     {
         public string Title { get; set; }
         public int Id { get; set; }
+        public IList<TagDto> Tags { get; set; } = new List<TagDto>();
     }
 }

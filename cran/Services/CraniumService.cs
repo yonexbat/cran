@@ -383,11 +383,31 @@ namespace cran.Services
 
         public async Task<IList<QuestionListEntryDto>> GetMyQuestionsAsync()
         {
-            string userId = GetUserId();           
-            return await _context.Questions.Where(q => q.User.UserId == userId)
+            string userId = GetUserId(); 
+                        
+
+            var result =  await _context.Questions.Where(q => q.User.UserId == userId)
                 .OrderBy(q => q.Title)
                 .Select(q => new QuestionListEntryDto { Title = q.Title, Id = q.Id })
-                .ToListAsync();                
+                .ToListAsync();
+
+            IQueryable<int> questionIds = _context.Questions.Where(q => q.User.UserId == userId).Select(q => q.Id);
+
+            var relTags = await _context.RelQuestionTags.Where(rel => questionIds.Contains(rel.Question.Id))
+                .Select(rel => new {TagId = rel.Tag.Id, QuestionId = rel.Question.Id, TagName = rel.Tag.Name })
+                .ToListAsync();
+
+            foreach(var relTag in relTags)
+            {
+                var dto = result.Where(x => x.Id == relTag.QuestionId).Single();
+                dto.Tags.Add(new TagDto {
+                    Id = relTag.TagId,
+                    Name = relTag.TagName,
+                });
+                
+            }
+            
+            return result;
         }
     }
 }

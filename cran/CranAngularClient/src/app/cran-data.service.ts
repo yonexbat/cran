@@ -142,10 +142,10 @@ export class CranDataServiceMock implements ICranDataService {
 
   getMyQuestions(): Promise<QuestionListEntry[]> {
     const myList: QuestionListEntry[]  = [
-      {id: 2, title: 'Hello'},
-      {id: 2, title: 'World'},
-      {id: 2, title: 'yep'},
-      {id: 2, title: 'zep'},
+      {id: 2, title: 'Hello', tags : [{id : 23, description : '', name : 'MyTag'}]},
+      {id: 2, title: 'World', tags : []},
+      {id: 2, title: 'yep', tags : []},
+      {id: 2, title: 'zep', tags : []},
     ];
     return Promise.resolve(myList);
   }
