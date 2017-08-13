@@ -10,7 +10,7 @@ namespace cran.Services
 {
     public interface ICraniumService
     {
-        Task<InsertActionDto> AddQuestionAsync(QuestionDto question);
+        Task<InsertActionDto> InsertQuestionAsync(QuestionDto question);
 
         Task SaveQuestionAsync(QuestionDto question);
 

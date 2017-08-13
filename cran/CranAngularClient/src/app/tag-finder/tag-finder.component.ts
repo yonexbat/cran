@@ -37,7 +37,7 @@ export class TagFinderComponent implements OnInit {
       .distinctUntilChanged()   // ignore if next search term is same as previous
       .switchMap(term => term   // switch to new observable each time the term changes
         // return the http search observable
-        ? this.cranDataService.getTags(term)
+        ? this.cranDataService.findTags(term)
         // or the observable of empty heroes if there was no search term
         : Observable.of<Tag[]>([]))
       .catch(error => {

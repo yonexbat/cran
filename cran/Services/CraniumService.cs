@@ -25,7 +25,7 @@ namespace cran.Services
             _currentPrincipal = principal;
         }
 
-        public async Task<InsertActionDto> AddQuestionAsync(QuestionDto questionVm)
+        public async Task<InsertActionDto> InsertQuestionAsync(QuestionDto questionVm)
         {
             await _dbLogService.LogMessageAsync("Adding question");
 

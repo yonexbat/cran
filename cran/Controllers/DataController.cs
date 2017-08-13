@@ -30,11 +30,11 @@ namespace cran.Controllers
 
 
         /// <summary>
-        /// URL: http://localhost:5000/api/Data/Courses
+        /// 
         /// </summary>
         /// <returns></returns>
         [HttpGet("[action]")]
-        public async Task<CoursesListDto> Courses()
+        public async Task<CoursesListDto> GetCourses()
         {
             return await _craninumService.CoursesAsync();
         }
@@ -62,12 +62,12 @@ namespace cran.Controllers
         }
 
         /// <summary>
-        /// URL: http://localhost:5000/api/Data/Question/3
+        /// URL: http://localhost:5000/api/Data/GetQuestion/3
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("[action]/{id?}")]
-        public async Task<QuestionDto> Question(int id)
+        [HttpGet("[action]/{id}")]
+        public async Task<QuestionDto> GetQuestion(int id)
         {
             return await _craninumService.GetQuestionAsync(id);
         }
@@ -79,7 +79,7 @@ namespace cran.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("[action]/{id}")]
-        public async Task<QuestionToAskDto> QuestionToAsk(int id)
+        public async Task<QuestionToAskDto> GetQuestionToAsk(int id)
         {
             return await _craninumService.GetQuestionToAskAsync(id);
         }
@@ -107,15 +107,15 @@ namespace cran.Controllers
         }
 
         /// <summary>
-        /// URL: http://localhost:5000/api/Data/AddQuestion
+        /// URL: http://localhost:5000/api/Data/InsertQuestion
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
         [HttpPost("[action]")]
         [ValidateModel]
-        public async Task<InsertActionDto> AddQuestion([FromBody] QuestionDto vm)
+        public async Task<InsertActionDto> InsertQuestion([FromBody] QuestionDto vm)
         {
-            return await _craninumService.AddQuestionAsync(vm);
+            return await _craninumService.InsertQuestionAsync(vm);
         }
 
         /// <summary>
@@ -137,13 +137,13 @@ namespace cran.Controllers
         }
 
         /// <summary>
-        /// URL: http://localhost:5000/api/Data/SaveQuestion
+        ///
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
         [HttpPost("[action]")]
         [ValidateModel]
-        public async Task SaveQuestion([FromBody] QuestionDto vm)
+        public async Task UpdateQuestion([FromBody] QuestionDto vm)
         {
             await _craninumService.SaveQuestionAsync(vm);
         }

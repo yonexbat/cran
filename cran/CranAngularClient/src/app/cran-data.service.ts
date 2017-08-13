@@ -61,7 +61,7 @@ export class CranDataService implements ICranDataService {
   }
 
   getQuestionToAsk(id: number): Promise<QuestionToAsk> {
-    return this.http.get('/api/Data/QuestionToAsk/' + id)
+    return this.http.get('/api/Data/GetQuestionToAsk/' + id)
                     .toPromise()
                     .then(  response => {
                       const result = response.json() as QuestionToAsk;
@@ -82,7 +82,7 @@ export class CranDataService implements ICranDataService {
                 .catch(this.handleError);
   }
 
-  getTags(name: string): Promise<Tag[]> {
+  findTags(name: string): Promise<Tag[]> {
    const params: RequestOptionsArgs = {params: {searchTerm: name}};
    return this.http.get('/api/Data/FindTags', params)
                .toPromise()
@@ -94,7 +94,7 @@ export class CranDataService implements ICranDataService {
   }
 
   public getCourses(): Promise<Courses> {
-    return this.http.get('/api/Data/Courses')
+    return this.http.get('/api/Data/GetCourses')
                .toPromise()
                .then(response => {
                  const data = response.json() as Courses;
@@ -104,7 +104,7 @@ export class CranDataService implements ICranDataService {
   }
 
   public insertQuestion(question: Question): Promise<number> {
-    return this.http.post('/api/Data/AddQuestion', question)
+    return this.http.post('/api/Data/InsertQuestion', question)
                     .toPromise()
                     .then(  data => {
                       const result = data.json();
@@ -114,7 +114,7 @@ export class CranDataService implements ICranDataService {
   }
 
   public updateQuestion(question: Question): Promise<any> {
-    return this.http.post('/api/Data/SaveQuestion', question)
+    return this.http.post('/api/Data/UpdateQuestion', question)
                     .toPromise()
                     .then(  data => {
                       return 'Ok';
@@ -123,7 +123,7 @@ export class CranDataService implements ICranDataService {
   }
 
   public getQuestion(id: number): Promise<Question> {
-    return this.http.get('/api/Data/Question/' + id)
+    return this.http.get('/api/Data/GetQuestion/' + id)
                     .toPromise()
                     .then(  response => {
                       const result = response.json() as Question;
@@ -189,7 +189,7 @@ export class CranDataServiceMock implements ICranDataService {
     return Promise.resolve(result);
   }
 
-  getTags(name: string): Promise<Tag[]> {
+  findTags(name: string): Promise<Tag[]> {
     const tags: Tag[] = [];
     tags.push({
       id : 1,
