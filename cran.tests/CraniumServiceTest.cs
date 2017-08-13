@@ -1,4 +1,5 @@
 using cran.Data;
+using cran.Model.ViewModel;
 using cran.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -91,9 +92,17 @@ namespace cran.tests
             Assert.True(result3.NumQuestionsAlreadyAsked == 2);
             Assert.True(result3.NumQuestionsTotal > 0);
 
-            var result4 = await service.QuestionToAsk(result.IdCourseInstanceQuestion);
+            var result4 = await service.GetQuestionToAskAsync(result.IdCourseInstanceQuestion);
 
-            var result5 = await service.GetSolutionToAsnwer(result.IdCourseInstanceQuestion);
-        }
+            QuestionAnswerViewModel answer = new QuestionAnswerViewModel();
+            answer.IdCourseInstanceQuestion = result.IdCourseInstanceQuestion;
+            answer.Answers.Add(true);
+            answer.Answers.Add(false);
+
+            var result5 = await service.AnswerQuestionAndGetSolutionAsync(answer);
+
+            
+            var result6 = await service.AnswerQuestionAndGetNextQuestionIdAsync(answer);
+        }   
     }
 }

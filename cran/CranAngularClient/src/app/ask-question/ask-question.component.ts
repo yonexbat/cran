@@ -26,7 +26,7 @@ export class AskQuestionComponent implements OnInit {
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
     private router: Router,
-    private activeRoute: ActivatedRoute) { 
+    private activeRoute: ActivatedRoute) {
 
     this.activeRoute.paramMap.subscribe((params: ParamMap)  => {
       const id = params.get('id');
@@ -41,34 +41,40 @@ export class AskQuestionComponent implements OnInit {
 
   }
 
-  public check()
-  {
-    this.cranDataServiceService.getSolutionToAsnwer(this.questionToAsk.courseInstanceQuestionId)
+  public check() {
+    const answer: QuestionAnswer = this.getAnswer();
+    this.cranDataServiceService.answerQuestionAndGetSolution(answer)
       .then((question: Question) => {
-        
-        for(let i=0; i<question.options.length; i++) {
+        for (let i = 0; i < question.options.length; i++) {
           this.questionToAsk.options[i].isTrue = question.options[i].isTrue;
         }
-        
-        this.checkShown = true;     
-      })
-      .catch(reason => this.statusMessage.showError(reason));    
-  }
-
-  public nextQuestion()
-  {
-      const answer : QuestionAnswer = new QuestionAnswer();
-      answer.courseInstanceQuestionId = this.questionToAsk.courseInstanceQuestionId;
-      this.questionToAsk.options.forEach(option => {
-        answer.answers.push(option.isChecked);  
-      });
-      this.cranDataServiceService.answerQuestion(answer)
-      .then((data) => {
-        this.router.navigate(['/askquestion', data.courseInstanceQuestionIdNext]); 
+        this.checkShown = true;
       })
       .catch(reason => this.statusMessage.showError(reason));
   }
 
+  public nextQuestion() {
+      const answer: QuestionAnswer = this.getAnswer();
+      this.cranDataServiceService.answerQuestionAndGetNextQuestion(answer)
+      .then((data) => {
+        this.checkShown = false;
+        if (data.idCourseInstanceQuestionNext > 0) {
+            this.router.navigate(['/askquestion', data.idCourseInstanceQuestionNext]);
+        } else {
+          this.router.navigate(['/list']);
+        }
+      })
+      .catch(reason => this.statusMessage.showError(reason));
+  }
+
+  private getAnswer(): QuestionAnswer {
+    const answer: QuestionAnswer = new QuestionAnswer();
+    answer.idCourseInstanceQuestion = this.questionToAsk.idCourseInstanceQuestion;
+    this.questionToAsk.options.forEach(option => {
+      answer.answers.push(option.isChecked);
+    });
+    return answer;
+  }
 
   private handleRouteChanged(id: number) {
     this.cranDataServiceService.getQuestionToAsk(id)

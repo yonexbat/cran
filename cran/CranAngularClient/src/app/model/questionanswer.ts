@@ -1,4 +1,4 @@
 export class QuestionAnswer {
-    public courseInstanceQuestionId: number;
+    public idCourseInstanceQuestion: number;
     public answers: boolean[] = [];
 }

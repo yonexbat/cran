@@ -18,16 +18,26 @@ export let CRAN_SERVICE_TOKEN = new InjectionToken<ICranDataService>('ICranDataS
 
 @Injectable()
 export class CranDataService implements ICranDataService {
- 
+
   constructor(private http: Http) {
 
   }
 
-  getSolutionToAsnwer(id: number): Promise<Question> {
-     return this.http.get('/api/Data/GetSolutionToAsnwer/' + id)
+  answerQuestionAndGetSolution(answer: QuestionAnswer): Promise<Question> {
+     return this.http.post('/api/Data/AnswerQuestionAndGetSolution', answer)
                     .toPromise()
                     .then(  response => {
                       const result = response.json() as Question;
+                      return result;
+                    })
+                    .catch(this.handleError);
+  }
+
+  answerQuestionAndGetNextQuestion(answer: QuestionAnswer): Promise<QuestionResult> {
+    return this.http.post('/api/Data/AnswerQuestionAndGetNextQuestion', answer)
+                    .toPromise()
+                    .then(  data => {
+                      const result = data.json() as QuestionResult;
                       return result;
                     })
                     .catch(this.handleError);
@@ -41,10 +51,6 @@ export class CranDataService implements ICranDataService {
                       return result;
                     })
                     .catch(this.handleError);
-  }
-
-  answerQuestion(answer: QuestionAnswer): Promise<QuestionResult> {
-    throw new Error("Method not implemented.");
   }
 
   startCourse(courseId: number): Promise<CourseInstance> {
@@ -120,15 +126,15 @@ export class CranDataService implements ICranDataService {
 
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
-  
-  getSolutionToAsnwer(id: number): Promise<Question> {
-    return this.getQuestion(id);
+
+  answerQuestionAndGetSolution(answer: QuestionAnswer): Promise<Question> {
+    return this.getQuestion(4);
   }
-  answerQuestion(answer: QuestionAnswer): Promise<QuestionResult> {
+
+  answerQuestionAndGetNextQuestion(answer: QuestionAnswer): Promise<QuestionResult> {
     const questionResult = new QuestionResult();
-    questionResult.courseInstanceQuestionIdNext = 2432;
-    questionResult.isTrueList = [true, true, false, false];
-    return Promise.resolve(questionResult);   
+    questionResult.idCourseInstanceQuestionNext = 2432;
+    return Promise.resolve(questionResult);
   }
 
   getQuestionToAsk(id: number): Promise<QuestionToAsk> {

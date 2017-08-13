@@ -58,7 +58,7 @@ namespace cran.Controllers
         [HttpGet("[action]/{id}")]
         public async Task<QuestionToAskViewModel> QuestionToAsk(int id)
         {
-            return await _craninumService.QuestionToAsk(id);
+            return await _craninumService.GetQuestionToAskAsync(id);
         }
 
         /// <summary>
@@ -66,10 +66,10 @@ namespace cran.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("[action]/{id}")]
-        public async Task<QuestionViewModel> GetSolutionToAsnwer(int id)
+        [HttpPost("[action]")]
+        public async Task<QuestionViewModel> AnswerQuestionAndGetSolution([FromBody] QuestionAnswerViewModel vm)
         {
-            return await _craninumService.GetSolutionToAsnwer(id);
+            return await _craninumService.AnswerQuestionAndGetSolutionAsync(vm);
         }
 
         /// <summary>
@@ -92,14 +92,19 @@ namespace cran.Controllers
         [ValidateModel]
         public async Task<InsertActionViewModel> AddQuestion([FromBody] QuestionViewModel vm)
         {
+            return await _craninumService.AddQuestionAsync(vm); 
+        }
 
-            int id = await _craninumService.AddQuestionAsync(vm);
-
-            return new InsertActionViewModel
-            {
-                NewId = id,
-                Status = "Ok",
-            };
+        /// <summary>
+        /// URL: http://localhost:5000/api/Data/AnswerQuestion
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
+        [HttpPost("[action]")]
+        [ValidateModel]
+        public async Task<QuestionResultViewModel> AnswerQuestionAndGetNextQuestion([FromBody] QuestionAnswerViewModel vm)
+        {
+            return await _craninumService.AnswerQuestionAndGetNextQuestionIdAsync(vm);            
         }
 
         [HttpPost("[action]")]
@@ -117,8 +122,7 @@ namespace cran.Controllers
         [ValidateModel]
         public async Task SaveQuestion([FromBody] QuestionViewModel vm)
         {
-
-            await _craninumService.UpdateQuestionAsync(vm);
+            await _craninumService.SaveQuestionAsync(vm);
         }
 
 

@@ -25,7 +25,7 @@ namespace cran.Services
             _currentPrincipal = principal;
         }
 
-        public async Task<int> AddQuestionAsync(QuestionViewModel questionVm)
+        public async Task<InsertActionViewModel> AddQuestionAsync(QuestionViewModel questionVm)
         {
             await _dbLogService.LogMessageAsync("Adding question");
             Question questionEntity = new Question();
@@ -34,7 +34,12 @@ namespace cran.Services
             _context.Questions.Add(questionEntity);           
 
             await _context.SaveChangesCranAsync(_currentPrincipal);
-            return questionEntity.Id;
+
+            return new InsertActionViewModel
+            {
+                NewId = questionEntity.Id,
+                Status = "Ok",
+            };
         }
 
         public async Task<CoursesListViewModel> CoursesAsync()
@@ -125,7 +130,7 @@ namespace cran.Services
 
  
 
-        public async Task UpdateQuestionAsync(QuestionViewModel questionVm)
+        public async Task SaveQuestionAsync(QuestionViewModel questionVm)
         {
             Question questionEntity = await _context.FindAsync<Question>(questionVm.Id);         
             foreach(QuestionOption optionEntity in _context.QuestionOptions.Where(x => x.IdQuestion == questionEntity.Id))
@@ -300,14 +305,14 @@ namespace cran.Services
             return result;
         }
 
-        public async Task<QuestionToAskViewModel> QuestionToAsk(int courseInstanceQuestionId)
+        public async Task<QuestionToAskViewModel> GetQuestionToAskAsync(int courseInstanceQuestionId)
         {
             QuestionToAskViewModel questionToAskVm = new QuestionToAskViewModel();
             CourseInstanceQuestion questionInstanceEntity = await _context.FindAsync<CourseInstanceQuestion>(courseInstanceQuestionId);
             
             Question questionEntity = await _context.FindAsync<Question>(questionInstanceEntity.IdQuestion);
 
-            questionToAskVm.CourseInstanceQuestionId = courseInstanceQuestionId;
+            questionToAskVm.IdCourseInstanceQuestion = courseInstanceQuestionId;
 
             questionToAskVm.Text = questionEntity.Text;
 
@@ -326,12 +331,48 @@ namespace cran.Services
             return questionToAskVm;
         }
 
-        public async Task<QuestionViewModel> GetSolutionToAsnwer(int courseInstanceQuestionId)
+        public async Task<QuestionViewModel> AnswerQuestionAndGetSolutionAsync(QuestionAnswerViewModel answer)
         {
-            int questionId = await _context.CourseInstancesQuestion.Where(x => x.Id == courseInstanceQuestionId)
+            int questionId = await _context.CourseInstancesQuestion.Where(x => x.Id == answer.IdCourseInstanceQuestion)
                 .Select(x => x.Question.Id).SingleAsync();
 
-            return await this.GetQuestionAsync(questionId);
+            CourseInstanceQuestion courseInstanceQuestion = await _context.FindAsync<CourseInstanceQuestion>(answer.IdCourseInstanceQuestion);
+            courseInstanceQuestion.Correct = false;
+            await _context.SaveChangesCranAsync(_currentPrincipal);
+            
+            return await GetQuestionAsync(questionId);
+        }
+
+        public async Task<QuestionResultViewModel> AnswerQuestionAndGetNextQuestionIdAsync(QuestionAnswerViewModel answer)
+        {
+            CourseInstanceQuestion courseInstanceQuestionEntity = await _context.FindAsync<CourseInstanceQuestion>(answer.IdCourseInstanceQuestion);
+            CourseInstance courseInstanceEntity = await _context.FindAsync<CourseInstance>(courseInstanceQuestionEntity.IdCourseInstance);
+
+            //Antworten abspeichern
+            IList<CourseInstanceQuestionOption> options = await _context.CourseInstancesQuestionOption
+                .Where(x => x.CourseInstanceQuestion.Id == courseInstanceQuestionEntity.Id)
+                .OrderBy(x => x.Id)
+                .Include(x => x.QuestionOption).ToListAsync();
+            if(options.Count != answer.Answers.Count)
+            {
+                throw new InvalidOperationException("something wrong");
+            }
+            for(int i =0; i< options.Count; i++)
+            {
+                options[i].Checked = answer.Answers[i];
+                options[i].Correct = options[i].QuestionOption.IsTrue == answer.Answers[i];
+            }
+            courseInstanceQuestionEntity.Correct = options.All(x => x.Correct);
+            courseInstanceQuestionEntity.AnsweredAt = DateTime.Now;
+
+            await _context.SaveChangesCranAsync(_currentPrincipal);
+
+            //Nächste Frage vorbereiten.
+            var sdfsd = await this.GetNextQuestion(courseInstanceEntity);
+            QuestionResultViewModel result = new QuestionResultViewModel();
+            result.IdCourseInstanceQuestionNext = sdfsd.IdCourseInstanceQuestion;
+            result.AnsweredCorrectly = courseInstanceQuestionEntity.Correct;
+            return result;
         }
     }
 }

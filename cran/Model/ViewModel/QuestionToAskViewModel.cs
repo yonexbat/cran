@@ -7,7 +7,7 @@ namespace cran.Model.ViewModel
 {
     public class QuestionToAskViewModel
     {
-        public int CourseInstanceQuestionId { get; set; }
+        public int IdCourseInstanceQuestion { get; set; }
         public string Text { get; set; }
         public IList<QuestionOptionToAskViewModel> Options = new List<QuestionOptionToAskViewModel>();
     }

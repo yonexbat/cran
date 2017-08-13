@@ -9,9 +9,9 @@ namespace cran.Services
 {
     public interface ICraniumService
     {
-        Task<int> AddQuestionAsync(QuestionViewModel question);
+        Task<InsertActionViewModel> AddQuestionAsync(QuestionViewModel question);
 
-        Task UpdateQuestionAsync(QuestionViewModel question);
+        Task SaveQuestionAsync(QuestionViewModel question);
 
         Task<CoursesListViewModel> CoursesAsync();
 
@@ -23,9 +23,10 @@ namespace cran.Services
 
         Task<CourseInstanceViewModel> NextQuestion(int courseInstanceId);
 
-        Task<QuestionToAskViewModel> QuestionToAsk(int courseInstanceQuestionId);
+        Task<QuestionToAskViewModel> GetQuestionToAskAsync(int courseInstanceQuestionId);
 
-        Task<QuestionViewModel> GetSolutionToAsnwer(int courseInstanceQuestionId);
+        Task<QuestionViewModel> AnswerQuestionAndGetSolutionAsync(QuestionAnswerViewModel answer);
 
+        Task<QuestionResultViewModel> AnswerQuestionAndGetNextQuestionIdAsync(QuestionAnswerViewModel answer);
     }
 }
