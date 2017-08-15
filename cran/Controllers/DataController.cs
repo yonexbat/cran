@@ -141,6 +141,12 @@ namespace cran.Controllers
             await _craninumService.UpdateQuestionAsync(vm);
         }
 
+        [HttpGet("[action]/{id}")]
+        public async Task<ResultDto> GetCourseResult(int id)
+        {
+            return await _craninumService.GetCourseResult(id);
+        }
+
 
     }
 }

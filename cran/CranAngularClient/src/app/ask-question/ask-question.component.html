@@ -1,6 +1,8 @@
 <div class="container">
   <form (ngSubmit)="onSubmit()" #questionForm="ngForm">
 
+    <h4>Frage {{questionToAsk.numQuestionsAsked}} von {{questionToAsk.numQuestions}}</h4>
+
     <!-- question text -->
     <div class="row">
       <div class="col-md-12">

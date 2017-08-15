@@ -211,6 +211,26 @@ namespace cran.Services
 
         }
 
+        private IQueryable<int> PossibleQuestionsQuery(CourseInstance courseInstanceEntity)
+        {
+            //Get Tags of course
+            IQueryable<int> tagIds = _context.RelCourseTags.Where(x => x.Course.Id == courseInstanceEntity.IdCourse)
+                .Select(x => x.Tag.Id);
+
+            //Questions already asked
+            IQueryable<int> questionIdsAlreadyAsked = _context.CourseInstancesQuestion
+                .Where(x => x.CourseInstance.Id == courseInstanceEntity.Id)
+                .Select(x => x.Question.Id);
+
+            //Possible Quetions Query
+            IQueryable<int> questionIds = _context.RelQuestionTags
+                .Where(x => tagIds.Contains(x.Tag.Id))
+                .Where(x => !questionIdsAlreadyAsked.Contains(x.Question.Id))
+                .Select(x => x.Question.Id);
+
+            return questionIds;
+        }
+
         private async Task<CourseInstanceDto> GetNextQuestion(CourseInstance courseInstanceEntity)
         {
             CourseInstanceDto result = new CourseInstanceDto();
@@ -224,20 +244,8 @@ namespace cran.Services
 
             result.NumQuestionsTotal = courseEntity.NumQuestionsToAsk;
 
-            //Get Tags of course
-            IQueryable<int> tagIds =  _context.RelCourseTags.Where(x => x.Course.Id == courseInstanceEntity.IdCourse)
-                .Select(x => x.Tag.Id);
-
-            //Questions already asked
-            IQueryable<int> questionIdsAlreadyAsked = _context.CourseInstancesQuestion
-                .Where(x => x.CourseInstance.Id == courseInstanceEntity.Id)
-                .Select(x => x.Question.Id);
-
             //Possible Quetions Query
-            IQueryable<int> questionIds =_context.RelQuestionTags
-                .Where(x => tagIds.Contains(x.Tag.Id))
-                .Where(x => !questionIdsAlreadyAsked.Contains(x.Question.Id))
-                .Select(x => x.Question.Id);            
+            IQueryable<int> questionIds = PossibleQuestionsQuery(courseInstanceEntity);
 
             int count = await questionIds.CountAsync();
             if(count == 0)
@@ -313,14 +321,20 @@ namespace cran.Services
         {
             QuestionToAskDto questionToAskVm = new QuestionToAskDto();
             CourseInstanceQuestion questionInstanceEntity = await _context.FindAsync<CourseInstanceQuestion>(courseInstanceQuestionId);
-            
+            CourseInstance courseInstanceEntity = await _context.FindAsync<CourseInstance>(questionInstanceEntity.IdCourseInstance);
             Question questionEntity = await _context.FindAsync<Question>(questionInstanceEntity.IdQuestion);
+            Course courseEntity = await _context.FindAsync<Course>(courseInstanceEntity.IdCourse);
 
-            questionToAskVm.IdCourseInstanceQuestion = courseInstanceQuestionId;
+            questionToAskVm.IdCourseInstanceQuestion = courseInstanceQuestionId;        
+            questionToAskVm.Text = questionEntity.Text;            
+            questionToAskVm.NumQuestionsAsked = await _context.CourseInstancesQuestion.Where(x => x.CourseInstance.Id == courseInstanceEntity.Id).CountAsync();
 
-            questionToAskVm.Text = questionEntity.Text;
+            int possibleQuestions = await PossibleQuestionsQuery(courseInstanceEntity).CountAsync();
+            
+            questionToAskVm.NumQuestions = possibleQuestions  <= courseEntity.NumQuestionsToAsk - questionToAskVm.NumQuestionsAsked ? possibleQuestions + questionToAskVm.NumQuestionsAsked : courseEntity.NumQuestionsToAsk;
+            
 
-            foreach(var o in _context.CourseInstancesQuestionOption.Where( x => x.CourseInstanceQuestion.Id == courseInstanceQuestionId)
+            foreach (var o in _context.CourseInstancesQuestionOption.Where( x => x.CourseInstanceQuestion.Id == courseInstanceQuestionId)
                 .Include(x => x.QuestionOption))
             {
 
@@ -464,6 +478,23 @@ namespace cran.Services
 
             _context.Remove(questionEntity);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<ResultDto> GetCourseResult(int idCourseInstance)
+        {
+            ResultDto result = new ResultDto()
+            {
+                IdCourseInstance = idCourseInstance,
+            };
+
+            result.Questions = await _context.CourseInstancesQuestion.Where(x => x.CourseInstance.Id == idCourseInstance)
+                .Include(x => x.Question)
+                .Select(x => new QuestionResultDto {
+                        IdCourseInstanceQuestion = x.Id,
+                        Title = x.Question.Title,
+                    }).ToListAsync();
+
+            return result;
         }
     }
 }

@@ -26,12 +26,14 @@ namespace cran.Services
 
         Task<CourseInstanceDto> StartCourseAsync(int idCourse);
 
-        Task<CourseInstanceDto> NextQuestion(int courseInstanceId);
+        Task<CourseInstanceDto> NextQuestion(int idCourseInstance);
 
-        Task<QuestionToAskDto> GetQuestionToAskAsync(int courseInstanceQuestionId);
+        Task<QuestionToAskDto> GetQuestionToAskAsync(int idCourseInstance);
 
         Task<QuestionDto> AnswerQuestionAndGetSolutionAsync(QuestionAnswerDto answer);
 
         Task<CourseInstanceDto> AnswerQuestionAndGetNextQuestionAsync(QuestionAnswerDto answer);
+
+        Task<ResultDto> GetCourseResult(int idCourseInstance);
     }
 }

@@ -17,6 +17,7 @@ import { TagFinderComponent } from './tag-finder/tag-finder.component';
 import { StatusMessageComponent } from './status-message/status-message.component';
 import { AskQuestionComponent } from './ask-question/ask-question.component';
 import { QuestionListComponent } from './question-list/question-list.component';
+import { ResultListComponent } from './result-list/result-list.component';
 
 function isDevelopment() {
   return window.location && window.location.port && window.location.port === '4200';
@@ -38,6 +39,7 @@ if (isDevelopment()) {
     StatusMessageComponent,
     AskQuestionComponent,
     QuestionListComponent,
+    ResultListComponent,
   ],
   imports: [
     BrowserModule,

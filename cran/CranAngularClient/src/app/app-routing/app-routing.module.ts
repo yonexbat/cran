@@ -7,6 +7,7 @@ import {HomeComponent} from '../home/home.component';
 import {ManageQuestionComponent} from '../manage-question/manage-question.component';
 import {AskQuestionComponent} from '../ask-question/ask-question.component';
 import {QuestionListComponent} from '../question-list/question-list.component';
+import {ResultListComponent} from '../result-list/result-list.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent},
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'addquestion', component:  ManageQuestionComponent},
   { path: 'editquestion/:id', component: ManageQuestionComponent},
   { path: 'askquestion/:id', component:  AskQuestionComponent},
+  { path: 'resultlist/:id', component:  ResultListComponent}
 ];
 
 @NgModule({

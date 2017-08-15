@@ -61,7 +61,7 @@ export class AskQuestionComponent implements OnInit {
         if (data.idCourseInstanceQuestion > 0) {
             this.router.navigate(['/askquestion', data.idCourseInstanceQuestion]);
         } else {
-          this.router.navigate(['/list']);
+          this.router.navigate(['/resultlist', data.idCourseInstance]);
         }
       })
       .catch(reason => this.statusMessage.showError(reason));

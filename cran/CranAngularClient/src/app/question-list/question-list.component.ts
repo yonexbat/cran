@@ -28,8 +28,10 @@ export class QuestionListComponent implements OnInit {
   }
 
   public deleteQuestion(question: QuestionListEntry) {
-    this.cranDataServiceService.deleteQuestion(question.id)
-      .then(nores => this.loadQuestions());
+    if (confirm('Frage löschen?')) {
+      this.cranDataServiceService.deleteQuestion(question.id)
+        .then(nores => this.loadQuestions());
+    }
   }
 
   private loadQuestions() {
