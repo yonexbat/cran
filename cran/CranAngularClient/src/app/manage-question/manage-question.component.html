@@ -34,16 +34,13 @@
           
         <label for="title">Text</label>
 
-        <textarea  class="form-control" id="text"
-                required
-                rows="5" 
-                [(ngModel)]="question.text" name="text"
-                #text="ngModel"></textarea>
+        {{question.text}}
 
-        <div [hidden]="text.valid || text.pristine"
-              class="alert alert-danger">
-            Text ist ein Mussfeld
-        </div>
+        <app-rich-text-box 
+          [elementId]="'my-editor-id'"
+          [content]="question.text"
+          (onEditorKeyup)="onKeyUp($event)"></app-rich-text-box>
+
       </div>
     
     </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, NgZone, } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 import {Question} from '../model/question';
@@ -28,7 +28,8 @@ export class ManageQuestionComponent implements OnInit {
   constructor(
     @Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
     private router: Router,
-    private activeRoute: ActivatedRoute) {
+    private activeRoute: ActivatedRoute,
+    private zone: NgZone) {
 
         this.activeRoute.paramMap.subscribe((params: ParamMap)  => {
           const id = params.get('id');
@@ -95,6 +96,10 @@ export class ManageQuestionComponent implements OnInit {
     const option = new QuestionOption();
     option.isTrue = true;
     this.question.options.push(option);
+  }
+
+  public onKeyUp(input: string) {
+    this.zone.run(() => {this.question.text = input; });
   }
 
 }
