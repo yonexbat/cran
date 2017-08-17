@@ -19,6 +19,7 @@ import { AskQuestionComponent } from './ask-question/ask-question.component';
 import { QuestionListComponent } from './question-list/question-list.component';
 import { ResultListComponent } from './result-list/result-list.component';
 import { RichTextBoxComponent } from './rich-text-box/rich-text-box.component';
+import { SafeHtmlPipe } from './save-html.pipe';
 
 function isDevelopment() {
   return window.location && window.location.port && window.location.port === '4200';
@@ -42,6 +43,7 @@ if (isDevelopment()) {
     QuestionListComponent,
     ResultListComponent,
     RichTextBoxComponent,
+    SafeHtmlPipe,
   ],
   imports: [
     BrowserModule,

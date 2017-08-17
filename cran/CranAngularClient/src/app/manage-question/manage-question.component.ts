@@ -98,8 +98,4 @@ export class ManageQuestionComponent implements OnInit {
     this.question.options.push(option);
   }
 
-  public onKeyUp(input: string) {
-    this.zone.run(() => {this.question.text = input; });
-  }
-
 }

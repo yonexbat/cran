@@ -5,8 +5,8 @@
 
     <!-- question text -->
     <div class="row">
-      <div class="col-md-12">
-        {{questionToAsk.text}}
+      <div class="col-md-12">       
+        <div [innerHtml] = "questionToAsk?.text | safeHtml"></div>
       </div>
     </div>
 
@@ -28,7 +28,7 @@
               #optionChecked="ngModel">
           <span class="glyphicon glyphicon-ok" aria-hidden="true" *ngIf="checkShown && option.isTrue"></span> 
           <span class="glyphicon glyphicon-remove" aria-hidden="true" *ngIf="checkShown && !option.isTrue"></span>                       
-          <span>{{option.text}}</span>
+          <span [innerHtml] = "option?.text | safeHtml"></span>
         </div>     
 
       </div>
@@ -36,8 +36,8 @@
 
     <!-- question explanation -->
     <div class="row" *ngIf="checkShown">
-      <div class="col-md-12">
-        {{questionToAsk.explanation}}
+      <div class="col-md-12">                
+        <div [innerHtml] = "questionToAsk?.explanation | safeHtml"></div> 
       </div>
     </div>
 

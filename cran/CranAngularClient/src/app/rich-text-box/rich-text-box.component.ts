@@ -4,7 +4,8 @@ import { Component,
   EventEmitter,
   Input,
   Output,
-  OnInit, } from '@angular/core';
+  OnInit,
+  NgZone, } from '@angular/core';
 
 @Component({
   selector: 'app-rich-text-box',
@@ -16,10 +17,11 @@ export class RichTextBoxComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input() elementId: string;
   @Input() public content: string;
-  @Output() onEditorKeyup = new EventEmitter<any>();
+  @Input() public required: boolean;
+  @Output() htmlString = new EventEmitter<string>();
   private editor: any;
 
-  constructor() { }
+  constructor(private zone: NgZone) { }
 
   ngOnInit() {
   }
@@ -36,10 +38,8 @@ export class RichTextBoxComponent implements OnInit, AfterViewInit, OnDestroy {
       skin_url: '/assets/skins/lightgray',
       setup: editor => {
         this.editor = editor;
-        editor.on('keyup', () => {
-          const content = editor.getContent();
-          this.onEditorKeyup.emit(content);
-        });
+        editor.on('keyup', () => this.pushContent());
+        editor.on('change', () => this.pushContent());
         editor.on('init', () => {
           if (this.content) {
              this.editor.setContent(this.content);
@@ -47,5 +47,14 @@ export class RichTextBoxComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       },
     });
+  }
+
+  private pushContent() {
+    const content = this.editor.getContent();
+    this.zone.run(() => this.pushContentInZone(content));
+  }
+
+  private pushContentInZone(content: string) {
+    this.htmlString.emit(content);
   }
 }
