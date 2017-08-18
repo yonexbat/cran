@@ -161,11 +161,12 @@ export class CranDataServiceMock implements ICranDataService {
   getCourseResult(courseInstanceId: number): Promise<Result> {
     const result: Result = {
       idCourseInstance: 3,
+      courseTitle: 'Dies und das',
       questions: [
-        {corret: true, idCourseInstanceQuestion: 1, title: 'some title 1'},
-        {corret: true, idCourseInstanceQuestion: 2, title: 'some title 2'},
-        {corret: true, idCourseInstanceQuestion: 3, title: 'some title 3'},
-        {corret: true, idCourseInstanceQuestion: 4, title: 'some title 4'},
+        {correct: true, idCourseInstanceQuestion: 1, title: 'some title 1'},
+        {correct: false, idCourseInstanceQuestion: 2, title: 'some title 2'},
+        {correct: false, idCourseInstanceQuestion: 3, title: 'some title 3'},
+        {correct: true, idCourseInstanceQuestion: 4, title: 'some title 4'},
       ],
     };
     return Promise.resolve(result);

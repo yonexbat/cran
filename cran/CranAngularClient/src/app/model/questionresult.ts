@@ -1,5 +1,5 @@
 export class QuestionResult {
     title: string;
-    corret: boolean;
+    correct: boolean;
     idCourseInstanceQuestion: number;
 }

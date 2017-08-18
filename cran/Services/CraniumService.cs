@@ -517,9 +517,12 @@ namespace cran.Services
 
         public async Task<ResultDto> GetCourseResultAsync(int idCourseInstance)
         {
+            CourseInstance courseInstance = await _context.FindAsync<CourseInstance>(idCourseInstance);
+            Course course = await _context.FindAsync<Course>(courseInstance.IdCourse);
             ResultDto result = new ResultDto()
             {
                 IdCourseInstance = idCourseInstance,
+                CourseTitle = course.Title,
             };
 
             result.Questions = await _context.CourseInstancesQuestion.Where(x => x.CourseInstance.Id == idCourseInstance)
