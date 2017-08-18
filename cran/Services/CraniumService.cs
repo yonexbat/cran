@@ -236,7 +236,7 @@ namespace cran.Services
                 Course = courseEntity,
                 IdCourse = courseId,
             };
-            _context.CourseInstances.Add(courseInstanceEntity);
+            _context.Add(courseInstanceEntity);
 
             await SaveChanges();
             CourseInstanceDto result = await GetNextQuestion(courseInstanceEntity);                        
@@ -272,10 +272,10 @@ namespace cran.Services
             result.IdCourse = courseInstanceEntity.IdCourse;
             result.IdCourseInstance = courseInstanceEntity.Id;
 
-            Course courseEntity = _context.Find<Course>(courseInstanceEntity.IdCourse);
+            Course courseEntity = await _context.FindAsync<Course>(courseInstanceEntity.IdCourse);
 
-            result.NumQuestionsAlreadyAsked = _context.CourseInstancesQuestion.Where(x => x.CourseInstance.Id == courseInstanceEntity.Id)
-                .Count();
+            result.NumQuestionsAlreadyAsked = await _context.CourseInstancesQuestion.Where(x => x.CourseInstance.Id == courseInstanceEntity.Id)
+                .CountAsync();
 
             result.NumQuestionsTotal = courseEntity.NumQuestionsToAsk;
 
@@ -297,7 +297,7 @@ namespace cran.Services
                 }
                 int quesitonNo = random.Next(0, count - 1);
                 int questionId = await questionIds.Skip(quesitonNo).FirstAsync();
-                Question questionEntity = _context.Find<Question>(questionId);
+                Question questionEntity = await _context.FindAsync<Question>(questionId);
 
                 //Course instance question
                 CourseInstanceQuestion courseInstanceQuestionEntity = new CourseInstanceQuestion
@@ -305,20 +305,20 @@ namespace cran.Services
                     CourseInstance = courseInstanceEntity,
                     Question = questionEntity,
                 };
-                _context.CourseInstancesQuestion.Add(courseInstanceQuestionEntity);                
+                _context.Add(courseInstanceQuestionEntity);
 
                 //Course instance question options
-                foreach (QuestionOption questionOptionEntity in _context.QuestionOptions.Where(option => option.Question.Id == questionEntity.Id))
+                IList<QuestionOption> options = await _context.QuestionOptions.Where(option => option.Question.Id == questionEntity.Id).ToListAsync();
+                foreach (QuestionOption questionOptionEntity in options)
                 {
                     CourseInstanceQuestionOption courseInstanceQuestionOptionEntity = new CourseInstanceQuestionOption();
 
                     courseInstanceQuestionOptionEntity.QuestionOption = questionOptionEntity;
-                    //questionOptionEntity.CourseInstancesQuestionOption.Add(courseInstanceQuestionOptionEntity);
 
                     courseInstanceQuestionOptionEntity.CourseInstanceQuestion = courseInstanceQuestionEntity;
                     courseInstanceQuestionEntity.CourseInstancesQuestionOption.Add(courseInstanceQuestionOptionEntity);
 
-                    _context.CourseInstancesQuestionOption.Add(courseInstanceQuestionOptionEntity);
+                    _context.Add(courseInstanceQuestionOptionEntity);
                 }
 
                 await SaveChanges();
