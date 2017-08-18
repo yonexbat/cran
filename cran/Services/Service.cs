@@ -1,8 +1,4 @@
 ﻿using cran.Data;
-using cran.Model.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
@@ -20,6 +16,10 @@ namespace cran.Services
             this._currentPrincipal = principal;
         }
        
+        protected async Task<int> SaveChanges()
+        {
+            return await _context.SaveChangesCranAsync(_currentPrincipal);
+        }
 
         public string GetUserId()
         {

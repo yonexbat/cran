@@ -8,6 +8,7 @@ using cran.Model.Entities;
 using System.Security.Principal;
 using cran.Model.Dto;
 using System.Security;
+using cran.Model;
 
 namespace cran.Services
 {
@@ -26,17 +27,19 @@ namespace cran.Services
             _currentPrincipal = principal;
         }
 
-        public async Task<InsertActionDto> InsertQuestionAsync(QuestionDto questionVm)
+        public async Task<InsertActionDto> InsertQuestionAsync(QuestionDto questionDto)
         {
             await _dbLogService.LogMessageAsync("Adding question");
 
             Question questionEntity = new Question();
+            CopyData(questionDto, questionEntity);
             questionEntity.User = await GetCranUserAsync();
-            await CopyData(questionVm, questionEntity);              
-            
-            _context.Questions.Add(questionEntity);           
+            _context.Add(questionEntity);
+            await SaveChanges();
+            questionDto.Id = questionEntity.Id;
+            await UpdateQuestionAsync(questionDto);
 
-            await _context.SaveChangesCranAsync(_currentPrincipal);
+
             return new InsertActionDto
             {
                 NewId = questionEntity.Id,
@@ -132,62 +135,94 @@ namespace cran.Services
 
  
 
-        public async Task UpdateQuestionAsync(QuestionDto questionVm)
+        public async Task UpdateQuestionAsync(QuestionDto questionDto)
         {
-            await CheckAccessToQuestion(questionVm.Id);
+            await CheckAccessToQuestion(questionDto.Id);
 
-            Question questionEntity = await _context.FindAsync<Question>(questionVm.Id);         
-            foreach(QuestionOption optionEntity in _context.QuestionOptions.Where(x => x.IdQuestion == questionEntity.Id))
-            {                
-                _context.Remove(optionEntity);
-            }
-
-            foreach(RelQuestionTag relTagEntity in _context.RelQuestionTags.Where(x => x.IdQuestion == questionEntity.Id))
+            //set the parent id
+            foreach(var optionDto in questionDto.Options)
             {
-                _context.Remove(relTagEntity);
+                optionDto.IdQuestion = questionDto.Id;
             }
+
+            Question questionEntity = await _context.FindAsync<Question>(questionDto.Id);
+
+            //Options
+            IList<QuestionOption> questionOptionEntities = await _context.QuestionOptions.Where(x => x.IdQuestion == questionEntity.Id).ToListAsync();
+            UpdateRelation(questionDto.Options, questionOptionEntities);
+
+            //Tags
+            IList<RelQuestionTag> relTagEntities = await _context.RelQuestionTags.Where(x => x.IdQuestion == questionEntity.Id).ToListAsync();
+            IList<RelQuestionTagDto> relQuestionTagDtos = questionDto.Tags.Select(x => new RelQuestionTagDto { IdTag = x.Id, IdQuestion = questionDto.Id })
+                .ToList();
+            UpdateRelation(relQuestionTagDtos, relTagEntities);
             
-            await CopyData(questionVm, questionEntity);
+
+            CopyData(questionDto, questionEntity);
             await _context.SaveChangesCranAsync(_currentPrincipal); 
         }
 
-        private async Task CopyData(QuestionDto questionVm, Question questionEntity)
+        private void UpdateRelation<Tdto, Tentity>(IList<Tdto> dtos, IList<Tentity> entitties) 
+            where Tdto: IDto 
+            where Tentity : CranEntity, IIdentifiable, new()
         {
-            questionEntity.Title = questionVm.Title;
-            questionEntity.Text = questionVm.Text;
-            questionEntity.Explanation = questionVm.Explanation;
+            IEnumerable<int> idsEntities = entitties.Select(x => x.Id);
+            IEnumerable<int> idsDtos = dtos.Select(x => x.Id);
+            IEnumerable<IIdentifiable> entitiesToDelete = entitties.Where(x => idsDtos.All(id => id != x.Id)).Cast<IIdentifiable>();
+            IEnumerable<IIdentifiable> entitiesToUpdate = entitties.Where(x => idsDtos.Any(id => id == x.Id)).Cast<IIdentifiable>();
+            IEnumerable<IIdentifiable> dtosToAdd = dtos.Where(x => x.Id <= 0).Cast<IIdentifiable>();
             
-            AddOptions(questionVm, questionEntity);
-            await AddTags(questionVm, questionEntity);
-        }
-
-        private void AddOptions(QuestionDto questionVm, Question questionEntity)
-        {
-            foreach (QuestionOptionDto option in questionVm.Options)
+            //Delete
+            foreach(IIdentifiable entity in entitiesToDelete)
             {
-                QuestionOption optionEntity = new QuestionOption();
-                optionEntity.Question = questionEntity;
-                optionEntity.IsTrue = option.IsTrue;
-                optionEntity.Text = option.Text;
+                _context.Remove(entity);
+            }
 
-                questionEntity.Options.Add(optionEntity);
-                _context.QuestionOptions.Add(optionEntity);
+            //Update
+            foreach(IIdentifiable entity in entitiesToUpdate)
+            {
+                IIdentifiable dto = dtos.Single(x => x.Id == entity.Id);
+                CopyData(dto, entity);
+            }
+            
+            //Add
+            foreach(IIdentifiable dto in dtosToAdd)
+            {
+                Tentity entity = new Tentity();
+                CopyData(dto, entity);
+                _context.Set<Tentity>().Add(entity);
             }
         }
-    
-        private async Task AddTags(QuestionDto questionVm, Question questionEntity)
-        {
-            foreach(TagDto tagVm in questionVm.Tags)
-            {
-                int tagId = tagVm.Id;
-                Tag tag = await _context.FindAsync<Tag>(tagId);
 
-                RelQuestionTag relTag = new RelQuestionTag();
-                relTag.Tag = tag;
-                relTag.Question = questionEntity;
-                questionEntity.RelTags.Add(relTag);
-                _context.RelQuestionTags.Add(relTag);
+        private void CopyData(IIdentifiable dto, IIdentifiable entity)
+        {
+            if(dto is QuestionOptionDto && entity is QuestionOption)
+            {
+                QuestionOptionDto dtoSource = (QuestionOptionDto)dto;
+                QuestionOption entityDestination = (QuestionOption) entity;
+                entityDestination.IsTrue = dtoSource.IsTrue;
+                entityDestination.Text = dtoSource.Text;
+                entityDestination.IdQuestion = dtoSource.IdQuestion;
             }
+            else if (dto is QuestionDto && entity is Question)
+            {
+                QuestionDto dtoSource = (QuestionDto )dto;
+                Question entityDestination = (Question)entity;
+                entityDestination.Title = dtoSource.Title;
+                entityDestination.Text = dtoSource.Text;
+                entityDestination.Explanation = dtoSource.Explanation;
+            }
+            else if(dto is RelQuestionTagDto && entity is RelQuestionTag)
+            {
+                RelQuestionTagDto dtoSource = (RelQuestionTagDto)dto;
+                RelQuestionTag entityDestination = (RelQuestionTag)entity;
+                entityDestination.IdQuestion = dtoSource.IdQuestion;
+                entityDestination.IdTag = dtoSource.IdTag;
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }                  
         }
 
         public async Task<CourseInstanceDto> StartCourseAsync(int courseId)
@@ -203,7 +238,7 @@ namespace cran.Services
             };
             _context.CourseInstances.Add(courseInstanceEntity);
 
-            await _context.SaveChangesCranAsync(_currentPrincipal);
+            await SaveChanges();
             CourseInstanceDto result = await GetNextQuestion(courseInstanceEntity);                        
 
             return result;
@@ -286,7 +321,7 @@ namespace cran.Services
                     _context.CourseInstancesQuestionOption.Add(courseInstanceQuestionOptionEntity);
                 }
 
-                await _context.SaveChangesCranAsync(_currentPrincipal);
+                await SaveChanges();
                 result.IdCourseInstanceQuestion = courseInstanceQuestionEntity.Id;
             }
             
@@ -313,7 +348,7 @@ namespace cran.Services
         {
             CourseInstance courseInstanceEntity = _context.Find<CourseInstance>(courseInstanceId);          
             CourseInstanceDto result = await GetNextQuestion(courseInstanceEntity);          
-            await _context.SaveChangesCranAsync(_currentPrincipal);
+            await SaveChanges();
             return result;
         }
 
@@ -369,7 +404,7 @@ namespace cran.Services
             //Nächste Frage vorbereiten.
             CourseInstanceQuestion courseInstanceQuestionEntity = await _context.FindAsync<CourseInstanceQuestion>(answer.IdCourseInstanceQuestion);
             CourseInstance courseInstanceEntity = await _context.FindAsync<CourseInstance>(courseInstanceQuestionEntity.IdCourseInstance);
-            CourseInstanceDto result = await this.GetNextQuestion(courseInstanceEntity);           
+            CourseInstanceDto result = await GetNextQuestion(courseInstanceEntity);           
             result.AnsweredCorrectly = courseInstanceQuestionEntity.Correct;
             return result;
         }
@@ -395,7 +430,7 @@ namespace cran.Services
             courseInstanceQuestionEntity.Correct = options.All(x => x.Correct);
             courseInstanceQuestionEntity.AnsweredAt = DateTime.Now;
 
-            await _context.SaveChangesCranAsync(_currentPrincipal);
+            await SaveChanges();
         }
 
         public async Task<IList<QuestionListEntryDto>> GetMyQuestionsAsync()
@@ -477,10 +512,10 @@ namespace cran.Services
             }
 
             _context.Remove(questionEntity);
-            await _context.SaveChangesAsync();
+            await SaveChanges();
         }
 
-        public async Task<ResultDto> GetCourseResult(int idCourseInstance)
+        public async Task<ResultDto> GetCourseResultAsync(int idCourseInstance)
         {
             ResultDto result = new ResultDto()
             {

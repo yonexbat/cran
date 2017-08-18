@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace cran.Model.Dto
 {
-    public class QuestionOptionDto
+    public class QuestionOptionDto : IDto
     {
         public int Id { get; set; }
+
+        public int IdQuestion { get; set; }
 
         [Required]
         public string Text { get; set; }

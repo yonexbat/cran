@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace cran.Model.Entities
 {
-    public interface ICraniumEntity
+    public interface ICraniumEntity : IIdentifiable
     {
-        int Id { get;}
 
         string InsertUser { get; set; }
         DateTime InsertDate { get; set; }

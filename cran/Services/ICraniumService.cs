@@ -34,6 +34,6 @@ namespace cran.Services
 
         Task<CourseInstanceDto> AnswerQuestionAndGetNextQuestionAsync(QuestionAnswerDto answer);
 
-        Task<ResultDto> GetCourseResult(int idCourseInstance);
+        Task<ResultDto> GetCourseResultAsync(int idCourseInstance);
     }
 }

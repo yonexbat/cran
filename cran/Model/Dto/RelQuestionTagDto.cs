@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace cran.Model.Dto
 {
-    public class TagDto : IIdentifiable
+    public class RelQuestionTagDto : IDto
     {
         public int Id { get; set; }
-        public virtual string Name { get; set; }
-        public virtual string Description { get; set; }
+        public int IdTag { get; set; }
+        public int IdQuestion { get; set; }
     }
 }

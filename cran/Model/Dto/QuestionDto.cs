@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace cran.Model.Dto
 {
-    public class QuestionDto
+    public class QuestionDto : IIdentifiable
     {
         public int Id { get; set; }
 
