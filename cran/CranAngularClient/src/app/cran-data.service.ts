@@ -278,6 +278,7 @@ export class CranDataServiceMock implements ICranDataService {
         question.title = 'MyTitle';
         question.id = id;
         question.explanation = 'My explanation';
+        question.status = 1;
 
         question.options = [
           {isTrue : true, text : '1 Jahr'},

@@ -4,10 +4,11 @@
 
   <form (ngSubmit)="onSubmit()" #questionForm="ngForm">
 
-    <!-- Titel -->
+   
     <div class="row form-group">
-      
-      <div class="col-md-8">
+
+       <!-- Titel -->
+      <div class="col-md-6">
           
         <label for="title">Titel</label>
 
@@ -22,7 +23,25 @@
         </div>
       </div>
 
-      <div class="col-md-4">
+      <!-- Status -->
+      <div class="col-md-3">
+
+        <label for="status">
+          Status
+        </label>
+
+        <select class="form-control"
+                #status="ngModel"
+                [(ngModel)]="question.status"
+                name="status" id="status">
+          <option [value]="0">erstellt</option>
+          <option [value]="1">freigeschalten</option>
+        </select>
+
+      </div>
+
+      <!-- Tags -->
+      <div class="col-md-3">
          <app-tag-finder [question]="question"></app-tag-finder>
       </div>
     </div>
@@ -113,13 +132,15 @@
     <!-- Statusmessage -->
     <app-status-message #statusMessage></app-status-message>
 
-    <button 
-        type="button" 
-        class="btn btn btn-success pull-right" 
-        (click)="save()" 
-        [disabled]="!questionForm.form.valid || actionInProgress">
-      {{buttonText}}
-    </button>
+    <div class="btn-group pull-right" role="group" aria-label="Basic example">
+      <button 
+          type="button" 
+          class="btn btn btn-success" 
+          (click)="save()" 
+          [disabled]="!questionForm.form.valid || actionInProgress">
+        {{buttonText}}
+      </button>
+    </div>
 
   </form>
 </div>

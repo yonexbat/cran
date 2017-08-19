@@ -106,8 +106,9 @@ namespace cran.Services
             {
                 Id = questionEntity.Id,
                 Text = questionEntity.Text,
-                Title = questionEntity.Title,       
+                Title = questionEntity.Title,
                 Explanation = questionEntity.Explanation,
+                Status = (int) questionEntity.Status,
             };
 
             foreach(QuestionOption optionEntity in _context.QuestionOptions.Where(x => x.IdQuestion == id))
@@ -211,6 +212,7 @@ namespace cran.Services
                 entityDestination.Title = dtoSource.Title;
                 entityDestination.Text = dtoSource.Text;
                 entityDestination.Explanation = dtoSource.Explanation;
+                entityDestination.Status = (QuestionStatus) dtoSource.Status;
             }
             else if(dto is RelQuestionTagDto && entity is RelQuestionTag)
             {
@@ -261,6 +263,7 @@ namespace cran.Services
             IQueryable<int> questionIds = _context.RelQuestionTags
                 .Where(x => tagIds.Contains(x.Tag.Id))
                 .Where(x => !questionIdsAlreadyAsked.Contains(x.Question.Id))
+                .Where(x => x.Question.Status == QuestionStatus.Released)
                 .Select(x => x.Question.Id);
 
             return questionIds;

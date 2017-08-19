@@ -15,6 +15,8 @@ namespace cran.Model.Dto
 
         public string Explanation { get; set; }
 
+        public int Status { get; set; }
+
         public IList<QuestionOptionDto> Options = new List<QuestionOptionDto>();
 
         public IList<TagDto> Tags = new List<TagDto>();

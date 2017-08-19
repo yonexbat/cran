@@ -5,6 +5,7 @@ export class Question {
     public id: number;
     public title: string;
     public text: string;
+    public status: number;
     public explanation: string;
     public options: QuestionOption[] = [];
     public tags: Tag[] = [];
