@@ -9,6 +9,7 @@ import {Question} from '../model/question';
 import {QuestionOption} from '../model/questionoption';
 import {StatusMessageComponent} from '../status-message/status-message.component';
 import {QuestionAnswer} from '../model/questionanswer';
+import {CourseInstance} from '../model/courseinstance';
 
 @Component({
   selector: 'app-ask-question',
@@ -40,28 +41,32 @@ export class AskQuestionComponent implements OnInit {
 
   }
 
-  public check() {
+  public getSolution() {
     const answer: QuestionAnswer = this.getAnswer();
     this.cranDataServiceService.answerQuestionAndGetSolution(answer)
       .then((question: Question) => {
-        for (let i = 0; i < question.options.length; i++) {
-          this.questionToAsk.options[i].isTrue = question.options[i].isTrue;
-        }
-        this.questionToAsk.explanation = question.explanation;
-        this.checkShown = true;
+        this.showSolution(question);
       })
       .catch(reason => this.statusMessage.showError(reason));
+  }
+
+  private showSolution(question: Question) {
+    for (let i = 0; i < question.options.length; i++) {
+      this.questionToAsk.options[i].isTrue = question.options[i].isTrue;
+    }
+    this.questionToAsk.explanation = question.explanation;
+    this.checkShown = true;
   }
 
   public nextQuestion() {
       const answer: QuestionAnswer = this.getAnswer();
       this.cranDataServiceService.answerQuestionAndGetNextQuestion(answer)
-      .then((data) => {
+      .then((data: CourseInstance) => {
         this.checkShown = false;
         if (data.idCourseInstanceQuestion > 0) {
             this.router.navigate(['/askquestion', data.idCourseInstanceQuestion]);
         } else {
-          this.router.navigate(['/resultlist', data.idCourseInstance]);
+          this.goToResult();
         }
       })
       .catch(reason => this.statusMessage.showError(reason));
@@ -76,10 +81,17 @@ export class AskQuestionComponent implements OnInit {
     return answer;
   }
 
+  public goToResult() {
+    this.router.navigate(['/resultlist', this.questionToAsk.idCourseInstance]);
+  }
+
   private handleRouteChanged(id: number) {
     this.cranDataServiceService.getQuestionToAsk(id)
-      .then(data => {
+      .then((data: QuestionToAsk) => {
         this.questionToAsk = data;
+        if (data.courseEnded) {
+          this.getSolution();
+        }
       })
       .catch(reason => this.statusMessage.showError(reason));
   }

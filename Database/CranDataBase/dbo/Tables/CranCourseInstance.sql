@@ -3,6 +3,8 @@
 	[Id]          INT            IDENTITY (1, 1) NOT NULL,
 	[IdUser] INT NOT NULL, 
     [IdCourse] INT NOT NULL, 
+	[StartedAt] DATETIME2 NULL, 
+    [EndedAt] DATETIME2 NULL, 
 	[InsertUser]  VARCHAR (1000) NOT NULL DEFAULT SYSTEM_USER,
     [InsertDate]  DATETIME2 (7)  NOT NULL DEFAULT GETDATE(),
     [UpdateUser]  VARCHAR (1000) NOT NULL DEFAULT SYSTEM_USER,

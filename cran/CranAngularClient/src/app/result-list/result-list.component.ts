@@ -29,6 +29,10 @@ export class ResultListComponent implements OnInit {
   ngOnInit() {
   }
 
+  public showQuestion(result: QuestionResult) {
+    this.router.navigate(['/askquestion', result.idCourseInstanceQuestion]);
+  }
+
   private handleRouteChanged(id: number) {
     this.cranDataServiceService.getCourseResult(id)
       .then(result => this.result = result);

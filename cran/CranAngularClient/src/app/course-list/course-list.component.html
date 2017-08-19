@@ -1,8 +1,20 @@
-<div id="crancourses" class="crancourses container">
+<div id="crancourses" class="container">
+
   <div class="list-group">
-    <div  *ngFor="let item of courses" class="list-group-item crancourse" (click)="startCourse(item)">
-      <h4>{{item.title}}</h4>
+    <div  *ngFor="let item of courses" class="list-group-item">
+      <h4>
+        {{item.title}}
+
+        <span class="btn-group pull-right">
+            <button class="btn btn-default" type="button" (click)="startCourse(item)">
+                <span class="glyphicon glyphicon-play"></span>
+            </button>
+        </span>
+
+      </h4>
+                  
       <p>{{item.description}}</p>
+
     </div>
 
     <!-- Statusmessage -->

@@ -9,6 +9,9 @@ namespace cran.Model.Entities
     {
         public virtual int IdUser { get; set; }
         public virtual int IdCourse { get; set; }
+        public virtual DateTime? StartedAt { get; set; }
+        public virtual DateTime? EndedAt { get; set; }
+
         public virtual CranUser User { get; set; }
         public virtual Course Course { get; set; }
 

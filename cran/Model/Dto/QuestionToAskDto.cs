@@ -8,9 +8,12 @@ namespace cran.Model.Dto
     public class QuestionToAskDto
     {
         public int IdCourseInstanceQuestion { get; set; }
+        public int IdCourseInstance { get; set; }
         public string Text { get; set; }
         public int NumQuestions { get; set; }
         public int NumQuestionsAsked { get; set; }
+        public bool CourseEnded { get; set; }
+                
         public IList<QuestionOptionToAskDto> Options = new List<QuestionOptionToAskDto>();
     }
 }

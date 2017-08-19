@@ -287,7 +287,8 @@ namespace cran.Services
             {
                 result.IdCourseInstanceQuestion = 0;
                 result.NumQuestionsTotal = result.NumQuestionsAlreadyAsked;
-                result.Done = true;                
+                result.Done = true;
+                await EndCourseAsync(courseInstanceEntity.Id);
             }
             else
             {
@@ -329,6 +330,13 @@ namespace cran.Services
             return result;
         }
 
+        private async Task EndCourseAsync(int courseInstanceId)
+        {
+            CourseInstance courseInstance = await _context.FindAsync<CourseInstance>(courseInstanceId);
+            courseInstance.EndedAt = DateTime.Now;
+            await SaveChanges();
+        }
+
         private async Task<CranUser> GetCranUserAsync()
         {
             string userId = GetUserId();
@@ -363,6 +371,8 @@ namespace cran.Services
             questionToAskDto.IdCourseInstanceQuestion = courseInstanceQuestionId;        
             questionToAskDto.Text = questionEntity.Text;            
             questionToAskDto.NumQuestionsAsked = await _context.CourseInstancesQuestion.Where(x => x.CourseInstance.Id == courseInstanceEntity.Id).CountAsync();
+            questionToAskDto.CourseEnded = courseInstanceEntity.EndedAt.HasValue;
+            questionToAskDto.IdCourseInstance = courseInstanceEntity.Id;
 
             int possibleQuestions = await PossibleQuestionsQuery(courseInstanceEntity).CountAsync();
             
@@ -380,6 +390,7 @@ namespace cran.Services
                 {
                     CourseInstanceQuestionOptionId = optionInstanceEntity.Id,
                     Text = optionInstanceEntity.QuestionOption.Text,
+                    IsChecked = optionInstanceEntity.Checked,
                 });
 
             }

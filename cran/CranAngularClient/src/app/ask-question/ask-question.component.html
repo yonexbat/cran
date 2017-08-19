@@ -13,7 +13,7 @@
     <div>
 
       <!-- iterate over options  -->
-      <div *ngFor="let option of questionToAsk.options; let optionIndex=index" class="row form-group form-inline">
+      <div *ngFor="let option of questionToAsk?.options; let optionIndex=index" class="row form-group form-inline">
         
         <hr/>      
 
@@ -46,18 +46,28 @@
 
     <div class="btn-group pull-right">
       <button 
+          *ngIf="!checkShown && !(questionToAsk?.courseEnded)"
           type="button" 
           class="btn btn btn-success"
-          (click)="check()">
+          (click)="getSolution()">
         Prüfen
       </button>
+
+      <button 
+        *ngIf="questionToAsk?.courseEnded"
+        type="button" 
+        class="btn btn btn-success"
+        (click)="goToResult()">
+        Zurück
+      </button>      
       
       <button 
+          *ngIf="!(questionToAsk?.courseEnded)"
           type="button" 
           class="btn btn btn-success"
-          (click)="nextQuestion()"
-          >
-        Nächste Frage
+          (click)="nextQuestion()">          
+        <span *ngIf="(questionToAsk?.numQuestionsAsked != questionToAsk?.numQuestions)">Nächste Frage</span>
+        <span *ngIf="(questionToAsk?.numQuestionsAsked == questionToAsk?.numQuestions)">Kurs beenden</span>
       </button>
     </div>
   </form>
