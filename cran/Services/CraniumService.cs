@@ -354,34 +354,37 @@ namespace cran.Services
 
         public async Task<QuestionToAskDto> GetQuestionToAskAsync(int courseInstanceQuestionId)
         {
-            QuestionToAskDto questionToAskVm = new QuestionToAskDto();
+            QuestionToAskDto questionToAskDto = new QuestionToAskDto();
             CourseInstanceQuestion questionInstanceEntity = await _context.FindAsync<CourseInstanceQuestion>(courseInstanceQuestionId);
             CourseInstance courseInstanceEntity = await _context.FindAsync<CourseInstance>(questionInstanceEntity.IdCourseInstance);
             Question questionEntity = await _context.FindAsync<Question>(questionInstanceEntity.IdQuestion);
             Course courseEntity = await _context.FindAsync<Course>(courseInstanceEntity.IdCourse);
 
-            questionToAskVm.IdCourseInstanceQuestion = courseInstanceQuestionId;        
-            questionToAskVm.Text = questionEntity.Text;            
-            questionToAskVm.NumQuestionsAsked = await _context.CourseInstancesQuestion.Where(x => x.CourseInstance.Id == courseInstanceEntity.Id).CountAsync();
+            questionToAskDto.IdCourseInstanceQuestion = courseInstanceQuestionId;        
+            questionToAskDto.Text = questionEntity.Text;            
+            questionToAskDto.NumQuestionsAsked = await _context.CourseInstancesQuestion.Where(x => x.CourseInstance.Id == courseInstanceEntity.Id).CountAsync();
 
             int possibleQuestions = await PossibleQuestionsQuery(courseInstanceEntity).CountAsync();
             
-            questionToAskVm.NumQuestions = possibleQuestions  <= courseEntity.NumQuestionsToAsk - questionToAskVm.NumQuestionsAsked ? possibleQuestions + questionToAskVm.NumQuestionsAsked : courseEntity.NumQuestionsToAsk;
-            
+            questionToAskDto.NumQuestions = possibleQuestions  <= courseEntity.NumQuestionsToAsk - questionToAskDto.NumQuestionsAsked ? possibleQuestions + questionToAskDto.NumQuestionsAsked : courseEntity.NumQuestionsToAsk;
 
-            foreach (var o in _context.CourseInstancesQuestionOption.Where( x => x.CourseInstanceQuestion.Id == courseInstanceQuestionId)
-                .Include(x => x.QuestionOption))
+            IList<CourseInstanceQuestionOption> optionInstanceEntities = await _context.CourseInstancesQuestionOption
+                            .Where(x => x.CourseInstanceQuestion.Id == courseInstanceQuestionId)
+                            .OrderBy(x => x.CourseInstanceQuestion.Id)
+                            .Include(x => x.QuestionOption).ToListAsync();
+
+            foreach (CourseInstanceQuestionOption optionInstanceEntity in optionInstanceEntities)
             {
 
-                questionToAskVm.Options.Add(new QuestionOptionToAskDto
+                questionToAskDto.Options.Add(new QuestionOptionToAskDto
                 {
-                    CourseInstanceQuestionOptionId = o.Id,
-                    Text = o.QuestionOption.Text,
+                    CourseInstanceQuestionOptionId = optionInstanceEntity.Id,
+                    Text = optionInstanceEntity.QuestionOption.Text,
                 });
 
             }
 
-            return questionToAskVm;
+            return questionToAskDto;
         }
 
         public async Task<QuestionDto> AnswerQuestionAndGetSolutionAsync(QuestionAnswerDto answer)
@@ -413,19 +416,24 @@ namespace cran.Services
         {
 
             CourseInstanceQuestion courseInstanceQuestionEntity = await _context.FindAsync<CourseInstanceQuestion>(answer.IdCourseInstanceQuestion);
-            //Antworten abspeichern
+
             IList<CourseInstanceQuestionOption> options = await _context.CourseInstancesQuestionOption
                 .Where(x => x.CourseInstanceQuestion.Id == courseInstanceQuestionEntity.Id)
                 .OrderBy(x => x.Id)
-                .Include(x => x.QuestionOption).ToListAsync();
+                .Include(x => x.QuestionOption).ToListAsync();            
+
             if (options.Count != answer.Answers.Count)
             {
                 throw new InvalidOperationException("something wrong");
             }
             for (int i = 0; i < options.Count; i++)
             {
-                options[i].Checked = answer.Answers[i];
-                options[i].Correct = options[i].QuestionOption.IsTrue == answer.Answers[i];
+                CourseInstanceQuestionOption optionInstanceEntity = options[i];
+                bool thisAnswer = answer.Answers[i];
+                bool optioncorrect = optionInstanceEntity.QuestionOption.IsTrue == thisAnswer;
+
+                optionInstanceEntity.Checked = thisAnswer;
+                optionInstanceEntity.Correct = optioncorrect;                               
             }
             courseInstanceQuestionEntity.Correct = options.All(x => x.Correct);
             courseInstanceQuestionEntity.AnsweredAt = DateTime.Now;
@@ -530,6 +538,7 @@ namespace cran.Services
                 .Select(x => new QuestionResultDto {
                         IdCourseInstanceQuestion = x.Id,
                         Title = x.Question.Title,
+                        Correct = x.Correct,
                     }).ToListAsync();
 
             return result;

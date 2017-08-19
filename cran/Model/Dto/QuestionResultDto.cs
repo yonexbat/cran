@@ -9,7 +9,6 @@ namespace cran.Model.Dto
     {
         public string Title { get; set; }
         public bool Correct { get; set; }
-        public int IdCourseInstanceQuestion { get; set; }
-        
+        public int IdCourseInstanceQuestion { get; set; }        
     }
 }
