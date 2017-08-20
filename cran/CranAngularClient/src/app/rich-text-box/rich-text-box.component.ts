@@ -14,14 +14,26 @@ import { Component,
 })
 export class RichTextBoxComponent implements OnInit, AfterViewInit, OnDestroy {
 
-
   @Input() elementId: string;
-  @Input() public content: string;
+  private _content: string;
+
   @Input() public required: boolean;
   @Output() htmlString = new EventEmitter<string>();
   private editor: any;
 
   constructor(private zone: NgZone) { }
+
+  @Input() public set content(content: string) {
+    console.log(content);
+    this._content = content;
+    if (this.editor && this.editor.getContent() !== content) {
+      this.showContent();
+    }
+  }
+
+  public get content(): string{
+    return this._content;
+  }
 
   ngOnInit() {
   }
@@ -29,6 +41,7 @@ export class RichTextBoxComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     tinymce.remove(this.editor);
   }
+
   ngAfterViewInit(): void {
     const id = '#' + this.elementId;
 
@@ -42,11 +55,17 @@ export class RichTextBoxComponent implements OnInit, AfterViewInit, OnDestroy {
         editor.on('change', () => this.pushContent());
         editor.on('init', () => {
           if (this.content) {
-             this.editor.setContent(this.content);
+             this.showContent();
           }
         });
       },
     });
+  }
+
+  private showContent() {
+    if (this.editor) {
+      this.editor.setContent(this.content);
+    }
   }
 
   private pushContent() {

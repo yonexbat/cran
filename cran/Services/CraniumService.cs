@@ -138,7 +138,7 @@ namespace cran.Services
 
         public async Task UpdateQuestionAsync(QuestionDto questionDto)
         {
-            await CheckAccessToQuestion(questionDto.Id);
+            await CheckWriteAccessToQuestion(questionDto.Id);
 
             //set the parent id
             foreach(var optionDto in questionDto.Options)
@@ -154,8 +154,16 @@ namespace cran.Services
 
             //Tags
             IList<RelQuestionTag> relTagEntities = await _context.RelQuestionTags.Where(x => x.IdQuestion == questionEntity.Id).ToListAsync();
-            IList<RelQuestionTagDto> relQuestionTagDtos = questionDto.Tags.Select(x => new RelQuestionTagDto { IdTag = x.Id, IdQuestion = questionDto.Id })
-                .ToList();
+            IList<RelQuestionTagDto> relQuestionTagDtos = new List<RelQuestionTagDto>();
+            foreach(TagDto tagDto in questionDto.Tags)
+            {
+                RelQuestionTagDto relQuestionTagDto = new RelQuestionTagDto();
+                relQuestionTagDto.IdTag = tagDto.Id;
+                relQuestionTagDto.IdQuestion = questionDto.Id;
+                relQuestionTagDto.Id = relTagEntities.Where(x => x.IdTag == tagDto.Id).Select(x => x.Id).SingleOrDefault();
+                relQuestionTagDtos.Add(relQuestionTagDto);
+            }
+           
             UpdateRelation(relQuestionTagDtos, relTagEntities);
             
 
@@ -180,14 +188,14 @@ namespace cran.Services
             }
 
             //Update
-            foreach(IIdentifiable entity in entitiesToUpdate)
+            foreach(CranEntity entity in entitiesToUpdate)
             {
-                IIdentifiable dto = dtos.Single(x => x.Id == entity.Id);
+                IDto dto = dtos.Single(x => x.Id == entity.Id);
                 CopyData(dto, entity);
             }
             
             //Add
-            foreach(IIdentifiable dto in dtosToAdd)
+            foreach(IDto dto in dtosToAdd)
             {
                 Tentity entity = new Tentity();
                 CopyData(dto, entity);
@@ -195,7 +203,7 @@ namespace cran.Services
             }
         }
 
-        private void CopyData(IIdentifiable dto, IIdentifiable entity)
+        private void CopyData(IDto dto, CranEntity entity)
         {
             if(dto is QuestionOptionDto && entity is QuestionOption)
             {
@@ -484,7 +492,7 @@ namespace cran.Services
             return result;
         }
 
-        private async Task CheckAccessToQuestion(int idQuestion)
+        private async Task CheckWriteAccessToQuestion(int idQuestion)
         {
             Question questionEntity = await _context.FindAsync<Question>(idQuestion);
             CranUser userEntityOfQuestion = await _context.FindAsync<CranUser>(questionEntity.IdUser);
@@ -499,7 +507,7 @@ namespace cran.Services
         public async Task DeleteQuestionAsync(int idQuestion)
         {
 
-            await CheckAccessToQuestion(idQuestion);
+            await CheckWriteAccessToQuestion(idQuestion);
 
             Question questionEntity =  await _context.FindAsync<Question>(idQuestion);
                         
