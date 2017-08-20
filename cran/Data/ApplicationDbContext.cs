@@ -24,6 +24,8 @@ namespace cran.Data
         public DbSet<CourseInstance> CourseInstances { get; set; }
         public DbSet<CourseInstanceQuestion> CourseInstancesQuestion { get; set; }
         public DbSet<CourseInstanceQuestionOption> CourseInstancesQuestionOption { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
 
         protected IPrincipal _principal;
 
@@ -100,8 +102,37 @@ namespace cran.Data
             MapCourseInstance(builder.Entity<CourseInstance>());
             MapCourseInstanceQuestion(builder.Entity<CourseInstanceQuestion>());
             MapCourseInstanceQuestionOption(builder.Entity<CourseInstanceQuestionOption>());
-        }    
+            MapComment(builder.Entity<Comment>());
+            MapRating(builder.Entity<Rating>());
+        }  
         
+        private void MapComment(EntityTypeBuilder<Comment> typeBuilder)
+        {
+            typeBuilder.ToTable("CranComment");
+
+            typeBuilder.HasOne(c => c.User)
+                .WithMany(u => u.Comments)
+                .HasForeignKey(c => c.IdUser);
+
+            typeBuilder.HasOne(c => c.Question)
+             .WithMany(q => q.Comments)
+             .HasForeignKey(c => c.IdQuestion);
+
+        }
+
+        private void MapRating(EntityTypeBuilder<Rating> typeBuilder)
+        {
+            typeBuilder.ToTable("CranRating");
+
+            typeBuilder.HasOne(r => r.User)
+                 .WithMany(u => u.Ratings)
+                 .HasForeignKey(c => c.IdUser);
+
+            typeBuilder.HasOne(r => r.Question)
+             .WithMany(q => q.Ratings)
+             .HasForeignKey(c => c.IdQuestion);
+        }
+
         private void MapCranUser(EntityTypeBuilder<CranUser> typeBuilder)
         {
             typeBuilder.ToTable("CranUser");

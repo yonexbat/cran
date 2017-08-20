@@ -81,5 +81,10 @@
     <Build Include="dbo\Tables\CranCourseInstance.sql" />
     <Build Include="dbo\Tables\CranCourseInstanceQuestion.sql" />
     <Build Include="dbo\Tables\CranCourseInstanceQuestionOption.sql" />
+    <Build Include="dbo\Tables\CranComment.sql" />
+    <Build Include="dbo\Tables\CranRating.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="CranDataBase.refactorlog" />
   </ItemGroup>
 </Project>

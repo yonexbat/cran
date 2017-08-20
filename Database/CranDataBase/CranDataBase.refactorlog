@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="67044a1d-7597-4dee-8c79-103309c92561" ChangeDateTime="08/20/2017 18:06:51">
+    <Property Name="ElementName" Value="[dbo].[CranComment].[Comment]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[CranComment]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CommentText" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="f4f83163-6f83-48af-abd0-0b3051633c08" ChangeDateTime="08/20/2017 18:08:42">
+    <Property Name="ElementName" Value="[dbo].[CranRating].[Rating]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[CranRating]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="QuestionRating" />
+  </Operation>
+</Operations>

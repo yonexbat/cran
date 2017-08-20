@@ -11,5 +11,7 @@ namespace cran.Model.Entities
 
         public virtual IList<CourseInstance> CourseInstances { get; set; } = new List<CourseInstance>();
         public virtual IList<Question> Questions { get; set; } = new List<Question>();
+        public virtual IList<Comment> Comments { get; set; } = new List<Comment>();
+        public virtual IList<Rating> Ratings { get; set; } = new List<Rating>();
     }
 }
