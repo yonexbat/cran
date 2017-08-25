@@ -1,5 +1,7 @@
 <div class="container">
-  
+
+  <app-question-preview #questionPreview></app-question-preview>
+
   <h1>{{headingText}}</h1>
 
   <form (ngSubmit)="onSubmit()" #questionForm="ngForm">
@@ -63,6 +65,7 @@
     
     </div>
 
+    <!-- optionen -->
     <div *ngFor="let option of question.options; let optionIndex=index">
       <hr/>
       <div class="row form-group">
@@ -132,15 +135,25 @@
     <!-- Statusmessage -->
     <app-status-message #statusMessage></app-status-message>
 
+    <!-- Buttons -->
     <div class="btn-group pull-right" role="group" aria-label="Basic example">
+
+      <button 
+          type="button" 
+          class="btn btn btn-success" 
+          (click)="showPreview()" 
+          [disabled]="!questionForm.form.valid || actionInProgress">
+          Vorschau
+      </button>      
+
       <button 
           type="button" 
           class="btn btn btn-success" 
           (click)="save()" 
           [disabled]="!questionForm.form.valid || actionInProgress">
         {{buttonText}}
-      </button>
-    </div>
+      </button> 
+    </div>    
 
   </form>
 </div>

@@ -6,6 +6,7 @@ import {QuestionOption} from '../model/questionoption';
 import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.service';
 import {StatusMessageComponent} from '../status-message/status-message.component';
+import {QuestionPreviewComponent} from '../question-preview/question-preview.component';
 
 
 @Component({
@@ -24,6 +25,8 @@ export class ManageQuestionComponent implements OnInit {
   public buttonText: string;
 
   @ViewChild('statusMessage') statusMessage: StatusMessageComponent;
+
+  @ViewChild('questionPreview') questionPreview: QuestionPreviewComponent;
 
   constructor(
     @Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
@@ -94,8 +97,11 @@ export class ManageQuestionComponent implements OnInit {
 
   public addOpton() {
     const option = new QuestionOption();
-    option.isTrue = true;
     this.question.options.push(option);
+  }
+
+  public showPreview() {
+    this.questionPreview.showDialog(this.question);
   }
 
 }

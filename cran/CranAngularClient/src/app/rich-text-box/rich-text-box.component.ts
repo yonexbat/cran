@@ -24,7 +24,6 @@ export class RichTextBoxComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(private zone: NgZone) { }
 
   @Input() public set content(content: string) {
-    console.log(content);
     this._content = content;
     if (this.editor && this.editor.getContent() !== content) {
       this.showContent();
@@ -49,6 +48,7 @@ export class RichTextBoxComponent implements OnInit, AfterViewInit, OnDestroy {
       selector: id,
       plugins: ['link', 'paste', 'table'],
       skin_url: '/assets/skins/lightgray',
+      paste_as_text: true,
       setup: editor => {
         this.editor = editor;
         editor.on('keyup', () => this.pushContent());
