@@ -294,7 +294,7 @@ namespace cran.Services
             IQueryable<int> questionIds = PossibleQuestionsQuery(courseInstanceEntity);
 
             int count = await questionIds.CountAsync();
-            if(count == 0)
+            if(count == 0 || result.NumQuestionsAlreadyAsked >= courseEntity.NumQuestionsToAsk)
             {
                 result.IdCourseInstanceQuestion = 0;
                 result.NumQuestionsTotal = result.NumQuestionsAlreadyAsked;
@@ -306,7 +306,7 @@ namespace cran.Services
                 if(count <= result.NumQuestionsTotal - result.NumQuestionsAlreadyAsked)
                 {
                     result.NumQuestionsTotal = result.NumQuestionsAlreadyAsked + count;
-                }
+                }                
                 int quesitonNo = random.Next(0, count - 1);
                 int questionId = await questionIds.Skip(quesitonNo).FirstAsync();
                 Question questionEntity = await _context.FindAsync<Question>(questionId);
