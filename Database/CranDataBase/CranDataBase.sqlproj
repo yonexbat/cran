@@ -61,6 +61,7 @@
     <Folder Include="Properties" />
     <Folder Include="dbo\" />
     <Folder Include="dbo\Tables\" />
+    <Folder Include="Scripts" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\AspNetUsers.sql" />
@@ -86,5 +87,8 @@
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="CranDataBase.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\DeleteStuff.sql" />
   </ItemGroup>
 </Project>

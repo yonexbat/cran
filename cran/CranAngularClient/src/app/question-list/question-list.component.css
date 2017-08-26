@@ -2,3 +2,20 @@
 {
     margin: 4px;
 }
+
+
+.questionstatus
+{
+    border-left-width: 5px;
+   
+}
+
+.questionstatusok
+{
+    border-left-color: #A5E6B1;
+}
+
+.questionstatusnok
+{
+    border-left-color: #E6A5A6;
+}

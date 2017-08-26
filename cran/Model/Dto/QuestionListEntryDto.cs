@@ -8,6 +8,7 @@ namespace cran.Model.Dto
     public class QuestionListEntryDto
     {
         public string Title { get; set; }
+        public int Status { get; set; }
         public int Id { get; set; }
         public IList<TagDto> Tags { get; set; } = new List<TagDto>();
     }

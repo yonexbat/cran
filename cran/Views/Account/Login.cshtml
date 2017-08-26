@@ -36,9 +36,14 @@
                     <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
                         <div style="margin-left: 20px;">
                             <p>
+                                @Html.Hidden("ReturnUrl", this.Context.Request.Query["ReturnUrl"])
                                 @foreach (var provider in loginProviders)
                                 {
-                                    <button type="submit" class="btn btn-primary btn-lg" name="provider" value="@provider.AuthenticationScheme" title="Log in using your @provider.DisplayName account">@provider.AuthenticationScheme</button>
+                                    <button type="submit" class="btn btn-primary btn-lg" name="provider" 
+                                            value="@provider.AuthenticationScheme" 
+                                            title="Log in using your @provider.DisplayName account">
+                                        @provider.AuthenticationScheme
+                                    </button>
                                 }
                             </p>
                         </div>

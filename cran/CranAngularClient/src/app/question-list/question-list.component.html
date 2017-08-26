@@ -1,8 +1,10 @@
 <div class="container">
   
   <div class="list-group">
-    <div  *ngFor="let item of questions" class="list-group-item">
-      <h4>
+    <div  *ngFor="let item of questions" class="list-group-item questionstatus questionstatusok"
+          [ngClass]="{'questionstatusok' : item.status === 1, 'questionstatusnok' :item.status === 0 }">
+      <h4>        
+
         {{item.title}}
 
         <span class="btn-group pull-right">
@@ -13,7 +15,8 @@
           </button>
           
           <button class="btn btn-default" type="button" (click)="goToQuestion(item)">
-            <span class="glyphicon glyphicon-pencil"></span>
+            <span class="glyphicon glyphicon-pencil" *ngIf="item.status !== 1"></span>
+            <span class="glyphicon glyphicon-info-sign" *ngIf="item.status === 1"></span>
           </button>
 
         </span>

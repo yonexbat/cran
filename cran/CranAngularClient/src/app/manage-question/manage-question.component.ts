@@ -80,7 +80,7 @@ export class ManageQuestionComponent implements OnInit {
   private handleRouteChanged(id: number) {
     if (id > 0) {
       this.buttonText = 'Speichern';
-      this.headingText = 'Frage ' + id + ' editieren';
+      this.headingText = 'Frage #' + id + ' editieren';
       this.cranDataService.getQuestion(id)
         .then(question => this.question = question)
         .catch(reason => this.statusMessage.showError(reason));

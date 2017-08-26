@@ -468,9 +468,9 @@ namespace cran.Services
             string userId = GetUserId(); 
                         
 
-            var result =  await _context.Questions.Where(q => q.User.UserId == userId)
+            IList<QuestionListEntryDto> result =  await _context.Questions.Where(q => q.User.UserId == userId)
                 .OrderBy(q => q.Title)
-                .Select(q => new QuestionListEntryDto { Title = q.Title, Id = q.Id })
+                .Select(q => new QuestionListEntryDto { Title = q.Title, Id = q.Id, Status = (int) q.Status })
                 .ToListAsync();
 
             IQueryable<int> questionIds = _context.Questions.Where(q => q.User.UserId == userId).Select(q => q.Id);
