@@ -63,7 +63,7 @@ export class RichTextBoxComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private showContent() {
-    if (this.editor) {
+    if (this.editor && this.content) {
       this.editor.setContent(this.content);
     }
   }
