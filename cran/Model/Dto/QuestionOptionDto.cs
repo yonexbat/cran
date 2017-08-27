@@ -12,8 +12,7 @@ namespace cran.Model.Dto
 
         public int IdQuestion { get; set; }
 
-        [Required]
-        public string Text { get; set; }
+        public string Text { get; set; } = string.Empty;
 
         public bool IsTrue { get; set; }
     }

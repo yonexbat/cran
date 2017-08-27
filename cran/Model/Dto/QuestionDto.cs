@@ -10,8 +10,7 @@ namespace cran.Model.Dto
         [Required]
         public string Title { get; set; }
 
-        [Required]
-        public string Text { get; set; }
+        public string Text { get; set; } = string.Empty;
 
         public string Explanation { get; set; }
 

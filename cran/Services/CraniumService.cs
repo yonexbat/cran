@@ -210,7 +210,7 @@ namespace cran.Services
                 QuestionOptionDto dtoSource = (QuestionOptionDto)dto;
                 QuestionOption entityDestination = (QuestionOption) entity;
                 entityDestination.IsTrue = dtoSource.IsTrue;
-                entityDestination.Text = dtoSource.Text;
+                entityDestination.Text = dtoSource.Text ?? string.Empty;
                 entityDestination.IdQuestion = dtoSource.IdQuestion;
             }
             else if (dto is QuestionDto && entity is Question)
@@ -218,7 +218,7 @@ namespace cran.Services
                 QuestionDto dtoSource = (QuestionDto )dto;
                 Question entityDestination = (Question)entity;
                 entityDestination.Title = dtoSource.Title;
-                entityDestination.Text = dtoSource.Text;
+                entityDestination.Text = dtoSource.Text ?? string.Empty;
                 entityDestination.Explanation = dtoSource.Explanation;
                 entityDestination.Status = (QuestionStatus) dtoSource.Status;
             }
