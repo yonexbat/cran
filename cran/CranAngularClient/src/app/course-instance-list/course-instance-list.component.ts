@@ -34,4 +34,8 @@ export class CourseInstanceListComponent implements OnInit {
         .then((nores: any) => this.loadInstances());
     }
   }
+
+  public goToCourseInstance(instance: CourseInstanceListEntry) {
+    this.router.navigate(['/resultlist', instance.idCourseInstance]);
+  }
 }

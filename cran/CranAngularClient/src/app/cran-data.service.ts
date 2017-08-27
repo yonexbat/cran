@@ -178,11 +178,11 @@ export class CranDataServiceMock implements ICranDataService {
 
   getMyCourseInstances(): Promise<CourseInstanceListEntry[]> {
     const result: CourseInstanceListEntry[] = [
-      {idCourseInstance: 1, percentage: 80, title: 'Course1'},
-      {idCourseInstance: 2, percentage: 55, title: 'Course2'},
-      {idCourseInstance: 3, percentage: 8, title:  'Course3'},
-      {idCourseInstance: 4, percentage: 98, title: 'Course4'},
-      {idCourseInstance: 5, percentage: 10, title: 'JavaScript'}
+      {idCourseInstance: 1, insertDate: new Date(2017, 9, 8), percentage: 80, title: 'Course1'},
+      {idCourseInstance: 2, insertDate: new Date(2017, 9, 25), percentage: 55, title: 'Course2'},
+      {idCourseInstance: 3, insertDate: new Date(2017, 9, 25), percentage: 8, title:  'Course3'},
+      {idCourseInstance: 4, insertDate: new Date(2017, 9, 25), percentage: 98, title: 'Course4'},
+      {idCourseInstance: 5, insertDate: new Date(2017, 9, 25), percentage: 10, title: 'JavaScript'}
     ];
     return Promise.resolve(result);
   }

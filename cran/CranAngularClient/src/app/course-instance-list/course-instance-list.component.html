@@ -2,14 +2,16 @@
     <div class="list-group">
         <div  *ngFor="let item of courseInstances" class="list-group-item">
           <h4>
+            {{item.insertDate | date:'dd.MM.yyyy HH:mm'}}
             {{item.title}}
-
-            ({{item.percentage}}%)
 
             <span class="btn-group pull-right">
                 <button class="btn btn-default" type="button" (click)="deleteCourseInstance(item)">
                     <span class="glyphicon glyphicon-trash"></span>
-                  </button>
+                </button>
+                <button class="btn btn-default" type="button" (click)="goToCourseInstance(item)">                       
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </button>
             </span>
 
           </h4>
