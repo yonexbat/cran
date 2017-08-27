@@ -22,10 +22,6 @@ namespace cran.Controllers
         }
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         [HttpGet("[action]")]
         public async Task<CoursesListDto> GetCourses()
         {
@@ -33,77 +29,46 @@ namespace cran.Controllers
         }
 
 
-        /// <summary>
-        /// URL: http://localhost:5000/api/Data/GetMyQuestions
-        /// </summary>
-        /// <returns></returns>
         [HttpGet("[action]")]
         public async Task<IList<QuestionListEntryDto>> GetMyQuestions()
         {
             return await _craninumService.GetMyQuestionsAsync();
         }
 
-        /// <summary>
-        ///  URL: http://localhost:5000/api/Data/DeleteQuestion
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+
         [HttpDelete("[action]/{id}")]
         public async Task DeleteQuestion(int id)
         {
             await _craninumService.DeleteQuestionAsync(id);
         }
 
-        /// <summary>
-        /// URL: http://localhost:5000/api/Data/GetQuestion/3
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+
         [HttpGet("[action]/{id}")]
         public async Task<QuestionDto> GetQuestion(int id)
         {
             return await _craninumService.GetQuestionAsync(id);
         }
-
-
-        /// <summary>
-        /// URL: http://localhost:5000/api/Data/QuestionToAsk/2
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+      
         [HttpGet("[action]/{id}")]
         public async Task<QuestionToAskDto> GetQuestionToAsk(int id)
         {
             return await _craninumService.GetQuestionToAskAsync(id);
         }
 
-        /// <summary>
-        /// URL: http://localhost:5000/api/Data/QuestionToAsk/2
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         [HttpPost("[action]")]
         public async Task<QuestionDto> AnswerQuestionAndGetSolution([FromBody] QuestionAnswerDto vm)
         {
             return await _craninumService.AnswerQuestionAndGetSolutionAsync(vm);
         }
 
-        /// <summary>
-        /// URL: http://localhost:5000/api/Data/FindTags?searchTerm=Hello
-        /// </summary>
-        /// <param name="searchTerm"></param>
-        /// <returns></returns>
+       
         [HttpGet("[action]")]
         public async Task<IList<TagDto>> FindTags(string searchTerm)
         {
             return await _craninumService.FindTagsAsync(searchTerm);
         }
 
-        /// <summary>
-        /// URL: http://localhost:5000/api/Data/InsertQuestion
-        /// </summary>
-        /// <param name="vm"></param>
-        /// <returns></returns>
+    
         [HttpPost("[action]")]
         [ValidateModel]
         public async Task<InsertActionDto> InsertQuestion([FromBody] QuestionDto vm)
@@ -111,11 +76,7 @@ namespace cran.Controllers
             return await _craninumService.InsertQuestionAsync(vm);
         }
 
-        /// <summary>
-        /// URL: http://localhost:5000/api/Data/AnswerQuestion
-        /// </summary>
-        /// <param name="vm"></param>
-        /// <returns></returns>
+       
         [HttpPost("[action]")]
         [ValidateModel]
         public async Task<CourseInstanceDto> AnswerQuestionAndGetNextQuestion([FromBody] QuestionAnswerDto vm)
@@ -129,11 +90,6 @@ namespace cran.Controllers
             return await _craninumService.StartCourseAsync(vm.IdCourse);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="vm"></param>
-        /// <returns></returns>
         [HttpPost("[action]")]
         [ValidateModel]
         public async Task UpdateQuestion([FromBody] QuestionDto vm)
@@ -145,6 +101,18 @@ namespace cran.Controllers
         public async Task<ResultDto> GetCourseResult(int id)
         {
             return await _craninumService.GetCourseResultAsync(id);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IList<CourseInstanceListEntryDto>> GetMyCourseInstances()
+        {
+            return await _craninumService.GetMyCourseInstancesAsync();
+        }
+
+        [HttpDelete("[action]/{id}")]
+        public async Task DeleteCourseInstance(int id)
+        {
+            await _craninumService.DeleteCourseInstanceAsync(id);
         }
 
 

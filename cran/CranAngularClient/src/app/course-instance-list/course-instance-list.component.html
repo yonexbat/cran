@@ -1,0 +1,19 @@
+<div class="container">
+    <div class="list-group">
+        <div  *ngFor="let item of courseInstances" class="list-group-item">
+          <h4>
+            {{item.title}}
+
+            ({{item.percentage}}%)
+
+            <span class="btn-group pull-right">
+                <button class="btn btn-default" type="button" (click)="deleteCourseInstance(item)">
+                    <span class="glyphicon glyphicon-trash"></span>
+                  </button>
+            </span>
+
+          </h4>
+ 
+        </div>
+    </div>
+</div>

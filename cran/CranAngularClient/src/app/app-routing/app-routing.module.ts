@@ -8,12 +8,14 @@ import {ManageQuestionComponent} from '../manage-question/manage-question.compon
 import {AskQuestionComponent} from '../ask-question/ask-question.component';
 import {QuestionListComponent} from '../question-list/question-list.component';
 import {ResultListComponent} from '../result-list/result-list.component';
+import {CourseInstanceListComponent} from '../course-instance-list/course-instance-list.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent},
   { path: 'home', component:  HomeComponent},
   { path: 'list', component:  CourseListComponent},
   { path: 'questionlist', component:  QuestionListComponent},
+  { path: 'results', component: CourseInstanceListComponent},
   { path: 'addquestion', component:  ManageQuestionComponent},
   { path: 'editquestion/:id', component: ManageQuestionComponent},
   { path: 'askquestion/:id', component:  AskQuestionComponent},

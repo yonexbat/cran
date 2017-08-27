@@ -504,6 +504,19 @@ namespace cran.Services
             }
         }
 
+        private async Task CheckAccessToCourseInstance(int idCourseInstance)
+        {
+            CourseInstance instance = await _context.FindAsync<CourseInstance>(idCourseInstance);
+            CranUser userEntityOfQuestion = await _context.FindAsync<CranUser>(instance.IdUser);
+
+            //Security Check
+            if (!(userEntityOfQuestion.UserId == GetUserId() || _currentPrincipal.IsInRole(Roles.Admin)))
+            {
+                throw new SecurityException("no access to this question");
+            }
+        }
+      
+
         public async Task DeleteQuestionAsync(int idQuestion)
         {
 
@@ -564,6 +577,55 @@ namespace cran.Services
                     }).ToListAsync();
 
             return result;
+        }
+
+        public async Task<IList<CourseInstanceListEntryDto>> GetMyCourseInstancesAsync()
+        {            
+            string userid =  GetUserId();
+            IQueryable<CourseInstanceListEntryDto> query = _context.CourseInstances.Where(x => x.User.UserId == userid)
+                .Select(x => new CourseInstanceListEntryDto()
+                {
+                    IdCourseInstance = x.Id,
+                    Title = x.Course.Title,
+                    Percentage = 0,
+                    InsertDate = x.InsertDate,
+                })
+                .OrderByDescending(x => x.InsertDate);
+
+            IList<CourseInstanceListEntryDto> result = await query.ToListAsync();
+            return result;
+        }
+
+        public async Task DeleteCourseInstanceAsync(int idCourseInstance)
+        {
+            await CheckAccessToCourseInstance(idCourseInstance);
+
+            CourseInstance instance = await _context.FindAsync<CourseInstance>(idCourseInstance);            
+
+
+            IList<CourseInstanceQuestionOption> courseInstanceQuestionOptions =
+                    await _context.CourseInstancesQuestionOption
+                    .Where(x => x.CourseInstanceQuestion.CourseInstance.Id == instance.Id)
+                    .ToListAsync();
+
+            foreach(CourseInstanceQuestionOption courseInstanceQuestionOption in courseInstanceQuestionOptions)
+            {
+                _context.CourseInstancesQuestionOption.Remove(courseInstanceQuestionOption);
+            }
+
+            IList<CourseInstanceQuestion> coureInstanceQuestions = await _context.CourseInstancesQuestion
+                .Where(x => x.CourseInstance.Id == instance.Id)
+                .ToListAsync();
+
+            foreach(CourseInstanceQuestion courseInstanceQuestion in coureInstanceQuestions)
+            {
+                _context.Remove(courseInstanceQuestion);
+            }
+
+            _context.Remove(instance);
+
+            await SaveChanges();
+
         }
     }
 }

@@ -16,7 +16,7 @@ import {QuestionAnswer} from './model/questionanswer';
 import {QuestionListEntry} from './model/questionlistentry';
 import {Result} from './model/result';
 import {QuestionResult} from './model/questionresult';
-
+import {CourseInstanceListEntry} from './model/courseinstancelistentry';
 
 export let CRAN_SERVICE_TOKEN = new InjectionToken<ICranDataService>('ICranDataService');
 
@@ -25,6 +25,11 @@ export class CranDataService implements ICranDataService {
 
   constructor(private http: Http) {
 
+  }
+
+  deleteCourseInstance(id: number): Promise<any> {
+    return this.http.delete('/api/Data/DeleteCourseInstance/' + id)
+    .toPromise();
   }
 
 
@@ -51,6 +56,16 @@ export class CranDataService implements ICranDataService {
                  return data;
                 })
                .catch(this.handleError);
+  }
+
+  getMyCourseInstances(): Promise<CourseInstanceListEntry[]> {
+    return this.http.get('/api/Data/GetMyCourseInstances')
+    .toPromise()
+    .then(response => {
+      const data = response.json() as CourseInstanceListEntry[];
+      return data;
+     })
+    .catch(this.handleError);
   }
 
   answerQuestionAndGetSolution(answer: QuestionAnswer): Promise<Question> {
@@ -157,6 +172,21 @@ export class CranDataService implements ICranDataService {
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
 
+  deleteCourseInstance(id: number): Promise<any> {
+    return Promise.resolve();
+  }
+
+  getMyCourseInstances(): Promise<CourseInstanceListEntry[]> {
+    const result: CourseInstanceListEntry[] = [
+      {idCourseInstance: 1, percentage: 80, title: 'Course1'},
+      {idCourseInstance: 2, percentage: 55, title: 'Course2'},
+      {idCourseInstance: 3, percentage: 8, title:  'Course3'},
+      {idCourseInstance: 4, percentage: 98, title: 'Course4'},
+      {idCourseInstance: 5, percentage: 10, title: 'JavaScript'}
+    ];
+    return Promise.resolve(result);
+  }
+
 
   getCourseResult(courseInstanceId: number): Promise<Result> {
     const result: Result = {
@@ -178,10 +208,10 @@ export class CranDataServiceMock implements ICranDataService {
 
   getMyQuestions(): Promise<QuestionListEntry[]> {
     const myList: QuestionListEntry[]  = [
-      {id: 2, title: 'Hello', status: 1, tags : [{id : 23, description : '', name : 'MyTag'}]},
+      {id: 1, title: 'Hello', status: 1, tags : [{id : 23, description : '', name : 'MyTag'}]},
       {id: 2, title: 'World', status: 1, tags : []},
-      {id: 2, title: 'yep',   status: 1, tags : []},
-      {id: 2, title: 'zep',   status: 0, tags : []},
+      {id: 3, title: 'yep',   status: 1, tags : []},
+      {id: 4, title: 'zep',   status: 0, tags : []},
     ];
     return Promise.resolve(myList);
   }
