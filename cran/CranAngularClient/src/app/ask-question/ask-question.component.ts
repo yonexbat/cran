@@ -41,13 +41,14 @@ export class AskQuestionComponent implements OnInit {
 
   }
 
-  public getSolution() {
+  public async getSolution(): Promise<void> {
     const answer: QuestionAnswer = this.getAnswer();
-    this.cranDataServiceService.answerQuestionAndGetSolution(answer)
-      .then((question: Question) => {
-        this.showSolution(question);
-      })
-      .catch(reason => this.statusMessage.showError(reason));
+    try {
+      const question =  await this.cranDataServiceService.answerQuestionAndGetSolution(answer);
+      this.showSolution(question);
+    } catch (reason) {
+      this.statusMessage.showError(reason);
+    }
   }
 
   private showSolution(question: Question) {
@@ -58,18 +59,19 @@ export class AskQuestionComponent implements OnInit {
     this.checkShown = true;
   }
 
-  public nextQuestion() {
+  public async nextQuestion(): Promise<void> {
       const answer: QuestionAnswer = this.getAnswer();
-      this.cranDataServiceService.answerQuestionAndGetNextQuestion(answer)
-      .then((data: CourseInstance) => {
+      try {
+        const data = await this.cranDataServiceService.answerQuestionAndGetNextQuestion(answer);
         this.checkShown = false;
         if (data.idCourseInstanceQuestion > 0) {
-            this.router.navigate(['/askquestion', data.idCourseInstanceQuestion]);
+          this.router.navigate(['/askquestion', data.idCourseInstanceQuestion]);
         } else {
           this.goToResult();
         }
-      })
-      .catch(reason => this.statusMessage.showError(reason));
+      } catch (reason) {
+        this.statusMessage.showError(reason);
+      }
   }
 
   private getAnswer(): QuestionAnswer {
@@ -85,15 +87,15 @@ export class AskQuestionComponent implements OnInit {
     this.router.navigate(['/resultlist', this.questionToAsk.idCourseInstance]);
   }
 
-  private handleRouteChanged(id: number) {
-    this.cranDataServiceService.getQuestionToAsk(id)
-      .then((data: QuestionToAsk) => {
-        this.questionToAsk = data;
-        if (data.courseEnded) {
-          this.getSolution();
-        }
-      })
-      .catch(reason => this.statusMessage.showError(reason));
+  private async handleRouteChanged(id: number): Promise<void> {
+    try {
+      this.questionToAsk = await this.cranDataServiceService.getQuestionToAsk(id);
+      if (this.questionToAsk.courseEnded) {
+        this.getSolution();
+      }
+    } catch (reason) {
+      this.statusMessage.showError(reason);
+    }
   }
 
 }

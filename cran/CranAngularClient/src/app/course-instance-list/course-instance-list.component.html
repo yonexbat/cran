@@ -4,6 +4,7 @@
           <h4>
             {{item.insertDate | date:'dd.MM.yyyy HH:mm'}}
             {{item.title}}
+            ({{item.percentage}}%)
 
             <span class="btn-group pull-right">
                 <button class="btn btn-default" type="button" (click)="deleteCourseInstance(item)">

@@ -23,15 +23,14 @@ export class CourseInstanceListComponent implements OnInit {
     this.loadInstances();
   }
 
-  private loadInstances() {
-    this.cranDataServiceService.getMyCourseInstances()
-    .then((instances: CourseInstanceListEntry[]) => this.courseInstances = instances);
+  private async loadInstances(): Promise<void> {
+    this.courseInstances = await this.cranDataServiceService.getMyCourseInstances();
   }
 
-  public deleteCourseInstance(instance: CourseInstanceListEntry) {
+  public async deleteCourseInstance(instance: CourseInstanceListEntry): Promise<void>  {
     if (confirm('Resultat löschen?')) {
-      this.cranDataServiceService.deleteCourseInstance(instance.idCourseInstance)
-        .then((nores: any) => this.loadInstances());
+      await this.cranDataServiceService.deleteCourseInstance(instance.idCourseInstance);
+      await this.loadInstances();
     }
   }
 

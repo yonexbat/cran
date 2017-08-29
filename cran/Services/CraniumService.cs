@@ -587,7 +587,7 @@ namespace cran.Services
                 {
                     IdCourseInstance = x.Id,
                     Title = x.Course.Title,
-                    Percentage = 0,
+                    Percentage = x.CourseInstancesQuestion.Count(y => y.Correct) / x.CourseInstancesQuestion.Count(),
                     InsertDate = x.InsertDate,
                 })
                 .OrderByDescending(x => x.InsertDate);
