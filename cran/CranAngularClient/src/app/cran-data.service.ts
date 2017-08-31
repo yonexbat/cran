@@ -7,7 +7,7 @@ import {Course} from './model/course';
 import {Question} from './model/question';
 import {QuestionOption} from './model/questionoption';
 import {ICranDataService} from './icrandataservice';
-import { Tag } from './model/tag';
+import {Tag} from './model/tag';
 import {StartCourse} from './model/startcourse';
 import {CourseInstance} from './model/courseinstance';
 import {QuestionToAsk} from './model/questiontoask';
