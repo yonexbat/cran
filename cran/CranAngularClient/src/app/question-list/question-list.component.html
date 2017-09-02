@@ -1,7 +1,8 @@
 <div class="container">
   
   <div class="list-group">
-    <div  *ngFor="let item of questions" class="list-group-item questionstatus questionstatusok"
+    <div  *ngFor="let item of questions" 
+          class="list-group-item questionstatus"
           [ngClass]="{'questionstatusok' : item.status === 1, 'questionstatusnok' :item.status === 0 }">
       <h4>        
 
