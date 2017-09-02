@@ -61,6 +61,15 @@ namespace cran
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            string clientId = Configuration["ClientId"];
+            string clientSecret = Configuration["ClientSecret"];          
+
+            services.AddAuthentication()
+                .AddGoogle(options => {
+                    options.ClientId = clientId;
+                    options.ClientSecret = clientSecret;
+                });
+
 
             //Transient: for every obejct that required it a (new instance).
             //Scoped: once per request.
@@ -95,14 +104,7 @@ namespace cran
             app.UseStaticFiles();
 
             //Google login
-            app.UseIdentity();
-            string clientId = Configuration["ClientId"];
-            string clientSecret = Configuration["ClientSecret"];            
-            app.UseGoogleAuthentication(new GoogleOptions()
-            {
-                ClientId = clientId,
-                ClientSecret = clientSecret,
-            });
+            app.UseAuthentication();      
 
            
 

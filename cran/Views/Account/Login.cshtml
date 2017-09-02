@@ -22,7 +22,7 @@
         </div>
 
             @{
-                var loginProviders = SignInManager.GetExternalAuthenticationSchemes().ToList();
+                var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
                 if (loginProviders.Count == 0)
                 {
                     <div>
@@ -40,9 +40,9 @@
                                 @foreach (var provider in loginProviders)
                                 {
                                     <button type="submit" class="btn btn-primary btn-lg" name="provider" 
-                                            value="@provider.AuthenticationScheme" 
+                                            value="@provider.Name" 
                                             title="Log in using your @provider.DisplayName account">
-                                        @provider.AuthenticationScheme
+                                        @provider.DisplayName
                                     </button>
                                 }
                             </p>
