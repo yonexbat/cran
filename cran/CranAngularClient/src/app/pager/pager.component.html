@@ -1,0 +1,8 @@
+<div class="list-group">
+  
+  <ng-container *ngFor="let item of items">
+      <ng-container *ngTemplateOutlet="itemTemplate;context:{item:item}">
+      </ng-container>          
+  </ng-container>
+       
+</div>

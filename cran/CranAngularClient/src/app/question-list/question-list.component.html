@@ -1,11 +1,10 @@
 <div class="container">
   
-  <div class="list-group">
-    <div  *ngFor="let item of questions" 
-          class="list-group-item questionstatus"
+  <!-- Template for ListItem -->
+  <ng-template #listItem let-item="item">      
+    <div  class="list-group-item questionstatus"
           [ngClass]="{'questionstatusok' : item.status === 1, 'questionstatusnok' :item.status === 0 }">
-      <h4>        
-
+      <h4>                  
         #{{item.id}}
 
         {{item.title}}
@@ -27,9 +26,12 @@
       </h4> 
       <span *ngFor="let tag of item.tags" 
             class="label label-info crantag">
-             {{tag.name}}        
+              {{tag.name}}        
       </span> 
-          
-    </div>
-  </div>
+    </div>      
+  </ng-template> 
+
+  <app-pager [itemTemplate]="listItem"
+             [items]="questions">            
+  </app-pager>
 </div>

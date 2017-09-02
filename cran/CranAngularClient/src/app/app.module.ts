@@ -22,6 +22,7 @@ import { RichTextBoxComponent } from './rich-text-box/rich-text-box.component';
 import { SafeHtmlPipe } from './save-html.pipe';
 import { QuestionPreviewComponent } from './question-preview/question-preview.component';
 import { CourseInstanceListComponent } from './course-instance-list/course-instance-list.component';
+import { PagerComponent } from './pager/pager.component';
 
 function isDevelopment() {
   return window.location && window.location.port && window.location.port === '4200';
@@ -48,6 +49,7 @@ if (isDevelopment()) {
     SafeHtmlPipe,
     QuestionPreviewComponent,
     CourseInstanceListComponent,
+    PagerComponent,
   ],
   imports: [
     BrowserModule,
