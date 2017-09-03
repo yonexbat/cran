@@ -31,7 +31,9 @@
     </div>      
   </ng-template> 
 
-  <app-pager [itemTemplate]="listItem"
-             [items]="questions">            
-  </app-pager>
+  <ng-container *ngFor="let item of questions">
+    <ng-container *ngTemplateOutlet="listItem;context:{item:item}">
+    </ng-container>          
+  </ng-container>
+ 
 </div>

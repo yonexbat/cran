@@ -1,3 +1,37 @@
-<p>
-  search-questions works!
-</p>
+<div class="container">
+  
+  <!-- Template for ListItem -->
+  <ng-template #listItem let-item="item">      
+    <div  class="list-group-item questionstatus"
+          [ngClass]="{'questionstatusok' : item.status === 1, 'questionstatusnok' :item.status === 0 }">
+      <h4>                  
+        #{{item.id}}
+
+        {{item.title}}
+
+        <span class="btn-group pull-right">
+
+
+          <button class="btn btn-default" type="button" (click)="deleteQuestion(item)">
+            <span class="glyphicon glyphicon-trash"></span>
+          </button>
+          
+          <button class="btn btn-default" type="button" (click)="goToQuestion(item)">
+            <span class="glyphicon glyphicon-pencil" *ngIf="item.status !== 1"></span>
+            <span class="glyphicon glyphicon-info-sign" *ngIf="item.status === 1"></span>
+          </button>
+
+        </span>
+      
+      </h4> 
+      <span *ngFor="let tag of item.tags" 
+            class="label label-info crantag">
+              {{tag.name}}        
+      </span> 
+    </div>      
+  </ng-template> 
+  
+  <app-pager [itemTemplate]="listItem"
+             [items]="pagedResult.data">            
+  </app-pager>
+</div>

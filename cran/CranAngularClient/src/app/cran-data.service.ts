@@ -34,7 +34,8 @@ export class CranDataService implements ICranDataService {
 
   deleteCourseInstance(id: number): Promise<any> {
     return this.http.delete('/api/Data/DeleteCourseInstance/' + id)
-    .toPromise();
+    .toPromise()
+    .catch(this.handleError);
   }
 
 
