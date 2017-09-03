@@ -14,22 +14,28 @@ import {PagedResult} from '../model/pagedresult';
 })
 export class SearchQuestionsComponent implements OnInit {
 
-  pagedResult: PagedResult<QuestionListEntry> = new PagedResult<QuestionListEntry>();
+  public pagedResult: PagedResult<QuestionListEntry> = new PagedResult<QuestionListEntry>();
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
   private router: Router) { }
 
   ngOnInit() {
-    this.searchQuestions();
+    this.searchQuestions(0);
   }
 
-  public async searchQuestions(): Promise<void> {
-    const searchParameters = this.getSearchFilter();
+  public async searchQuestions(pageNumber: number): Promise<void> {
+    const searchParameters = this.getSearchFilter(pageNumber);
     this.pagedResult = await this.cranDataServiceService.searchForQuestions(searchParameters);
   }
 
-  public getSearchFilter(): SearchQParameters {
-    return new SearchQParameters();
+  public getSearchFilter(pageNumber: number): SearchQParameters {
+    const search = new SearchQParameters();
+    search.page = pageNumber;
+    return search;
+  }
+
+  public pageSelected(pageNumber: number) {
+    this.searchQuestions(pageNumber);
   }
 
 }

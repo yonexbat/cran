@@ -32,6 +32,7 @@
   </ng-template> 
   
   <app-pager [itemTemplate]="listItem"
-             [items]="pagedResult.data">            
+             [pagedResult]="pagedResult"
+             (onSelectedPageChanged)="pageSelected($event)">            
   </app-pager>
 </div>

@@ -1,8 +1,14 @@
 <div class="list-group">
   
-  <ng-container *ngFor="let item of items">
+  <ng-container *ngFor="let item of pagedResult.data">
       <ng-container *ngTemplateOutlet="itemTemplate;context:{item:item}">
       </ng-container>          
   </ng-container>
+
+  <ul class="pagination">
+    <li *ngFor="let number of getPages()" [ngClass]="{'active': this.pagedResult.currentPage===number}" >
+      <span (click)="pageClicked(number)">{{number + 1}}</span>
+    </li>
+  </ul>
        
 </div>
