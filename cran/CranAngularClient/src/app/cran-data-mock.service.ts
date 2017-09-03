@@ -17,9 +17,29 @@ import {QuestionListEntry} from './model/questionlistentry';
 import {Result} from './model/result';
 import {QuestionResult} from './model/questionresult';
 import {CourseInstanceListEntry} from './model/courseinstancelistentry';
+import {SearchQParameters} from './model/searchqparameters';
+import {PagedResult} from './model/pagedresult';
 
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
+
+  searchForQuestions(parameters: SearchQParameters): Promise<PagedResult<QuestionListEntry>> {
+    const result = new PagedResult<QuestionListEntry>();
+    result.currentPage = 2;
+    result.numpages = 17;
+    result.pagesize = 5;
+
+    const myList: QuestionListEntry[]  = [
+      {id: 1, title: 'Frage 1', status: 1, tags : [{id : 23, description : '', name : 'MyTag'}]},
+      {id: 2, title: 'World', status: 1, tags : []},
+      {id: 3, title: 'Frage 3',   status: 1, tags : []},
+      {id: 4, title: 'zep',   status: 0, tags : []},
+      {id: 4, title: 'zep',   status: 0, tags : [{id : 18, description : '', name : 'Some Tag'}]},
+    ];
+
+    result.data = myList;
+    return Promise.resolve(result);
+  }
 
   deleteCourseInstance(id: number): Promise<any> {
     return Promise.resolve();

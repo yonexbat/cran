@@ -12,6 +12,8 @@ import {QuestionListEntry} from './model/questionlistentry';
 import {Result} from './model/result';
 import {QuestionResult} from './model/questionresult';
 import {CourseInstanceListEntry} from './model/courseinstancelistentry';
+import {SearchQParameters} from './model/searchqparameters';
+import {PagedResult} from './model/pagedresult';
 
 export interface ICranDataService {
   getCourses(): Promise<Courses>;
@@ -28,4 +30,5 @@ export interface ICranDataService {
   deleteQuestion(id: number): Promise<any>;
   deleteCourseInstance(id: number): Promise<any>;
   getCourseResult(courseInstanceId: number): Promise<Result>;
+  searchForQuestions(parameters: SearchQParameters): Promise<PagedResult<QuestionListEntry>>;
 }

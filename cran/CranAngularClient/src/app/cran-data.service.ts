@@ -17,6 +17,8 @@ import {QuestionListEntry} from './model/questionlistentry';
 import {Result} from './model/result';
 import {QuestionResult} from './model/questionresult';
 import {CourseInstanceListEntry} from './model/courseinstancelistentry';
+import {SearchQParameters} from './model/searchqparameters';
+import {PagedResult} from './model/pagedresult';
 
 
 @Injectable()
@@ -24,6 +26,10 @@ export class CranDataService implements ICranDataService {
 
   constructor(private http: Http) {
 
+  }
+
+  searchForQuestions(parameters: SearchQParameters): Promise<PagedResult<QuestionListEntry>> {
+    throw new Error('Method not implemented.');
   }
 
   deleteCourseInstance(id: number): Promise<any> {
