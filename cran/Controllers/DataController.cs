@@ -115,6 +115,12 @@ namespace cran.Controllers
             await _craninumService.DeleteCourseInstanceAsync(id);
         }
 
+        [HttpPost("[action]")]
+        [ValidateModel]
+        public async Task<PagedResultDto<QuestionListEntryDto>> SearchForQuestions([FromBody]  SearchQParametersDto parameters)
+        {
+            return await _craninumService.SearchForQuestionsAsync(parameters);
+        }
 
     }
 }

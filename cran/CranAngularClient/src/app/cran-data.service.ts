@@ -29,7 +29,13 @@ export class CranDataService implements ICranDataService {
   }
 
   searchForQuestions(parameters: SearchQParameters): Promise<PagedResult<QuestionListEntry>> {
-    throw new Error('Method not implemented.');
+    return this.http.post('/api/Data/SearchForQuestions', parameters)
+    .toPromise()
+    .then(  response => {
+      const result = response.json() as PagedResult<QuestionListEntry>;
+      return result;
+    })
+    .catch(this.handleError);
   }
 
   deleteCourseInstance(id: number): Promise<any> {

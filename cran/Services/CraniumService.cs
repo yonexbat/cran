@@ -465,30 +465,34 @@ namespace cran.Services
 
         public async Task<IList<QuestionListEntryDto>> GetMyQuestionsAsync()
         {
-            string userId = GetUserId(); 
-                        
+            string userId = GetUserId();
+            IQueryable<Question> query = _context.Questions.Where(q => q.User.UserId == userId).OrderBy(x => x.Title);
+            var result =  await MaterializeQuestionList(query);          
+            return result;
+        }
 
-            IList<QuestionListEntryDto> result =  await _context.Questions.Where(q => q.User.UserId == userId)
-                .OrderBy(q => q.Title)
-                .Select(q => new QuestionListEntryDto { Title = q.Title, Id = q.Id, Status = (int) q.Status })
-                .ToListAsync();
+        private async Task<IList<QuestionListEntryDto>> MaterializeQuestionList(IQueryable<Question> query)
+        {
+            IList<QuestionListEntryDto> result = await query
+              .Select(q => new QuestionListEntryDto { Title = q.Title, Id = q.Id, Status = (int)q.Status })
+              .ToListAsync();
 
-            IQueryable<int> questionIds = _context.Questions.Where(q => q.User.UserId == userId).Select(q => q.Id);
+            IQueryable<int> questionIds = query.Select(q => q.Id);
 
             var relTags = await _context.RelQuestionTags.Where(rel => questionIds.Contains(rel.Question.Id))
-                .Select(rel => new {TagId = rel.Tag.Id, QuestionId = rel.Question.Id, TagName = rel.Tag.Name })
+                .Select(rel => new { TagId = rel.Tag.Id, QuestionId = rel.Question.Id, TagName = rel.Tag.Name })
                 .ToListAsync();
 
-            foreach(var relTag in relTags)
+            foreach (var relTag in relTags)
             {
                 var dto = result.Where(x => x.Id == relTag.QuestionId).Single();
-                dto.Tags.Add(new TagDto {
+                dto.Tags.Add(new TagDto
+                {
                     Id = relTag.TagId,
                     Name = relTag.TagName,
                 });
-                
+
             }
-            
             return result;
         }
 
@@ -626,6 +630,21 @@ namespace cran.Services
 
             await SaveChanges();
 
+        }
+
+        public async Task<PagedResultDto<QuestionListEntryDto>> SearchForQuestionsAsync(SearchQParametersDto parameters)
+        {
+            int pageSize = 5;
+            int startindex = parameters.Page * pageSize;
+            IQueryable<Question> queryBeforeSkitAndTage = _context.Questions.OrderBy(x => x.Title);
+            IQueryable<Question> query = queryBeforeSkitAndTage.Skip(startindex).Take(pageSize);
+            PagedResultDto<QuestionListEntryDto> resultDto = new PagedResultDto<QuestionListEntryDto>();
+            resultDto.Pagesize = pageSize;
+            resultDto.Data = await MaterializeQuestionList(query);
+            int count = queryBeforeSkitAndTage.Count();
+            resultDto.Numpages = count / pageSize + 1;
+            resultDto.CurrentPage = parameters.Page;
+            return resultDto;
         }
     }
 }

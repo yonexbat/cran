@@ -39,5 +39,7 @@ namespace cran.Services
         Task<IList<CourseInstanceListEntryDto>> GetMyCourseInstancesAsync();
 
         Task DeleteCourseInstanceAsync(int idCourseInstance);
+
+        Task<PagedResultDto<QuestionListEntryDto>> SearchForQuestionsAsync(SearchQParametersDto parameters);
     }
 }
