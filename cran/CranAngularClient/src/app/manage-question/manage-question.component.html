@@ -4,7 +4,7 @@
 
   <h1>{{headingText}}</h1>
 
-  <form (ngSubmit)="onSubmit()" #questionForm="ngForm">
+  <form  #questionForm="ngForm">
 
    
     <div class="row form-group">
@@ -44,7 +44,7 @@
 
       <!-- Tags -->
       <div class="col-md-3">
-         <app-tag-finder [question]="question"></app-tag-finder>
+         <app-tag-finder [tagsArray]="question.tags"></app-tag-finder>
       </div>
     </div>
 

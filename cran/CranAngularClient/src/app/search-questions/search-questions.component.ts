@@ -14,14 +14,15 @@ import {PagedResult} from '../model/pagedresult';
 })
 export class SearchQuestionsComponent implements OnInit {
 
-  public pagedResult: PagedResult<QuestionListEntry> = new PagedResult<QuestionListEntry>();
+  private pagedResult: PagedResult<QuestionListEntry> = new PagedResult<QuestionListEntry>();
+  private search = new SearchQParameters();
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
   private router: Router) { }
 
   ngOnInit() {
     this.searchQuestions(0);
-  }
+  }  
 
   public async searchQuestions(pageNumber: number): Promise<void> {
     const searchParameters = this.getSearchFilter(pageNumber);
@@ -29,13 +30,23 @@ export class SearchQuestionsComponent implements OnInit {
   }
 
   public getSearchFilter(pageNumber: number): SearchQParameters {
-    const search = new SearchQParameters();
-    search.page = pageNumber;
-    return search;
+    this.search.page = pageNumber;
+    return this.search;
   }
 
   public pageSelected(pageNumber: number) {
     this.searchQuestions(pageNumber);
+  }
+
+  public goToQuestion(question: QuestionListEntry) {
+    this.router.navigate(['/editquestion', question.id]);
+  }
+
+  public deleteQuestion(question: QuestionListEntry) {
+    if (confirm('Frage löschen?')) {
+      this.cranDataServiceService.deleteQuestion(question.id)
+        .then(nores => this.searchQuestions(this.pagedResult.currentPage));
+    }
   }
 
 }

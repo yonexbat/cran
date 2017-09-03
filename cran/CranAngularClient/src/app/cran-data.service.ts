@@ -28,6 +28,16 @@ export class CranDataService implements ICranDataService {
 
   }
 
+  getRolesOfUser(): Promise<string[]> {
+    return this.http.get('/api/Data/GetRolesOfUser')
+    .toPromise()
+    .then(response => {
+      const data = response.json() as string[];
+      return data;
+     })
+    .catch(this.handleError);
+  }
+
   searchForQuestions(parameters: SearchQParameters): Promise<PagedResult<QuestionListEntry>> {
     return this.http.post('/api/Data/SearchForQuestions', parameters)
     .toPromise()
@@ -57,7 +67,8 @@ export class CranDataService implements ICranDataService {
 
   deleteQuestion(id: number): Promise<any> {
    return this.http.delete('/api/Data/DeleteQuestion/' + id)
-            .toPromise();
+            .toPromise()
+            .catch(this.handleError);
   }
 
   getMyQuestions(): Promise<QuestionListEntry[]> {

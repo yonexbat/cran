@@ -15,10 +15,12 @@ namespace cran.Controllers
     {
 
         private readonly ICraniumService _craninumService;
+        private readonly ISecurityService _securityService;
 
-        public DataController(ICraniumService craniumService)
+        public DataController(ICraniumService craniumService, ISecurityService securityService)
         {
             _craninumService = craniumService;
+            _securityService = securityService;
         }
 
 
@@ -120,6 +122,12 @@ namespace cran.Controllers
         public async Task<PagedResultDto<QuestionListEntryDto>> SearchForQuestions([FromBody]  SearchQParametersDto parameters)
         {
             return await _craninumService.SearchForQuestionsAsync(parameters);
+        }
+
+        [HttpGet("[action]")]
+        public IList<string> GetRolesOfUser()
+        {
+            return _securityService.GetRolesOfUser();
         }
 
     }

@@ -23,6 +23,10 @@ import {PagedResult} from './model/pagedresult';
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
 
+  getRolesOfUser(): Promise<string[]> {
+    return Promise.resolve(['admin', 'user']);
+  }
+
   searchForQuestions(parameters: SearchQParameters): Promise<PagedResult<QuestionListEntry>> {
     const result = new PagedResult<QuestionListEntry>();
     result.currentPage = parameters.page;

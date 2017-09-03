@@ -40,7 +40,7 @@
               <li  routerLinkActive="active">
                 <a [routerLink]="['/addquestion']">Frage hinzufügen</a>
               </li>
-              <li  routerLinkActive="active">
+              <li  routerLinkActive="active" *ngIf="isAdmin">
                 <a [routerLink]="['/searchq']">Fragen suchen</a>
               </li>
               <li  routerLinkActive="active">

@@ -2,7 +2,7 @@
   
   <!-- Search box -->
   <div>
-    <label for="tagsearchbox">Tags</label>
+    <label for="tagsearchbox">{{title}}</label>
     <input #searchBox 
           id="tagsearchbox"
           (keyup)="search(searchBox.value)"
@@ -19,9 +19,9 @@
   </div>
 
   <!-- Auflistung -->
-  <div  *ngIf="question">
+  <div  *ngIf="tagsArray">
     <div>
-      <span *ngFor="let tag of question.tags" 
+      <span *ngFor="let tag of tagsArray" 
             class="label label-info crantag">
         {{tag.name}} 
         <span class="glyphicon glyphicon-remove" aria-hidden="true" 

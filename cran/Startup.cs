@@ -71,7 +71,7 @@ namespace cran
                 });
 
 
-            //Transient: for every obejct that required it a (new instance).
+            //Transient: for every object that required it a (new instance).
             //Scoped: once per request.
             //Singleton: self explained.
 
@@ -80,6 +80,7 @@ namespace cran
             services.AddScoped<SignInManager<ApplicationUser>, SignInManager<ApplicationUser>>();
             services.AddScoped<IDbLogService, DbLogService>();
             services.AddScoped<ICraniumService, CraniumService>();
+            services.AddScoped<ISecurityService, SecurityService>();
 
             services.AddSingleton(_physicalProvider);
 

@@ -636,15 +636,34 @@ namespace cran.Services
         {
             int pageSize = 5;
             int startindex = parameters.Page * pageSize;
-            IQueryable<Question> queryBeforeSkitAndTage = _context.Questions.OrderBy(x => x.Title);
-            IQueryable<Question> query = queryBeforeSkitAndTage.Skip(startindex).Take(pageSize);
+            IQueryable<Question> queryBeforeSkipAndTake = _context.Questions.OrderBy(x => x.Title);
+            
+            if(!string.IsNullOrWhiteSpace(parameters.Title))
+            {
+                queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x => x.Title.Contains(parameters.Title));
+            }
+
+            if(parameters.AndTags.Any())
+            {
+                IList<int> tagids = parameters.AndTags.Select(x => x.Id).ToList();
+                queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x => x.RelTags.All(rel => tagids.Contains(rel.Tag.Id)));
+            }
+
+            if(parameters.OrTags.Any())
+            {
+                IList<int> tagids = parameters.OrTags.Select(x => x.Id).ToList();
+                queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x => x.RelTags.Any(rel => tagids.Contains(rel.Tag.Id)));
+            }
+
+            IQueryable<Question> query = queryBeforeSkipAndTake.Skip(startindex).Take(pageSize);
             PagedResultDto<QuestionListEntryDto> resultDto = new PagedResultDto<QuestionListEntryDto>();
             resultDto.Pagesize = pageSize;
             resultDto.Data = await MaterializeQuestionList(query);
-            int count = queryBeforeSkitAndTage.Count();
+            int count = await queryBeforeSkipAndTake.CountAsync();
             resultDto.Numpages = count / pageSize + 1;
             resultDto.CurrentPage = parameters.Page;
             return resultDto;
         }
+
     }
 }

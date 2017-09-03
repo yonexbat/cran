@@ -7,5 +7,6 @@ namespace cran.Services
 {
     public interface ISecurityService
     {
+        IList<string> GetRolesOfUser();
     }
 }

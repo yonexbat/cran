@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+
+import {ICranDataService} from '../icrandataservice';
+import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 
 @Component({
   selector: 'app-menu',
@@ -7,9 +10,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MenuComponent implements OnInit {
 
-  constructor() { }
+  private isAdmin = false;
+
+  constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService) { }
 
   ngOnInit() {
+    this.setRoles();
+  }
+
+  private async setRoles() {
+    const roles: string[] = await this.cranDataService.getRolesOfUser();
+    this.isAdmin = roles.filter(x => x === 'admin').length > 0;
   }
 
 }

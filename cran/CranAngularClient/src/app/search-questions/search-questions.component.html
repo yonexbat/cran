@@ -1,4 +1,49 @@
 <div class="container">
+
+  <form  #searchForm="ngForm">
+
+      <div class="row form-group">
+
+        <!-- Titel -->
+        <div class="col-md-4">
+            
+          <label for="title">Titel</label>
+
+          <input type="text" class="form-control" id="title"
+                  [(ngModel)]="search.title" name="title"
+                  #title="ngModel">         
+        </div>
+
+        <!-- And Tags -->
+        <div class="col-md-4">
+            <app-tag-finder [tagsArray]="search.andTags" 
+                [title]="'Und Tags'">              
+            </app-tag-finder>
+        </div>
+
+        <!-- Or Tags -->
+        <div class="col-md-4">
+          <app-tag-finder [tagsArray]="search.orTags"
+            [title]="'Oder Tags'">            
+          </app-tag-finder>
+        </div>
+
+      </div>  
+
+      <div class="row form-group">
+        <!-- Buttons -->
+        <div class="btn-group pull-right" role="group" aria-label="Basic example">
+          <button 
+            type="button" 
+            class="btn btn btn-success" 
+            (click)="searchQuestions(0)">
+            Suchen
+          </button>                
+        </div>
+      </div>
+
+  </form>
+  
   
   <!-- Template for ListItem -->
   <ng-template #listItem let-item="item">      

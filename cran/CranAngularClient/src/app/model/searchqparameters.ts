@@ -1,5 +1,9 @@
+import {Tag} from './tag';
+
 export class SearchQParameters {
-    page: number;
-    andTags: number[];
-    orTags: number[];
+
+    public title: string;
+    public page: number;
+    public andTags: Tag[] = [];
+    public orTags: Tag[] = [];
 }

@@ -21,15 +21,17 @@ import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 })
 export class TagFinderComponent implements OnInit {
 
-  public tags: Observable<Tag[]>;
+  private tags: Observable<Tag[]>;
   private searchTerms = new Subject<string>();
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService) { }
 
 
-  @Input() question: Question;
+  @Input() public tagsArray: Tag[] = [];
 
-  public searchText = '';
+  @Input() public title = 'Tags';
+
+  private searchText = '';
 
   ngOnInit() {
      this.tags = this.searchTerms
@@ -52,14 +54,14 @@ export class TagFinderComponent implements OnInit {
   }
 
   public addTag(tag: Tag) {
-    this.question.tags.push(tag);
+    this.tagsArray.push(tag);
     this.searchText = '';
     this.searchTerms.next('');
   }
 
   public removeTag(tag: Tag) {
-    const index = this.question.tags.indexOf(tag);
-    this.question.tags.splice(index, 1);
+    const index = this.tagsArray.indexOf(tag);
+    this.tagsArray.splice(index, 1);
   }
 
 }

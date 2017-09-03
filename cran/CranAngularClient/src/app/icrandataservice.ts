@@ -31,4 +31,5 @@ export interface ICranDataService {
   deleteCourseInstance(id: number): Promise<any>;
   getCourseResult(courseInstanceId: number): Promise<Result>;
   searchForQuestions(parameters: SearchQParameters): Promise<PagedResult<QuestionListEntry>>;
+  getRolesOfUser(): Promise<string[]>;
 }
