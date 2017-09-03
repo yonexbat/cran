@@ -3,7 +3,7 @@ import { HttpModule } from '@angular/http';
 import { Router, ParamMap, ActivatedRoute, } from '@angular/router';
 
 import {ICranDataService} from '../icrandataservice';
-import {CRAN_SERVICE_TOKEN} from '../cran-data.service';
+import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {Result} from '../model/result';
 import {QuestionResult} from '../model/questionresult';
 

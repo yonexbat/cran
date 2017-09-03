@@ -3,7 +3,7 @@ import { HttpModule } from '@angular/http';
 import { Router, } from '@angular/router';
 
 import {ICranDataService} from '../icrandataservice';
-import {CRAN_SERVICE_TOKEN} from '../cran-data.service';
+import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {Courses} from '../model/courses';
 import {Course} from '../model/course';
 import {CourseInstance} from '../model/courseinstance';

@@ -11,8 +11,8 @@ import 'rxjs/add/operator/switchMap';
 
 import {Question} from '../model/question';
 import {Tag} from '../model/tag';
-import {CRAN_SERVICE_TOKEN} from '../cran-data.service';
 import {ICranDataService} from '../icrandataservice';
+import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 
 @Component({
   selector: 'app-tag-finder',

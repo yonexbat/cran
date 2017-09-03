@@ -4,7 +4,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import {Question} from '../model/question';
 import {QuestionOption} from '../model/questionoption';
 import {ICranDataService} from '../icrandataservice';
-import {CRAN_SERVICE_TOKEN} from '../cran-data.service';
+import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {StatusMessageComponent} from '../status-message/status-message.component';
 import {QuestionPreviewComponent} from '../question-preview/question-preview.component';
 
