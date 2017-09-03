@@ -646,7 +646,10 @@ namespace cran.Services
             if(parameters.AndTags.Any())
             {
                 IList<int> tagids = parameters.AndTags.Select(x => x.Id).ToList();
-                queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x => x.RelTags.All(rel => tagids.Contains(rel.Tag.Id)));
+                foreach (int tagId in tagids)
+                {
+                    queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x => x.RelTags.Any(rel => rel.Tag.Id == tagId));
+                }
             }
 
             if(parameters.OrTags.Any())
