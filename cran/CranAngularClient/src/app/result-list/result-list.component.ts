@@ -4,6 +4,7 @@ import { Router, ParamMap, ActivatedRoute, } from '@angular/router';
 
 import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
+import {NotificationService} from '../notification.service';
 import {Result} from '../model/result';
 import {QuestionResult} from '../model/questionresult';
 
@@ -18,7 +19,8 @@ export class ResultListComponent implements OnInit {
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
     private router: Router,
-    private activeRoute: ActivatedRoute) {
+    private activeRoute: ActivatedRoute,
+    private notificationService: NotificationService) {
 
       this.activeRoute.paramMap.subscribe((params: ParamMap)  => {
         const id = params.get('id');
@@ -33,8 +35,11 @@ export class ResultListComponent implements OnInit {
     this.router.navigate(['/askquestion', result.idCourseInstanceQuestion]);
   }
 
-  private handleRouteChanged(id: number) {
-    this.cranDataServiceService.getCourseResult(id)
-      .then(result => this.result = result);
+  private async handleRouteChanged(id: number): Promise<void> {
+    try {
+      this.result = await this.cranDataServiceService.getCourseResult(id);
+    } catch (error) {
+      this.notificationService.emitError(error);
+    }
   }
 }

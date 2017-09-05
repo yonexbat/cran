@@ -10,6 +10,7 @@ import {QuestionOption} from '../model/questionoption';
 import {StatusMessageComponent} from '../status-message/status-message.component';
 import {QuestionAnswer} from '../model/questionanswer';
 import {CourseInstance} from '../model/courseinstance';
+import {NotificationService} from '../notification.service';
 
 @Component({
   selector: 'app-ask-question',
@@ -19,14 +20,12 @@ import {CourseInstance} from '../model/courseinstance';
 export class AskQuestionComponent implements OnInit {
 
   public checkShown: boolean;
-
   public questionToAsk: QuestionToAsk;
-
-  @ViewChild('statusMessage') statusMessage: StatusMessageComponent;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
     private router: Router,
-    private activeRoute: ActivatedRoute) {
+    private activeRoute: ActivatedRoute,
+    private notificationService: NotificationService) {
 
     this.activeRoute.paramMap.subscribe((params: ParamMap)  => {
       const id = params.get('id');
@@ -46,8 +45,8 @@ export class AskQuestionComponent implements OnInit {
     try {
       const question =  await this.cranDataServiceService.answerQuestionAndGetSolution(answer);
       this.showSolution(question);
-    } catch (reason) {
-      this.statusMessage.showError(reason);
+    } catch (error) {
+      this.notificationService.emitError(error);
     }
   }
 
@@ -69,8 +68,8 @@ export class AskQuestionComponent implements OnInit {
         } else {
           this.goToResult();
         }
-      } catch (reason) {
-        this.statusMessage.showError(reason);
+      } catch (error) {
+        this.notificationService.emitError(error);
       }
   }
 
@@ -93,8 +92,8 @@ export class AskQuestionComponent implements OnInit {
       if (this.questionToAsk.courseEnded) {
         this.getSolution();
       }
-    } catch (reason) {
-      this.statusMessage.showError(reason);
+    } catch (error) {
+      this.notificationService.emitError(error);
     }
   }
 

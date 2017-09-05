@@ -8,6 +8,7 @@ import {Courses} from '../model/courses';
 import {Course} from '../model/course';
 import {CourseInstance} from '../model/courseinstance';
 import {StatusMessageComponent} from '../status-message/status-message.component';
+import {NotificationService} from '../notification.service';
 
 
 @Component({
@@ -19,27 +20,32 @@ export class CourseListComponent implements OnInit {
 
   courses: Course[] = [];
 
-  @ViewChild('statusMessage') statusMessage: StatusMessageComponent;
-
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
-    private router: Router) { }
+    private router: Router,
+    private notificationService: NotificationService) { }
 
   ngOnInit() {
-    this.cranDataServiceService.getCourses()
-      .then(courses => {
-          this.courses = courses.courses;
-      });
+    this.getCourses();
   }
 
-  public startCourse(course: Course) {
-    this.cranDataServiceService.startCourse(course.id)
-    .then((courseInstance: CourseInstance) => {
+  private async getCourses(): Promise<void> {
+    try {
+      const result = await this.cranDataServiceService.getCourses();
+      this.courses = result.courses;
+    } catch (error) {
+      this.notificationService.emitError(error);
+    }
+  }
+
+  public async startCourse(course: Course): Promise<void> {
+    try {
+      const courseInstance = await this.cranDataServiceService.startCourse(course.id);
       if (courseInstance.numQuestionsAlreadyAsked < courseInstance.numQuestionsTotal) {
         this.router.navigate(['/askquestion', courseInstance.idCourseInstanceQuestion]);
-      }  else {
-        this.statusMessage.showError('Keine Fragen vorhanden');
       }
-    });
+    } catch (error) {
+      this.notificationService.emitError(error);
+    }
   }
 
 }

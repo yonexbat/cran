@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 
 import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
+import {NotificationService} from '../notification.service';
 
 @Component({
   selector: 'app-menu',
@@ -12,15 +13,20 @@ export class MenuComponent implements OnInit {
 
   private isAdmin = false;
 
-  constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService) { }
+  constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
+    private notificationService: NotificationService) { }
 
   ngOnInit() {
     this.setRoles();
   }
 
   private async setRoles() {
-    const roles: string[] = await this.cranDataService.getRolesOfUser();
-    this.isAdmin = roles.filter(x => x === 'admin').length > 0;
+    try {
+      const roles: string[] = await this.cranDataService.getRolesOfUser();
+      this.isAdmin = roles.filter(x => x === 'admin').length > 0;
+    } catch (error) {
+      this.notificationService.emitError(error);
+    }
   }
 
 }

@@ -6,6 +6,7 @@ import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {QuestionListEntry} from '../model/questionlistentry';
 import {SearchQParameters} from '../model/searchqparameters';
 import {PagedResult} from '../model/pagedresult';
+import {NotificationService} from '../notification.service';
 
 @Component({
   selector: 'app-search-questions',
@@ -19,7 +20,8 @@ export class SearchQuestionsComponent implements OnInit {
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
     private router: Router,
-    private activeRoute: ActivatedRoute) {
+    private activeRoute: ActivatedRoute,
+    private notificationService: NotificationService) {
 
       this.activeRoute.queryParams.subscribe((params: ParamMap)  => {
         this.handleRouteChanged(params);
@@ -43,8 +45,11 @@ export class SearchQuestionsComponent implements OnInit {
     if (isNaN(this.search.page)) {
       this.search.page = 0;
     }
-
-    this.pagedResult = await this.cranDataServiceService.searchForQuestions(this.search);
+    try {
+      this.pagedResult = await this.cranDataServiceService.searchForQuestions(this.search);
+    } catch (error) {
+      this.notificationService.emitError(error);
+    }
   }
 
   ngOnInit() {

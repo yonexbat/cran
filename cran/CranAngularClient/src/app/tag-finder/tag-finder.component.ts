@@ -13,6 +13,7 @@ import {Question} from '../model/question';
 import {Tag} from '../model/tag';
 import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
+import {NotificationService} from '../notification.service';
 
 @Component({
   selector: 'app-tag-finder',
@@ -24,7 +25,8 @@ export class TagFinderComponent implements OnInit {
   private tags: Observable<Tag[]>;
   private searchTerms = new Subject<string>();
 
-  constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService) { }
+  constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
+    private notificationService: NotificationService) { }
 
 
   @Input() public tagsArray: Tag[] = [];
@@ -43,8 +45,7 @@ export class TagFinderComponent implements OnInit {
         // or the observable of empty heroes if there was no search term
         : Observable.of<Tag[]>([]))
       .catch(error => {
-        // TODO: add real error handling
-        console.log(error);
+        this.notificationService.emitError(error);
         return Observable.of<Tag[]>([]);
       });
   }

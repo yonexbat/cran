@@ -7,6 +7,7 @@ import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {StatusMessageComponent} from '../status-message/status-message.component';
 import {QuestionPreviewComponent} from '../question-preview/question-preview.component';
+import {NotificationService} from '../notification.service';
 
 
 @Component({
@@ -32,16 +33,17 @@ export class ManageQuestionComponent implements OnInit {
     @Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
     private router: Router,
     private activeRoute: ActivatedRoute,
-    private zone: NgZone) {
+    private notificationService: NotificationService) {
 
         this.activeRoute.paramMap.subscribe((params: ParamMap)  => {
           const id = params.get('id');
           this.handleRouteChanged(+id);
         });
 
+        // Create two options for default.
         this.question = new Question();
         this.question.options.push({
-          isTrue: true,
+          isTrue: false,
           text: '',
         });
         this.question.options.push({
@@ -53,37 +55,42 @@ export class ManageQuestionComponent implements OnInit {
   ngOnInit() {
   }
 
-  save() {
+  private async save(): Promise<void> {
     this.actionInProgress = true;
 
+
     // save current question
-    if (this.question && this.question.id > 0) {
-      this.cranDataService.updateQuestion(this.question).then(status => {
-        this.actionInProgress = false;
-        this.statusMessage.showSaveSuccess();
-      }).catch(reason => {
-          this.statusMessage.showError(reason);
+    try {
+      if (this.question && this.question.id > 0) {
+
+          const status = await this.cranDataService.updateQuestion(this.question);
           this.actionInProgress = false;
-      });
-    } else { // crate new question
-      this.cranDataService.insertQuestion(this.question)
-      .then(questionId => {
+          this.statusMessage.showSaveSuccess();
+
+      } else { // crate new question
+
+        const questionId = await this.cranDataService.insertQuestion(this.question);
         this.actionInProgress = false;
         this.router.navigate(['/editquestion', questionId]);
-      }).catch(reason => {
-          this.statusMessage.showError(reason);
-          this.actionInProgress = false;
-      });
+
+      }
+    } catch (error) {
+
+      this.notificationService.emitError(error);
+      this.actionInProgress = false;
+
     }
   }
 
-  private handleRouteChanged(id: number) {
+  private async handleRouteChanged(id: number): Promise<void> {
     if (id > 0) {
       this.buttonText = 'Speichern';
       this.headingText = 'Frage #' + id + ' editieren';
-      this.cranDataService.getQuestion(id)
-        .then(question => this.question = question)
-        .catch(reason => this.statusMessage.showError(reason));
+      try {
+        this.question = await this.cranDataService.getQuestion(id);
+      } catch (error) {
+        this.notificationService.emitError(error);
+      }
     } else {
       this.buttonText = 'Hinzufügen';
       this.headingText = 'Frage hinzufügen';

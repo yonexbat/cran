@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
+import { NotificationService } from './notification.service';
 import { MenuComponent } from './menu/menu.component';
 import { CourseListComponent } from './course-list/course-list.component';
 import { ICranDataService } from './icrandataservice';
@@ -26,6 +27,7 @@ import { QuestionPreviewComponent } from './question-preview/question-preview.co
 import { CourseInstanceListComponent } from './course-instance-list/course-instance-list.component';
 import { PagerComponent } from './pager/pager.component';
 import { SearchQuestionsComponent } from './search-questions/search-questions.component';
+import { NotificationComponent } from './notification/notification.component';
 
 function isDevelopment() {
   return window.location && window.location.port && window.location.port === '4200';
@@ -54,6 +56,7 @@ if (isDevelopment()) {
     CourseInstanceListComponent,
     PagerComponent,
     SearchQuestionsComponent,
+    NotificationComponent,
   ],
   imports: [
     BrowserModule,
@@ -66,6 +69,7 @@ if (isDevelopment()) {
   providers: [
     { provide: CRAN_SERVICE_TOKEN, useClass: cranDataService },
     HttpModule,
+    NotificationService,
   ],
   bootstrap: [AppComponent]
 })
