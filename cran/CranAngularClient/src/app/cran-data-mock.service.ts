@@ -24,7 +24,13 @@ import {PagedResult} from './model/pagedresult';
 export class CranDataServiceMock implements ICranDataService {
 
   getRolesOfUser(): Promise<string[]> {
-    return Promise.resolve(['admin', 'user']);
+
+    const promiseResult = new Promise<string[]>(function(resolve, reject){
+      setTimeout(function() {
+        resolve(['admin', 'user']);
+      }, 1000);
+    });
+    return promiseResult;
   }
 
   searchForQuestions(parameters: SearchQParameters): Promise<PagedResult<QuestionListEntry>> {
@@ -42,11 +48,23 @@ export class CranDataServiceMock implements ICranDataService {
     ];
 
     result.data = myList;
-    return Promise.resolve(result);
+
+    const promiseResult = new Promise<PagedResult<QuestionListEntry>>((resolve, reject) => {
+      setTimeout(function() {
+        resolve(result);
+      }, 1000);
+    });
+    return promiseResult;
   }
 
   deleteCourseInstance(id: number): Promise<any> {
-    return Promise.resolve();
+
+    const promiseResult = new Promise<any>(function(resolve, reject){
+      setTimeout(function() {
+        resolve();
+      }, 1000);
+    });
+    return promiseResult;
   }
 
   getMyCourseInstances(): Promise<CourseInstanceListEntry[]> {
@@ -57,7 +75,14 @@ export class CranDataServiceMock implements ICranDataService {
       {idCourseInstance: 4, insertDate: new Date(2017, 9, 25), percentage: 98, title: 'Course4'},
       {idCourseInstance: 5, insertDate: new Date(2017, 9, 25), percentage: 10, title: 'JavaScript'}
     ];
-    return Promise.resolve(result);
+
+
+    const promiseResult = new Promise<CourseInstanceListEntry[]>(function(resolve, reject){
+      setTimeout(function() {
+        resolve(result);
+      }, 1000);
+    });
+    return promiseResult;
   }
 
 
@@ -72,11 +97,22 @@ export class CranDataServiceMock implements ICranDataService {
         {correct: true, idCourseInstanceQuestion: 4, title: 'some title 4'},
       ],
     };
-    return Promise.resolve(result);
+
+    const promiseResult = new Promise<Result>(function(resolve, reject){
+      setTimeout(function() {
+        resolve(result);
+      }, 1000);
+    });
+    return promiseResult;
   }
 
   deleteQuestion(id: number): Promise<any> {
-    return Promise.resolve();
+    const promiseResult = new Promise<any>(function(resolve, reject){
+      setTimeout(function() {
+        resolve();
+      }, 1000);
+    });
+    return promiseResult;
   }
 
   getMyQuestions(): Promise<QuestionListEntry[]> {
@@ -86,7 +122,13 @@ export class CranDataServiceMock implements ICranDataService {
       {id: 3, title: 'yep',   status: 1, tags : []},
       {id: 4, title: 'zep',   status: 0, tags : []},
     ];
-    return Promise.resolve(myList);
+
+    const promiseResult = new Promise<QuestionListEntry[]>(function(resolve, reject){
+      setTimeout(function() {
+        resolve(myList);
+      }, 1000);
+    });
+    return promiseResult;
   }
 
   answerQuestionAndGetSolution(answer: QuestionAnswer): Promise<Question> {
@@ -96,7 +138,13 @@ export class CranDataServiceMock implements ICranDataService {
   answerQuestionAndGetNextQuestion(answer: QuestionAnswer): Promise<CourseInstance> {
     const questionResult = new CourseInstance();
     questionResult.idCourseInstanceQuestion = 2432;
-    return Promise.resolve(questionResult);
+
+    const promiseResult = new Promise<CourseInstance>(function(resolve, reject){
+      setTimeout(function() {
+        resolve(questionResult);
+      }, 1000);
+    });
+    return promiseResult;
   }
 
   getQuestionToAsk(id: number): Promise<QuestionToAsk> {
@@ -114,10 +162,22 @@ export class CranDataServiceMock implements ICranDataService {
   }
 
   startCourse(courseId: number): Promise<CourseInstance> {
-    const result = new CourseInstance();
-    result.idCourseInstance = 234;
-    result.idCourseInstanceQuestion = 354;
-    return Promise.resolve(result);
+
+    const result: CourseInstance = {
+      idCourseInstance: 23,
+      answeredCorrectly: false,
+      idCourseInstanceQuestion: 234,
+      done: false,
+      numQuestionsAlreadyAsked: 12,
+      numQuestionsTotal: 14,
+    };
+
+    const promiseResult = new Promise<CourseInstance>(function(resolve, reject){
+      setTimeout(function() {
+        resolve(result);
+      }, 1000);
+    });
+    return promiseResult;
   }
 
   findTags(name: string): Promise<Tag[]> {
@@ -146,11 +206,20 @@ export class CranDataServiceMock implements ICranDataService {
       description : '',
     });
 
-    return Promise.resolve(tags);
+    const promiseResult = new Promise<Tag[]>(function(resolve, reject){
+      setTimeout(function() {
+        resolve(tags);
+      }, 1000);
+    });
+    return promiseResult;
   }
+
+
   updateQuestion(question: Question): Promise<any> {
       return new Promise<any>((resolve, reject) => {
-        resolve('Ok');
+        setTimeout(function() {
+          resolve('Ok');
+        }, 1000);
       });
   }
 
@@ -164,6 +233,12 @@ export class CranDataServiceMock implements ICranDataService {
                .then(response => {
                  const data = response.json() as Courses;
                  return data;
+                }).then(response => {
+                  return new Promise<Courses>((resolve, reject) => {
+                    setTimeout(function() {
+                      resolve(response);
+                    }, 1000);
+                  });
                 });
   }
 
@@ -190,7 +265,9 @@ export class CranDataServiceMock implements ICranDataService {
           {isTrue : false, text : '5 Jahre'},
         ];
 
-        resolve(question);
+        setTimeout(function() {
+          resolve(question);
+        }, 1000);
       });
   }
 

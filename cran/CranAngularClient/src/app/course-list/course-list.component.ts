@@ -30,8 +30,10 @@ export class CourseListComponent implements OnInit {
 
   private async getCourses(): Promise<void> {
     try {
+      this.notificationService.emitLoading();
       const result = await this.cranDataServiceService.getCourses();
       this.courses = result.courses;
+      this.notificationService.emitDone();
     } catch (error) {
       this.notificationService.emitError(error);
     }
@@ -39,10 +41,12 @@ export class CourseListComponent implements OnInit {
 
   public async startCourse(course: Course): Promise<void> {
     try {
+      this.notificationService.emitLoading();
       const courseInstance = await this.cranDataServiceService.startCourse(course.id);
       if (courseInstance.numQuestionsAlreadyAsked < courseInstance.numQuestionsTotal) {
         this.router.navigate(['/askquestion', courseInstance.idCourseInstanceQuestion]);
       }
+      this.notificationService.emitDone();
     } catch (error) {
       this.notificationService.emitError(error);
     }

@@ -4,11 +4,12 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 
-import {NotificationEvent} from './model/notificationEvent';
+import {NotificationEvent, NotificationType} from './model/notificationEvent';
 
 
 @Injectable()
 export class NotificationService {
+
 
   private _subject: Subject<NotificationEvent>;
 
@@ -17,10 +18,25 @@ export class NotificationService {
   }
 
   public emitError(message: string): void {
-    console.log(message);
     const event: NotificationEvent = {
       message: message,
-      type: 'error',
+      type: NotificationType.Error,
+    };
+    this._subject.next(event);
+  }
+
+  public emitLoading(): void {
+    const event: NotificationEvent = {
+      message: '',
+      type: NotificationType.Loading,
+    };
+    this._subject.next(event);
+  }
+
+  public emitDone(): void {
+    const event: NotificationEvent = {
+      message: '',
+      type: NotificationType.Done,
     };
     this._subject.next(event);
   }

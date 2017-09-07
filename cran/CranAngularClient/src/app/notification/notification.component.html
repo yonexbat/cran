@@ -3,4 +3,9 @@
       <span  class="close" aria-label="close" (click)="close()" >&times;</span>
       {{message}}
   </div>
+
+  <div class="" *ngIf="isLoading">
+    <p>Daten werden geladen ...</p> 
+  </div>
+
 </div>

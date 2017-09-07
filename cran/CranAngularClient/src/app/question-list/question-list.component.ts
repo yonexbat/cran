@@ -32,7 +32,9 @@ export class QuestionListComponent implements OnInit {
   public async deleteQuestion(question: QuestionListEntry): Promise<void> {
     if (confirm('Frage löschen?')) {
       try {
+        this.notificationService.emitLoading();
         await this.cranDataServiceService.deleteQuestion(question.id);
+        this.notificationService.emitDone();
       } catch (error) {
         this.notificationService.emitError(error);
       }
@@ -42,7 +44,9 @@ export class QuestionListComponent implements OnInit {
 
   private async loadQuestions(): Promise<void> {
     try {
+      this.notificationService.emitLoading();
       this.questions = await this.cranDataServiceService.getMyQuestions();
+      this.notificationService.emitDone();
     } catch (error) {
       this.notificationService.emitError(error);
     }

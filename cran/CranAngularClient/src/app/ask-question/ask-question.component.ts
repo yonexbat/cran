@@ -43,10 +43,13 @@ export class AskQuestionComponent implements OnInit {
   public async getSolution(): Promise<void> {
     const answer: QuestionAnswer = this.getAnswer();
     try {
+      this.notificationService.emitLoading();
       const question =  await this.cranDataServiceService.answerQuestionAndGetSolution(answer);
       this.showSolution(question);
     } catch (error) {
       this.notificationService.emitError(error);
+    } finally {
+      this.notificationService.emitDone();
     }
   }
 
@@ -61,6 +64,7 @@ export class AskQuestionComponent implements OnInit {
   public async nextQuestion(): Promise<void> {
       const answer: QuestionAnswer = this.getAnswer();
       try {
+        this.notificationService.emitLoading();
         const data = await this.cranDataServiceService.answerQuestionAndGetNextQuestion(answer);
         this.checkShown = false;
         if (data.idCourseInstanceQuestion > 0) {
@@ -68,6 +72,7 @@ export class AskQuestionComponent implements OnInit {
         } else {
           this.goToResult();
         }
+        this.notificationService.emitDone();
       } catch (error) {
         this.notificationService.emitError(error);
       }
@@ -88,10 +93,12 @@ export class AskQuestionComponent implements OnInit {
 
   private async handleRouteChanged(id: number): Promise<void> {
     try {
+      this.notificationService.emitLoading();
       this.questionToAsk = await this.cranDataServiceService.getQuestionToAsk(id);
       if (this.questionToAsk.courseEnded) {
         this.getSolution();
       }
+      this.notificationService.emitDone();
     } catch (error) {
       this.notificationService.emitError(error);
     }

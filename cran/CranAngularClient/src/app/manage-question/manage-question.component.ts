@@ -61,6 +61,7 @@ export class ManageQuestionComponent implements OnInit {
 
     // save current question
     try {
+      this.notificationService.emitLoading();
       if (this.question && this.question.id > 0) {
 
           const status = await this.cranDataService.updateQuestion(this.question);
@@ -74,6 +75,7 @@ export class ManageQuestionComponent implements OnInit {
         this.router.navigate(['/editquestion', questionId]);
 
       }
+      this.notificationService.emitDone();
     } catch (error) {
 
       this.notificationService.emitError(error);
@@ -87,7 +89,9 @@ export class ManageQuestionComponent implements OnInit {
       this.buttonText = 'Speichern';
       this.headingText = 'Frage #' + id + ' editieren';
       try {
+        this.notificationService.emitLoading();
         this.question = await this.cranDataService.getQuestion(id);
+        this.notificationService.emitDone();
       } catch (error) {
         this.notificationService.emitError(error);
       }

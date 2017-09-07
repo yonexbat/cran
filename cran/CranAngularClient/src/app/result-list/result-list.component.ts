@@ -37,7 +37,9 @@ export class ResultListComponent implements OnInit {
 
   private async handleRouteChanged(id: number): Promise<void> {
     try {
+      this.notificationService.emitLoading();
       this.result = await this.cranDataServiceService.getCourseResult(id);
+      this.notificationService.emitDone();
     } catch (error) {
       this.notificationService.emitError(error);
     }

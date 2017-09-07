@@ -46,7 +46,9 @@ export class SearchQuestionsComponent implements OnInit {
       this.search.page = 0;
     }
     try {
+      this.notificationService.emitLoading();
       this.pagedResult = await this.cranDataServiceService.searchForQuestions(this.search);
+      this.notificationService.emitDone();
     } catch (error) {
       this.notificationService.emitError(error);
     }

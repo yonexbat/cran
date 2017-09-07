@@ -27,7 +27,9 @@ export class CourseInstanceListComponent implements OnInit {
 
   private async loadInstances(): Promise<void> {
     try {
+      this.notificationService.emitLoading();
       this.courseInstances = await this.cranDataServiceService.getMyCourseInstances();
+      this.notificationService.emitDone();
     } catch (error) {
       this.notificationService.emitError(error);
     }
@@ -36,7 +38,9 @@ export class CourseInstanceListComponent implements OnInit {
   public async deleteCourseInstance(instance: CourseInstanceListEntry): Promise<void>  {
     if (confirm('Resultat löschen?')) {
       try {
+        this.notificationService.emitLoading();
         await this.cranDataServiceService.deleteCourseInstance(instance.idCourseInstance);
+        this.notificationService.emitDone();
       } catch (error) {
         this.notificationService.emitError(error);
       }
