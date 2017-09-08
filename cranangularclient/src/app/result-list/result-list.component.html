@@ -3,7 +3,7 @@
   <div class="list-group">
     <div  *ngFor="let item of result.questions" 
           class="list-group-item questionstatus"
-          [ngClass]="{'questionstatusok' : item.correct === true, 'questionstatusnok' :item.correct === false }">
+          [ngClass]="{'questionstatusok': item.correct === true, 'questionstatusnok': item.correct === false }">
       <h4>
         {{item.title}}
 

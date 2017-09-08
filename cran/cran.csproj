@@ -14,15 +14,11 @@
   </ItemGroup>
   <ItemGroup>
     <!-- Files not to show in IDE -->
-    <None Remove="yarn.lock" />
-    <Compile Remove="CranAngularClient\node_modules\**" />
+    <None Remove="yarn.lock" />   
     <Compile Remove="Database\**" />
     <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
-    <Content Remove="CranAngularClient\**" />
-    <Content Remove="Database\**" />
-    <EmbeddedResource Remove="CranAngularClient\node_modules\**" />
-    <EmbeddedResource Remove="Database\**" />
-    <None Remove="CranAngularClient\node_modules\**" />
+    <Content Remove="Database\**" />  
+    <EmbeddedResource Remove="Database\**" />   
     <None Remove="Database\**" />
   </ItemGroup>
   <ItemGroup>
@@ -32,9 +28,10 @@
     <Folder Include="wwwroot\jsclient\" />
   </ItemGroup>
 
+  <!-- Command: dotnet msbuild /t:CreateClient -->
   <Target Name="CreateClient">
     <Message Text="Creating Angular Client" />
-    <Exec Command="npm run installclient" WorkingDirectory=".\CranAngularClient" />    
+    <Exec Command="npm run installclient" WorkingDirectory="..\cranangularclient" />    
   </Target>
   
 </Project>

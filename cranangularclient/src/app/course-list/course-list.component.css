@@ -1,3 +1,5 @@
-.crancourse:hover {
-    background: bisque;
-}
+.list-group-item:after {
+    content: "";
+    display: table;
+    clear: both;
+  }

@@ -43,7 +43,7 @@ export class CranDataServiceMock implements ICranDataService {
       {id: 1, title: `Frage ${parameters.page}`, status: 1, tags : [{id : 23, description : '', name : 'MyTag'}]},
       {id: 2, title: 'World', status: 1, tags : []},
       {id: 3, title: 'Frage 3',   status: 1, tags : []},
-      {id: 4, title: 'zep',   status: 0, tags : []},
+      {id: 4, title: 'Test mit einer Frage mit einem langen Titel',   status: 0, tags : []},
       {id: 4, title: 'zep',   status: 0, tags : [{id : 18, description : '', name : 'Some Tag'}]},
     ];
 
@@ -119,7 +119,7 @@ export class CranDataServiceMock implements ICranDataService {
     const myList: QuestionListEntry[]  = [
       {id: 1, title: 'Hello', status: 1, tags : [{id : 23, description : '', name : 'MyTag'}]},
       {id: 2, title: 'World', status: 1, tags : []},
-      {id: 3, title: 'yep',   status: 1, tags : []},
+      {id: 3, title: 'Frage mit einem sehr langen Titel',   status: 1, tags : []},
       {id: 4, title: 'zep',   status: 0, tags : []},
     ];
 
@@ -228,18 +228,23 @@ export class CranDataServiceMock implements ICranDataService {
   }
 
   getCourses(): Promise<Courses> {
-      return this.http.get('/assets/courses.json')
-               .toPromise()
-               .then(response => {
-                 const data = response.json() as Courses;
-                 return data;
-                }).then(response => {
-                  return new Promise<Courses>((resolve, reject) => {
-                    setTimeout(function() {
-                      resolve(response);
-                    }, 1000);
-                  });
-                });
+    const courses: Courses = {
+      courses: [
+        {id: 1, description: 'Test Kurs bla', title: 'Kursus'},
+        {id: 1, description: 'Test Kurs bla', title: 'Kursus'},
+        {id: 1, description: 'Test Kurs bla', title: 'Kursus'},
+        {id: 1, description: 'Test Kurs bla', title: 'Kursus'},
+        {id: 1, description: 'Test Kurs bla', title: 'Kursus'},
+        {id: 1, description: 'GLOBI in den Ferien', title: 'Kursus'},
+      ],
+    };
+
+    const promiseResult: Promise<Courses> = new Promise<Courses>((resolve, reject) => {
+      setTimeout(function() {
+        resolve(courses);
+      }, 1000);
+    });
+    return promiseResult;
   }
 
   insertQuestion(question: Question): Promise<number> {

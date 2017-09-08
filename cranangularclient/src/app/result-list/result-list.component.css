@@ -13,3 +13,9 @@
 {
     border-left-color: #E6A5A6;
 }
+
+.list-group-item:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
