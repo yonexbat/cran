@@ -26,10 +26,19 @@ import {GetComments} from './model/getcomments';
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
 
+  deleteComment(id: number): Promise<any> {
+    const promiseResult = new Promise<any>((resolve, reject) => {
+      setTimeout(function() {
+        resolve();
+      }, 1000);
+    });
+    return promiseResult;
+  }
+
   getComments(parameters: GetComments): Promise<PagedResult<Comment>> {
 
     const result = new PagedResult<Comment>();
-    result.currentPage = 0;
+    result.currentPage = parameters.page;
     result.numpages = 4;
     result.data = [
       {commentText: 'mein kommentar', idComment: 2, isEditable: false, idQuestion: parameters.idQuestion},

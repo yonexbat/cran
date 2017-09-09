@@ -18,7 +18,6 @@ export class CommentsComponent implements OnInit {
   private comments: PagedResult<Comment>;
   private comment: Comment;
 
-  private idQuestion: number;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
     private notificationService: NotificationService,
@@ -33,7 +32,7 @@ export class CommentsComponent implements OnInit {
   }
 
   public async showComments(idQuestion: number): Promise<void> {
-    this.idQuestion = idQuestion;
+    this.comment.idQuestion = idQuestion;
     await this.getCommentsPage(0);
   }
 
@@ -41,11 +40,12 @@ export class CommentsComponent implements OnInit {
 
     try {
       this.notificationService.emitLoading();
-      const params: GetComments = {idQuestion: this.idQuestion, page : 0};
+      const params: GetComments = {idQuestion: this.comment.idQuestion, page : page};
       this.comments = await this.cranDataServiceService.getComments(params);
       this.notificationService.emitDone();
     } catch (error) {
       this.notificationService.emitError(error);
+      throw error;
     }
   }
 
@@ -54,6 +54,23 @@ export class CommentsComponent implements OnInit {
       this.notificationService.emitLoading();
       await this.cranDataServiceService.addComment(this.comment);
       this.notificationService.emitDone();
+      this.comment.commentText = '';
+      await this.getCommentsPage(0);
+    } catch (error) {
+      this.notificationService.emitError(error);
+    }
+  }
+
+  private async pageSelected(page: number): Promise<void> {
+    this.getCommentsPage(page);
+  }
+
+  private async deleteComment(comment: Comment): Promise<void> {
+    try {
+      this.notificationService.emitLoading();
+      await this.cranDataServiceService.deleteComment(comment.idComment);
+      this.notificationService.emitDone();
+      await this.getCommentsPage(0);
     } catch (error) {
       this.notificationService.emitError(error);
     }

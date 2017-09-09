@@ -17,6 +17,7 @@ namespace cran.Services
 
         private IDbLogService _dbLogService;
         private static Random random = new Random(98789);
+        private static int PageSize = 5;
 
 
         public CraniumService(ApplicationDbContext context, IDbLogService dbLogService, IPrincipal principal) :
@@ -35,7 +36,7 @@ namespace cran.Services
             CopyData(questionDto, questionEntity);
             questionEntity.User = await GetCranUserAsync();
             _context.Add(questionEntity);
-            await SaveChanges();
+            await SaveChangesAsync();
             questionDto.Id = questionEntity.Id;
             await UpdateQuestionAsync(questionDto);
 
@@ -110,7 +111,7 @@ namespace cran.Services
                 Explanation = questionEntity.Explanation,
                 Status = (int) questionEntity.Status,
             };
-            questionVm.IsEditable = await HasWriteAccessToQuestion(id);
+            questionVm.IsEditable = await HasWriteAccess(questionEntity.IdUser);
 
             questionVm.Options = await _context.QuestionOptions
                 .Where(x => x.IdQuestion == id)
@@ -248,7 +249,7 @@ namespace cran.Services
             };
             _context.Add(courseInstanceEntity);
 
-            await SaveChanges();
+            await SaveChangesAsync();
             CourseInstanceDto result = await GetNextQuestion(courseInstanceEntity);                        
 
             return result;
@@ -334,7 +335,7 @@ namespace cran.Services
                     _context.Add(courseInstanceQuestionOptionEntity);
                 }
 
-                await SaveChanges();
+                await SaveChangesAsync();
                 result.IdCourseInstanceQuestion = courseInstanceQuestionEntity.Id;
             }
             
@@ -346,7 +347,7 @@ namespace cran.Services
         {
             CourseInstance courseInstance = await _context.FindAsync<CourseInstance>(courseInstanceId);
             courseInstance.EndedAt = DateTime.Now;
-            await SaveChanges();
+            await SaveChangesAsync();
         }
 
         private async Task<CranUser> GetCranUserAsync()
@@ -368,7 +369,7 @@ namespace cran.Services
         {
             CourseInstance courseInstanceEntity = _context.Find<CourseInstance>(courseInstanceId);          
             CourseInstanceDto result = await GetNextQuestion(courseInstanceEntity);          
-            await SaveChanges();
+            await SaveChangesAsync();
             return result;
         }
 
@@ -465,7 +466,7 @@ namespace cran.Services
             courseInstanceQuestionEntity.Correct = options.All(x => x.Correct);
             courseInstanceQuestionEntity.AnsweredAt = DateTime.Now;
 
-            await SaveChanges();
+            await SaveChangesAsync();
         }
 
         public async Task<IList<QuestionListEntryDto>> GetMyQuestionsAsync()
@@ -502,39 +503,45 @@ namespace cran.Services
         }
 
         private async Task CheckWriteAccessToQuestion(int idQuestion)
-        {          
+        {
             //Security Check
-            bool hasWriteAccess = await HasWriteAccessToQuestion(idQuestion);
+            Question question = await _context.FindAsync<Question>(idQuestion);
+            bool hasWriteAccess = await HasWriteAccess(question.IdUser);
+
             if (!hasWriteAccess)
             {
                 throw new SecurityException("no access to this question");
             }
         }
+              
 
-        private async Task<bool> HasWriteAccessToQuestion(int idQuestion)
+        private async Task CheckAccessToCourseInstance(int idCourseInstance)
         {
-            Question questionEntity = await _context.FindAsync<Question>(idQuestion);
-            CranUser userEntityOfQuestion = await _context.FindAsync<CranUser>(questionEntity.IdUser);
+            CourseInstance instance = await _context.FindAsync<CourseInstance>(idCourseInstance);
             //Security Check
-            if (userEntityOfQuestion.UserId == GetUserId() || _currentPrincipal.IsInRole(Roles.Admin))
+            bool hasWriteAccess = await HasWriteAccess(instance.IdUser);
+
+            //Security Check
+            if (hasWriteAccess)
+            {
+                throw new SecurityException("no access to this question");
+            }
+        }
+
+        private async Task<bool> HasWriteAccess(int idUser)
+        {
+            CranUser cranUser = await _context.FindAsync<CranUser>(idUser);
+
+            //Security Check
+            if (cranUser.UserId == GetUserId() || _currentPrincipal.IsInRole(Roles.Admin))
             {
                 return true;
             }
             return false;
         }
 
-        private async Task CheckAccessToCourseInstance(int idCourseInstance)
-        {
-            CourseInstance instance = await _context.FindAsync<CourseInstance>(idCourseInstance);
-            CranUser userEntityOfQuestion = await _context.FindAsync<CranUser>(instance.IdUser);
 
-            //Security Check
-            if (!(userEntityOfQuestion.UserId == GetUserId() || _currentPrincipal.IsInRole(Roles.Admin)))
-            {
-                throw new SecurityException("no access to this question");
-            }
-        }
-      
+
 
         public async Task DeleteQuestionAsync(int idQuestion)
         {
@@ -574,7 +581,7 @@ namespace cran.Services
             }
 
             _context.Remove(questionEntity);
-            await SaveChanges();
+            await SaveChangesAsync();
         }
 
         public async Task<ResultDto> GetCourseResultAsync(int idCourseInstance)
@@ -672,14 +679,14 @@ namespace cran.Services
 
             _context.Remove(instance);
 
-            await SaveChanges();
+            await SaveChangesAsync();
 
         }
 
         public async Task<PagedResultDto<QuestionListEntryDto>> SearchForQuestionsAsync(SearchQParametersDto parameters)
         {
-            int pageSize = 5;
-            int startindex = parameters.Page * pageSize;
+            
+            
             IQueryable<Question> queryBeforeSkipAndTake = _context.Questions.OrderBy(x => x.Title);
             
             if(!string.IsNullOrWhiteSpace(parameters.Title))
@@ -702,15 +709,91 @@ namespace cran.Services
                 queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x => x.RelTags.Any(rel => tagids.Contains(rel.Tag.Id)));
             }
 
-            IQueryable<Question> query = queryBeforeSkipAndTake.Skip(startindex).Take(pageSize);
+            int startindex = parameters.Page * PageSize;
+            IQueryable<Question> query = queryBeforeSkipAndTake.Skip(startindex).Take(PageSize);
             PagedResultDto<QuestionListEntryDto> resultDto = new PagedResultDto<QuestionListEntryDto>();
-            resultDto.Pagesize = pageSize;
+            resultDto.Pagesize = PageSize;
             resultDto.Data = await MaterializeQuestionList(query);
             int count = await queryBeforeSkipAndTake.CountAsync();
-            resultDto.Numpages = count / pageSize + 1;
+            resultDto.Numpages = CalculateNumPages(count);
             resultDto.CurrentPage = parameters.Page;
             return resultDto;
         }
 
+        public async Task<PagedResultDto<CommentDto>> GetCommentssAsync(GetCommentsDto parameters)
+        {
+            PagedResultDto<CommentDto> resultDto = new PagedResultDto<CommentDto>();
+
+            IQueryable<Comment> queryBeforeSkipAndTake = _context.Comments
+                .Where(x => x.Question.Id == parameters.IdQuestion)
+                .OrderByDescending(x => x.InsertDate);
+
+
+            int count = await queryBeforeSkipAndTake.CountAsync();
+
+            
+            resultDto.CurrentPage = parameters.Page;
+            resultDto.Pagesize = PageSize;
+            resultDto.Numpages = CalculateNumPages(count);
+
+            int startindex = parameters.Page * PageSize;
+            IQueryable<Comment> query = queryBeforeSkipAndTake.Skip(startindex).Take(PageSize);
+            var data  = await query.Select(x => new 
+            {
+                CommentText = x.CommentText,
+                IdQuestion = x.Question.Id,
+                IdUser = x.User.Id,
+                IdComment = x.Id,                
+                
+            }).ToListAsync();
+
+            resultDto.Data = new List<CommentDto>();
+
+            foreach(var commentData in data)
+            {
+                CommentDto commentDto = new CommentDto
+                {
+                    IdComment = commentData.IdComment,
+                    CommentText = commentData.CommentText,
+                    IdQuestion = commentData.IdQuestion,
+                    IsEditable = await HasWriteAccess(commentData.IdUser),
+                };
+                resultDto.Data.Add(commentDto);
+            }
+
+            return resultDto;
+        }
+
+        private int CalculateNumPages(int count)
+        {
+            return ((count + PageSize - 1) / PageSize);
+   
+        }
+
+        public async Task<int> AddComment(CommentDto vm)
+        {
+            CranUser cranUser = await this.GetCranUserAsync();
+            Question question = await _context.FindAsync<Question>(vm.IdQuestion);
+            Comment comment = new Comment()
+            {
+                Question = question,
+                User = cranUser,
+                CommentText = vm.CommentText,
+            };
+            _context.Comments.Add(comment);
+            await this.SaveChangesAsync();
+            return comment.Id;
+        }
+
+        public async Task DeleteComment(int id)
+        {
+            Comment comment = await _context.FindAsync<Comment>(id);
+            if(!(await HasWriteAccess(comment.IdUser)))
+            {
+                throw new SecurityException($"No access to comment,  id: {id}");
+            }
+            _context.Remove(comment);
+            await this.SaveChangesAsync();
+        }
     }
 }

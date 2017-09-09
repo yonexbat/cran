@@ -16,24 +16,46 @@
                       required
                       [(ngModel)]="comment.commentText" 
                       name="commentText"
-                      #commentText="ngModel">
-
-              <div [hidden]="commentText.valid || commentText.pristine"
-                    class="alert alert-danger">
-                    Kommentar ist ein Mussfeld
-              </div>
-
+                      #commentText="ngModel">            
             </div>        
     </div>
-  </form>     
 
-  <div class="btn-group pull-right" *ngIf="comments">
-      <button          
-          type="button" 
-          class="btn btn btn-success"
-          (click)="addComment()">
-        Kommentar hinzufügen
-      </button>
-  </div>
+    <div class="btn-group pull-right" *ngIf="comments">
+        <button          
+            type="button" 
+            class="btn btn btn-success"
+            (click)="addComment()"
+            [disabled]="!commentsForm.form.valid">
+          Kommentar hinzufügen
+        </button>
+    </div>
+
+  </form>     
+  
+
+   <!-- Template for a single comment -->
+   <ng-template #listItem let-item="item">      
+      <div  class="list-group-item questionstatus">
+        <p>                  
+          
+          {{item.commentText}}
+
+          <span class="btn-group pull-right">
+            <button class="btn btn-default" type="button" (click)="deleteComment(item)">
+              <span class="glyphicon glyphicon-trash"></span>
+            </button>                       
+          </span>
+        
+        </p>        
+      </div>      
+    </ng-template> 
+
+    <!-- Paged result -->
+    <div class="pagedresult">    
+      <app-pager [itemTemplate]="listItem"
+                [pagedResult]="comments"
+                (onSelectedPageChanged)="pageSelected($event)">            
+      </app-pager>
+    </div>
 
 </div>

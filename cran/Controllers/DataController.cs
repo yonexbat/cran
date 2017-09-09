@@ -130,5 +130,25 @@ namespace cran.Controllers
             return _securityService.GetRolesOfUser();
         }
 
+        [HttpPost("[action]")]
+        [ValidateModel]
+        public async Task<int> AddComment([FromBody] CommentDto vm)
+        {
+            return await _craninumService.AddComment(vm);    
+        }
+
+        [HttpPost("[action]")]
+        [ValidateModel]
+        public async Task<PagedResultDto<CommentDto>> GetComments([FromBody]  GetCommentsDto parameters)
+        {
+            return await _craninumService.GetCommentssAsync(parameters);
+        }
+
+        [HttpDelete("[action]/{id}")]
+        public async Task DeleteComment(int id)
+        {
+            await _craninumService.DeleteComment(id);
+        }
+
     }
 }

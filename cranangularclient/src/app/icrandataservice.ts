@@ -36,4 +36,5 @@ export interface ICranDataService {
   getRolesOfUser(): Promise<string[]>;
   addComment(comment: Comment): Promise<number>;
   getComments(parameters: GetComments): Promise<PagedResult<Comment>>;
+  deleteComment(id: number): Promise<any>;
 }

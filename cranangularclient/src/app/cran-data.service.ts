@@ -30,11 +30,30 @@ export class CranDataService implements ICranDataService {
 
   }
 
-  addComment(comment: Comment): Promise<number> {
-    throw new Error('Method not implemented.');
+  deleteComment(id: number): Promise<any> {
+    return this.http.delete('/api/Data/DeleteComment/' + id)
+    .toPromise()
+    .catch(this.handleError);
   }
+
+  addComment(comment: Comment): Promise<number> {
+    return this.http.post('/api/Data/AddComment', comment)
+    .toPromise()
+    .then(  response => {
+      const result = response.json() as number;
+      return result;
+    })
+    .catch(this.handleError);
+  }
+
   getComments(parameters: GetComments): Promise<PagedResult<Comment>> {
-    throw new Error('Method not implemented.');
+    return this.http.post('/api/Data/GetComments', parameters)
+    .toPromise()
+    .then(  response => {
+      const result = response.json() as PagedResult<Comment>;
+      return result;
+    })
+    .catch(this.handleError);
   }
 
   getRolesOfUser(): Promise<string[]> {

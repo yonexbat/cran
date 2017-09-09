@@ -16,7 +16,7 @@ namespace cran.Services
             this._currentPrincipal = principal;
         }
        
-        protected async Task<int> SaveChanges()
+        protected async Task<int> SaveChangesAsync()
         {
             return await _context.SaveChangesCranAsync(_currentPrincipal);
         }
