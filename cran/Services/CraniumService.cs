@@ -47,10 +47,10 @@ namespace cran.Services
             };
         }
 
-        public async Task<CoursesListDto> CoursesAsync()
+        public async Task<CoursesDto> GetCoursesAsync()
         {
             await _dbLogService.LogMessageAsync("courses");
-            CoursesListDto result = new CoursesListDto();
+            CoursesDto result = new CoursesDto();
             IList<Course> list = await this._context.Courses
                 .Include(x => x.RelTags)
                 .ThenInclude(x => x.Tag)                
@@ -572,13 +572,41 @@ namespace cran.Services
                 CourseTitle = course.Title,
             };
 
-            result.Questions = await _context.CourseInstancesQuestion.Where(x => x.CourseInstance.Id == idCourseInstance)
-                .Include(x => x.Question)
+            result.Questions = await _context.CourseInstancesQuestion.Where(x => x.CourseInstance.Id == idCourseInstance)                
                 .Select(x => new QuestionResultDto {
                         IdCourseInstanceQuestion = x.Id,
+                        IdQuestion = x.Question.Id,
                         Title = x.Question.Title,
                         Correct = x.Correct,
                     }).ToListAsync();
+
+            //Tags holen
+            var tags = await _context.RelQuestionTags.Where(x => x.Question.CourseInstancesQuestion.Any(y => y.CourseInstance.Id == idCourseInstance))
+                .Select(x => new
+                {
+                    IdQuestion = x.Question.Id,
+                    IdTag = x.Tag.Id,
+                    x.Tag.Name,
+                    x.Tag.Description,
+                }).ToListAsync();
+            var tagLookups = tags.ToLookup(x => x.IdQuestion, x => x);
+
+            foreach (QuestionResultDto questionDto in result.Questions)
+            {
+                if (tagLookups.Contains(questionDto.IdQuestion))
+                {
+                    var tagLookup = tagLookups[questionDto.IdQuestion];
+                    foreach(var tag in tagLookup)
+                    {
+                        questionDto.Tags.Add(new TagDto
+                        {
+                            Id = tag.IdTag,
+                            Description = tag.Description,
+                            Name = tag.Name,
+                        });
+                    }
+                }
+            }
 
             return result;
         }

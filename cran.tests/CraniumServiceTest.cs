@@ -72,7 +72,7 @@ namespace cran.tests
         {
             var testignObject = GetTestingObject();
             ICraniumService service = testignObject.GetResolvedTestingObject();
-            var courses = await service.CoursesAsync();
+            var courses = await service.GetCoursesAsync();
             int courseId = courses.Courses.Where(x => x.Title == "JS").Select(x => x.Id).First();
             var result = await service.StartCourseAsync(courseId);
             Assert.True(result.IdCourseInstance > 0);

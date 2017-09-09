@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace cran.Model.Dto
 {
-    public class CoursesListDto
+    public class CoursesDto
     {
         public IList<CourseDto> Courses { get; set; } = new List<CourseDto>();
     }

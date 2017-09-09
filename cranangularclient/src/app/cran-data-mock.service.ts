@@ -91,10 +91,14 @@ export class CranDataServiceMock implements ICranDataService {
       idCourseInstance: 3,
       courseTitle: 'Dies und das',
       questions: [
-        {correct: true, idCourseInstanceQuestion: 1, title: 'some title 1'},
-        {correct: false, idCourseInstanceQuestion: 2, title: 'some title 2'},
-        {correct: false, idCourseInstanceQuestion: 3, title: 'some title 3'},
-        {correct: true, idCourseInstanceQuestion: 4, title: 'some title 4'},
+        {correct: true, idCourseInstanceQuestion: 1, idQuestion: 23, title: 'some title 1',
+          tags: [{id: 2, description: '', name: 'Js'}, {id: 2, description: '', name: 'Tag2'}]},
+        {correct: false, idCourseInstanceQuestion: 2, idQuestion: 23, title: 'some title 2',
+        tags: [{id: 2, description: '', name: 'Js'}]},
+        {correct: false, idCourseInstanceQuestion: 3, idQuestion: 23, title: 'some title 3',
+        tags: [{id: 2, description: '', name: 'Js'}]},
+        {correct: true, idCourseInstanceQuestion: 4, idQuestion: 23, title: 'some title 4',
+        tags: [{id: 2, description: '', name: 'Js'}]},
       ],
     };
 

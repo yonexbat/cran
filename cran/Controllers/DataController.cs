@@ -25,9 +25,9 @@ namespace cran.Controllers
 
 
         [HttpGet("[action]")]
-        public async Task<CoursesListDto> GetCourses()
+        public async Task<CoursesDto> GetCourses()
         {
-            return await _craninumService.CoursesAsync();
+            return await _craninumService.GetCoursesAsync();
         }
 
 

@@ -16,7 +16,7 @@ namespace cran.Services
 
         Task DeleteQuestionAsync(int idQuestion);
 
-        Task<CoursesListDto> CoursesAsync();
+        Task<CoursesDto> GetCoursesAsync();
 
         Task<IList<QuestionListEntryDto>> GetMyQuestionsAsync();
 

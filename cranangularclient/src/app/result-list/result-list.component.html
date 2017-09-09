@@ -14,6 +14,8 @@
         </span>
 
       </h4> 
+      <app-tags [tagList]="item.tags"></app-tags>
+
       <div>
           <span class="glyphicon glyphicon-ok" aria-hidden="true" *ngIf="item.correct"></span> 
           <span class="glyphicon glyphicon-remove" aria-hidden="true" *ngIf="!item.correct"></span>  
