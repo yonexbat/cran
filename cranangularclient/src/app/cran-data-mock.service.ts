@@ -230,12 +230,14 @@ export class CranDataServiceMock implements ICranDataService {
   getCourses(): Promise<Courses> {
     const courses: Courses = {
       courses: [
-        {id: 1, description: 'Test Kurs bla', title: 'Kursus'},
-        {id: 1, description: 'Test Kurs bla', title: 'Kursus'},
-        {id: 1, description: 'Test Kurs bla', title: 'Kursus'},
-        {id: 1, description: 'Test Kurs bla', title: 'Kursus'},
-        {id: 1, description: 'Test Kurs bla', title: 'Kursus'},
-        {id: 1, description: 'GLOBI in den Ferien', title: 'Kursus'},
+        {id: 1, description: 'Test Kurs bla', title: 'Kursus',
+          tags: [{id: 3, name: 'Js', description: 'desc'},
+                 {id: 5, name: 'Hello', description: 'desc'}]},
+        {id: 1, description: 'Test Kurs bla', title: 'Kursus', tags: [{id: 3, name: 'Js', description: 'desc'}]},
+        {id: 1, description: 'Test Kurs bla', title: 'Kursus', tags: [{id: 3, name: 'Js', description: 'desc'}]},
+        {id: 1, description: 'Test Kurs bla', title: 'Kursus', tags: [{id: 3, name: 'Js', description: 'desc'}]},
+        {id: 1, description: 'Test Kurs bla', title: 'Kursus', tags: [{id: 3, name: 'Js', description: 'desc'}]},
+        {id: 1, description: 'GLOBI in den Ferien', title: 'Kursus', tags: [{id: 3, name: 'Js', description: 'desc'}]},
       ],
     };
 
