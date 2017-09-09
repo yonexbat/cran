@@ -316,6 +316,7 @@ namespace cran.Services
                 {
                     CourseInstance = courseInstanceEntity,
                     Question = questionEntity,
+                    Number = result.NumQuestionsAlreadyAsked+1,
                 };
                 _context.Add(courseInstanceQuestionEntity);
 
@@ -381,7 +382,7 @@ namespace cran.Services
                     IdQuestion = x.Question.Id,
                     Text = x.Question.Text,
                     CourseEnded = x.CourseInstance.EndedAt.HasValue,
-                    NumQuestionsAsked = x.CourseInstance.CourseInstancesQuestion.Count(),
+                    NumQuestionsAsked = x.Number,
                     NumQuestions = x.CourseInstance.Course.NumQuestionsToAsk,
                 }).SingleAsync();
 

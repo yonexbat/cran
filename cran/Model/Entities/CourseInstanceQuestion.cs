@@ -10,6 +10,7 @@ namespace cran.Model.Entities
         public virtual int IdCourseInstance { get; set; }
         public virtual int IdQuestion { get; set; }
         public virtual bool Correct { get; set; }
+        public virtual int Number { get; set; }
         public virtual DateTime? AnsweredAt { get; set; }
         public virtual Question Question { get; set; }
         public virtual CourseInstance CourseInstance { get; set; }
