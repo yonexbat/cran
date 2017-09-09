@@ -54,6 +54,8 @@
       </div>
     </div>
 
+    <hr/>
+
     <div class="btn-group pull-right">
       <button 
           *ngIf="!checkShown && !(questionToAsk?.courseEnded)"
@@ -90,3 +92,7 @@
     </div>
   </form>
 </div>
+
+ <!-- Kommentare -->
+ <app-comments #comments></app-comments>
+ 

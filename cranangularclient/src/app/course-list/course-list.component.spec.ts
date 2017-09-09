@@ -59,9 +59,7 @@ describe('CourseListComponent', () => {
   });
 
   it('It is listed', async(() => {
-    debugger;
     fixture.whenStable().then(() => {
-      debugger;
       fixture.detectChanges();
       const textContext = el.textContent;
       expect(el.textContent).toContain('helo');

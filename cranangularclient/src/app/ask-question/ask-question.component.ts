@@ -1,6 +1,5 @@
 import { Component, OnInit, Inject, ViewChild, } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap,} from '@angular/router';
-import { HttpModule, } from '@angular/http';
+import { Router, ActivatedRoute, ParamMap, } from '@angular/router';
 
 import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
@@ -11,6 +10,7 @@ import {StatusMessageComponent} from '../status-message/status-message.component
 import {QuestionAnswer} from '../model/questionanswer';
 import {CourseInstance} from '../model/courseinstance';
 import {NotificationService} from '../notification.service';
+import {CommentsComponent} from '../comments/comments.component';
 
 @Component({
   selector: 'app-ask-question',
@@ -19,8 +19,10 @@ import {NotificationService} from '../notification.service';
 })
 export class AskQuestionComponent implements OnInit {
 
-  public checkShown: boolean;
-  public questionToAsk: QuestionToAsk;
+  @ViewChild('comments') private commentsControl: CommentsComponent;
+
+  private checkShown: boolean;
+  private questionToAsk: QuestionToAsk;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
     private router: Router,
@@ -42,6 +44,7 @@ export class AskQuestionComponent implements OnInit {
     try {
       this.notificationService.emitLoading();
       const question =  await this.cranDataServiceService.answerQuestionAndGetSolution(answer);
+      await this.commentsControl.showComments(question.id);
       this.showSolution(question);
     } catch (error) {
       this.notificationService.emitError(error);
@@ -101,6 +104,7 @@ export class AskQuestionComponent implements OnInit {
       let question: Question = null;
       if (questionToAsk.courseEnded) {
         question =  await this.cranDataServiceService.getQuestion(questionToAsk.idQuestion);
+        await this.commentsControl.showComments(question.id);
       }
       this.questionToAsk = questionToAsk;
       if (this.questionToAsk.courseEnded) {

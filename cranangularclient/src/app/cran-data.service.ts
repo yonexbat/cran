@@ -19,6 +19,8 @@ import {QuestionResult} from './model/questionresult';
 import {CourseInstanceListEntry} from './model/courseinstancelistentry';
 import {SearchQParameters} from './model/searchqparameters';
 import {PagedResult} from './model/pagedresult';
+import {Comment} from './model/comment';
+import {GetComments} from './model/getcomments';
 
 
 @Injectable()
@@ -26,6 +28,13 @@ export class CranDataService implements ICranDataService {
 
   constructor(private http: Http) {
 
+  }
+
+  addComment(comment: Comment): Promise<number> {
+    throw new Error('Method not implemented.');
+  }
+  getComments(parameters: GetComments): Promise<PagedResult<Comment>> {
+    throw new Error('Method not implemented.');
   }
 
   getRolesOfUser(): Promise<string[]> {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild, NgZone, } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 import {Question} from '../model/question';

@@ -19,9 +19,43 @@ import {QuestionResult} from './model/questionresult';
 import {CourseInstanceListEntry} from './model/courseinstancelistentry';
 import {SearchQParameters} from './model/searchqparameters';
 import {PagedResult} from './model/pagedresult';
+import {Comment} from './model/comment';
+import {GetComments} from './model/getcomments';
+
 
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
+
+  getComments(parameters: GetComments): Promise<PagedResult<Comment>> {
+
+    const result = new PagedResult<Comment>();
+    result.currentPage = 0;
+    result.numpages = 4;
+    result.data = [
+      {commentText: 'mein kommentar', idComment: 2, isEditable: false, idQuestion: parameters.idQuestion},
+      {commentText: 'mein kommentar', idComment: 2, isEditable: false, idQuestion: parameters.idQuestion},
+      {commentText: 'mein kommentar', idComment: 2, isEditable: false, idQuestion: parameters.idQuestion},
+      {commentText: 'mein kommentar', idComment: 2, isEditable: false, idQuestion: parameters.idQuestion},
+      {commentText: 'mein kommentar', idComment: 2, isEditable: false, idQuestion: parameters.idQuestion},
+      {commentText: 'mein kommentar', idComment: 2, isEditable: false, idQuestion: parameters.idQuestion},
+    ];
+
+    const promiseResult = new Promise<PagedResult<Comment>>(function(resolve, reject){
+      setTimeout(function() {
+        resolve(result);
+      }, 1000);
+    });
+    return promiseResult;
+  }
+
+  addComment(comment: Comment): Promise<number> {
+    const promiseResult = new Promise<number>(function(resolve, reject){
+      setTimeout(function() {
+        resolve(9872);
+      }, 1000);
+    });
+    return promiseResult;
+  }
 
   getRolesOfUser(): Promise<string[]> {
 

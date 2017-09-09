@@ -14,6 +14,8 @@ import {QuestionResult} from './model/questionresult';
 import {CourseInstanceListEntry} from './model/courseinstancelistentry';
 import {SearchQParameters} from './model/searchqparameters';
 import {PagedResult} from './model/pagedresult';
+import {Comment} from './model/comment';
+import {GetComments} from './model/getcomments';
 
 export interface ICranDataService {
   getCourses(): Promise<Courses>;
@@ -32,4 +34,6 @@ export interface ICranDataService {
   getCourseResult(courseInstanceId: number): Promise<Result>;
   searchForQuestions(parameters: SearchQParameters): Promise<PagedResult<QuestionListEntry>>;
   getRolesOfUser(): Promise<string[]>;
+  addComment(comment: Comment): Promise<number>;
+  getComments(parameters: GetComments): Promise<PagedResult<Comment>>;
 }

@@ -1,0 +1,39 @@
+<div class="container">
+  
+
+  <!-- adding new comments -->
+  <form  #commentsForm="ngForm">
+    <div *ngIf="comments" class="row form-group"> 
+
+            <hr/>
+
+            <!-- Titel -->
+            <div class="col-md-12">
+                
+              <label for="commentText">Kommentar</label>
+
+              <input type="text" class="form-control" id="commentText"
+                      required
+                      [(ngModel)]="comment.commentText" 
+                      name="commentText"
+                      #commentText="ngModel">
+
+              <div [hidden]="commentText.valid || commentText.pristine"
+                    class="alert alert-danger">
+                    Kommentar ist ein Mussfeld
+              </div>
+
+            </div>        
+    </div>
+  </form>     
+
+  <div class="btn-group pull-right" *ngIf="comments">
+      <button          
+          type="button" 
+          class="btn btn btn-success"
+          (click)="addComment()">
+        Kommentar hinzufügen
+      </button>
+  </div>
+
+</div>

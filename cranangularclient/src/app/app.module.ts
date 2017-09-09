@@ -30,6 +30,7 @@ import { SearchQuestionsComponent } from './search-questions/search-questions.co
 import { NotificationComponent } from './notification/notification.component';
 import { TagsComponent } from './tags/tags.component';
 import { ViewQuestionComponent } from './view-question/view-question.component';
+import { CommentsComponent } from './comments/comments.component';
 
 function isDevelopment() {
   return window.location && window.location.port && window.location.port === '4200';
@@ -61,6 +62,7 @@ if (isDevelopment()) {
     NotificationComponent,
     TagsComponent,
     ViewQuestionComponent,
+    CommentsComponent,
   ],
   imports: [
     BrowserModule,

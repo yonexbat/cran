@@ -5,5 +5,4 @@ export class QuestionOptionToAsk {
     text: string;
     idCourseInstanceQuestionOption: number;
     isEditable: boolean;
-    tags: Tag[] = [];
 }
