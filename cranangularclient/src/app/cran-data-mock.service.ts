@@ -157,6 +157,7 @@ export class CranDataServiceMock implements ICranDataService {
         courseEnded: false,
         explanation: '',
         idCourseInstance: 342423,
+        title: 'Ich Frage micht, was der Titel ist',
         numQuestions: 23,
         options: [],
         text: 'Ich frage mal nach',
@@ -164,6 +165,7 @@ export class CranDataServiceMock implements ICranDataService {
         numQuestionsAsked: 3,
         idQuestion: 9874,
         isEditable: false,
+        tags: [],
       };
 
       if (id >= 8000) {

@@ -394,6 +394,9 @@ namespace cran.Services
             {
                 int possibleQuestions = await PossibleQuestionsQuery(questionToAskDto.IdCourseInstance).CountAsync();
                 questionToAskDto.NumQuestions = possibleQuestions <= questionToAskDto.NumQuestions - questionToAskDto.NumQuestionsAsked ? possibleQuestions + questionToAskDto.NumQuestionsAsked : questionToAskDto.NumQuestions;
+
+                //Id nicht leaken, wenn Kurs noch nicht beendet ist.
+                questionToAskDto.IdQuestion = 0; 
             }
                      
 
@@ -402,7 +405,7 @@ namespace cran.Services
                             .OrderBy(x => x.CourseInstanceQuestion.Id)
                             .Select(x => new QuestionOptionToAskDto
                             {
-                                CourseInstanceQuestionOptionId = x.Id,
+                                IdCourseInstanceQuestionOption = x.Id,
                                 Text = x.QuestionOption.Text,
                                 IsChecked = x.Checked,
                             }).ToListAsync();

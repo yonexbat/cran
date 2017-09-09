@@ -1,7 +1,19 @@
 <div class="container" *ngIf="questionToAsk">
   <form #questionForm="ngForm">
 
-    <h4>Frage {{questionToAsk.numQuestionsAsked}} von {{questionToAsk.numQuestions}}</h4>
+    <h4>
+      Frage {{questionToAsk.numQuestionsAsked}} von {{questionToAsk.numQuestions}}
+    </h4>
+
+    <!-- Titel -->
+    <p *ngIf="checkShown">
+      <b>#{{questionToAsk.idQuestion}} {{questionToAsk.title}}</b>
+    </p>
+
+    <!-- tags -->
+    <div *ngIf="checkShown" style="margin-bottom: 30px;">
+        <app-tags [tagList]="questionToAsk.tags"></app-tags>
+    </div>
 
     <!-- question text -->
     <div class="row">
