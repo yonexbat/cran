@@ -18,17 +18,9 @@
     </div>
   </div>
 
-  <!-- Auflistung -->
-  <div  *ngIf="tagsArray">
-    <div>
-      <span *ngFor="let tag of tagsArray" 
-            class="label label-info crantag">
-        {{tag.name}} 
-        <span class="glyphicon glyphicon-remove" aria-hidden="true" 
-          title="Tag entfernen"
-          (click)="removeTag(tag)"></span>
-      </span>
-    </div>
-  </div>
+  <!-- List of tags -->
+  <app-tags 
+    [tagList]="tagsArray"
+    [isEditable]="true" (onRemoveTagClick)="removeTag($event)"></app-tags> 
 
 </div>

@@ -28,6 +28,7 @@ import { CourseInstanceListComponent } from './course-instance-list/course-insta
 import { PagerComponent } from './pager/pager.component';
 import { SearchQuestionsComponent } from './search-questions/search-questions.component';
 import { NotificationComponent } from './notification/notification.component';
+import { TagsComponent } from './tags/tags.component';
 
 function isDevelopment() {
   return window.location && window.location.port && window.location.port === '4200';
@@ -57,6 +58,7 @@ if (isDevelopment()) {
     PagerComponent,
     SearchQuestionsComponent,
     NotificationComponent,
+    TagsComponent,
   ],
   imports: [
     BrowserModule,

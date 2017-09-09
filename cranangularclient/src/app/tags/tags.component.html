@@ -1,0 +1,14 @@
+  <!-- List of tags -->
+  <div  *ngIf="tagList">
+    <div>
+      <span *ngFor="let tag of tagList" 
+            class="label label-info crantag">
+        {{tag.name}} 
+        <span *ngIf="isEditable"
+              class="glyphicon glyphicon-remove" 
+              aria-hidden="true" 
+              title="Tag entfernen"
+              (click)="removeTag(tag)"></span>
+      </span>
+    </div>
+  </div>
