@@ -4,8 +4,12 @@
       {{message}}
   </div>
 
-  <div class="" *ngIf="isLoading">
-    <p>Daten werden geladen ...</p> 
+  <div class="waiting" *ngIf="isLoading">  
+    <div class="parent">        
+      <div class="loader">
+        
+      </div>
+    </div>
   </div>
 
 </div>

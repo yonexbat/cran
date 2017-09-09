@@ -38,7 +38,7 @@ export class AskQuestionComponent implements OnInit {
   }
 
   public async getSolution(): Promise<void> {
-    const answer: QuestionAnswer = this.getAnswer();
+    const answer: QuestionAnswer = this.getAnswerDto();
     try {
       this.notificationService.emitLoading();
       const question =  await this.cranDataServiceService.answerQuestionAndGetSolution(answer);
@@ -60,7 +60,7 @@ export class AskQuestionComponent implements OnInit {
   }
 
   public async nextQuestion(): Promise<void> {
-      const answer: QuestionAnswer = this.getAnswer();
+      const answer: QuestionAnswer = this.getAnswerDto();
       try {
         this.notificationService.emitLoading();
         const data = await this.cranDataServiceService.answerQuestionAndGetNextQuestion(answer);
@@ -76,7 +76,7 @@ export class AskQuestionComponent implements OnInit {
       }
   }
 
-  private getAnswer(): QuestionAnswer {
+  private getAnswerDto(): QuestionAnswer {
     const answer: QuestionAnswer = new QuestionAnswer();
     answer.idCourseInstanceQuestion = this.questionToAsk.idCourseInstanceQuestion;
     this.questionToAsk.options.forEach(option => {
