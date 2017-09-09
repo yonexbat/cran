@@ -25,7 +25,8 @@
               [(ngModel)]="option.isChecked" 
               id="checkBox{{optionIndex}}"
               name="checkBox{{optionIndex}}"
-              #optionChecked="ngModel">
+              #optionChecked="ngModel"
+              [disabled] = "checkShown">
           <span class="glyphicon glyphicon-ok" aria-hidden="true" *ngIf="checkShown && option.isTrue"></span> 
           <span class="glyphicon glyphicon-remove" aria-hidden="true" *ngIf="checkShown && !option.isTrue"></span>                       
           <span [innerHtml] = "option?.text | safeHtml"></span>

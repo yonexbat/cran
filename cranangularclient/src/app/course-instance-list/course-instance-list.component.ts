@@ -15,7 +15,7 @@ import {NotificationService} from '../notification.service';
 })
 export class CourseInstanceListComponent implements OnInit {
 
-  courseInstances: CourseInstanceListEntry[] = [];
+  courseInstances: CourseInstanceListEntry[];
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
     private router: Router,
@@ -28,7 +28,7 @@ export class CourseInstanceListComponent implements OnInit {
   private async loadInstances(): Promise<void> {
     try {
       this.notificationService.emitLoading();
-      this.courseInstances = await this.cranDataServiceService.getMyCourseInstances();
+      this.courseInstances = await this.cranDataServiceService.getMyCourseInstances();      
       this.notificationService.emitDone();
     } catch (error) {
       this.notificationService.emitError(error);
