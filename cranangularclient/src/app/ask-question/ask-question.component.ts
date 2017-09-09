@@ -31,9 +31,6 @@ export class AskQuestionComponent implements OnInit {
       const id = params.get('id');
       this.handleRouteChanged(+id);
     });
-
-    this.questionToAsk = new QuestionToAsk();
-
   }
 
   ngOnInit() {
@@ -58,6 +55,7 @@ export class AskQuestionComponent implements OnInit {
       this.questionToAsk.options[i].isTrue = question.options[i].isTrue;
     }
     this.questionToAsk.explanation = question.explanation;
+    this.questionToAsk.isEditable = question.isEditable;
     this.checkShown = true;
   }
 
@@ -91,12 +89,21 @@ export class AskQuestionComponent implements OnInit {
     this.router.navigate(['/resultlist', this.questionToAsk.idCourseInstance]);
   }
 
+  public goToEditQuestion() {
+    this.router.navigate(['/editquestion', this.questionToAsk.idQuestion]);
+  }
+
   private async handleRouteChanged(id: number): Promise<void> {
     try {
       this.notificationService.emitLoading();
-      this.questionToAsk = await this.cranDataServiceService.getQuestionToAsk(id);
+      const questionToAsk: QuestionToAsk  = await this.cranDataServiceService.getQuestionToAsk(id);
+      let question: Question = null;
+      if (questionToAsk.courseEnded) {
+        question =  await this.cranDataServiceService.getQuestion(questionToAsk.idQuestion);
+      }
+      this.questionToAsk = questionToAsk;
       if (this.questionToAsk.courseEnded) {
-        this.getSolution();
+        this.showSolution(question);
       }
       this.notificationService.emitDone();
     } catch (error) {

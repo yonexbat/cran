@@ -10,6 +10,7 @@ import {QuestionListComponent} from '../question-list/question-list.component';
 import {ResultListComponent} from '../result-list/result-list.component';
 import {CourseInstanceListComponent} from '../course-instance-list/course-instance-list.component';
 import {SearchQuestionsComponent} from '../search-questions/search-questions.component';
+import {ViewQuestionComponent} from '../view-question/view-question.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent},
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: 'askquestion/:id', component:  AskQuestionComponent},
   { path: 'resultlist/:id', component:  ResultListComponent},
   { path: 'searchq', component: SearchQuestionsComponent},
+  { path: 'viewquestion/:id', component: ViewQuestionComponent},
 ];
 
 @NgModule({

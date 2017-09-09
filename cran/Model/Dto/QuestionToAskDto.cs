@@ -9,6 +9,7 @@ namespace cran.Model.Dto
     {
         public int IdCourseInstanceQuestion { get; set; }
         public int IdCourseInstance { get; set; }
+        public int IdQuestion { get; set; }
         public string Text { get; set; }
         public int NumQuestions { get; set; }
         public int NumQuestionsAsked { get; set; }

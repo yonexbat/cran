@@ -29,6 +29,7 @@ import { PagerComponent } from './pager/pager.component';
 import { SearchQuestionsComponent } from './search-questions/search-questions.component';
 import { NotificationComponent } from './notification/notification.component';
 import { TagsComponent } from './tags/tags.component';
+import { ViewQuestionComponent } from './view-question/view-question.component';
 
 function isDevelopment() {
   return window.location && window.location.port && window.location.port === '4200';
@@ -59,6 +60,7 @@ if (isDevelopment()) {
     SearchQuestionsComponent,
     NotificationComponent,
     TagsComponent,
+    ViewQuestionComponent,
   ],
   imports: [
     BrowserModule,

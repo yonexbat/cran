@@ -1,0 +1,52 @@
+<div class="container" *ngIf="question">
+
+  <!-- Titel -->
+  <h4>#{{question.id}} {{question.title}}</h4>
+  <app-tags [tagList]="question.tags"></app-tags>
+
+  <br/>
+
+  <!-- question text -->
+  <div class="row">
+    <div class="col-md-12">       
+      <div [innerHtml] = "question?.text | safeHtml"></div>
+    </div>
+  </div>
+
+  <div>
+
+    <!-- iterate over options  -->
+    <div *ngFor="let option of question?.options; let optionIndex=index" class="row form-group form-inline">
+      
+      <hr/>      
+
+      <div>                                        
+        <span class="glyphicon glyphicon-ok" aria-hidden="true" *ngIf="option.isTrue"></span> 
+        <span class="glyphicon glyphicon-remove" aria-hidden="true" *ngIf="!option.isTrue"></span>                       
+        <span [innerHtml] = "option?.text | safeHtml"></span>
+      </div>     
+
+    </div>
+  </div>
+
+  <!-- question explanation -->
+  <div class="row">
+    <hr/>
+    
+    <div class="col-md-12">                
+      <div [innerHtml] = "question?.explanation | safeHtml"></div> 
+    </div>
+  </div>
+
+  <div class="btn-group pull-right">   
+
+      <button 
+        *ngIf="question.isEditable"
+        type="button" 
+        class="btn btn btn-success"
+        (click)="goToEditQuestion()">
+        Frage bearbeiten
+      </button>      
+
+  </div>
+</div>

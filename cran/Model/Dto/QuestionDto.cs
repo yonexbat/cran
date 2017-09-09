@@ -16,6 +16,8 @@ namespace cran.Model.Dto
 
         public int Status { get; set; }
 
+        public bool IsEditable { get; set; }
+
         public IList<QuestionOptionDto> Options = new List<QuestionOptionDto>();
 
         public IList<TagDto> Tags = new List<TagDto>();

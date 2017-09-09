@@ -26,7 +26,11 @@ export class QuestionListComponent implements OnInit {
   }
 
   public goToQuestion(question: QuestionListEntry) {
-    this.router.navigate(['/editquestion', question.id]);
+    if (question.status === 1) {
+      this.router.navigate(['/viewquestion', question.id]);
+    } else {
+      this.router.navigate(['/editquestion', question.id]);
+    }
   }
 
   public async deleteQuestion(question: QuestionListEntry): Promise<void> {

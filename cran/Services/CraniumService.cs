@@ -110,26 +110,26 @@ namespace cran.Services
                 Explanation = questionEntity.Explanation,
                 Status = (int) questionEntity.Status,
             };
+            questionVm.IsEditable = await HasWriteAccessToQuestion(id);
 
-            foreach(QuestionOption optionEntity in _context.QuestionOptions.Where(x => x.IdQuestion == id))
-            {
-                questionVm.Options.Add(new QuestionOptionDto
+            questionVm.Options = await _context.QuestionOptions
+                .Where(x => x.IdQuestion == id)
+                .OrderBy(x => x.Id)
+                .Select(x => new QuestionOptionDto
                 {
-                    Id = optionEntity.Id,
-                    IsTrue = optionEntity.IsTrue,
-                    Text = optionEntity.Text,
-                });
-            }
+                    Id = x.Id,
+                    IsTrue = x.IsTrue,
+                    Text = x.Text,
+                }).ToListAsync();
 
-            foreach(RelQuestionTag relTag in _context.RelQuestionTags.Where(x => x.IdQuestion == id).Include(x => x.Tag))
-            {
-                questionVm.Tags.Add(new TagDto
+            questionVm.Tags = await _context.RelQuestionTags
+                .Where(x => x.IdQuestion == id)
+                .Select(x => new TagDto
                 {
-                    Id = relTag.Tag.Id,
-                    Name = relTag.Tag.Name,
-                    Description = relTag.Tag.Description,
-                });
-            }
+                    Id = x.Tag.Id,
+                    Name = x.Tag.Name,
+                    Description = x.Tag.Description,
+                }).ToListAsync();          
 
             return questionVm;
         }
@@ -256,15 +256,15 @@ namespace cran.Services
 
         }
 
-        private IQueryable<int> PossibleQuestionsQuery(CourseInstance courseInstanceEntity)
+        private IQueryable<int> PossibleQuestionsQuery(int idCourseInstance)
         {
             //Get Tags of course
-            IQueryable<int> tagIds = _context.RelCourseTags.Where(x => x.Course.Id == courseInstanceEntity.IdCourse)
+            IQueryable<int> tagIds = _context.RelCourseTags.Where(x => x.Course.CourseInstances.Any(y => y.Id == idCourseInstance))
                 .Select(x => x.Tag.Id);
 
             //Questions already asked
             IQueryable<int> questionIdsAlreadyAsked = _context.CourseInstancesQuestion
-                .Where(x => x.CourseInstance.Id == courseInstanceEntity.Id)
+                .Where(x => x.CourseInstance.Id == idCourseInstance)
                 .Select(x => x.Question.Id);
 
             //Possible Quetions Query
@@ -291,7 +291,7 @@ namespace cran.Services
             result.NumQuestionsTotal = courseEntity.NumQuestionsToAsk;
 
             //Possible Quetions Query
-            IQueryable<int> questionIds = PossibleQuestionsQuery(courseInstanceEntity);
+            IQueryable<int> questionIds = PossibleQuestionsQuery(courseInstanceEntity.Id);
 
             int count = await questionIds.CountAsync();
             if(count == 0 || result.NumQuestionsAlreadyAsked >= courseEntity.NumQuestionsToAsk)
@@ -372,39 +372,40 @@ namespace cran.Services
         }
 
         public async Task<QuestionToAskDto> GetQuestionToAskAsync(int courseInstanceQuestionId)
-        {
-            QuestionToAskDto questionToAskDto = new QuestionToAskDto();
-            CourseInstanceQuestion questionInstanceEntity = await _context.FindAsync<CourseInstanceQuestion>(courseInstanceQuestionId);
-            CourseInstance courseInstanceEntity = await _context.FindAsync<CourseInstance>(questionInstanceEntity.IdCourseInstance);
-            Question questionEntity = await _context.FindAsync<Question>(questionInstanceEntity.IdQuestion);
-            Course courseEntity = await _context.FindAsync<Course>(courseInstanceEntity.IdCourse);
+        {            
+            QuestionToAskDto questionToAskDto = await _context.CourseInstancesQuestion
+                .Where(x => x.Id == courseInstanceQuestionId)
+                .Select(x => new QuestionToAskDto {
+                    IdCourseInstanceQuestion = x.Id,
+                    IdCourseInstance = x.CourseInstance.Id,
+                    IdQuestion = x.Question.Id,
+                    Text = x.Question.Text,
+                    CourseEnded = x.CourseInstance.EndedAt.HasValue,
+                    NumQuestionsAsked = x.CourseInstance.CourseInstancesQuestion.Count(),
+                    NumQuestions = x.CourseInstance.Course.NumQuestionsToAsk,
+                }).SingleAsync();
 
-            questionToAskDto.IdCourseInstanceQuestion = courseInstanceQuestionId;        
-            questionToAskDto.Text = questionEntity.Text;            
-            questionToAskDto.NumQuestionsAsked = await _context.CourseInstancesQuestion.Where(x => x.CourseInstance.Id == courseInstanceEntity.Id).CountAsync();
-            questionToAskDto.CourseEnded = courseInstanceEntity.EndedAt.HasValue;
-            questionToAskDto.IdCourseInstance = courseInstanceEntity.Id;
 
-            int possibleQuestions = await PossibleQuestionsQuery(courseInstanceEntity).CountAsync();
-            
-            questionToAskDto.NumQuestions = possibleQuestions  <= courseEntity.NumQuestionsToAsk - questionToAskDto.NumQuestionsAsked ? possibleQuestions + questionToAskDto.NumQuestionsAsked : courseEntity.NumQuestionsToAsk;
 
-            IList<CourseInstanceQuestionOption> optionInstanceEntities = await _context.CourseInstancesQuestionOption
+            //NumQuestions korrigieren, falls es nicht genügend Fragen hat. 
+            //Diese Infos ist nur nötig, wenn Kurs noch nicht beendet ist.
+            if (!questionToAskDto.CourseEnded)
+            {
+                int possibleQuestions = await PossibleQuestionsQuery(questionToAskDto.IdCourseInstance).CountAsync();
+                questionToAskDto.NumQuestions = possibleQuestions <= questionToAskDto.NumQuestions - questionToAskDto.NumQuestionsAsked ? possibleQuestions + questionToAskDto.NumQuestionsAsked : questionToAskDto.NumQuestions;
+            }
+                     
+
+            questionToAskDto.Options = await _context.CourseInstancesQuestionOption
                             .Where(x => x.CourseInstanceQuestion.Id == courseInstanceQuestionId)
                             .OrderBy(x => x.CourseInstanceQuestion.Id)
-                            .Include(x => x.QuestionOption).ToListAsync();
-
-            foreach (CourseInstanceQuestionOption optionInstanceEntity in optionInstanceEntities)
-            {
-
-                questionToAskDto.Options.Add(new QuestionOptionToAskDto
-                {
-                    CourseInstanceQuestionOptionId = optionInstanceEntity.Id,
-                    Text = optionInstanceEntity.QuestionOption.Text,
-                    IsChecked = optionInstanceEntity.Checked,
-                });
-
-            }
+                            .Select(x => new QuestionOptionToAskDto
+                            {
+                                CourseInstanceQuestionOptionId = x.Id,
+                                Text = x.QuestionOption.Text,
+                                IsChecked = x.Checked,
+                            }).ToListAsync();
+           
 
             return questionToAskDto;
         }
@@ -497,15 +498,25 @@ namespace cran.Services
         }
 
         private async Task CheckWriteAccessToQuestion(int idQuestion)
-        {
-            Question questionEntity = await _context.FindAsync<Question>(idQuestion);
-            CranUser userEntityOfQuestion = await _context.FindAsync<CranUser>(questionEntity.IdUser);
-
+        {          
             //Security Check
-            if (!(userEntityOfQuestion.UserId == GetUserId() || _currentPrincipal.IsInRole(Roles.Admin)))
+            bool hasWriteAccess = await HasWriteAccessToQuestion(idQuestion);
+            if (!hasWriteAccess)
             {
                 throw new SecurityException("no access to this question");
             }
+        }
+
+        private async Task<bool> HasWriteAccessToQuestion(int idQuestion)
+        {
+            Question questionEntity = await _context.FindAsync<Question>(idQuestion);
+            CranUser userEntityOfQuestion = await _context.FindAsync<CranUser>(questionEntity.IdUser);
+            //Security Check
+            if (userEntityOfQuestion.UserId == GetUserId() || _currentPrincipal.IsInRole(Roles.Admin))
+            {
+                return true;
+            }
+            return false;
         }
 
         private async Task CheckAccessToCourseInstance(int idCourseInstance)

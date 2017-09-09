@@ -91,13 +91,13 @@ export class CranDataServiceMock implements ICranDataService {
       idCourseInstance: 3,
       courseTitle: 'Dies und das',
       questions: [
-        {correct: true, idCourseInstanceQuestion: 1, idQuestion: 23, title: 'some title 1',
+        {correct: true, idCourseInstanceQuestion: 8000, idQuestion: 800, title: 'some title 1',
           tags: [{id: 2, description: '', name: 'Js'}, {id: 2, description: '', name: 'Tag2'}]},
-        {correct: false, idCourseInstanceQuestion: 2, idQuestion: 23, title: 'some title 2',
+        {correct: false, idCourseInstanceQuestion: 8001, idQuestion: 801, title: 'some title 2',
         tags: [{id: 2, description: '', name: 'Js'}]},
-        {correct: false, idCourseInstanceQuestion: 3, idQuestion: 23, title: 'some title 3',
+        {correct: false, idCourseInstanceQuestion: 8002, idQuestion: 802, title: 'some title 3',
         tags: [{id: 2, description: '', name: 'Js'}]},
-        {correct: true, idCourseInstanceQuestion: 4, idQuestion: 23, title: 'some title 4',
+        {correct: true, idCourseInstanceQuestion: 8003, idQuestion: 803, title: 'some title 4',
         tags: [{id: 2, description: '', name: 'Js'}]},
       ],
     };
@@ -153,8 +153,24 @@ export class CranDataServiceMock implements ICranDataService {
 
   getQuestionToAsk(id: number): Promise<QuestionToAsk> {
     return this.getQuestion(23).then((question: Question) => {
-      const questiontoask = new QuestionToAsk();
-      questiontoask.text = question.text;
+      const questiontoask: QuestionToAsk = {
+        courseEnded: false,
+        explanation: '',
+        idCourseInstance: 342423,
+        numQuestions: 23,
+        options: [],
+        text: 'Ich frage mal nach',
+        idCourseInstanceQuestion: id,
+        numQuestionsAsked: 3,
+        idQuestion: 9874,
+        isEditable: false,
+      };
+
+      if (id >= 8000) {
+        questiontoask.courseEnded = true;
+        questiontoask.isEditable = true;
+      }
+
       for (const option of question.options) {
         const ota = new QuestionOptionToAsk();
         ota.text = option.text;
@@ -268,12 +284,17 @@ export class CranDataServiceMock implements ICranDataService {
         question.id = id;
         question.explanation = 'My explanation';
         question.status = 1;
+        question.isEditable = true;
 
         question.options = [
           {isTrue : true, text : '1 Jahr'},
           {isTrue : false, text : '2 Jahre'},
           {isTrue : true, text : '4 Jahre'},
           {isTrue : false, text : '5 Jahre'},
+        ];
+
+        question.tags = [
+          {id: 34, description: 'helo cran', name: 'cran'},
         ];
 
         setTimeout(function() {

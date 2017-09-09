@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="questionToAsk">
   <form #questionForm="ngForm">
 
     <h4>Frage {{questionToAsk.numQuestionsAsked}} von {{questionToAsk.numQuestions}}</h4>
@@ -49,6 +49,14 @@
           (click)="getSolution()">
         Prüfen
       </button>
+
+      <button 
+        *ngIf="questionToAsk?.courseEnded && questionToAsk?.isEditable"
+        type="button" 
+        class="btn btn btn-success"
+        (click)="goToEditQuestion()">
+        Frage bearbeiten
+      </button>      
 
       <button 
         *ngIf="questionToAsk?.courseEnded"

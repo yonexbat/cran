@@ -3,4 +3,5 @@ export class QuestionOptionToAsk {
     isChecked: boolean;
     text: string;
     courseInstanceQuestionOptionId: number;
+    isEditable: boolean;
 }
