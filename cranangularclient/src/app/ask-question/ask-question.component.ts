@@ -57,10 +57,7 @@ export class AskQuestionComponent implements OnInit {
     for (let i = 0; i < question.options.length; i++) {
       this.questionToAsk.options[i].isTrue = question.options[i].isTrue;
     }
-    this.questionToAsk.explanation = question.explanation;
-    this.questionToAsk.isEditable = question.isEditable;
-    this.questionToAsk.title = question.title;
-    this.questionToAsk.tags = question.tags;
+    this.questionToAsk.question = question;
     this.checkShown = true;
   }
 

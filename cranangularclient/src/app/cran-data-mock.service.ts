@@ -222,22 +222,18 @@ export class CranDataServiceMock implements ICranDataService {
     return this.getQuestion(23).then((question: Question) => {
       const questiontoask: QuestionToAsk = {
         courseEnded: false,
-        explanation: '',
         idCourseInstance: 342423,
-        title: 'Ich Frage micht, was der Titel ist',
         numQuestions: 23,
+        idQuestion: 800,
         options: [],
         text: 'Ich frage mal nach',
         idCourseInstanceQuestion: id,
         numQuestionsAsked: 3,
-        idQuestion: 9874,
-        isEditable: false,
-        tags: [],
+        question: undefined
       };
 
       if (id >= 8000) {
         questiontoask.courseEnded = true;
-        questiontoask.isEditable = true;
       }
 
       for (const option of question.options) {

@@ -19,7 +19,7 @@ export class PagerComponent implements OnInit {
   public pagedResult: PagedResult<any>;
 
   @Input()
-  public nodatafoundmessage = 'Keine Daten gefunden.';
+  public nodatafoundmessage  = 'Keine Daten gefunden.';
 
   @Output() onSelectedPageChanged = new EventEmitter<number>();
 

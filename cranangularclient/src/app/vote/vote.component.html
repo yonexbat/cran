@@ -3,6 +3,7 @@
     {{votes.downVotes}}
     <span class="glyphicon glyphicon-thumbs-down" 
       aria-hidden="true"
+      [class.votedfor]="votes.myVote < 0"
       (click)="downVote()"
     >
     </span>
@@ -10,6 +11,7 @@
     {{votes.upVotes}}
     <span class="glyphicon glyphicon-thumbs-up" 
           aria-hidden="true"
+          [class.votedfor]="votes.myVote > 0"
           (click)="upVote()">
     </span>    
 </span>

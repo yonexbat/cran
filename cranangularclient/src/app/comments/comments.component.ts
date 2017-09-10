@@ -66,6 +66,9 @@ export class CommentsComponent implements OnInit {
   }
 
   private async deleteComment(comment: Comment): Promise<void> {
+    if (!confirm('Kommentar löschen?')) {
+      return;
+    }
     try {
       this.notificationService.emitLoading();
       await this.cranDataServiceService.deleteComment(comment.idComment);

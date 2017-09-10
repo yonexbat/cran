@@ -6,13 +6,14 @@
     </h4>
 
     <!-- Titel -->
-    <p *ngIf="checkShown">
-      <b>#{{questionToAsk.idQuestion}} {{questionToAsk.title}}</b>
+    <p *ngIf="checkShown && questionToAsk.question">
+      <b>#{{questionToAsk.question.id}} {{questionToAsk.question.title}}</b>
+      <span><app-vote [votes]="questionToAsk.question.votes"></app-vote></span>
     </p>
 
     <!-- tags -->
-    <div *ngIf="checkShown" style="margin-bottom: 30px;">
-        <app-tags [tagList]="questionToAsk.tags"></app-tags>
+    <div *ngIf="checkShown && questionToAsk.question" style="margin-bottom: 30px;">
+        <app-tags [tagList]="questionToAsk.question.tags"></app-tags>
     </div>
 
     <!-- question text -->
@@ -50,7 +51,7 @@
     <!-- question explanation -->
     <div class="row" *ngIf="checkShown">
       <div class="col-md-12">                
-        <div [innerHtml] = "questionToAsk?.explanation | safeHtml"></div> 
+        <div [innerHtml] = "questionToAsk?.question?.explanation | safeHtml"></div> 
       </div>
     </div>
 
@@ -66,7 +67,7 @@
       </button>
 
       <button 
-        *ngIf="questionToAsk?.courseEnded && questionToAsk?.isEditable"
+        *ngIf="questionToAsk?.courseEnded && questionToAsk?.question?.isEditable"
         type="button" 
         class="btn btn btn-success"
         (click)="goToEditQuestion()">
