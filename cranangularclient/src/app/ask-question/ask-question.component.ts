@@ -92,7 +92,7 @@ export class AskQuestionComponent implements OnInit {
   }
 
   public goToEditQuestion() {
-    this.router.navigate(['/editquestion', this.questionToAsk.idQuestion]);
+    this.router.navigate(['/editquestion', this.questionToAsk.question.id]);
   }
 
   private async handleRouteChanged(id: number): Promise<void> {
@@ -103,6 +103,9 @@ export class AskQuestionComponent implements OnInit {
       if (questionToAsk.courseEnded) {
         question =  await this.cranDataServiceService.getQuestion(questionToAsk.idQuestion);
         await this.commentsControl.showComments(question.id);
+      }
+      else {
+        await this.commentsControl.showComments(null);
       }
       this.questionToAsk = questionToAsk;
       if (this.questionToAsk.courseEnded) {

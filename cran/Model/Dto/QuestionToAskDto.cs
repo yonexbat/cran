@@ -14,6 +14,7 @@ namespace cran.Model.Dto
         public int NumQuestions { get; set; }
         public int NumQuestionsAsked { get; set; }
         public bool CourseEnded { get; set; }
+        public bool Answered { get; set; }
                 
         public IList<QuestionOptionToAskDto> Options = new List<QuestionOptionToAskDto>();
     }

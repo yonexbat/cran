@@ -9,6 +9,7 @@ export class QuestionToAsk {
     public numQuestions: number;
     public numQuestionsAsked: number;
     public courseEnded = false;
+    public answered: boolean;
     public options: QuestionOptionToAsk[] = [];
     public question: Question;
 }

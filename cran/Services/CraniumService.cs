@@ -386,6 +386,7 @@ namespace cran.Services
                     CourseEnded = x.CourseInstance.EndedAt.HasValue,
                     NumQuestionsAsked = x.Number,
                     NumQuestions = x.CourseInstance.Course.NumQuestionsToAsk,
+                    Answered = x.AnsweredAt.HasValue,
                 }).SingleAsync();
 
 
@@ -399,6 +400,10 @@ namespace cran.Services
 
                 //Id nicht leaken, wenn Kurs noch nicht beendet ist.
                 questionToAskDto.IdQuestion = 0; 
+            }
+            else
+            {
+                questionToAskDto.NumQuestions = await _context.CourseInstancesQuestion.Where(x => x.CourseInstance.Id == questionToAskDto.IdCourseInstance).CountAsync();
             }
                      
 
@@ -446,6 +451,12 @@ namespace cran.Services
 
             CourseInstanceQuestion courseInstanceQuestionEntity = await _context.FindAsync<CourseInstanceQuestion>(answer.IdCourseInstanceQuestion);
 
+            //Check if already answered.
+            if(courseInstanceQuestionEntity.AnsweredAt.HasValue)
+            {
+                return;
+            }
+
             IList<CourseInstanceQuestionOption> options = await _context.CourseInstancesQuestionOption
                 .Where(x => x.CourseInstanceQuestion.Id == courseInstanceQuestionEntity.Id)
                 .OrderBy(x => x.Id)
@@ -453,7 +464,7 @@ namespace cran.Services
 
             if (options.Count != answer.Answers.Count)
             {
-                throw new InvalidOperationException("something wrong");
+                throw new InvalidOperationException($"Num options in client-answer and database do not match");
             }
             for (int i = 0; i < options.Count; i++)
             {

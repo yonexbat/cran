@@ -40,7 +40,7 @@
           <em>{{item.userId}} {{item.insertDate | date:'dd.MM.yyyy'}}</em>
           {{item.commentText}}
 
-          <span class="btn-group pull-right">
+          <span class="btn-group pull-right" *ngIf="item.isEditable">
             <button class="btn btn-default" type="button" (click)="deleteComment(item)">
               <span class="glyphicon glyphicon-trash"></span>
             </button>                       

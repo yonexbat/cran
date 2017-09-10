@@ -33,7 +33,11 @@ export class CommentsComponent implements OnInit {
 
   public async showComments(idQuestion: number): Promise<void> {
     this.comment.idQuestion = idQuestion;
-    await this.getCommentsPage(0);
+    if (idQuestion > 0) {
+      await this.getCommentsPage(0);
+    } else {
+      this.comments = null;
+    }
   }
 
   private async getCommentsPage(page: number): Promise<void> {
