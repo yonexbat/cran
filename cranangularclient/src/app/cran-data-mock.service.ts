@@ -40,13 +40,20 @@ export class CranDataServiceMock implements ICranDataService {
     const result = new PagedResult<Comment>();
     result.currentPage = parameters.page;
     result.numpages = 4;
+    result.count = 23;
     result.data = [
-      {commentText: 'mein kommentar', idComment: 2, isEditable: false, idQuestion: parameters.idQuestion},
-      {commentText: 'mein kommentar', idComment: 2, isEditable: false, idQuestion: parameters.idQuestion},
-      {commentText: 'mein kommentar', idComment: 2, isEditable: false, idQuestion: parameters.idQuestion},
-      {commentText: 'mein kommentar', idComment: 2, isEditable: false, idQuestion: parameters.idQuestion},
-      {commentText: 'mein kommentar', idComment: 2, isEditable: false, idQuestion: parameters.idQuestion},
-      {commentText: 'mein kommentar', idComment: 2, isEditable: false, idQuestion: parameters.idQuestion},
+      {commentText: 'mein kommentar', idComment: 2, isEditable: false, idQuestion: parameters.idQuestion,
+        userId: 'yoni', insertDate: new Date(2017, 9, 8), updateDate:  new Date(2017, 9, 8)},
+      {commentText: 'mein kommentar', idComment: 2, isEditable: false, idQuestion: parameters.idQuestion,
+      userId: 'yoni', insertDate: new Date(2017, 9, 8), updateDate:  new Date(2017, 9, 8)},
+      {commentText: 'mein kommentar', idComment: 2, isEditable: false, idQuestion: parameters.idQuestion,
+      userId: 'yoni', insertDate: new Date(2017, 9, 8), updateDate:  new Date(2017, 9, 8)},
+      {commentText: 'mein kommentar', idComment: 2, isEditable: false, idQuestion: parameters.idQuestion,
+      userId: 'yoni', insertDate: new Date(2017, 9, 8), updateDate:  new Date(2017, 9, 8)},
+      {commentText: 'mein kommentar', idComment: 2, isEditable: false, idQuestion: parameters.idQuestion,
+      userId: 'yoni', insertDate: new Date(2017, 9, 8), updateDate:  new Date(2017, 9, 8)},
+      {commentText: 'mein kommentar', idComment: 2, isEditable: false, idQuestion: parameters.idQuestion,
+      userId: 'yoni', insertDate: new Date(2017, 9, 8), updateDate:  new Date(2017, 9, 8)},
     ];
 
     const promiseResult = new Promise<PagedResult<Comment>>(function(resolve, reject){

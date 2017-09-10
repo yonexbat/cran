@@ -743,7 +743,10 @@ namespace cran.Services
                 CommentText = x.CommentText,
                 IdQuestion = x.Question.Id,
                 IdUser = x.User.Id,
-                IdComment = x.Id,                
+                UserId = x.User.UserId,
+                x.InsertDate,
+                x.UpdateDate,
+                IdComment = x.Id,     
                 
             }).ToListAsync();
 
@@ -756,7 +759,10 @@ namespace cran.Services
                     IdComment = commentData.IdComment,
                     CommentText = commentData.CommentText,
                     IdQuestion = commentData.IdQuestion,
-                    IsEditable = await HasWriteAccess(commentData.IdUser),
+                    UserId = commentData.UserId,
+                    InsertDate = commentData.InsertDate,
+                    UpdateDate = commentData.UpdateDate,
+                    IsEditable = await HasWriteAccess(commentData.IdUser),                   
                 };
                 resultDto.Data.Add(commentDto);
             }

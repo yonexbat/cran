@@ -37,7 +37,7 @@
    <ng-template #listItem let-item="item">      
       <div  class="list-group-item questionstatus">
         <p>                  
-          
+          <em>{{item.userId}} {{item.insertDate | date:'dd.MM.yyyy'}}</em>
           {{item.commentText}}
 
           <span class="btn-group pull-right">

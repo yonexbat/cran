@@ -1,11 +1,12 @@
 import { Component, OnInit, Inject, ViewChild, } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap,} from '@angular/router';
+import { Router, ActivatedRoute, ParamMap, } from '@angular/router';
 import { HttpModule, } from '@angular/http';
 
 import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
 import {Question} from '../model/question';
+import {CommentsComponent} from '../comments/comments.component';
 
 @Component({
   selector: 'app-view-question',
@@ -13,6 +14,8 @@ import {Question} from '../model/question';
   styleUrls: ['./view-question.component.css']
 })
 export class ViewQuestionComponent implements OnInit {
+
+  @ViewChild('comments') comments: CommentsComponent;
 
   private question: Question;
 
@@ -37,6 +40,7 @@ export class ViewQuestionComponent implements OnInit {
     try {
       this.notificationService.emitLoading();
       this.question = await this.cranDataServiceService.getQuestion(id);
+      await this.comments.showComments(this.question.id);
       this.notificationService.emitDone();
     } catch (error) {
       this.notificationService.emitError(error);
