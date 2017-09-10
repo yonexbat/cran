@@ -79,8 +79,9 @@ export class CranDataServiceMock implements ICranDataService {
   searchForQuestions(parameters: SearchQParameters): Promise<PagedResult<QuestionListEntry>> {
     const result = new PagedResult<QuestionListEntry>();
     result.currentPage = parameters.page;
-    result.numpages = 17;
+    result.numpages = 13;
     result.pagesize = 5;
+    result.count = 88;
 
     const myList: QuestionListEntry[]  = [
       {id: 1, title: `Frage ${parameters.page}`, status: 1, tags : [{id : 23, description : '', name : 'MyTag'}]},

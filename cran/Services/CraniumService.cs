@@ -709,14 +709,18 @@ namespace cran.Services
                 queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x => x.RelTags.Any(rel => tagids.Contains(rel.Tag.Id)));
             }
 
-            int startindex = parameters.Page * PageSize;
-            IQueryable<Question> query = queryBeforeSkipAndTake.Skip(startindex).Take(PageSize);
+            
+            
             PagedResultDto<QuestionListEntryDto> resultDto = new PagedResultDto<QuestionListEntryDto>();
-            resultDto.Pagesize = PageSize;
-            resultDto.Data = await MaterializeQuestionList(query);
+
+            //Count und paging.
             int count = await queryBeforeSkipAndTake.CountAsync();
-            resultDto.Numpages = CalculateNumPages(count);
-            resultDto.CurrentPage = parameters.Page;
+            int startindex = InitPagedResult(resultDto, count, parameters.Page);
+            
+            //Daten 
+            IQueryable<Question> query = queryBeforeSkipAndTake.Skip(startindex).Take(PageSize);
+            resultDto.Data = await MaterializeQuestionList(query);
+
             return resultDto;
         }
 
@@ -728,15 +732,11 @@ namespace cran.Services
                 .Where(x => x.Question.Id == parameters.IdQuestion)
                 .OrderByDescending(x => x.InsertDate);
 
-
+            //Count und Paging
             int count = await queryBeforeSkipAndTake.CountAsync();
+            int startindex = InitPagedResult(resultDto, count, parameters.Page); 
 
-            
-            resultDto.CurrentPage = parameters.Page;
-            resultDto.Pagesize = PageSize;
-            resultDto.Numpages = CalculateNumPages(count);
-
-            int startindex = parameters.Page * PageSize;
+            //Daten
             IQueryable<Comment> query = queryBeforeSkipAndTake.Skip(startindex).Take(PageSize);
             var data  = await query.Select(x => new 
             {
@@ -762,6 +762,15 @@ namespace cran.Services
             }
 
             return resultDto;
+        }
+
+        private int InitPagedResult(IPagedResult pagedResult, int count, int page)
+        {
+            pagedResult.Count = count;
+            pagedResult.Pagesize = PageSize;
+            pagedResult.Numpages = CalculateNumPages(count);
+            pagedResult.CurrentPage = pagedResult.Numpages >= page ? page : pagedResult.Numpages;
+            return pagedResult.CurrentPage * PageSize;
         }
 
         private int CalculateNumPages(int count)

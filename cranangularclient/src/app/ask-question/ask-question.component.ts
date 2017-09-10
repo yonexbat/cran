@@ -59,6 +59,7 @@ export class AskQuestionComponent implements OnInit {
     }
     this.questionToAsk.explanation = question.explanation;
     this.questionToAsk.isEditable = question.isEditable;
+    this.questionToAsk.title = question.title;
     this.questionToAsk.tags = question.tags;
     this.checkShown = true;
   }

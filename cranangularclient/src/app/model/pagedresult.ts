@@ -3,4 +3,5 @@ export class PagedResult<T> {
     public currentPage: number;
     public numpages: number;
     public pagesize: number;
+    public count: number;
 }

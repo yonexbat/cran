@@ -55,7 +55,7 @@ export class CommentsComponent implements OnInit {
       await this.cranDataServiceService.addComment(this.comment);
       this.notificationService.emitDone();
       this.comment.commentText = '';
-      await this.getCommentsPage(0);
+      await this.getCommentsPage(this.comments.currentPage);
     } catch (error) {
       this.notificationService.emitError(error);
     }
