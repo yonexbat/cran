@@ -21,6 +21,7 @@ import {SearchQParameters} from './model/searchqparameters';
 import {PagedResult} from './model/pagedresult';
 import {Comment} from './model/comment';
 import {GetComments} from './model/getcomments';
+import {Votes} from './model/votes';
 
 
 @Injectable()
@@ -28,6 +29,16 @@ export class CranDataService implements ICranDataService {
 
   constructor(private http: Http) {
 
+  }
+
+  vote(votes: Votes): Promise<Votes> {
+    return this.http.post('/api/Data/Vote', votes)
+    .toPromise()
+    .then(  response => {
+      const result = response.json() as Votes;
+      return result;
+    })
+    .catch(this.handleError);
   }
 
   deleteComment(id: number): Promise<any> {

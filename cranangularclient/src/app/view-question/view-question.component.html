@@ -1,7 +1,12 @@
 <div class="container" *ngIf="question">
 
-  <!-- Titel -->
-  <h4>#{{question.id}} {{question.title}}</h4>
+  <!-- title and vote control -->
+  <h4>
+
+    <span>#{{question.id}} {{question.title}}</span>
+    <app-vote [votes]="question.votes"></app-vote>
+  
+  </h4>
   <app-tags [tagList]="question.tags"></app-tags>
 
   <br/>

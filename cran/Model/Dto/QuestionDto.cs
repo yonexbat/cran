@@ -21,5 +21,7 @@ namespace cran.Model.Dto
         public IList<QuestionOptionDto> Options = new List<QuestionOptionDto>();
 
         public IList<TagDto> Tags = new List<TagDto>();
+
+        public VotesDto Votes { get; set; }
     }
 }

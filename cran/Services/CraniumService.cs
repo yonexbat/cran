@@ -112,6 +112,7 @@ namespace cran.Services
                 Status = (int) questionEntity.Status,
             };
             questionVm.IsEditable = await HasWriteAccess(questionEntity.IdUser);
+            questionVm.Votes = await GetVoteAsync(id);
 
             questionVm.Options = await _context.QuestionOptions
                 .Where(x => x.IdQuestion == id)
@@ -810,5 +811,56 @@ namespace cran.Services
             _context.Remove(comment);
             await this.SaveChangesAsync();
         }
+
+        public async Task<VotesDto> VoteAsync(VotesDto vote)
+        {
+            string userId = this.GetUserId();
+            Rating rating = _context.Ratings
+                .Where(x => x.User.UserId == userId && x.Question.Id == vote.IdQuestion)
+                .SingleOrDefault();
+            if(rating == null)
+            {
+                Question question =  await _context.FindAsync<Question>(vote.IdQuestion);
+                CranUser user = await GetCranUserAsync();
+                rating = new Rating
+                {
+                    Question = question,
+                    User = user,
+                    QuestionRating = 0,
+                };
+                _context.Ratings.Add(rating);
+            }
+
+            int r = vote.MyVote > 0 ? 1 : (vote.MyVote < 0 ? -1 : 0);
+            rating.QuestionRating = r; 
+            await SaveChangesAsync();
+            vote = await GetVoteAsync(vote.IdQuestion);
+            return vote;
+        }
+
+        private async Task<VotesDto> GetVoteAsync(int idQuestion)
+        {
+            
+
+            int upRatings = await _context.Ratings.Where(x => x.Question.Id == idQuestion && x.QuestionRating > 0)
+                .CountAsync();
+            int downRatings = await _context.Ratings.Where(x => x.Question.Id == idQuestion && x.QuestionRating < 0)
+                .CountAsync();
+
+            string userId = this.GetUserId();
+            int? myRating = await _context.Ratings.Where(x => x.User.UserId == userId && x.Question.Id == idQuestion)
+                .Select(x => x.QuestionRating).SingleOrDefaultAsync();
+
+            VotesDto result = new VotesDto()
+            {
+                IdQuestion = idQuestion,
+                MyVote = myRating ?? 0,
+                DownVotes = downRatings,
+                UpVotes = upRatings,
+            };
+
+            return result;
+        }
+
     }
 }

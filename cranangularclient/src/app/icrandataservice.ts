@@ -16,6 +16,7 @@ import {SearchQParameters} from './model/searchqparameters';
 import {PagedResult} from './model/pagedresult';
 import {Comment} from './model/comment';
 import {GetComments} from './model/getcomments';
+import {Votes} from './model/votes';
 
 export interface ICranDataService {
   getCourses(): Promise<Courses>;
@@ -37,4 +38,5 @@ export interface ICranDataService {
   addComment(comment: Comment): Promise<number>;
   getComments(parameters: GetComments): Promise<PagedResult<Comment>>;
   deleteComment(id: number): Promise<any>;
+  vote(votes: Votes): Promise<Votes>;
 }

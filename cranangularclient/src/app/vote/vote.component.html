@@ -1,0 +1,15 @@
+<span *ngIf="votes">
+    &nbsp;
+    {{votes.downVotes}}
+    <span class="glyphicon glyphicon-thumbs-down" 
+      aria-hidden="true"
+      (click)="downVote()"
+    >
+    </span>
+
+    {{votes.upVotes}}
+    <span class="glyphicon glyphicon-thumbs-up" 
+          aria-hidden="true"
+          (click)="upVote()">
+    </span>    
+</span>

@@ -21,10 +21,26 @@ import {SearchQParameters} from './model/searchqparameters';
 import {PagedResult} from './model/pagedresult';
 import {Comment} from './model/comment';
 import {GetComments} from './model/getcomments';
+import {Votes} from './model/votes';
 
 
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
+
+  vote(votes: Votes): Promise<Votes> {
+    const promiseResult = new Promise<Votes>((resolve, reject) => {
+      setTimeout(function() {
+        if (votes.myVote > 0) {
+          votes.upVotes++;
+        }
+        if (votes.myVote < 0) {
+          votes.downVotes++;
+        }
+        resolve(votes);
+      }, 1000);
+    });
+    return promiseResult;
+  }
 
   deleteComment(id: number): Promise<any> {
     const promiseResult = new Promise<any>((resolve, reject) => {
@@ -338,6 +354,12 @@ export class CranDataServiceMock implements ICranDataService {
         question.explanation = 'My explanation';
         question.status = 1;
         question.isEditable = true;
+        question.votes = {
+          downVotes: 2,
+          upVotes: 12,
+          idQuestion: question.id,
+          myVote: 0,
+        };
 
         question.options = [
           {isTrue : true, text : '1 Jahr'},

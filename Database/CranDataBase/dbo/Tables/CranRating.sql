@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[CranRating]
 (
-	[Id] INT NOT NULL PRIMARY KEY,
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY,
 	[IdUser] INT NOT NULL, 
     [IdQuestion] INT NOT NULL, 
 	[QuestionRating] INT NOT NULL,   

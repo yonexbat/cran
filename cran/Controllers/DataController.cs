@@ -150,5 +150,11 @@ namespace cran.Controllers
             await _craninumService.DeleteComment(id);
         }
 
+        [HttpPost("[action]")]
+        public async Task<VotesDto> Vote([FromBody] VotesDto vote)
+        {
+            return await _craninumService.VoteAsync(vote);   
+        }
+
     }
 }

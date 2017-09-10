@@ -47,5 +47,7 @@ namespace cran.Services
         Task<int> AddComment(CommentDto vm);
 
         Task DeleteComment(int id);
+
+        Task<VotesDto> VoteAsync(VotesDto vote);
     }
 }
