@@ -17,6 +17,7 @@ export class SearchQuestionsComponent implements OnInit {
 
   private pagedResult: PagedResult<QuestionListEntry> = new PagedResult<QuestionListEntry>();
   private search = new SearchQParameters();
+  private lastParams: ParamMap;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
     private router: Router,
@@ -30,6 +31,7 @@ export class SearchQuestionsComponent implements OnInit {
 
   private async handleRouteChanged(params: ParamMap): Promise<void> {
 
+    this.lastParams = params;
     this.search.page = +params['pageNumber'];
     this.search.title = params['title'];
 
@@ -80,17 +82,19 @@ export class SearchQuestionsComponent implements OnInit {
   }
 
   public goToQuestion(question: QuestionListEntry) {
-    if(question.status === 1) {
+    if (question.status === 1) {
       this.router.navigate(['/viewquestion', question.id]);
     } else {
       this.router.navigate(['/editquestion', question.id]);
     }
   }
 
-  public deleteQuestion(question: QuestionListEntry) {
+  public async deleteQuestion(question: QuestionListEntry): Promise<void> {
     if (confirm('Frage löschen?')) {
-      this.cranDataServiceService.deleteQuestion(question.id)
-        .then(nores => this.searchQuestions(this.pagedResult.currentPage));
+      await this.cranDataServiceService.deleteQuestion(question.id);
+      if (this.lastParams) {
+        await this.handleRouteChanged(this.lastParams);
+      }
     }
   }
 
