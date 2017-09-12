@@ -24,16 +24,17 @@
         </span>
       
       </h4> 
-      <span *ngFor="let tag of item.tags" 
-            class="label label-info crantag">
-              {{tag.name}}        
-      </span> 
+
+      <app-tags [tagList]="item.tags"></app-tags>
+           
     </div>      
   </ng-template> 
 
-  <ng-container *ngFor="let item of questions">
-    <ng-container *ngTemplateOutlet="listItem;context:{item:item}">
-    </ng-container>          
-  </ng-container>
+  <div class="list-group">
+    <ng-container *ngFor="let item of questions">
+      <ng-container *ngTemplateOutlet="listItem;context:{item:item}">
+      </ng-container>          
+    </ng-container>
+  </div>
  
 </div>

@@ -1,14 +1,16 @@
-<div class="list-group">
+<div>
 
   <ng-template #nodatafound>
     <span *ngIf="pagedResult">{{nodatafoundmessage}}</span>
   </ng-template>
 
   <ng-template #datalist>
-      <ng-container *ngFor="let item of pagedResult.data">
-          <ng-container *ngTemplateOutlet="itemTemplate;context:{item:item}">
-          </ng-container>          
-      </ng-container>
+      <div class="list-group">
+        <ng-container *ngFor="let item of pagedResult.data">
+            <ng-container *ngTemplateOutlet="itemTemplate;context:{item:item}">
+            </ng-container>          
+        </ng-container>
+      </div>
   
       <ul class="pagination" *ngIf="pagedResult.numpages > 1">
         <li aria-label="previous page" *ngIf="showPreviousPagesButton()">          
