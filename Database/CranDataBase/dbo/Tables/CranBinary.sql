@@ -1,0 +1,18 @@
+﻿CREATE TABLE [dbo].[CranBinary]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY,
+	[Data] VARBINARY(MAX) NULL, 
+
+    [ContentType] VARCHAR(1000) NULL, 
+	[ContentDisposition] VARCHAR(1000) NULL, 
+	[Length] INT NULL,   
+	[Name] VARCHAR(1000) NULL,     
+    [FileName] VARCHAR(1000) NULL, 
+   
+	[InsertUser]  VARCHAR (1000) NOT NULL DEFAULT SYSTEM_USER,
+    [InsertDate]  DATETIME2 (7)  NOT NULL DEFAULT GETDATE(),
+    [UpdateUser]  VARCHAR (1000) NOT NULL DEFAULT SYSTEM_USER,
+    [UpdateDate]  DATETIME2 (7)  NOT NULL DEFAULT GETDATE(), 
+    
+   
+)

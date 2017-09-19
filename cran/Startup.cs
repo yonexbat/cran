@@ -81,6 +81,7 @@ namespace cran
             services.AddScoped<IDbLogService, DbLogService>();
             services.AddScoped<ICraniumService, CraniumService>();
             services.AddScoped<ISecurityService, SecurityService>();
+            services.AddScoped<IBinaryService, BinaryService>();
 
             services.AddSingleton(_physicalProvider);
 

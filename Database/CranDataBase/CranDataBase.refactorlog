@@ -14,4 +14,25 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="QuestionRating" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="ddd47537-a8e1-491d-84d5-2ea5a5100552" ChangeDateTime="09/19/2017 16:05:07">
+    <Property Name="ElementName" Value="[dbo].[CranBinary].[Size]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[CranBinary]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="SizeInBytes" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="6044166c-4a0b-495c-9118-3c802b5c2657" ChangeDateTime="09/19/2017 19:02:01">
+    <Property Name="ElementName" Value="[dbo].[CranBinary].[MimeType]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[CranBinary]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ContentType" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="86854baa-dacb-4641-9d0f-06221a066334" ChangeDateTime="09/19/2017 19:02:10">
+    <Property Name="ElementName" Value="[dbo].[CranBinary].[SizeInBytes]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[CranBinary]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Length" />
+  </Operation>
 </Operations>

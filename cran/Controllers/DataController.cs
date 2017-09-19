@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using cran.Services;
 using cran.Filters;
 using cran.Model.Dto;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace cran.Controllers
 {
@@ -16,11 +18,15 @@ namespace cran.Controllers
 
         private readonly ICraniumService _craninumService;
         private readonly ISecurityService _securityService;
+        private readonly IBinaryService _binaryService;
 
-        public DataController(ICraniumService craniumService, ISecurityService securityService)
+        public DataController(ICraniumService craniumService,
+            ISecurityService securityService,
+            IBinaryService binaryService)
         {
             _craninumService = craniumService;
             _securityService = securityService;
+            _binaryService = binaryService;
         }
 
 
@@ -50,7 +56,7 @@ namespace cran.Controllers
         {
             return await _craninumService.GetQuestionAsync(id);
         }
-      
+
         [HttpGet("[action]/{id}")]
         public async Task<QuestionToAskDto> GetQuestionToAsk(int id)
         {
@@ -63,14 +69,14 @@ namespace cran.Controllers
             return await _craninumService.AnswerQuestionAndGetSolutionAsync(vm);
         }
 
-       
+
         [HttpGet("[action]")]
         public async Task<IList<TagDto>> FindTags(string searchTerm)
         {
             return await _craninumService.FindTagsAsync(searchTerm);
         }
 
-    
+
         [HttpPost("[action]")]
         [ValidateModel]
         public async Task<InsertActionDto> InsertQuestion([FromBody] QuestionDto vm)
@@ -78,12 +84,12 @@ namespace cran.Controllers
             return await _craninumService.InsertQuestionAsync(vm);
         }
 
-       
+
         [HttpPost("[action]")]
         [ValidateModel]
         public async Task<CourseInstanceDto> AnswerQuestionAndGetNextQuestion([FromBody] QuestionAnswerDto vm)
         {
-            return await _craninumService.AnswerQuestionAndGetNextQuestionAsync(vm);            
+            return await _craninumService.AnswerQuestionAndGetNextQuestionAsync(vm);
         }
 
         [HttpPost("[action]")]
@@ -134,7 +140,7 @@ namespace cran.Controllers
         [ValidateModel]
         public async Task<int> AddComment([FromBody] CommentDto vm)
         {
-            return await _craninumService.AddComment(vm);    
+            return await _craninumService.AddComment(vm);
         }
 
         [HttpPost("[action]")]
@@ -153,8 +159,22 @@ namespace cran.Controllers
         [HttpPost("[action]")]
         public async Task<VotesDto> Vote([FromBody] VotesDto vote)
         {
-            return await _craninumService.VoteAsync(vote);   
+            return await _craninumService.VoteAsync(vote);
         }
 
+        [HttpPost("[action]")]
+        public async Task<IList<FileDto>> UploadFiles(List<IFormFile> files)
+        {
+            return await _binaryService.UploadFilesAsync(files);
+        }
+
+        [HttpGet("[action]/{id}")]
+        public async Task<FileStreamResult> GetFile(int id)
+        {
+            FileDto fileInfo = await _binaryService.GetFileInfoAsync(id);
+            Stream stream = await _binaryService.GetBinaryAsync(id);
+            var result = File(stream, fileInfo.ContentType, fileInfo.FileName);
+            return result;
+        }
     }
 }

@@ -26,6 +26,8 @@ namespace cran.Data
         public DbSet<CourseInstanceQuestionOption> CourseInstancesQuestionOption { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Rating> Ratings { get; set; }
+        public DbSet<Binary> Binaries { get; set; }
+        public DbSet<RelQuestionBinary> RelQuestionBinaries { get; set; }
 
         protected IPrincipal _principal;
 
@@ -104,8 +106,34 @@ namespace cran.Data
             MapCourseInstanceQuestionOption(builder.Entity<CourseInstanceQuestionOption>());
             MapComment(builder.Entity<Comment>());
             MapRating(builder.Entity<Rating>());
+            MapRelQuestionBinary(builder.Entity<RelQuestionBinary>());
+            MapBinary(builder.Entity<Binary>());
         }  
-        
+
+        private void MapBinary(EntityTypeBuilder<Binary> typeBuilder)
+        {
+            typeBuilder.ToTable("CranBinary");
+
+            typeBuilder
+               .HasMany(x => x.RelQuestions)
+               .WithOne(o => o.Binary)
+               .HasForeignKey(x => x.IdBinary);
+
+        }
+
+        private void MapRelQuestionBinary(EntityTypeBuilder<RelQuestionBinary> typeBuilder)
+        {
+            typeBuilder.ToTable("CranRelQuestionBinary");
+
+            typeBuilder.HasOne(x => x.Question)
+               .WithMany(c => c.RelBinaries)
+               .HasForeignKey(rel => rel.IdQuestion);
+
+            typeBuilder.HasOne(x => x.Binary)
+                .WithMany()
+                .HasForeignKey(rel => rel.IdBinary);
+        }
+
         private void MapComment(EntityTypeBuilder<Comment> typeBuilder)
         {
             typeBuilder.ToTable("CranComment");
@@ -207,6 +235,11 @@ namespace cran.Data
 
             typeBuilder
                 .HasMany(x => x.Options)
+                .WithOne(o => o.Question)
+                .HasForeignKey(x => x.IdQuestion);
+
+            typeBuilder
+                .HasMany(x => x.RelBinaries)
                 .WithOne(o => o.Question)
                 .HasForeignKey(x => x.IdQuestion);
 

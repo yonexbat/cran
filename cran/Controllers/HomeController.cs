@@ -34,5 +34,10 @@ namespace cran.Controllers
         {
             return View();
         }
+
+        public IActionResult Upload()
+        {
+            return View();
+        }
     }
 }
