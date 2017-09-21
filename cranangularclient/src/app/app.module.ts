@@ -32,6 +32,7 @@ import { TagsComponent } from './tags/tags.component';
 import { ViewQuestionComponent } from './view-question/view-question.component';
 import { CommentsComponent } from './comments/comments.component';
 import { VoteComponent } from './vote/vote.component';
+import { FileUploadComponent } from './file-upload/file-upload.component';
 
 function isDevelopment() {
   return window.location && window.location.port && window.location.port === '4200';
@@ -65,6 +66,7 @@ if (isDevelopment()) {
     ViewQuestionComponent,
     CommentsComponent,
     VoteComponent,
+    FileUploadComponent,
   ],
   imports: [
     BrowserModule,
