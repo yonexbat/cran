@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-file-upload',
@@ -8,29 +8,44 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 export class FileUploadComponent implements OnInit {
 
   @ViewChild('fileInput') fileInput;
-  @ViewChild('fileForm') fileForm;
+
+  @Output() onUploadStarted = new EventEmitter<void>();
+  @Output() onError = new EventEmitter<any>();
+  @Output() onUploaded = new EventEmitter<any>();
 
   constructor() { }
 
   ngOnInit() {
   }
 
+  private fileChangeEvent(event: any) {
+    try {
+      this.onUploadStarted.emit();
+      this.upload();
+    } catch (error) {
+
+    }
+  }
+
   private upload() {
-    debugger;
     const fileBrowser = this.fileInput.nativeElement;
-    if (fileBrowser.files && fileBrowser.files[0]) {
+    if (fileBrowser.files && fileBrowser.files.length > 0) {
       const formData = new FormData();
-      formData.append('files', fileBrowser.files[0]);
+      for (let i = 0; i < fileBrowser.files.length; i++) {
+        formData.append('files', fileBrowser.files[i]);
+      }
+
+      const onUploaded = this.onUploaded;
+      const onError = this.onError;
       const xhr = new XMLHttpRequest();
       xhr.open('POST', '/api/Data/UploadFiles', true);
-      // Set up a handler for when the request finishes.
       xhr.onload = function () {
         if (this['status'] === 200) {
-            // File(s) uploaded.
             const responseText = this['responseText'];
             const files = JSON.parse(responseText);
+            onUploaded.emit(files);
         } else {
-          debugger;
+          onError.emit(this['status']);
         }
       };
       xhr.send(formData);
