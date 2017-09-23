@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, Input, EventEmitter, } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, Output, Input, EventEmitter, } from '@angular/core';
 
 import {Binary} from '../model/binary';
 
@@ -7,9 +7,7 @@ import {Binary} from '../model/binary';
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.css']
 })
-export class FileUploadComponent implements OnInit {
-
-  @ViewChild('fileInput') fileInput;
+export class FileUploadComponent implements OnInit, AfterViewInit {
 
   @Output() onUploadStarted = new EventEmitter<void>();
   @Output() onError = new EventEmitter<string>();
@@ -20,23 +18,33 @@ export class FileUploadComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+
   }
 
-  private fileChangeEvent(event: any) {
-    try {
-      this.onUploadStarted.emit();
-      this.upload();
-    } catch (error) {
-
-    }
+  ngAfterViewInit(): void {
+    this.addFileInput();
   }
 
-  private upload() {
-    const fileBrowser = this.fileInput.nativeElement;
-    if (fileBrowser.files && fileBrowser.files.length > 0) {
+
+  private addFileInput() {
+    const fileInputParentNative = document.getElementById('fileInputParent');
+    const oldFileInput = fileInputParentNative.querySelector('input');
+    const newFileInput = document.createElement('input');
+    newFileInput.type = 'file';
+    newFileInput.multiple = true;
+    newFileInput.name = 'fileInput';
+    const uploadfiles = this.uploadFiles;
+    newFileInput.onchange = uploadfiles.bind(this);
+    oldFileInput.parentNode.replaceChild(newFileInput, oldFileInput);
+  }
+
+  private uploadFiles() {
+    const fileInputParentNative = document.getElementById('fileInputParent');
+    const fileInput = fileInputParentNative.querySelector('input');
+    if (fileInput.files && fileInput.files.length > 0) {
       const formData = new FormData();
-      for (let i = 0; i < fileBrowser.files.length; i++) {
-        formData.append('files', fileBrowser.files[i]);
+      for (let i = 0; i < fileInput.files.length; i++) {
+        formData.append('files', fileInput.files[i]);
       }
 
       const onUploaded = this.onUploaded;
@@ -52,8 +60,10 @@ export class FileUploadComponent implements OnInit {
           onError.emit(this['statusText']);
         }
       };
+      this.addFileInput();
       xhr.send(formData);
     }
+
   }
 
 }
