@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, } from '@angular/core';
 
 import {Image} from '../model/image';
 
@@ -11,9 +11,19 @@ export class ImagelistComponent implements OnInit {
 
   @Input() public images: Image[] = [];
 
+  @Input() public imagesDeletable: boolean;
+
+  @Output() onDeleted = new EventEmitter<Image[]>();
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  private removeImage(image) {
+    if (this.imagesDeletable) {
+      this.onDeleted.emit(image);
+    }
   }
 
 }

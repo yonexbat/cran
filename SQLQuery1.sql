@@ -1,4 +1,2 @@
-﻿SELECT ID 
-FROM dbo.CranBinary;
-
-DELETE FROM dbo.CranBinary
+﻿SELECT *
+FROM dbo.CranImage

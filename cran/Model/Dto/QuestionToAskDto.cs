@@ -17,5 +17,6 @@ namespace cran.Model.Dto
         public bool Answered { get; set; }
                 
         public IList<QuestionOptionToAskDto> Options = new List<QuestionOptionToAskDto>();
+        public IList<ImageDto> Images = new List<ImageDto>();
     }
 }

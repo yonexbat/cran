@@ -68,7 +68,9 @@
     <!-- Images -->
     <div class="row form-group">
       <div class="col-md-12">
-          <app-imagelist [images]="question.images"></app-imagelist>
+          <app-imagelist [images]="question.images" 
+                         [imagesDeletable]="true"
+                         (onDeleted)="onRemoveImage($event)"></app-imagelist>
       </div>
       <div class="col-md-12">
         <label>Bild hinzufügen</label>   
@@ -149,6 +151,7 @@
     <!-- Buttons -->
     <div class="btn-group pull-right" role="group" aria-label="Basic example">
 
+      <!-- Vorschau -->
       <button 
           type="button" 
           class="btn btn btn-success" 
@@ -157,6 +160,7 @@
           Vorschau
       </button>      
 
+      <!-- Speichern -->
       <button 
           type="button" 
           class="btn btn btn-success" 

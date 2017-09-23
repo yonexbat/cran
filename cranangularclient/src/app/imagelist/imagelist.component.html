@@ -1,5 +1,16 @@
 <div>
   <span *ngFor="let image of images; let imageIndex=index">
-    <img src="/api/Data/GetFile/{{image.idBinary}}">
+    <img src="/api/Data/GetFile/{{image.idBinary}}" style="width: 100%;">
+
+    <button *ngIf="imagesDeletable"
+      type="button" 
+      class="btn btn-default cranbutton"
+      (click)="removeImage(image)">
+      <span class="glyphicon glyphicon-trash" title="Bild entfernen"></span>
+    </button>
+
   </span>
+
+  
+
 </div>

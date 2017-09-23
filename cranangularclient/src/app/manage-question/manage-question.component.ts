@@ -128,4 +128,9 @@ export class ManageQuestionComponent implements OnInit {
       });
     }
   }
+
+  private onRemoveImage(image: Image) {
+    const index = this.question.images.indexOf(image);
+    this.question.images.splice(index, 1);
+  }
 }

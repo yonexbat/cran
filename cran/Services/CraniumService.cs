@@ -411,6 +411,17 @@ namespace cran.Services
                 }).SingleAsync();
 
 
+            //Images
+            questionToAskDto.Images = await _context.RelQuestionImages
+               .Where(x => x.Question.CourseInstancesQuestion.Any(y => y.Id == courseInstanceQuestionId))
+               .Select(x => new ImageDto
+               {
+                   Id = x.Image.Id,
+                   IdBinary = x.Image.Binary.Id,
+                   Full = x.Image.Full,
+                   Height = x.Image.Height,
+                   Width = x.Image.Width,
+               }).ToListAsync();
 
             //NumQuestions korrigieren, falls es nicht genügend Fragen hat. 
             //Diese Infos ist nur nötig, wenn Kurs noch nicht beendet ist.
