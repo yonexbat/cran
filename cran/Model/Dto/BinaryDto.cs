@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace cran.Model.Dto
 {
-    public class FileDto
+    public class BinaryDto
     {
         public int Id { get; set; }
         public string ContentType { get; set; }

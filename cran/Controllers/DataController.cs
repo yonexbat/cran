@@ -140,7 +140,7 @@ namespace cran.Controllers
         [ValidateModel]
         public async Task<int> AddComment([FromBody] CommentDto vm)
         {
-            return await _craninumService.AddComment(vm);
+            return await _craninumService.AddCommentAsync(vm);
         }
 
         [HttpPost("[action]")]
@@ -153,7 +153,7 @@ namespace cran.Controllers
         [HttpDelete("[action]/{id}")]
         public async Task DeleteComment(int id)
         {
-            await _craninumService.DeleteComment(id);
+            await _craninumService.DeleteCommentAsync(id);
         }
 
         [HttpPost("[action]")]
@@ -163,7 +163,7 @@ namespace cran.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<IList<FileDto>> UploadFiles(List<IFormFile> files)
+        public async Task<IList<BinaryDto>> UploadFiles(List<IFormFile> files)
         {
             return await _binaryService.UploadFilesAsync(files);
         }
@@ -171,10 +171,17 @@ namespace cran.Controllers
         [HttpGet("[action]/{id}")]
         public async Task<FileStreamResult> GetFile(int id)
         {
-            FileDto fileInfo = await _binaryService.GetFileInfoAsync(id);
+            BinaryDto fileInfo = await _binaryService.GetFileInfoAsync(id);
             Stream stream = await _binaryService.GetBinaryAsync(id);
             var result = File(stream, fileInfo.ContentType, fileInfo.FileName);
             return result;
         }
+
+        [HttpPost("[action]")]
+        public async Task<ImageDto> AddImage([FromBody] ImageDto image)
+        {
+            return await _craninumService.AddImageAsync(image);
+        }
+
     }
 }

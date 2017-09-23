@@ -1,6 +1,7 @@
 import {QuestionOption} from './questionoption';
 import {Tag} from './tag';
 import {Votes} from './votes';
+import {Image} from './image';
 
 export class Question {
     public id: number;
@@ -11,5 +12,6 @@ export class Question {
     public isEditable: boolean;
     public options: QuestionOption[] = [];
     public tags: Tag[] = [];
+    public images: Image[] = [];
     public votes: Votes;
 }

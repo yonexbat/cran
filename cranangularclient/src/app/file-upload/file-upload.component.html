@@ -1,3 +1,6 @@
-<div>
-  <input type="file" #fileInput placeholder="Upload file..."  (change)="fileChangeEvent($event)" multiple/>
-</div>
+<span>
+  <input type="file" 
+    #fileInput placeholder="{{placeHolderText}}"  
+    (change)="fileChangeEvent($event)" multiple/>
+  </span>
+

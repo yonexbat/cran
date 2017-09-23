@@ -85,7 +85,8 @@
     <Build Include="dbo\Tables\CranComment.sql" />
     <Build Include="dbo\Tables\CranRating.sql" />
     <Build Include="dbo\Tables\CranBinary.sql" />
-    <Build Include="dbo\Tables\CranRelQuestionBinary.sql" />
+    <Build Include="dbo\Tables\CranImage.sql" />
+    <Build Include="dbo\Tables\CranRelQuestionImage.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="CranDataBase.refactorlog" />

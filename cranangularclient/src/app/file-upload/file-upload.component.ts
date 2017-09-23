@@ -1,4 +1,6 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, Input, EventEmitter, } from '@angular/core';
+
+import {Binary} from '../model/binary';
 
 @Component({
   selector: 'app-file-upload',
@@ -10,8 +12,10 @@ export class FileUploadComponent implements OnInit {
   @ViewChild('fileInput') fileInput;
 
   @Output() onUploadStarted = new EventEmitter<void>();
-  @Output() onError = new EventEmitter<any>();
-  @Output() onUploaded = new EventEmitter<any>();
+  @Output() onError = new EventEmitter<string>();
+  @Output() onUploaded = new EventEmitter<File[]>();
+
+  @Input() placeHolderText = 'Upload file...';
 
   constructor() { }
 
@@ -38,14 +42,14 @@ export class FileUploadComponent implements OnInit {
       const onUploaded = this.onUploaded;
       const onError = this.onError;
       const xhr = new XMLHttpRequest();
-      xhr.open('POST', '/api/Data/UploadFiles', true);
+      xhr.open('POST', '/api/Data/UploadFiles');
       xhr.onload = function () {
         if (this['status'] === 200) {
             const responseText = this['responseText'];
             const files = JSON.parse(responseText);
             onUploaded.emit(files);
         } else {
-          onError.emit(this['status']);
+          onError.emit(this['statusText']);
         }
       };
       xhr.send(formData);

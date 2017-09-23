@@ -15,8 +15,8 @@ using Xunit;
 [assembly: UserSecretsId("CRANSECRETS201707021036")]
 
 namespace cran.tests
-{    
-    
+{
+
 
     public class CraniumServiceTest
     {
@@ -26,13 +26,13 @@ namespace cran.tests
             // Adding JSON file into IConfiguration.
             IConfiguration config = new ConfigurationBuilder()
                 .AddUserSecrets<CraniumServiceTest>()
-                .Build();            
+                .Build();
 
             return config;
         }
 
         private ApplicationDbContext CreateDbContext(IConfiguration config)
-        {            
+        {
             string connString = config["ConnectionString"];
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseSqlServer(connString)
@@ -44,15 +44,27 @@ namespace cran.tests
         private TestingObject<CraniumService> GetTestingObject()
         {
             IConfiguration config = GetConfiguration();
-            ApplicationDbContext context = CreateDbContext(config);        
+            ApplicationDbContext context = CreateDbContext(config);
 
-           
+
 
             var testingObject = new TestingObject<CraniumService>();
             testingObject.AddDependency(context);
             testingObject.AddDependency(new Mock<IDbLogService>(MockBehavior.Loose));
             testingObject.AddDependency(GetPrincipalMock());
             return testingObject;
+        }
+
+        private IBinaryService GetBinaryService()
+        {
+            IConfiguration config = GetConfiguration();
+            ApplicationDbContext context = CreateDbContext(config);
+
+            var testingObject = new TestingObject<BinaryService>();
+            testingObject.AddDependency(context);
+            testingObject.AddDependency(new Mock<IDbLogService>(MockBehavior.Loose));
+            testingObject.AddDependency(GetPrincipalMock());
+            return testingObject.GetResolvedTestingObject();
         }
 
         private IPrincipal GetPrincipalMock()
@@ -102,8 +114,54 @@ namespace cran.tests
 
             var result5 = await service.AnswerQuestionAndGetSolutionAsync(answer);
 
-            
+
             var result6 = await service.AnswerQuestionAndGetNextQuestionAsync(answer);
-        }   
+        }
+
+        [Fact]
+        public async Task TestAddImage()
+        {
+            var testignObject = GetTestingObject();
+            ICraniumService service = testignObject.GetResolvedTestingObject();
+
+            //Add Q
+            QuestionDto qdto = new QuestionDto()
+            {
+                Title = "Bla",
+                Explanation = "bla",
+            };
+            var  q = await service.InsertQuestionAsync(qdto);
+
+            //Add Binary
+            IBinaryService  binaryService = GetBinaryService();
+            int id = await binaryService.AddBinaryAsync(new BinaryDto
+            {
+                ContentDisposition = "ContentDisposition",
+                ContentType = "ContentType",
+                FileName = "FileName",
+                Name = "Name",
+                Length = 2334,
+            });
+
+
+            ImageDto imageDto = new ImageDto()
+            {
+                IdBinary = id,
+                Full = false,
+                Height = 124,
+                Width = 64,
+            };          
+
+            imageDto = await service.AddImageAsync(imageDto);
+            QuestionDto questionDto = await service.GetQuestionAsync(q.NewId);
+            questionDto.Images.Add(imageDto);
+
+            await  service.UpdateQuestionAsync(questionDto);
+
+            questionDto = await service.GetQuestionAsync(q.NewId);
+
+            Assert.True(questionDto.Images.Count == 1);
+
+        }
     }
 }

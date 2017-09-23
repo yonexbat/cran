@@ -23,5 +23,7 @@ namespace cran.Model.Dto
         public IList<TagDto> Tags = new List<TagDto>();
 
         public VotesDto Votes { get; set; }
+
+        public IList<ImageDto> Images = new List<ImageDto>();
     }
 }

@@ -1,4 +1,7 @@
 ﻿using cran.Data;
+using cran.Model.Entities;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
@@ -24,6 +27,21 @@ namespace cran.Services
         public string GetUserId()
         {
             return _currentPrincipal.Identity.Name;
+        }
+
+        protected async Task<CranUser> GetCranUserAsync()
+        {
+            string userId = GetUserId();
+            CranUser cranUserEntity = await _context.CranUsers.Where(x => x.UserId == userId).SingleOrDefaultAsync();
+            if (cranUserEntity == null)
+            {
+                cranUserEntity = new CranUser
+                {
+                    UserId = userId,
+                };
+                _context.CranUsers.Add(cranUserEntity);
+            }
+            return cranUserEntity;
         }
     }
 }

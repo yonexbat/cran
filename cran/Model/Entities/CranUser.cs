@@ -13,5 +13,6 @@ namespace cran.Model.Entities
         public virtual IList<Question> Questions { get; set; } = new List<Question>();
         public virtual IList<Comment> Comments { get; set; } = new List<Comment>();
         public virtual IList<Rating> Ratings { get; set; } = new List<Rating>();
+        public virtual IList<Binary> Binaries { get; set; } = new List<Binary>();
     }
 }

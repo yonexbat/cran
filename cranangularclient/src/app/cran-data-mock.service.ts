@@ -22,10 +22,20 @@ import {PagedResult} from './model/pagedresult';
 import {Comment} from './model/comment';
 import {GetComments} from './model/getcomments';
 import {Votes} from './model/votes';
+import {Image} from './model/image';
 
 
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
+
+  addImage(image: Image): Promise<Image> {
+    const promiseResult = new Promise<Image>((resolve, reject) => {
+      setTimeout(function() {
+        resolve(image);
+      }, 1000);
+    });
+    return promiseResult;
+  }
 
   vote(votes: Votes): Promise<Votes> {
     const promiseResult = new Promise<Votes>((resolve, reject) => {

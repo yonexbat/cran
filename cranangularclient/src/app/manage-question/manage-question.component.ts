@@ -8,6 +8,8 @@ import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {StatusMessageComponent} from '../status-message/status-message.component';
 import {QuestionPreviewComponent} from '../question-preview/question-preview.component';
 import {NotificationService} from '../notification.service';
+import {Binary} from '../model/binary';
+import {Image} from '../model/image';
 
 
 @Component({
@@ -102,17 +104,28 @@ export class ManageQuestionComponent implements OnInit {
     this.actionInProgress = false;
   }
 
-  public removeOption(index: number) {
+  private removeOption(index: number) {
     this.question.options.splice(index, 1);
   }
 
-  public addOpton() {
+  private addOpton() {
     const option = new QuestionOption();
     this.question.options.push(option);
   }
 
-  public showPreview() {
+  private showPreview() {
     this.questionPreview.showDialog(this.question);
   }
 
+  private async addImages(images: Binary[]) {
+    for ( let i = 0; i < images.length; i++) {
+      const binary: Binary = images[i];
+      const image = new Image();
+      image.idBinary = binary.id;
+      this.cranDataService.addImage(image)
+      .then((uploadedImage: Image) => {
+        this.question.images.push(uploadedImage);
+      });
+    }
+  }
 }

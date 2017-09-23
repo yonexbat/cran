@@ -9,12 +9,14 @@ namespace cran.Services
 {
     public interface IBinaryService
     {
-        Task<IList<FileDto>> UploadFilesAsync(IList<IFormFile> files);
+        Task<IList<BinaryDto>> UploadFilesAsync(IList<IFormFile> files);
 
         Task<Stream> GetBinaryAsync(int id);
 
-        Task<FileDto> GetFileInfoAsync(int id);
+        Task<BinaryDto> GetFileInfoAsync(int id);
 
         Task SaveAsync(int id, Stream input);
+
+        Task<int> AddBinaryAsync(BinaryDto binaryDto);
     }
 }

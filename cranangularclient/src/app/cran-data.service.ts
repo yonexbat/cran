@@ -22,13 +22,22 @@ import {PagedResult} from './model/pagedresult';
 import {Comment} from './model/comment';
 import {GetComments} from './model/getcomments';
 import {Votes} from './model/votes';
-
+import {Image} from './model/image';
 
 @Injectable()
 export class CranDataService implements ICranDataService {
-
   constructor(private http: Http) {
 
+  }
+
+  addImage(image: Image): Promise<Image> {
+    return this.http.post('/api/Data/AddImage', image)
+    .toPromise()
+    .then(  response => {
+      const result = response.json() as Votes;
+      return result;
+    })
+    .catch(this.handleError);
   }
 
   vote(votes: Votes): Promise<Votes> {

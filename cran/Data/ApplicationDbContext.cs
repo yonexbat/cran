@@ -27,7 +27,8 @@ namespace cran.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Rating> Ratings { get; set; }
         public DbSet<Binary> Binaries { get; set; }
-        public DbSet<RelQuestionBinary> RelQuestionBinaries { get; set; }
+        public DbSet<RelQuestionImage> RelQuestionImages { get; set; }
+        public DbSet<Image> Images { get; set; }
 
         protected IPrincipal _principal;
 
@@ -106,32 +107,50 @@ namespace cran.Data
             MapCourseInstanceQuestionOption(builder.Entity<CourseInstanceQuestionOption>());
             MapComment(builder.Entity<Comment>());
             MapRating(builder.Entity<Rating>());
-            MapRelQuestionBinary(builder.Entity<RelQuestionBinary>());
+            MapRelQuestionImage(builder.Entity<RelQuestionImage>());
             MapBinary(builder.Entity<Binary>());
-        }  
+            MapImage(builder.Entity<Image>());
+        }
+
+        private void MapImage(EntityTypeBuilder<Image> typeBuilder)
+        {
+            typeBuilder.ToTable("CranImage");
+
+            typeBuilder.HasOne(x => x.Binary)
+                .WithMany(x => x.Images)
+                .HasForeignKey(x => x.IdBinary);
+
+            typeBuilder.HasOne(x => x.RelImage)
+                .WithOne(x => x.Image)
+                .HasForeignKey<RelQuestionImage>(x => x.IdImage);
+        }        
 
         private void MapBinary(EntityTypeBuilder<Binary> typeBuilder)
         {
             typeBuilder.ToTable("CranBinary");
 
-            typeBuilder
-               .HasMany(x => x.RelQuestions)
-               .WithOne(o => o.Binary)
-               .HasForeignKey(x => x.IdBinary);
+            typeBuilder.HasOne(binary => binary.User)
+                .WithMany(user => user.Binaries)
+                .HasForeignKey(binary => binary.IdUser);
 
+            typeBuilder
+               .HasMany(binary => binary.Images)
+               .WithOne(image => image.Binary)
+               .HasForeignKey(image => image.IdBinary);
         }
 
-        private void MapRelQuestionBinary(EntityTypeBuilder<RelQuestionBinary> typeBuilder)
+        private void MapRelQuestionImage(EntityTypeBuilder<RelQuestionImage> typeBuilder)
         {
-            typeBuilder.ToTable("CranRelQuestionBinary");
+            typeBuilder.ToTable("CranRelQuestionImage");
 
             typeBuilder.HasOne(x => x.Question)
-               .WithMany(c => c.RelBinaries)
+               .WithMany(c => c.RelImages)
                .HasForeignKey(rel => rel.IdQuestion);
 
-            typeBuilder.HasOne(x => x.Binary)
-                .WithMany()
-                .HasForeignKey(rel => rel.IdBinary);
+            typeBuilder.HasOne(x => x.Image)
+                .WithOne(x => x.RelImage)
+                .HasForeignKey<RelQuestionImage>(x => x.IdImage);
+                
         }
 
         private void MapComment(EntityTypeBuilder<Comment> typeBuilder)
@@ -239,7 +258,7 @@ namespace cran.Data
                 .HasForeignKey(x => x.IdQuestion);
 
             typeBuilder
-                .HasMany(x => x.RelBinaries)
+                .HasMany(x => x.RelImages)
                 .WithOne(o => o.Question)
                 .HasForeignKey(x => x.IdQuestion);
 

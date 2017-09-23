@@ -131,7 +131,18 @@ namespace cran.Services
                     Id = x.Tag.Id,
                     Name = x.Tag.Name,
                     Description = x.Tag.Description,
-                }).ToListAsync();          
+                }).ToListAsync();  
+            
+            questionVm.Images = await _context.RelQuestionImages
+                .Where(x => x.IdQuestion == id)
+                .Select(x => new ImageDto
+                {
+                    Id = x.Image.Id,
+                    IdBinary = x.Image.Binary.Id,
+                    Full = x.Image.Full,
+                    Height = x.Image.Height,
+                    Width = x.Image.Width,
+                }).ToListAsync();
 
             return questionVm;
         }
@@ -167,9 +178,26 @@ namespace cran.Services
             }
            
             UpdateRelation(relQuestionTagDtos, relTagEntities);
-            
+
+            //Images
+            IList<RelQuestionImage> relImages = await _context.RelQuestionImages.Where(x => x.IdQuestion == questionEntity.Id).ToListAsync();
+            IList<RelQuestionImageDto> relImagesDtos = new List<RelQuestionImageDto>();
+            IList<int> binaryIds = questionDto.Images.Select(x => x.IdBinary).ToList();
+            IList<Image> images = await _context.Images.Where(x => binaryIds.Contains(x.IdBinary)).ToListAsync();
+            foreach (ImageDto image in questionDto.Images)
+            {
+                RelQuestionImageDto relQuestionImageDto = new RelQuestionImageDto();
+                relQuestionImageDto.IdQuestion = questionDto.Id;
+                relQuestionImageDto.IdImage = images.Where(x => x.IdBinary == image.IdBinary).Select(x => x.Id).SingleOrDefault();
+                relQuestionImageDto.Id = relImages.Where(x => x.IdImage == relQuestionImageDto.IdImage).Select(x => x.Id).SingleOrDefault();
+                relImagesDtos.Add(relQuestionImageDto);
+            }
+            UpdateRelation(relImagesDtos, relImages);
 
             CopyData(questionDto, questionEntity);
+           
+
+
             await _context.SaveChangesCranAsync(_currentPrincipal); 
         }
 
@@ -230,6 +258,13 @@ namespace cran.Services
                 RelQuestionTag entityDestination = (RelQuestionTag)entity;
                 entityDestination.IdQuestion = dtoSource.IdQuestion;
                 entityDestination.IdTag = dtoSource.IdTag;
+            }
+            else if(dto is RelQuestionImageDto && entity is RelQuestionImage)
+            {
+                RelQuestionImageDto dtoSource = (RelQuestionImageDto)dto;
+                RelQuestionImage entityDestination = (RelQuestionImage)entity;
+                entityDestination.IdQuestion = dtoSource.IdQuestion;
+                entityDestination.IdImage = dtoSource.IdImage;
             }
             else
             {
@@ -350,21 +385,7 @@ namespace cran.Services
             courseInstance.EndedAt = DateTime.Now;
             await SaveChangesAsync();
         }
-
-        private async Task<CranUser> GetCranUserAsync()
-        {
-            string userId = GetUserId();
-            CranUser cranUserEntity = await _context.CranUsers.Where(x => x.UserId == userId).SingleOrDefaultAsync();           
-            if(cranUserEntity == null)
-            {
-                cranUserEntity = new CranUser
-                {
-                    UserId = userId,
-                };
-                _context.CranUsers.Add(cranUserEntity);
-            }
-            return cranUserEntity;
-        }
+ 
 
         public async Task<CourseInstanceDto> NextQuestion(int courseInstanceId)
         {
@@ -797,7 +818,7 @@ namespace cran.Services
    
         }
 
-        public async Task<int> AddComment(CommentDto vm)
+        public async Task<int> AddCommentAsync(CommentDto vm)
         {
             CranUser cranUser = await this.GetCranUserAsync();
             Question question = await _context.FindAsync<Question>(vm.IdQuestion);
@@ -812,7 +833,7 @@ namespace cran.Services
             return comment.Id;
         }
 
-        public async Task DeleteComment(int id)
+        public async Task DeleteCommentAsync(int id)
         {
             Comment comment = await _context.FindAsync<Comment>(id);
             if(!(await HasWriteAccess(comment.IdUser)))
@@ -873,5 +894,24 @@ namespace cran.Services
             return result;
         }
 
+        public async Task<ImageDto> AddImageAsync(ImageDto imageDto)
+        {
+            Binary binary = await _context.FindAsync<Binary>(imageDto.IdBinary);
+
+            Image image = new Image
+            {
+                Binary = binary,
+                IdBinary = imageDto.IdBinary,
+                Full = imageDto.Full,
+                Height = imageDto.Height,
+                Width = imageDto.Width,
+            };          
+            _context.Images.Add(image);          
+
+            await SaveChangesAsync();
+
+            imageDto.Id = image.Id;
+            return imageDto;
+        }
     }
 }

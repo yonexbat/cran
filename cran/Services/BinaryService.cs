@@ -23,12 +23,12 @@ namespace cran.Services
             
         }
 
-        public async Task<IList<FileDto>> UploadFilesAsync(IList<IFormFile> files)
+        public async Task<IList<BinaryDto>> UploadFilesAsync(IList<IFormFile> files)
         {
-            IList<FileDto> uploadedFiles = new List<FileDto>();
+            IList<BinaryDto> uploadedFiles = new List<BinaryDto>();
             foreach (IFormFile formFile in files)
             {
-                FileDto uploadedFile = await SaveFileAsync(formFile);
+                BinaryDto uploadedFile = await SaveFileAsync(formFile);
                 if(uploadedFile != null)
                 {
                     uploadedFiles.Add(uploadedFile);
@@ -37,18 +37,18 @@ namespace cran.Services
             return uploadedFiles;
         }
 
-        private async Task<FileDto> SaveFileAsync(IFormFile file)
+        private async Task<BinaryDto> SaveFileAsync(IFormFile file)
         {
             if (file.Length > 0)
             {
-                FileDto dto = await CreateFileEntity(file);
+                BinaryDto dto = await CreateFileEntity(file);
                 await SaveAsync(dto.Id, file.OpenReadStream());
                 return dto;
             }
             return null;
         }
 
-        private async Task<FileDto> CreateFileEntity(IFormFile formfile)
+        private async Task<BinaryDto> CreateFileEntity(IFormFile formfile)
         {
             Binary fileEntity = new Binary();
             fileEntity.Length = (int) formfile.Length;
@@ -56,17 +56,20 @@ namespace cran.Services
             fileEntity.FileName = formfile.FileName;
             fileEntity.ContentDisposition = formfile.ContentDisposition;
             fileEntity.Name = formfile.Name;
+            fileEntity.User = await GetCranUserAsync();
+            fileEntity.IdUser = fileEntity.User.Id;
+            
 
             _context.Binaries.Add(fileEntity);
 
             await SaveChangesAsync();
-            FileDto dto = ToDto(fileEntity);
+            BinaryDto dto = ToDto(fileEntity);
             return dto;
         }
 
-        private FileDto ToDto(Binary binary)
+        private BinaryDto ToDto(Binary binary)
         {
-            FileDto result = new FileDto()
+            BinaryDto result = new BinaryDto()
             {
                 Id = binary.Id,
                 FileName = binary.FileName,
@@ -156,10 +159,28 @@ namespace cran.Services
             return memoryStream;
         }
 
-        public async Task<FileDto> GetFileInfoAsync(int id)
+        public async Task<BinaryDto> GetFileInfoAsync(int id)
         {
             Binary binary = await _context.FindAsync<Binary>(id);
             return ToDto(binary);
+        }
+
+        public async Task<int> AddBinaryAsync(BinaryDto binaryDto)
+        {
+            Binary binary = new Binary();
+            binary.Length = binary.Length;
+            binary.ContentType = binary.ContentType;
+            binary.FileName = binary.FileName;
+            binary.ContentDisposition = binary.ContentDisposition;
+            binary.Name = binary.Name;
+            binary.User = await GetCranUserAsync();
+            binary.IdUser = binary.User.Id;
+
+
+            _context.Binaries.Add(binary);
+
+            await SaveChangesAsync();
+            return binary.Id;
         }
     }
 }

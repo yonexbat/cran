@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace cran.Model.Entities
 {
-    public class RelQuestionBinary : CranEntity
+    public class RelQuestionImage : CranEntity
     {
         public virtual int IdQuestion { get; set; }
-        public virtual int IdBinary { get; set; }
-        public virtual Binary Binary { get; set; }
+        public virtual int IdImage { get; set; }
+        public virtual Image Image {get;set;}
         public virtual Question Question { get; set; }
     }
 }

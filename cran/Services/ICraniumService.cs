@@ -44,10 +44,12 @@ namespace cran.Services
 
         Task<PagedResultDto<CommentDto>> GetCommentssAsync(GetCommentsDto parameters);
 
-        Task<int> AddComment(CommentDto vm);
+        Task<int> AddCommentAsync(CommentDto vm);
 
-        Task DeleteComment(int id);
+        Task DeleteCommentAsync(int id);
 
         Task<VotesDto> VoteAsync(VotesDto vote);
-    }
+
+        Task<ImageDto> AddImageAsync(ImageDto imageDto);
+     }
 }

@@ -33,6 +33,7 @@ import { ViewQuestionComponent } from './view-question/view-question.component';
 import { CommentsComponent } from './comments/comments.component';
 import { VoteComponent } from './vote/vote.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
+import { ImagelistComponent } from './imagelist/imagelist.component';
 
 function isDevelopment() {
   return window.location && window.location.port && window.location.port === '4200';
@@ -67,6 +68,7 @@ if (isDevelopment()) {
     CommentsComponent,
     VoteComponent,
     FileUploadComponent,
+    ImagelistComponent,
   ],
   imports: [
     BrowserModule,

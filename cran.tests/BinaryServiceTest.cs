@@ -79,7 +79,24 @@ namespace cran.tests
             stream.Seek(0, SeekOrigin.Begin);
 
             IBinaryService service = testignObject.GetResolvedTestingObject();
-            await service.Save(1, stream);
+
+            int id = await service.AddBinaryAsync(new BinaryDto
+            {
+                ContentDisposition = "ContentDisposition",
+                ContentType = "ContentType",
+                FileName = "FileName",
+                Name = "Name",
+                Length = 2334,
+            });
+
+            await service.SaveAsync(id, stream);
+
+            RelQuestionImageDto dto = new RelQuestionImageDto
+            {
+                IdBinary = 1,
+                IdQuestion = 1,
+            };
+            
 
         }   
     }

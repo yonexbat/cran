@@ -17,6 +17,7 @@ import {PagedResult} from './model/pagedresult';
 import {Comment} from './model/comment';
 import {GetComments} from './model/getcomments';
 import {Votes} from './model/votes';
+import {Image} from './model/image';
 
 export interface ICranDataService {
   getCourses(): Promise<Courses>;
@@ -39,4 +40,5 @@ export interface ICranDataService {
   getComments(parameters: GetComments): Promise<PagedResult<Comment>>;
   deleteComment(id: number): Promise<any>;
   vote(votes: Votes): Promise<Votes>;
+  addImage(image: Image): Promise<Image>;
 }
