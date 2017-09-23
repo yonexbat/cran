@@ -617,11 +617,18 @@ namespace cran.Services
                 _context.Remove(relTagEntity);
             }
 
-            //Instances
+            //CourseInstance Question
             IList<CourseInstanceQuestion> courseInstaceQuestions = await _context.CourseInstancesQuestion.Where(x => x.Question.Id == questionEntity.Id).ToListAsync();
             foreach(CourseInstanceQuestion ciQ  in courseInstaceQuestions)
             {
                 _context.Remove(ciQ);
+            }
+
+            //Images
+            IList<RelQuestionImage> relImages = await _context.RelQuestionImages.Where(x => x.Question.Id == questionEntity.Id).ToListAsync();
+            foreach(RelQuestionImage relImage in relImages)
+            {
+                _context.Remove(relImage);
             }
 
             _context.Remove(questionEntity);

@@ -1,4 +1,9 @@
-import { Component, OnInit, AfterViewInit, ViewChild, Output, Input, EventEmitter, } from '@angular/core';
+import { Component,
+  OnInit,
+  AfterViewInit,
+  ViewChild, ElementRef,
+  Output, Input,
+  EventEmitter, } from '@angular/core';
 
 import {Binary} from '../model/binary';
 
@@ -14,6 +19,7 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
   @Output() onUploaded = new EventEmitter<File[]>();
 
   @Input() placeHolderText = 'Upload file...';
+  @ViewChild('fileInputParent') fileInputParent: ElementRef;
 
   constructor() { }
 
@@ -27,19 +33,20 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
 
 
   private addFileInput() {
-    const fileInputParentNative = document.getElementById('fileInputParent');
+    const fileInputParentNative = this.fileInputParent.nativeElement;
     const oldFileInput = fileInputParentNative.querySelector('input');
     const newFileInput = document.createElement('input');
     newFileInput.type = 'file';
     newFileInput.multiple = true;
     newFileInput.name = 'fileInput';
-    const uploadfiles = this.uploadFiles;
-    newFileInput.onchange = uploadfiles.bind(this);
+    const uploadfiles = this.uploadFiles.bind(this);
+    newFileInput.onchange = uploadfiles;
     oldFileInput.parentNode.replaceChild(newFileInput, oldFileInput);
   }
 
   private uploadFiles() {
-    const fileInputParentNative = document.getElementById('fileInputParent');
+    this.onUploadStarted.emit();
+    const fileInputParentNative = this.fileInputParent.nativeElement;
     const fileInput = fileInputParentNative.querySelector('input');
     if (fileInput.files && fileInput.files.length > 0) {
       const formData = new FormData();
@@ -49,6 +56,7 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
 
       const onUploaded = this.onUploaded;
       const onError = this.onError;
+      const addFileInput = this.addFileInput.bind(this);
       const xhr = new XMLHttpRequest();
       xhr.open('POST', '/api/Data/UploadFiles');
       xhr.onload = function () {
@@ -56,11 +64,11 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
             const responseText = this['responseText'];
             const files = JSON.parse(responseText);
             onUploaded.emit(files);
+            addFileInput();
         } else {
           onError.emit(this['statusText']);
         }
       };
-      this.addFileInput();
       xhr.send(formData);
     }
 
