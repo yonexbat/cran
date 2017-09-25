@@ -1,16 +1,32 @@
-<div>
-  <span *ngFor="let image of images; let imageIndex=index">
-    <img src="/api/Data/GetFile/{{image.idBinary}}" style="width: 100%;">
 
-    <button *ngIf="imagesDeletable"
-      type="button" 
-      class="btn btn-default cranbutton"
-      (click)="removeImage(image)">
-      <span class="glyphicon glyphicon-trash" title="Bild entfernen"></span>
-    </button>
+<div *ngFor="let image of images; let imageIndex=index">
 
-  </span>
+  <div>
+    <img src="/api/Data/GetFile/{{image.idBinary}}" style="width: 100%;" [ngStyle]="{ 'width': image.width + '%' }">
+  </div>
 
-  
+  <div class="row">
+
+    <!-- Width  -->
+    <div class="col-md-3">          
+      <label for="title">Breite (in %)</label>  
+      <input type="number" 
+                class="form-control" 
+                [(ngModel)]="image.width" name="width"
+                #width="ngModel"> 
+    </div>
+    
+    <!-- Delete Button -->
+    <div class="col-md-1">      
+      <button *ngIf="imagesDeletable"
+                type="button" 
+                class="btn btn-default cranbutton align-bottom"
+                (click)="removeImage(image)">
+                  <span class="glyphicon glyphicon-trash" title="Bild entfernen"></span>
+      </button>   
+    </div>   
+
+  </div>
 
 </div>
+

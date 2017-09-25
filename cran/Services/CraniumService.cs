@@ -167,36 +167,53 @@ namespace cran.Services
 
             //Tags
             IList<RelQuestionTag> relTagEntities = await _context.RelQuestionTags.Where(x => x.IdQuestion == questionEntity.Id).ToListAsync();
+            IDictionary<int, int> relIdByTagId = relTagEntities.ToDictionary(x => x.IdTag, x => x.Id);
             IList<RelQuestionTagDto> relQuestionTagDtos = new List<RelQuestionTagDto>();
             foreach(TagDto tagDto in questionDto.Tags)
             {
                 RelQuestionTagDto relQuestionTagDto = new RelQuestionTagDto();
                 relQuestionTagDto.IdTag = tagDto.Id;
                 relQuestionTagDto.IdQuestion = questionDto.Id;
-                relQuestionTagDto.Id = relTagEntities.Where(x => x.IdTag == tagDto.Id).Select(x => x.Id).SingleOrDefault();
+                if(relIdByTagId.ContainsKey(tagDto.Id))
+                {
+                    relQuestionTagDto.Id = relIdByTagId[tagDto.Id];                    
+                }
+               
                 relQuestionTagDtos.Add(relQuestionTagDto);
             }
            
             UpdateRelation(relQuestionTagDtos, relTagEntities);
 
-            //Images
+            //Image Relation
             IList<RelQuestionImage> relImages = await _context.RelQuestionImages.Where(x => x.IdQuestion == questionEntity.Id).ToListAsync();
+            IDictionary<int, int> relIdByImageId = relImages.ToDictionary(x => x.IdImage, x => x.Id);
             IList<RelQuestionImageDto> relImagesDtos = new List<RelQuestionImageDto>();
             IList<int> binaryIds = questionDto.Images.Select(x => x.IdBinary).ToList();
             IList<Image> images = await _context.Images.Where(x => binaryIds.Contains(x.IdBinary)).ToListAsync();
+            IDictionary<int, Image> imageByBinaryId = images.ToDictionary(x => x.IdBinary, x => x);
             foreach (ImageDto image in questionDto.Images)
             {
                 RelQuestionImageDto relQuestionImageDto = new RelQuestionImageDto();
                 relQuestionImageDto.IdQuestion = questionDto.Id;
-                relQuestionImageDto.IdImage = images.Where(x => x.IdBinary == image.IdBinary).Select(x => x.Id).SingleOrDefault();
-                relQuestionImageDto.Id = relImages.Where(x => x.IdImage == relQuestionImageDto.IdImage).Select(x => x.Id).SingleOrDefault();
+                relQuestionImageDto.IdImage = imageByBinaryId[image.IdBinary].Id;                
+                if(relIdByImageId.ContainsKey(relQuestionImageDto.IdImage))
+                {
+                    relQuestionImageDto.Id = relIdByImageId[relQuestionImageDto.IdImage];                    
+                }                
                 relImagesDtos.Add(relQuestionImageDto);
             }
             UpdateRelation(relImagesDtos, relImages);
 
+            //Image Data           
+            foreach(ImageDto imageDto in questionDto.Images)
+            {
+                Image image = imageByBinaryId[imageDto.IdBinary];
+                CopyData(imageDto, image);
+            }
+            
+
             CopyData(questionDto, questionEntity);
            
-
 
             await _context.SaveChangesCranAsync(_currentPrincipal); 
         }
@@ -233,7 +250,7 @@ namespace cran.Services
             }
         }
 
-        private void CopyData(IDto dto, CranEntity entity)
+        private void CopyData(object dto, CranEntity entity)
         {
             if(dto is QuestionOptionDto && entity is QuestionOption)
             {
@@ -265,6 +282,14 @@ namespace cran.Services
                 RelQuestionImage entityDestination = (RelQuestionImage)entity;
                 entityDestination.IdQuestion = dtoSource.IdQuestion;
                 entityDestination.IdImage = dtoSource.IdImage;
+            }
+            else if(dto is ImageDto && entity is Image)
+            {
+                ImageDto dtoSource = (ImageDto)dto;
+                Image entityDestination = (Image) entity;
+                entityDestination.Width = dtoSource.Width;
+                entityDestination.Height = dtoSource.Height;
+                entityDestination.Full = dtoSource.Full;
             }
             else
             {
@@ -592,9 +617,7 @@ namespace cran.Services
 
             await CheckWriteAccessToQuestion(idQuestion);
 
-            Question questionEntity =  await _context.FindAsync<Question>(idQuestion);
-                        
-
+            Question questionEntity =  await _context.FindAsync<Question>(idQuestion);                        
 
             //Options
             IList<QuestionOption> questionOptions = await _context.QuestionOptions.Where(x => x.Question.Id == questionEntity.Id).ToListAsync();

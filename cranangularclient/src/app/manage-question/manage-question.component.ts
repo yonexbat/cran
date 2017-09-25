@@ -122,9 +122,13 @@ export class ManageQuestionComponent implements OnInit {
       const binary: Binary = images[i];
       const image = new Image();
       image.idBinary = binary.id;
+      image.width = 100;
       this.cranDataService.addImage(image)
       .then((uploadedImage: Image) => {
         this.question.images.push(uploadedImage);
+      })
+      .catch((error) => {
+        this.notificationService.emitError(error);
       });
     }
   }
