@@ -5,7 +5,7 @@
     <img src="/api/Data/GetFile/{{image.idBinary}}" style="width: 100%;" [ngStyle]="{ 'width': image.width + '%' }">
   </div>
 
-  <div class="row">
+  <div class="row"  *ngIf="imagesDeletable">
 
     <!-- Width  -->
     <div class="col-md-3">          
@@ -18,7 +18,7 @@
     
     <!-- Delete Button -->
     <div class="col-md-1">      
-      <button *ngIf="imagesDeletable"
+      <button 
                 type="button" 
                 class="btn btn-default cranbutton align-bottom"
                 (click)="removeImage(image)">
