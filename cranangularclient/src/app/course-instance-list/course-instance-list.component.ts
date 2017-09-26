@@ -41,10 +41,10 @@ export class CourseInstanceListComponent implements OnInit {
         this.notificationService.emitLoading();
         await this.cranDataServiceService.deleteCourseInstance(instance.idCourseInstance);
         this.notificationService.emitDone();
+        await this.loadInstances();
       } catch (error) {
         this.notificationService.emitError(error);
       }
-      await this.loadInstances();
     }
   }
 

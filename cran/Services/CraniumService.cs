@@ -587,13 +587,14 @@ namespace cran.Services
         private async Task CheckAccessToCourseInstance(int idCourseInstance)
         {
             CourseInstance instance = await _context.FindAsync<CourseInstance>(idCourseInstance);
+
             //Security Check
             bool hasWriteAccess = await HasWriteAccess(instance.IdUser);
 
             //Security Check
-            if (hasWriteAccess)
+            if (!hasWriteAccess)
             {
-                throw new SecurityException("no access to this question");
+                throw new SecurityException("no access to this course instance");
             }
         }
 
