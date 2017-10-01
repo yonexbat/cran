@@ -183,5 +183,11 @@ namespace cran.Controllers
             return await _craninumService.AddImageAsync(image);
         }
 
+        [HttpGet("[action]")]
+        public async Task<UserInfoDto> GetUserInfo()
+        {
+            return await _craninumService.GetUserInfoAsync();
+        }
+
     }
 }

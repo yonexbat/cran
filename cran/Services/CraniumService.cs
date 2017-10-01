@@ -959,5 +959,14 @@ namespace cran.Services
             imageDto.Id = image.Id;
             return imageDto;
         }
+
+        public async Task<UserInfoDto> GetUserInfoAsync()
+        {
+            CranUser user = await GetCranUserAsync();
+            return new UserInfoDto
+            {
+                Name = user.UserId,
+            };
+        }
     }
 }

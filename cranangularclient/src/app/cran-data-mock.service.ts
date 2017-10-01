@@ -23,10 +23,21 @@ import {Comment} from './model/comment';
 import {GetComments} from './model/getcomments';
 import {Votes} from './model/votes';
 import {Image} from './model/image';
+import {UserInfo} from './model/userinfo';
 
 
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
+
+  getUserInfo(): Promise<UserInfo> {
+    const promiseResult = new Promise<UserInfo>((resolve, reject) => {
+      setTimeout(function() {
+        const userInfo: UserInfo = {name: 'yonexi'};
+        resolve(userInfo);
+      }, 1000);
+    });
+    return promiseResult;
+  }
 
   addImage(image: Image): Promise<Image> {
     const promiseResult = new Promise<Image>((resolve, reject) => {

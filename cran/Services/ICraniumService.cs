@@ -51,5 +51,7 @@ namespace cran.Services
         Task<VotesDto> VoteAsync(VotesDto vote);
 
         Task<ImageDto> AddImageAsync(ImageDto imageDto);
+
+        Task<UserInfoDto> GetUserInfoAsync();
      }
 }

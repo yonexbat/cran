@@ -23,11 +23,23 @@ import {Comment} from './model/comment';
 import {GetComments} from './model/getcomments';
 import {Votes} from './model/votes';
 import {Image} from './model/image';
+import {UserInfo} from './model/userinfo';
 
 @Injectable()
 export class CranDataService implements ICranDataService {
+
   constructor(private http: Http) {
 
+  }
+
+  getUserInfo(): Promise<UserInfo> {
+    return this.http.get('/api/Data/GetUserInfo')
+    .toPromise()
+    .then(response => {
+      const data = response.json() as UserInfo;
+      return data;
+     })
+    .catch(this.handleError);
   }
 
   addImage(image: Image): Promise<Image> {
