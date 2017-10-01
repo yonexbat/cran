@@ -1,55 +1,31 @@
-@using System.Collections.Generic
-@using Microsoft.AspNetCore.Http
-@using Microsoft.AspNetCore.Http.Authentication
+@using  cran.Model.Dto
 @model cran.Model.ViewModel.LoginViewModel
-@inject Microsoft.AspNetCore.Identity.SignInManager<cran.Model.Entities.ApplicationUser> SignInManager
-@inject Microsoft.AspNetCore.Identity.UserManager<cran.Model.Entities.ApplicationUser> UserManager
 
 <div>
     <section>
-        <div class="jumbotron text-center">
-            @if (SignInManager.IsSignedIn(User))
-            {
-                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-
-                <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
-                   
-                    <button type="submit" class="btn btn-link navbar-btn navbar-link">Log out</button>
-                       
-                </form>
-            }
+        <div class="jumbotron text-center">           
             <h1>Cranium</h1>
         </div>
+            
+                
+        <form asp-controller="Account" asp-action="ExternalLogin"  method="post" class="form-horizontal">
+            <div style="margin-left: 20px;">
+                <p>
+                    @Html.HiddenFor(m => m.ReturnUrl)
+                    @foreach (LoginProviderDto provider in Model.LoginProviders)
+                    {
+                        <button type="submit" class="btn btn-primary btn-lg" name="provider"
+                                value="@provider.Name"
+                                title="Log in using your @provider.DisplayName account">
+                            @provider.DisplayName
+                        </button>
 
-            @{
-                var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-                if (loginProviders.Count == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. 
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
-                        <div style="margin-left: 20px;">
-                            <p>
-                                @Html.Hidden("ReturnUrl", this.Context.Request.Query["ReturnUrl"])
-                                @foreach (var provider in loginProviders)
-                                {
-                                    <button type="submit" class="btn btn-primary btn-lg" name="provider" 
-                                            value="@provider.Name" 
-                                            title="Log in using your @provider.DisplayName account">
-                                        @provider.DisplayName
-                                    </button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
+                    }                              
+                </p>
+            </div>
+        </form>
+               
+            
     </section>
 
    

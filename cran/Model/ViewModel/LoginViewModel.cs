@@ -1,6 +1,6 @@
-﻿using System;
+﻿using cran.Model.Dto;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,15 +8,8 @@ namespace cran.Model.ViewModel
 {
     public class LoginViewModel
     {
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        public string ReturnUrl { get; set; }
 
-        [Required]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
-
-        [Display(Name = "Remember me?")]
-        public bool RememberMe { get; set; }
+        public IList<LoginProviderDto> LoginProviders { get; set; }
     }
 }

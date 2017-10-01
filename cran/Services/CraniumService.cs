@@ -166,10 +166,14 @@ namespace cran.Services
             UpdateRelation(questionDto.Options, questionOptionEntities);
 
             //Tags
-            IList<RelQuestionTag> relTagEntities = await _context.RelQuestionTags.Where(x => x.IdQuestion == questionEntity.Id).ToListAsync();
+            IList<RelQuestionTag> relTagEntities = await _context.RelQuestionTags
+                .Where(x => x.IdQuestion == questionEntity.Id).ToListAsync();
+            relTagEntities = relTagEntities.GroupBy(x => x.IdTag).Select(x => x.First()).ToList();
             IDictionary<int, int> relIdByTagId = relTagEntities.ToDictionary(x => x.IdTag, x => x.Id);
             IList<RelQuestionTagDto> relQuestionTagDtos = new List<RelQuestionTagDto>();
-            foreach(TagDto tagDto in questionDto.Tags)
+            IList<TagDto> tagDtos =  questionDto.Tags.GroupBy(x => x.Id).Select(x => x.First()).ToList();
+
+            foreach(TagDto tagDto in tagDtos)
             {
                 RelQuestionTagDto relQuestionTagDto = new RelQuestionTagDto();
                 relQuestionTagDto.IdTag = tagDto.Id;

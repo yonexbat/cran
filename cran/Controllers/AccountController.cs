@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
 using cran.Model.ViewModel;
 using cran.Model.Entities;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Authentication;
 
 namespace cran.Controllers
 {
@@ -31,11 +32,24 @@ namespace cran.Controllers
             this._roleManager = roleManager;
         }
 
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
-            return View();
+            LoginViewModel vm = await GetLoginVm();
+            return View(vm);
         }
 
+        private async  Task<LoginViewModel> GetLoginVm()
+        {
+            LoginViewModel vm = new LoginViewModel();
+            vm.ReturnUrl = Request.Query["ReturnUrl"];
+            IEnumerable<AuthenticationScheme> providers = await _signInManager.GetExternalAuthenticationSchemesAsync();
+            vm.LoginProviders = providers.Select(x => new Model.Dto.LoginProviderDto()
+            {
+                DisplayName = x.DisplayName,
+                Name = x.Name,
+            }).ToList();
+            return vm;
+        }
 
 
         [HttpPost]
@@ -161,15 +175,12 @@ namespace cran.Controllers
             }
         }
 
-        //
-        // POST: /Account/Logout
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Logout()
+        [HttpGet]
+        public async Task<IActionResult> DoLogout()
         {
             await _signInManager.SignOutAsync();
-            _logger.LogInformation(4, "User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return RedirectToAction(nameof(Login));
         }
+            
     }
 }
