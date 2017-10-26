@@ -1,0 +1,61 @@
+<div class="container">
+  <form  #searchForm="ngForm">
+      <div class="row form-group">
+
+           <!-- Tag-Name -->
+           <div class="col-md-4">
+              
+            <label for="title">Tag Name</label>
+  
+            <input type="text" class="form-control" id="title"
+                    [(ngModel)]="search.name" name="title"
+                    #title="ngModel"> 
+
+          </div>
+      </div>
+
+      <div class="row form-group">
+          <!-- Buttons -->
+          <div class="btn-group pull-right" role="group" aria-label="Search Tag">
+            <button 
+              type="button" 
+              class="btn btn btn-success" 
+              (click)="searchTags(0)">
+              Suchen
+            </button>                
+          </div>
+        </div>
+
+  </form>
+
+    <!-- Template for ListItem -->
+    <ng-template #listItem let-item="item">      
+        <div  class="list-group-item questionstatus"
+              [ngClass]="{'questionstatusok' : item.status === 1, 'questionstatusnok' :item.status === 0 }">
+          <h4>                  
+            #{{item.id}}
+    
+            {{item.name}}
+    
+            <span class="btn-group pull-right">
+    
+    
+              <button class="btn btn-default" type="button" (click)="deleteTag(item)">
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
+              
+              <button class="btn btn-default" type="button" (click)="goToTag(item)">
+                <span class="glyphicon glyphicon-pencil"></span>
+              </button>
+    
+            </span>
+          
+          </h4>           
+        </div>      
+    </ng-template> 
+      
+      <app-pager [itemTemplate]="listItem"
+                 [pagedResult]="pagedResult"
+                 (onSelectedPageChanged)="pageSelected($event)">            
+      </app-pager>
+</div>

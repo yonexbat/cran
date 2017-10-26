@@ -968,5 +968,28 @@ namespace cran.Services
                 Name = user.UserId,
             };
         }
+
+        public async Task<PagedResultDto<TagDto>> SearchForTags(SearchTags parameters)
+        {
+            IQueryable<Tag> queryBeforeSkipAndTake = _context.Tags.OrderBy(x => x.Name);
+            if(!string.IsNullOrWhiteSpace(parameters.Name))
+            {
+                queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x => x.Name.Contains(parameters.Name));
+            }
+
+            PagedResultDto<TagDto> resultDto = new PagedResultDto<TagDto>();
+
+            //Count und paging.
+            int count = await queryBeforeSkipAndTake.CountAsync();
+            int startindex = InitPagedResult(resultDto, count, parameters.Page);
+
+            //Daten 
+            IQueryable<Tag> query = queryBeforeSkipAndTake.Skip(startindex).Take(PageSize);
+            IList<Tag> tags = await query.ToListAsync();
+            resultDto.Data = tags.Select(x => new TagDto { Id = x.Id, Name = x.Name, Description = x.Description }).ToList();
+            
+            return resultDto;
+
+        }
     }
 }

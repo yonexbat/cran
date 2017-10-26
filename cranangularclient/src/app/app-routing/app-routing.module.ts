@@ -12,6 +12,8 @@ import {CourseInstanceListComponent} from '../course-instance-list/course-instan
 import {SearchQuestionsComponent} from '../search-questions/search-questions.component';
 import {ViewQuestionComponent} from '../view-question/view-question.component';
 import {FileUploadComponent} from '../file-upload/file-upload.component';
+import {ManageTagsComponent} from '../manage-tags/manage-tags.component';
+import {ManageTagComponent} from '../manage-tag/manage-tag.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent},
@@ -25,7 +27,9 @@ const routes: Routes = [
   { path: 'resultlist/:id', component:  ResultListComponent},
   { path: 'searchq', component: SearchQuestionsComponent},
   { path: 'viewquestion/:id', component: ViewQuestionComponent},
-  { path: 'fileupload', component: FileUploadComponent}
+  { path: 'fileupload', component: FileUploadComponent},
+  { path: 'managetags', component: ManageTagsComponent},
+  { path: 'managetag/:id', component: ManageTagComponent},
 ];
 
 @NgModule({

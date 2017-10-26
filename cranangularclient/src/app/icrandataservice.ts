@@ -19,6 +19,7 @@ import {GetComments} from './model/getcomments';
 import {Votes} from './model/votes';
 import {Image} from './model/image';
 import {UserInfo} from './model/userinfo';
+import {SearchTags} from './model/searchtags';
 
 export interface ICranDataService {
   getCourses(): Promise<Courses>;
@@ -27,6 +28,7 @@ export interface ICranDataService {
   getQuestionToAsk(id: number): Promise<QuestionToAsk>;
   updateQuestion(question: Question): Promise<any>;
   findTags(name: string): Promise<Tag[]>;
+  searchForTags(parameters: SearchTags): Promise<PagedResult<Tag>>;
   startCourse(courseId: number): Promise<CourseInstance>;
   answerQuestionAndGetSolution(answer: QuestionAnswer): Promise<Question>;
   answerQuestionAndGetNextQuestion(answer: QuestionAnswer): Promise<CourseInstance>;

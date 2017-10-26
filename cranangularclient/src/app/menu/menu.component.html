@@ -48,7 +48,23 @@
                 <a [routerLink]="['/questionlist']">Meine Fragen</a>
               </li>
             </ul>
-          </li>         
+          </li>  
+          
+          <li class="dropdown" *ngIf="isAdmin">
+            <a href="#" 
+              class="dropdown-toggle" 
+              data-toggle="dropdown" 
+              role="button" 
+              aria-haspopup="true" 
+              aria-expanded="false">
+              Admin <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li  routerLinkActive="active" *ngIf="isAdmin">
+                <a [routerLink]="['/managetags']">Tags</a>
+              </li>            
+            </ul>
+          </li>
 
           <li>
             <a href="/Account/DoLogout">Log out</a>

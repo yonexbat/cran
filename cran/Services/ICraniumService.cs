@@ -42,6 +42,8 @@ namespace cran.Services
 
         Task<PagedResultDto<QuestionListEntryDto>> SearchForQuestionsAsync(SearchQParametersDto parameters);
 
+        Task<PagedResultDto<TagDto>> SearchForTags(SearchTags parameters);
+
         Task<PagedResultDto<CommentDto>> GetCommentssAsync(GetCommentsDto parameters);
 
         Task<int> AddCommentAsync(CommentDto vm);

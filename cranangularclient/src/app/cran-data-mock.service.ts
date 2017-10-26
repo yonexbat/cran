@@ -24,10 +24,35 @@ import {GetComments} from './model/getcomments';
 import {Votes} from './model/votes';
 import {Image} from './model/image';
 import {UserInfo} from './model/userinfo';
+import {SearchTags} from './model/searchtags';
 
 
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
+
+  searchForTags(parameters: SearchTags): Promise<PagedResult<Tag>> {
+    const tags: Tag[] = [
+      {id: 1, description: 'Desc tag 1', name: 'Tag1'},
+      {id: 2, description: 'Desc tag 2', name: 'Tag2'},
+      {id: 3, description: 'Desc tag 3', name: 'Tag3'},
+      {id: 4, description: 'Desc tag 4', name: 'Tag4'},
+      {id: 5, description: 'Desc tag 5', name: 'Tag5'}
+    ];
+
+    const pagedResult = new PagedResult<Tag>();
+    pagedResult.data = tags;
+    pagedResult.currentPage = 0;
+    pagedResult.count = tags.length;
+
+    const promiseResult = new Promise<PagedResult<Tag>>((resolve, reject) => {
+      setTimeout(function() {
+        resolve(pagedResult);
+      }, 1000);
+    });
+    return promiseResult;
+  }
+
+
 
   getUserInfo(): Promise<UserInfo> {
     const promiseResult = new Promise<UserInfo>((resolve, reject) => {

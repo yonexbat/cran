@@ -24,12 +24,23 @@ import {GetComments} from './model/getcomments';
 import {Votes} from './model/votes';
 import {Image} from './model/image';
 import {UserInfo} from './model/userinfo';
+import {SearchTags} from './model/searchtags';
 
 @Injectable()
 export class CranDataService implements ICranDataService {
 
   constructor(private http: Http) {
 
+  }
+
+  searchForTags(parameters: SearchTags): Promise<PagedResult<Tag>> {
+    return this.http.post('/api/Data/SearchForTags', parameters)
+    .toPromise()
+    .then(  response => {
+      const result = response.json() as PagedResult<Tag>;
+      return result;
+    })
+    .catch(this.handleError);
   }
 
   getUserInfo(): Promise<UserInfo> {

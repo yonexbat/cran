@@ -35,6 +35,8 @@ import { VoteComponent } from './vote/vote.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { ImagelistComponent } from './imagelist/imagelist.component';
 import { UserInfoComponent } from './user-info/user-info.component';
+import { ManageTagsComponent } from './manage-tags/manage-tags.component';
+import { ManageTagComponent } from './manage-tag/manage-tag.component';
 
 function isDevelopment() {
   return window.location && window.location.port && window.location.port === '4200';
@@ -71,6 +73,8 @@ if (isDevelopment()) {
     FileUploadComponent,
     ImagelistComponent,
     UserInfoComponent,
+    ManageTagsComponent,
+    ManageTagComponent,
   ],
   imports: [
     BrowserModule,

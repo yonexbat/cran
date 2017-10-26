@@ -130,6 +130,13 @@ namespace cran.Controllers
             return await _craninumService.SearchForQuestionsAsync(parameters);
         }
 
+        [HttpPost("[action]")]
+        [ValidateModel]
+        public async Task<PagedResultDto<TagDto>> SearchForTags([FromBody]  SearchTags parameters)
+        {
+            return await _craninumService.SearchForTags(parameters);
+        }
+
         [HttpGet("[action]")]
         public IList<string> GetRolesOfUser()
         {
