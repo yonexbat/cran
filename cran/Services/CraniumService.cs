@@ -991,5 +991,38 @@ namespace cran.Services
             return resultDto;
 
         }
+
+        public async Task<TagDto> GetTagAsync(int id)
+        {
+            Tag tag = await _context.FindAsync<Tag>(id);
+            return new TagDto
+            {
+                Id = tag.Id,
+                Description = tag.Description,
+                Name = tag.Name,
+            };
+        }
+
+        public async Task UpdateTagAsync(TagDto vm)
+        {
+            Tag tag = await _context.FindAsync<Tag>(vm.Id);
+            tag.Name = vm.Name;
+            tag.Description = vm.Description;
+            await SaveChangesAsync();
+        }
+
+        public async Task<InsertActionDto> InsertTagAsync(TagDto vm)
+        {
+            Tag tag = new Tag();
+            tag.Name = vm.Name;
+            tag.Description = vm.Description;
+            _context.Tags.Add(tag);
+            await SaveChangesAsync();
+            return new InsertActionDto
+            {
+                NewId = tag.Id,
+                Status = "Ok",
+            };
+        }
     }
 }

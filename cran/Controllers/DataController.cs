@@ -58,6 +58,13 @@ namespace cran.Controllers
         }
 
         [HttpGet("[action]/{id}")]
+        public async Task<TagDto> GetTag(int id)
+        {
+            return await _craninumService.GetTagAsync(id);
+        }
+
+
+        [HttpGet("[action]/{id}")]
         public async Task<QuestionToAskDto> GetQuestionToAsk(int id)
         {
             return await _craninumService.GetQuestionToAskAsync(id);
@@ -87,6 +94,14 @@ namespace cran.Controllers
 
         [HttpPost("[action]")]
         [ValidateModel]
+        public async Task<InsertActionDto> InsertTag([FromBody] TagDto vm)
+        {
+            return await _craninumService.InsertTagAsync(vm);
+        }
+
+
+        [HttpPost("[action]")]
+        [ValidateModel]
         public async Task<CourseInstanceDto> AnswerQuestionAndGetNextQuestion([FromBody] QuestionAnswerDto vm)
         {
             return await _craninumService.AnswerQuestionAndGetNextQuestionAsync(vm);
@@ -104,6 +119,14 @@ namespace cran.Controllers
         {
             await _craninumService.UpdateQuestionAsync(vm);
         }
+
+        [HttpPost("[action]")]
+        [ValidateModel]
+        public async Task UpdateTag([FromBody] TagDto vm)
+        {
+            await _craninumService.UpdateTagAsync(vm);
+        }
+
 
         [HttpGet("[action]/{id}")]
         public async Task<ResultDto> GetCourseResult(int id)

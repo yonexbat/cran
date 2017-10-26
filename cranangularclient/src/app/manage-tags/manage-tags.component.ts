@@ -37,6 +37,10 @@ export class ManageTagsComponent implements OnInit {
     this.search.page = +params['pageNumber'];
     this.search.name = params['name'];
 
+    if (isNaN(this.search.page)) {
+      this.search.page = 0;
+    }
+
     try {
       this.notificationService.emitLoading();
       this.pagedResult = await this.cranDataServiceService.searchForTags(this.search);

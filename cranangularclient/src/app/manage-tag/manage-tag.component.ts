@@ -5,6 +5,7 @@ import {Tag} from '../model/tag';
 import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
+import {StatusMessageComponent} from '../status-message/status-message.component';
 
 
 @Component({
@@ -18,6 +19,8 @@ export class ManageTagComponent implements OnInit {
   public headingText: string;
   public actionInProgress = false;
   public buttonText: string;
+
+  @ViewChild('statusMessage') statusMessage: StatusMessageComponent;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
   private router: Router,
@@ -62,6 +65,7 @@ export class ManageTagComponent implements OnInit {
         if (this.tag && this.tag.id > 0) {
           await this.cranDataService.updateTag(this.tag);
           this.actionInProgress = false;
+          this.statusMessage.showSaveSuccess();
         } else { // crate new question
           const tagId = await this.cranDataService.insertTag(this.tag);
           this.actionInProgress = false;
