@@ -1,3 +1,58 @@
-<p>
-  manage-tag works!
-</p>
+<div class="container">
+  
+    
+    <h1>{{headingText}}</h1>    
+    <form  #tagForm="ngForm">
+           
+        <div class="row form-group">
+            
+                  <!-- Name -->
+                  <div class="col-md-6">
+                      
+                    <label for="title">Name</label>
+            
+                    <input type="text" class="form-control" id="name"
+                            required
+                            [(ngModel)]="tag.name" name="name"
+                            #name="ngModel">
+            
+                    <div [hidden]="name.valid || name.pristine"
+                          class="alert alert-danger">
+                        Name ist ein Mussfeld
+                    </div>
+                  </div>
+
+                  <!-- Description -->     
+                  <div class="col-md-6">
+                      
+                    <label for="title">Beschreibung</label>
+            
+                    <input type="text" class="form-control" id="description"
+                            required
+                            [(ngModel)]="tag.description" name="description"
+                            #description="ngModel">
+            
+                    <div [hidden]="description.valid || description.pristine"
+                          class="alert alert-danger">
+                        Beschreibung ist ein Mussfeld
+                    </div>
+                  </div>                       
+            
+        </div>
+
+        <!-- Buttons -->
+        <div class="btn-group pull-right" role="group" aria-label="Basic example">                  
+        
+              <!-- Speichern -->
+              <button 
+                  type="button" 
+                  class="btn btn btn-success" 
+                  (click)="save()" 
+                  [disabled]="!tagForm.form.valid || actionInProgress">
+                {{buttonText}}
+              </button> 
+            </div>    
+    
+    </form>    
+</div>
+    

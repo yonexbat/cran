@@ -28,6 +28,9 @@ export interface ICranDataService {
   getQuestionToAsk(id: number): Promise<QuestionToAsk>;
   updateQuestion(question: Question): Promise<any>;
   findTags(name: string): Promise<Tag[]>;
+  getTag(id: number): Promise<Tag>;
+  insertTag(tag: Tag): Promise<number>;
+  updateTag(tag: Tag): Promise<any>;
   searchForTags(parameters: SearchTags): Promise<PagedResult<Tag>>;
   startCourse(courseId: number): Promise<CourseInstance>;
   answerQuestionAndGetSolution(answer: QuestionAnswer): Promise<Question>;

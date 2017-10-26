@@ -28,6 +28,15 @@ import {SearchTags} from './model/searchtags';
 
 @Injectable()
 export class CranDataService implements ICranDataService {
+  getTag(id: number): Promise<Tag> {
+    throw new Error('Method not implemented.');
+  }
+  insertTag(tag: Tag): Promise<number> {
+    throw new Error('Method not implemented.');
+  }
+  updateTag(tag: Tag): Promise<any> {
+    throw new Error('Method not implemented.');
+  }
 
   constructor(private http: Http) {
 

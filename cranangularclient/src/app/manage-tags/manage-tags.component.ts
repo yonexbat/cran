@@ -57,7 +57,12 @@ export class ManageTagsComponent implements OnInit {
     this.router.navigate(['/managetags'], navigationExtras);
   }
 
+  public pageSelected(pageNumber: number) {
+    this.searchTags(pageNumber);
+  }
+
   private goToTag(tag: Tag) {
+    this.router.navigate(['/managetag', tag.id]);
   }
 
   private async deleteTag(tag: Tag): Promise<any> {
