@@ -52,4 +52,9 @@ export class CourseListComponent implements OnInit {
     }
   }
 
+  public async editCourse(course: Course): Promise<void> {
+
+    this.router.navigate(['/managecourse', course.id]);
+  }
+
 }

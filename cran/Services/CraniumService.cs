@@ -72,6 +72,7 @@ namespace cran.Services
                 Id = course.Id,
                 Title = course.Title,
                 Description = course.Description,
+                IsEditable = _currentPrincipal.IsInRole(Roles.Admin),
             };
 
             foreach (RelCourseTag relTag in course.RelTags)
@@ -79,6 +80,7 @@ namespace cran.Services
                 Tag tag = relTag.Tag;
                 TagDto tagVm = new TagDto
                 {
+                    Id = tag.Id,
                     Description = tag.Description,
                     Name = tag.Name,
                 };
@@ -307,6 +309,13 @@ namespace cran.Services
                 Course entityDestination = (Course)entity;
                 entityDestination.Title = dtoSource.Title;
                 entityDestination.Description = dtoSource.Description;                
+            }
+            else if (dto is RelCourseTagDto && entity is RelCourseTag)
+            {
+                RelCourseTagDto dtoSource = (RelCourseTagDto)dto;
+                RelCourseTag entityDestination = (RelCourseTag)entity;
+                entityDestination.IdCourse = dtoSource.IdCourse;
+                entityDestination.IdTag = dtoSource.IdTag;
             }
             else
             {

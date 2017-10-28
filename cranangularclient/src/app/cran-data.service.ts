@@ -34,15 +34,29 @@ export class CranDataService implements ICranDataService {
   }
 
   getCourse(id: number): Promise<Course> {
-    throw new Error('Method not implemented.');
+    return this.http.get('/api/Data/GetCourse/' + id)
+    .toPromise()
+    .then(  response => {
+      const result = response.json() as Course;
+      return result;
+    })
+    .catch(this.handleError);
   }
 
   insertCourse(course: Course): Promise<number> {
-    throw new Error('Method not implemented.');
+    return this.http.post('/api/Data/InsertCourse', course)
+    .toPromise()
+    .then(  data => {
+      const result = data.json();
+      return result.newId;
+    })
+    .catch(this.handleError);
   }
 
   updateCourse(course: Course): Promise<any> {
-    throw new Error('Method not implemented.');
+    return this.http.post('/api/Data/UpdateCourse', course)
+    .toPromise()
+    .catch(this.handleError);
   }
 
   getTag(id: number): Promise<Tag> {

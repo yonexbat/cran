@@ -6,6 +6,9 @@
         {{item.title}}
 
         <span class="btn-group pull-right">
+            <button class="btn btn-default" type="button" (click)="editCourse(item)" *ngIf="item.isEditable">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </button>
             <button class="btn btn-default" type="button" (click)="startCourse(item)">
                 <span class="glyphicon glyphicon-play"></span>
             </button>
@@ -13,8 +16,8 @@
 
       </h4>
       <app-tags [tagList]="item.tags"></app-tags>   
-                  
-      <p>{{item.description}}</p>
+        
+      <div [innerHtml] = "item.description | safeHtml"></div> 
 
     </div>
     
