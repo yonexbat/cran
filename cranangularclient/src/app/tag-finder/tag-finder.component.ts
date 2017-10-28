@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Inject } from '@angular/core';
+import { Component, OnInit, Input, Output, Inject, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
@@ -33,6 +33,12 @@ export class TagFinderComponent implements OnInit {
 
   @Input() public title = 'Tags';
 
+  @Output() public tagSelected = new EventEmitter<Tag>();
+
+  @Output() public tagRemoved = new EventEmitter<Tag>();
+
+  @Output() public tagSelectionChanged = new EventEmitter<void>();
+
   private searchText = '';
 
   ngOnInit() {
@@ -58,11 +64,15 @@ export class TagFinderComponent implements OnInit {
     this.tagsArray.push(tag);
     this.searchText = '';
     this.searchTerms.next('');
+    this.tagSelected.emit(tag);
+    this.tagSelectionChanged.emit();
   }
 
   public removeTag(tag: Tag) {
     const index = this.tagsArray.indexOf(tag);
     this.tagsArray.splice(index, 1);
+    this.tagRemoved.emit(tag);
+    this.tagSelectionChanged.emit();
   }
 
 }

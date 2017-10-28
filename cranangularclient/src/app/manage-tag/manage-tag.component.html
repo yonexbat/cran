@@ -20,25 +20,27 @@
                           class="alert alert-danger">
                         Name ist ein Mussfeld
                     </div>
-                  </div>
-
-                  <!-- Description -->     
-                  <div class="col-md-6">
-                      
-                    <label for="title">Beschreibung</label>
-            
-                    <input type="text" class="form-control" id="description"
-                            required
-                            [(ngModel)]="tag.description" name="description"
-                            #description="ngModel">
-            
-                    <div [hidden]="description.valid || description.pristine"
-                          class="alert alert-danger">
-                        Beschreibung ist ein Mussfeld
-                    </div>
-                  </div>                       
+                  </div>                             
             
         </div>
+
+
+    <!-- Description  -->
+    <div class="row form-group">
+      
+      <div class="col-md-12">
+          
+        <label for="description">Beschreibung</label>        
+
+        <app-rich-text-box 
+          [elementId]="'description'"
+          [content]="tag.description"
+          [required]="true"
+          (htmlString)="tag.description = $event"></app-rich-text-box>
+
+      </div>
+    
+    </div>
 
         <!-- Statusmessage -->
         <app-status-message #statusMessage></app-status-message>

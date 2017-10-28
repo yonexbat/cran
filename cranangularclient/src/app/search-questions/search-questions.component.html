@@ -16,15 +16,19 @@
 
         <!-- And Tags -->
         <div class="col-md-4">
-            <app-tag-finder [tagsArray]="search.andTags" 
-                [title]="'Und Tags'">              
+            <app-tag-finder 
+                [tagsArray]="search.andTags" 
+                [title]="'Und Tags'"
+                (tagSelectionChanged) = "tagSelectionChanged()">              
             </app-tag-finder>
         </div>
 
         <!-- Or Tags -->
         <div class="col-md-4">
-          <app-tag-finder [tagsArray]="search.orTags"
-            [title]="'Oder Tags'">            
+          <app-tag-finder 
+            [tagsArray]="search.orTags"
+            [title]="'Oder Tags'"
+            (tagSelectionChanged) = "tagSelectionChanged()">            
           </app-tag-finder>
         </div>
 

@@ -89,6 +89,10 @@ export class SearchQuestionsComponent implements OnInit {
     }
   }
 
+  private tagSelectionChanged() {
+    this.searchQuestions(0);
+  }
+
   public async deleteQuestion(question: QuestionListEntry): Promise<void> {
     if (confirm('Frage löschen?')) {
       await this.cranDataServiceService.deleteQuestion(question.id);
