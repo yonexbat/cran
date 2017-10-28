@@ -30,6 +30,35 @@ import {SearchTags} from './model/searchtags';
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
 
+  getCourse(id: number): Promise<Course> {
+    const promiseResult = new Promise<Course>((resolve, reject) => {
+      setTimeout(function() {
+        const athing: Course = {id: id, title: 'CouseTitle' , description: 'desc', 
+          tags: [{id: 1, description: 'Desc', name: 'TagName'}] };
+        resolve(athing);
+      }, 1000);
+    });
+    return promiseResult;
+  }
+
+  insertCourse(course: Course): Promise<number> {
+    const promiseResult = new Promise<number>((resolve, reject) => {
+      setTimeout(function() {
+        resolve(1);
+      }, 1000);
+    });
+    return promiseResult;
+  }
+
+  updateCourse(course: Course): Promise<any> {
+    const promiseResult = new Promise<any>((resolve, reject) => {
+      setTimeout(function() {
+        resolve();
+      }, 1000);
+    });
+    return promiseResult;
+  }
+
   getTag(id: number): Promise<Tag> {
     const promiseResult = new Promise<Tag>((resolve, reject) => {
       setTimeout(function() {

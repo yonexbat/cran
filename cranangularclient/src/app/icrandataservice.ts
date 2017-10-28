@@ -23,6 +23,9 @@ import {SearchTags} from './model/searchtags';
 
 export interface ICranDataService {
   getCourses(): Promise<Courses>;
+  getCourse(id: number): Promise<Course>;
+  insertCourse(course: Course): Promise<number>;
+  updateCourse(course: Course): Promise<any>;
   insertQuestion(question: Question): Promise<number>;
   getQuestion(id: number): Promise<Question>;
   getQuestionToAsk(id: number): Promise<QuestionToAsk>;

@@ -62,8 +62,13 @@
             <ul class="dropdown-menu">
               <li  routerLinkActive="active" *ngIf="isAdmin">
                 <a [routerLink]="['/managetags']">Tags</a>
+              </li>    
+              <li  routerLinkActive="active" *ngIf="isAdmin">
                 <a [routerLink]="['/managetag/0']">Tag hinzufügen</a>
-              </li>            
+              </li>   
+              <li  routerLinkActive="active" *ngIf="isAdmin">
+                <a [routerLink]="['/managecourse/0']">Kurs hinzufügen</a>
+              </li>                          
             </ul>
           </li>
 

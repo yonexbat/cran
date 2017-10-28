@@ -22,6 +22,12 @@ namespace cran.Services
 
         Task<QuestionDto> GetQuestionAsync(int id);
 
+        Task<CourseDto> GetCourseAsync(int id);
+
+        Task<InsertActionDto> InsertCourseAsync(CourseDto vm);
+
+        Task UpdateCourseAsync(CourseDto vm);
+
         Task<TagDto> GetTagAsync(int id);
 
         Task UpdateTagAsync(TagDto vm);
