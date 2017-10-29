@@ -82,6 +82,7 @@ namespace cran
             services.AddScoped<ICraniumService, CraniumService>();
             services.AddScoped<ISecurityService, SecurityService>();
             services.AddScoped<IBinaryService, BinaryService>();
+            services.AddScoped<IQuestionService, QuestionService>();
 
             services.AddSingleton(_physicalProvider);
 

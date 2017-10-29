@@ -55,6 +55,20 @@ namespace cran.tests
             return testingObject;
         }
 
+        private TestingObject<QuestionService> GetTestingObjectQuestionService()
+        {
+            IConfiguration config = GetConfiguration();
+            ApplicationDbContext context = CreateDbContext(config);
+
+
+
+            var testingObject = new TestingObject<QuestionService>();
+            testingObject.AddDependency(context);
+            testingObject.AddDependency(new Mock<IDbLogService>(MockBehavior.Loose));
+            testingObject.AddDependency(GetPrincipalMock());
+            return testingObject;
+        }
+
         private IBinaryService GetBinaryService()
         {
             IConfiguration config = GetConfiguration();
@@ -122,7 +136,9 @@ namespace cran.tests
         public async Task TestAddImage()
         {
             var testignObject = GetTestingObject();
-            ICraniumService service = testignObject.GetResolvedTestingObject();
+            ICraniumService craniumService = testignObject.GetResolvedTestingObject();
+            IQuestionService questionService = GetTestingObjectQuestionService().GetResolvedTestingObject();
+
 
             //Add Q
             QuestionDto qdto = new QuestionDto()
@@ -130,7 +146,7 @@ namespace cran.tests
                 Title = "Bla",
                 Explanation = "bla",
             };
-            var  q = await service.InsertQuestionAsync(qdto);
+            var  q = await questionService.InsertQuestionAsync(qdto);
 
             //Add Binary
             IBinaryService  binaryService = GetBinaryService();
@@ -152,13 +168,13 @@ namespace cran.tests
                 Width = 64,
             };          
 
-            imageDto = await service.AddImageAsync(imageDto);
-            QuestionDto questionDto = await service.GetQuestionAsync(q.NewId);
+            imageDto = await questionService.AddImageAsync(imageDto);
+            QuestionDto questionDto = await questionService.GetQuestionAsync(q.NewId);
             questionDto.Images.Add(imageDto);
 
-            await  service.UpdateQuestionAsync(questionDto);
+            await questionService.UpdateQuestionAsync(questionDto);
 
-            questionDto = await service.GetQuestionAsync(q.NewId);
+            questionDto = await questionService.GetQuestionAsync(q.NewId);
 
             Assert.True(questionDto.Images.Count == 1);
 

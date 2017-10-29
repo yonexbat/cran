@@ -19,15 +19,69 @@ namespace cran.Controllers
         private readonly ICraniumService _craninumService;
         private readonly ISecurityService _securityService;
         private readonly IBinaryService _binaryService;
+        private readonly IQuestionService _questionService;
 
         public DataController(ICraniumService craniumService,
             ISecurityService securityService,
-            IBinaryService binaryService)
+            IBinaryService binaryService,
+            IQuestionService questionService)
         {
             _craninumService = craniumService;
             _securityService = securityService;
             _binaryService = binaryService;
+            _questionService = questionService;
         }
+
+        #region QuestionService
+
+        [HttpGet("[action]")]
+        public async Task<IList<QuestionListEntryDto>> GetMyQuestions()
+        {
+            return await _questionService.GetMyQuestionsAsync();
+        }
+
+        [HttpDelete("[action]/{id}")]
+        public async Task DeleteQuestion(int id)
+        {
+            await _questionService.DeleteQuestionAsync(id);
+        }
+
+
+        [HttpGet("[action]/{id}")]
+        public async Task<QuestionDto> GetQuestion(int id)
+        {
+            return await _questionService.GetQuestionAsync(id);
+        }
+
+        [HttpPost("[action]")]
+        [ValidateModel]
+        public async Task<InsertActionDto> InsertQuestion([FromBody] QuestionDto vm)
+        {
+            return await _questionService.InsertQuestionAsync(vm);
+        }
+
+        [HttpPost("[action]")]
+        [ValidateModel]
+        public async Task UpdateQuestion([FromBody] QuestionDto vm)
+        {
+            await _questionService.UpdateQuestionAsync(vm);
+        }
+
+        [HttpPost("[action]")]
+        [ValidateModel]
+        public async Task<PagedResultDto<QuestionListEntryDto>> SearchForQuestions([FromBody]  SearchQParametersDto parameters)
+        {
+            return await _questionService.SearchForQuestionsAsync(parameters);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<ImageDto> AddImage([FromBody] ImageDto image)
+        {
+            return await _questionService.AddImageAsync(image);
+        }
+
+        #endregion
+
 
 
         [HttpGet("[action]")]
@@ -36,26 +90,6 @@ namespace cran.Controllers
             return await _craninumService.GetCoursesAsync();
         }
 
-
-        [HttpGet("[action]")]
-        public async Task<IList<QuestionListEntryDto>> GetMyQuestions()
-        {
-            return await _craninumService.GetMyQuestionsAsync();
-        }
-
-
-        [HttpDelete("[action]/{id}")]
-        public async Task DeleteQuestion(int id)
-        {
-            await _craninumService.DeleteQuestionAsync(id);
-        }
-
-
-        [HttpGet("[action]/{id}")]
-        public async Task<QuestionDto> GetQuestion(int id)
-        {
-            return await _craninumService.GetQuestionAsync(id);
-        }
 
         [HttpGet("[action]/{id}")]
         public async Task<TagDto> GetTag(int id)
@@ -90,12 +124,7 @@ namespace cran.Controllers
         }
 
 
-        [HttpPost("[action]")]
-        [ValidateModel]
-        public async Task<InsertActionDto> InsertQuestion([FromBody] QuestionDto vm)
-        {
-            return await _craninumService.InsertQuestionAsync(vm);
-        }
+  
 
 
         [HttpPost("[action]")]
@@ -126,12 +155,6 @@ namespace cran.Controllers
             return await _craninumService.StartCourseAsync(vm.IdCourse);
         }
 
-        [HttpPost("[action]")]
-        [ValidateModel]
-        public async Task UpdateQuestion([FromBody] QuestionDto vm)
-        {
-            await _craninumService.UpdateQuestionAsync(vm);
-        }
 
         [HttpPost("[action]")]
         [ValidateModel]
@@ -164,13 +187,6 @@ namespace cran.Controllers
         public async Task DeleteCourseInstance(int id)
         {
             await _craninumService.DeleteCourseInstanceAsync(id);
-        }
-
-        [HttpPost("[action]")]
-        [ValidateModel]
-        public async Task<PagedResultDto<QuestionListEntryDto>> SearchForQuestions([FromBody]  SearchQParametersDto parameters)
-        {
-            return await _craninumService.SearchForQuestionsAsync(parameters);
         }
 
         [HttpPost("[action]")]
@@ -225,12 +241,6 @@ namespace cran.Controllers
             Stream stream = await _binaryService.GetBinaryAsync(id);
             var result = File(stream, fileInfo.ContentType, fileInfo.FileName);
             return result;
-        }
-
-        [HttpPost("[action]")]
-        public async Task<ImageDto> AddImage([FromBody] ImageDto image)
-        {
-            return await _craninumService.AddImageAsync(image);
         }
 
         [HttpGet("[action]")]

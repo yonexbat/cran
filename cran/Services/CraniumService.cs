@@ -17,7 +17,7 @@ namespace cran.Services
 
         private IDbLogService _dbLogService;
         private static Random random = new Random(98789);
-        private static int PageSize = 5;
+        protected static int PageSize = 5;
 
 
         public CraniumService(ApplicationDbContext context, IDbLogService dbLogService, IPrincipal principal) :
@@ -27,26 +27,7 @@ namespace cran.Services
             _dbLogService = dbLogService;
             _currentPrincipal = principal;
         }
-
-        public async Task<InsertActionDto> InsertQuestionAsync(QuestionDto questionDto)
-        {
-            await _dbLogService.LogMessageAsync("Adding question");
-
-            Question questionEntity = new Question();
-            CopyData(questionDto, questionEntity);
-            questionEntity.User = await GetCranUserAsync();
-            _context.Add(questionEntity);
-            await SaveChangesAsync();
-            questionDto.Id = questionEntity.Id;
-            await UpdateQuestionAsync(questionDto);
-
-
-            return new InsertActionDto
-            {
-                NewId = questionEntity.Id,
-                Status = "Ok",
-            };
-        }
+      
 
         public async Task<CoursesDto> GetCoursesAsync()
         {
@@ -157,80 +138,9 @@ namespace cran.Services
 
  
 
-        public async Task UpdateQuestionAsync(QuestionDto questionDto)
-        {
-            await CheckWriteAccessToQuestion(questionDto.Id);
 
-            //set the parent id
-            foreach(var optionDto in questionDto.Options)
-            {
-                optionDto.IdQuestion = questionDto.Id;
-            }
 
-            Question questionEntity = await _context.FindAsync<Question>(questionDto.Id);
-
-            //Options
-            IList<QuestionOption> questionOptionEntities = await _context.QuestionOptions.Where(x => x.IdQuestion == questionEntity.Id).ToListAsync();
-            UpdateRelation(questionDto.Options, questionOptionEntities);
-
-            //Tags
-            IList<RelQuestionTag> relTagEntities = await _context.RelQuestionTags
-                .Where(x => x.IdQuestion == questionEntity.Id).ToListAsync();
-            relTagEntities = relTagEntities.GroupBy(x => x.IdTag).Select(x => x.First()).ToList();
-            IDictionary<int, int> relIdByTagId = relTagEntities.ToDictionary(x => x.IdTag, x => x.Id);
-            IList<RelQuestionTagDto> relQuestionTagDtos = new List<RelQuestionTagDto>();
-            IList<TagDto> tagDtos =  questionDto.Tags.GroupBy(x => x.Id).Select(x => x.First()).ToList();
-
-            foreach(TagDto tagDto in tagDtos)
-            {
-                RelQuestionTagDto relQuestionTagDto = new RelQuestionTagDto();
-                relQuestionTagDto.IdTag = tagDto.Id;
-                relQuestionTagDto.IdQuestion = questionDto.Id;
-                if(relIdByTagId.ContainsKey(tagDto.Id))
-                {
-                    relQuestionTagDto.Id = relIdByTagId[tagDto.Id];                    
-                }
-               
-                relQuestionTagDtos.Add(relQuestionTagDto);
-            }
-           
-            UpdateRelation(relQuestionTagDtos, relTagEntities);
-
-            //Image Relation
-            IList<RelQuestionImage> relImages = await _context.RelQuestionImages.Where(x => x.IdQuestion == questionEntity.Id).ToListAsync();
-            IDictionary<int, int> relIdByImageId = relImages.ToDictionary(x => x.IdImage, x => x.Id);
-            IList<RelQuestionImageDto> relImagesDtos = new List<RelQuestionImageDto>();
-            IList<int> binaryIds = questionDto.Images.Select(x => x.IdBinary).ToList();
-            IList<Image> images = await _context.Images.Where(x => binaryIds.Contains(x.IdBinary)).ToListAsync();
-            IDictionary<int, Image> imageByBinaryId = images.ToDictionary(x => x.IdBinary, x => x);
-            foreach (ImageDto image in questionDto.Images)
-            {
-                RelQuestionImageDto relQuestionImageDto = new RelQuestionImageDto();
-                relQuestionImageDto.IdQuestion = questionDto.Id;
-                relQuestionImageDto.IdImage = imageByBinaryId[image.IdBinary].Id;                
-                if(relIdByImageId.ContainsKey(relQuestionImageDto.IdImage))
-                {
-                    relQuestionImageDto.Id = relIdByImageId[relQuestionImageDto.IdImage];                    
-                }                
-                relImagesDtos.Add(relQuestionImageDto);
-            }
-            UpdateRelation(relImagesDtos, relImages);
-
-            //Image Data           
-            foreach(ImageDto imageDto in questionDto.Images)
-            {
-                Image image = imageByBinaryId[imageDto.IdBinary];
-                CopyData(imageDto, image);
-            }
-            
-
-            CopyData(questionDto, questionEntity);
-           
-
-            await _context.SaveChangesCranAsync(_currentPrincipal); 
-        }
-
-        private void UpdateRelation<Tdto, Tentity>(IList<Tdto> dtos, IList<Tentity> entitties) 
+        protected void UpdateRelation<Tdto, Tentity>(IList<Tdto> dtos, IList<Tentity> entitties) 
             where Tdto: IDto 
             where Tentity : CranEntity, IIdentifiable, new()
         {
@@ -262,7 +172,7 @@ namespace cran.Services
             }
         }
 
-        private void CopyData(object dto, CranEntity entity)
+        protected void CopyData(object dto, CranEntity entity)
         {
             if(dto is QuestionOptionDto && entity is QuestionOption)
             {
@@ -564,50 +474,9 @@ namespace cran.Services
             await SaveChangesAsync();
         }
 
-        public async Task<IList<QuestionListEntryDto>> GetMyQuestionsAsync()
-        {
-            string userId = GetUserId();
-            IQueryable<Question> query = _context.Questions.Where(q => q.User.UserId == userId).OrderBy(x => x.Title);
-            var result =  await MaterializeQuestionList(query);          
-            return result;
-        }
+ 
 
-        private async Task<IList<QuestionListEntryDto>> MaterializeQuestionList(IQueryable<Question> query)
-        {
-            IList<QuestionListEntryDto> result = await query
-              .Select(q => new QuestionListEntryDto { Title = q.Title, Id = q.Id, Status = (int)q.Status })
-              .ToListAsync();
-
-            IQueryable<int> questionIds = query.Select(q => q.Id);
-
-            var relTags = await _context.RelQuestionTags.Where(rel => questionIds.Contains(rel.Question.Id))
-                .Select(rel => new { TagId = rel.Tag.Id, QuestionId = rel.Question.Id, TagName = rel.Tag.Name })
-                .ToListAsync();
-
-            foreach (var relTag in relTags)
-            {
-                var dto = result.Where(x => x.Id == relTag.QuestionId).Single();
-                dto.Tags.Add(new TagDto
-                {
-                    Id = relTag.TagId,
-                    Name = relTag.TagName,
-                });
-
-            }
-            return result;
-        }
-
-        private async Task CheckWriteAccessToQuestion(int idQuestion)
-        {
-            //Security Check
-            Question question = await _context.FindAsync<Question>(idQuestion);
-            bool hasWriteAccess = await HasWriteAccess(question.IdUser);
-
-            if (!hasWriteAccess)
-            {
-                throw new SecurityException("no access to this question");
-            }
-        }
+     
               
 
         private async Task CheckAccessToCourseInstance(int idCourseInstance)
@@ -624,7 +493,7 @@ namespace cran.Services
             }
         }
 
-        private async Task<bool> HasWriteAccess(int idUser)
+        protected async Task<bool> HasWriteAccess(int idUser)
         {
             CranUser cranUser = await _context.FindAsync<CranUser>(idUser);
 
@@ -635,55 +504,7 @@ namespace cran.Services
             }
             return false;
         }
-
-
-
-
-        public async Task DeleteQuestionAsync(int idQuestion)
-        {
-
-            await CheckWriteAccessToQuestion(idQuestion);
-
-            Question questionEntity =  await _context.FindAsync<Question>(idQuestion);                        
-
-            //Options
-            IList<QuestionOption> questionOptions = await _context.QuestionOptions.Where(x => x.Question.Id == questionEntity.Id).ToListAsync();
-            foreach (QuestionOption questionOptionEntity in questionOptions)
-            {                
-                _context.Remove(questionOptionEntity);
-
-                //CourseInstanceQuestionOption
-                IList<CourseInstanceQuestionOption> courseInstacesQuestionOption = await _context.CourseInstancesQuestionOption.Where(x => x.QuestionOption.Id == questionOptionEntity.Id).ToListAsync();
-                foreach(CourseInstanceQuestionOption ciqo in courseInstacesQuestionOption)
-                {
-                    _context.Remove(ciqo);
-                }
-            }
-
-            //Tags
-            IList<RelQuestionTag> relTags = await _context.RelQuestionTags.Where(x => x.Question.Id == questionEntity.Id).ToListAsync();
-            foreach(RelQuestionTag relTagEntity in relTags)
-            {
-                _context.Remove(relTagEntity);
-            }
-
-            //CourseInstance Question
-            IList<CourseInstanceQuestion> courseInstaceQuestions = await _context.CourseInstancesQuestion.Where(x => x.Question.Id == questionEntity.Id).ToListAsync();
-            foreach(CourseInstanceQuestion ciQ  in courseInstaceQuestions)
-            {
-                _context.Remove(ciQ);
-            }
-
-            //Images
-            IList<RelQuestionImage> relImages = await _context.RelQuestionImages.Where(x => x.Question.Id == questionEntity.Id).ToListAsync();
-            foreach(RelQuestionImage relImage in relImages)
-            {
-                _context.Remove(relImage);
-            }
-
-            _context.Remove(questionEntity);
-            await SaveChangesAsync();
-        }
+       
 
         public async Task<ResultDto> GetCourseResultAsync(int idCourseInstance)
         {
@@ -784,46 +605,6 @@ namespace cran.Services
 
         }
 
-        public async Task<PagedResultDto<QuestionListEntryDto>> SearchForQuestionsAsync(SearchQParametersDto parameters)
-        {
-            
-            
-            IQueryable<Question> queryBeforeSkipAndTake = _context.Questions.OrderBy(x => x.Title);
-            
-            if(!string.IsNullOrWhiteSpace(parameters.Title))
-            {
-                queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x => x.Title.Contains(parameters.Title));
-            }
-
-            if(parameters.AndTags.Any())
-            {
-                IList<int> tagids = parameters.AndTags.Select(x => x.Id).ToList();
-                foreach (int tagId in tagids)
-                {
-                    queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x => x.RelTags.Any(rel => rel.Tag.Id == tagId));
-                }
-            }
-
-            if(parameters.OrTags.Any())
-            {
-                IList<int> tagids = parameters.OrTags.Select(x => x.Id).ToList();
-                queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x => x.RelTags.Any(rel => tagids.Contains(rel.Tag.Id)));
-            }
-
-            
-            
-            PagedResultDto<QuestionListEntryDto> resultDto = new PagedResultDto<QuestionListEntryDto>();
-
-            //Count und paging.
-            int count = await queryBeforeSkipAndTake.CountAsync();
-            int startindex = InitPagedResult(resultDto, count, parameters.Page);
-            
-            //Daten 
-            IQueryable<Question> query = queryBeforeSkipAndTake.Skip(startindex).Take(PageSize);
-            resultDto.Data = await MaterializeQuestionList(query);
-
-            return resultDto;
-        }
 
         public async Task<PagedResultDto<CommentDto>> GetCommentssAsync(GetCommentsDto parameters)
         {
@@ -871,7 +652,7 @@ namespace cran.Services
             return resultDto;
         }
 
-        private int InitPagedResult(IPagedResult pagedResult, int count, int page)
+        protected int InitPagedResult(IPagedResult pagedResult, int count, int page)
         {
             pagedResult.Count = count;
             pagedResult.Pagesize = PageSize;
