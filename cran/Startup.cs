@@ -79,10 +79,14 @@ namespace cran
 
             services.AddScoped<SignInManager<ApplicationUser>, SignInManager<ApplicationUser>>();
             services.AddScoped<IDbLogService, DbLogService>();
-            services.AddScoped<ICraniumService, CraniumService>();
             services.AddScoped<ISecurityService, SecurityService>();
             services.AddScoped<IBinaryService, BinaryService>();
             services.AddScoped<IQuestionService, QuestionService>();
+            services.AddScoped<ITagService, TagService>();
+            services.AddScoped<ICourseService, CourseService>();
+            services.AddScoped<ICommentsService, CommentsService>();
+            services.AddScoped<IUserProfileService, UserProfileService>();
+            services.AddScoped<ICourseInstanceService, CourseInstanceService>();
 
             services.AddSingleton(_physicalProvider);
 

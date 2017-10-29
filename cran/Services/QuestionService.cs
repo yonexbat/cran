@@ -12,16 +12,21 @@ namespace cran.Services
 {
     public class QuestionService : CraniumService, IQuestionService
     {
-        private IDbLogService _dbLogService;       
 
+        private readonly ICommentsService _commentsService;
 
-        public QuestionService(ApplicationDbContext context, IDbLogService dbLogService, IPrincipal principal) :
+        public QuestionService(ApplicationDbContext context, 
+            IDbLogService dbLogService, 
+            IPrincipal principal,
+            ICommentsService commentsService) :
             base(context, dbLogService, principal)
         {
             _context = context;
-            _dbLogService = dbLogService;
             _currentPrincipal = principal;
+            _commentsService = commentsService;
         }
+
+
 
         public async Task<InsertActionDto> InsertQuestionAsync(QuestionDto questionDto)
         {
@@ -42,6 +47,55 @@ namespace cran.Services
                 Status = "Ok",
             };
         }
+
+        public async Task<QuestionDto> GetQuestionAsync(int id)
+        {
+            Question questionEntity = await _context.FindAsync<Question>(id);
+            QuestionDto questionVm = new QuestionDto
+            {
+                Id = questionEntity.Id,
+                Text = questionEntity.Text,
+                Title = questionEntity.Title,
+                Explanation = questionEntity.Explanation,
+                Status = (int)questionEntity.Status,
+            };
+            questionVm.IsEditable = await HasWriteAccess(questionEntity.IdUser);
+            questionVm.Votes = await _commentsService.GetVoteAsync(id);
+
+            questionVm.Options = await _context.QuestionOptions
+                .Where(x => x.IdQuestion == id)
+                .OrderBy(x => x.Id)
+                .Select(x => new QuestionOptionDto
+                {
+                    Id = x.Id,
+                    IsTrue = x.IsTrue,
+                    Text = x.Text,
+                }).ToListAsync();
+
+            questionVm.Tags = await _context.RelQuestionTags
+                .Where(x => x.IdQuestion == id)
+                .Select(x => new TagDto
+                {
+                    Id = x.Tag.Id,
+                    Name = x.Tag.Name,
+                    Description = x.Tag.Description,
+                }).ToListAsync();
+
+            questionVm.Images = await _context.RelQuestionImages
+                .Where(x => x.IdQuestion == id)
+                .Select(x => new ImageDto
+                {
+                    Id = x.Image.Id,
+                    IdBinary = x.Image.Binary.Id,
+                    Full = x.Image.Full,
+                    Height = x.Image.Height,
+                    Width = x.Image.Width,
+                }).ToListAsync();
+
+            return questionVm;
+        }
+
+     
 
         public async Task UpdateQuestionAsync(QuestionDto questionDto)
         {
@@ -114,6 +168,26 @@ namespace cran.Services
 
 
             await _context.SaveChangesCranAsync(_currentPrincipal);
+        }
+
+        public async Task<ImageDto> AddImageAsync(ImageDto imageDto)
+        {
+            Binary binary = await _context.FindAsync<Binary>(imageDto.IdBinary);
+
+            Image image = new Image
+            {
+                Binary = binary,
+                IdBinary = imageDto.IdBinary,
+                Full = imageDto.Full,
+                Height = imageDto.Height,
+                Width = imageDto.Width,
+            };
+            _context.Images.Add(image);
+
+            await SaveChangesAsync();
+
+            imageDto.Id = image.Id;
+            return imageDto;
         }
 
 

@@ -16,20 +16,32 @@ namespace cran.Controllers
     public class DataController : Controller
     {
 
-        private readonly ICraniumService _craninumService;
         private readonly ISecurityService _securityService;
         private readonly IBinaryService _binaryService;
         private readonly IQuestionService _questionService;
+        private readonly ITagService _tagService;
+        private readonly ICourseService _courseService;
+        private readonly ICommentsService _commentsService;
+        private readonly IUserProfileService _userProfileService;
+        private readonly ICourseInstanceService _courseInstanceService;
 
-        public DataController(ICraniumService craniumService,
-            ISecurityService securityService,
+        public DataController(ISecurityService securityService,
             IBinaryService binaryService,
-            IQuestionService questionService)
+            IQuestionService questionService,
+            ITagService tagService,
+            ICourseService courseService,
+            ICommentsService commentsService,
+            IUserProfileService userProfileService,
+            ICourseInstanceService courseInstanceService)
         {
-            _craninumService = craniumService;
             _securityService = securityService;
             _binaryService = binaryService;
             _questionService = questionService;
+            _tagService = tagService;
+            _courseService = courseService;
+            _commentsService = commentsService;
+            _userProfileService = userProfileService;
+            _courseInstanceService = courseInstanceService;
         }
 
         #region QuestionService
@@ -82,151 +94,113 @@ namespace cran.Controllers
 
         #endregion
 
-
-
-        [HttpGet("[action]")]
-        public async Task<CoursesDto> GetCourses()
-        {
-            return await _craninumService.GetCoursesAsync();
-        }
-
+        #region TagService
 
         [HttpGet("[action]/{id}")]
         public async Task<TagDto> GetTag(int id)
         {
-            return await _craninumService.GetTagAsync(id);
+            return await _tagService.GetTagAsync(id);
         }
-
-        [HttpGet("[action]/{id}")]
-        public async Task<CourseDto> GetCourse(int id)
-        {
-            return await _craninumService.GetCourseAsync(id);
-        }
-
-
-        [HttpGet("[action]/{id}")]
-        public async Task<QuestionToAskDto> GetQuestionToAsk(int id)
-        {
-            return await _craninumService.GetQuestionToAskAsync(id);
-        }
-
-        [HttpPost("[action]")]
-        public async Task<QuestionDto> AnswerQuestionAndGetSolution([FromBody] QuestionAnswerDto vm)
-        {
-            return await _craninumService.AnswerQuestionAndGetSolutionAsync(vm);
-        }
-
 
         [HttpGet("[action]")]
         public async Task<IList<TagDto>> FindTags(string searchTerm)
         {
-            return await _craninumService.FindTagsAsync(searchTerm);
+            return await _tagService.FindTagsAsync(searchTerm);
         }
-
-
-  
-
 
         [HttpPost("[action]")]
         [ValidateModel]
         public async Task<InsertActionDto> InsertTag([FromBody] TagDto vm)
         {
-            return await _craninumService.InsertTagAsync(vm);
+            return await _tagService.InsertTagAsync(vm);
         }
-
-        [HttpPost("[action]")]
-        [ValidateModel]
-        public async Task<InsertActionDto> InsertCourse([FromBody] CourseDto vm)
-        {
-            return await _craninumService.InsertCourseAsync(vm);
-        }
-
-
-        [HttpPost("[action]")]
-        [ValidateModel]
-        public async Task<CourseInstanceDto> AnswerQuestionAndGetNextQuestion([FromBody] QuestionAnswerDto vm)
-        {
-            return await _craninumService.AnswerQuestionAndGetNextQuestionAsync(vm);
-        }
-
-        [HttpPost("[action]")]
-        public async Task<CourseInstanceDto> StartCourse([FromBody] StartCourseViewModel vm)
-        {
-            return await _craninumService.StartCourseAsync(vm.IdCourse);
-        }
-
 
         [HttpPost("[action]")]
         [ValidateModel]
         public async Task UpdateTag([FromBody] TagDto vm)
         {
-            await _craninumService.UpdateTagAsync(vm);
-        }
-
-        [HttpPost("[action]")]
-        [ValidateModel]
-        public async Task UpdateCourse([FromBody] CourseDto vm)
-        {
-            await _craninumService.UpdateCourseAsync(vm);
-        }
-
-
-        [HttpGet("[action]/{id}")]
-        public async Task<ResultDto> GetCourseResult(int id)
-        {
-            return await _craninumService.GetCourseResultAsync(id);
-        }
-
-        [HttpGet("[action]")]
-        public async Task<IList<CourseInstanceListEntryDto>> GetMyCourseInstances()
-        {
-            return await _craninumService.GetMyCourseInstancesAsync();
-        }
-
-        [HttpDelete("[action]/{id}")]
-        public async Task DeleteCourseInstance(int id)
-        {
-            await _craninumService.DeleteCourseInstanceAsync(id);
+            await _tagService.UpdateTagAsync(vm);
         }
 
         [HttpPost("[action]")]
         [ValidateModel]
         public async Task<PagedResultDto<TagDto>> SearchForTags([FromBody]  SearchTags parameters)
         {
-            return await _craninumService.SearchForTags(parameters);
+            return await _tagService.SearchForTags(parameters);
         }
 
+        #endregion
+
+        #region CourseService
+
         [HttpGet("[action]")]
-        public IList<string> GetRolesOfUser()
+        public async Task<CoursesDto> GetCourses()
         {
-            return _securityService.GetRolesOfUser();
+            return await _courseService.GetCoursesAsync();
         }
+
+        [HttpGet("[action]/{id}")]
+        public async Task<CourseDto> GetCourse(int id)
+        {
+            return await _courseService.GetCourseAsync(id);
+        }
+
+        [HttpPost("[action]")]
+        [ValidateModel]
+        public async Task<InsertActionDto> InsertCourse([FromBody] CourseDto vm)
+        {
+            return await _courseService.InsertCourseAsync(vm);
+        }
+
+        [HttpPost("[action]")]
+        [ValidateModel]
+        public async Task UpdateCourse([FromBody] CourseDto vm)
+        {
+            await _courseService.UpdateCourseAsync(vm);
+        }
+
+        #endregion
+
+        #region CommentsService
 
         [HttpPost("[action]")]
         [ValidateModel]
         public async Task<int> AddComment([FromBody] CommentDto vm)
         {
-            return await _craninumService.AddCommentAsync(vm);
+            return await _commentsService.AddCommentAsync(vm);
         }
 
         [HttpPost("[action]")]
         [ValidateModel]
         public async Task<PagedResultDto<CommentDto>> GetComments([FromBody]  GetCommentsDto parameters)
         {
-            return await _craninumService.GetCommentssAsync(parameters);
+            return await _commentsService.GetCommentssAsync(parameters);
         }
 
         [HttpDelete("[action]/{id}")]
         public async Task DeleteComment(int id)
         {
-            await _craninumService.DeleteCommentAsync(id);
+            await _commentsService.DeleteCommentAsync(id);
         }
 
         [HttpPost("[action]")]
         public async Task<VotesDto> Vote([FromBody] VotesDto vote)
         {
-            return await _craninumService.VoteAsync(vote);
+            return await _commentsService.VoteAsync(vote);
         }
+        #endregion
+
+        #region UserProfileService
+
+        [HttpGet("[action]")]
+        public async Task<UserInfoDto> GetUserInfo()
+        {
+            return await _userProfileService.GetUserInfoAsync();
+        }
+
+        #endregion
+
+        #region Binaryservice
 
         [HttpPost("[action]")]
         public async Task<IList<BinaryDto>> UploadFiles(List<IFormFile> files)
@@ -243,11 +217,66 @@ namespace cran.Controllers
             return result;
         }
 
-        [HttpGet("[action]")]
-        public async Task<UserInfoDto> GetUserInfo()
+        #endregion
+
+        #region CourseInstanceService
+
+        [HttpGet("[action]/{id}")]
+        public async Task<QuestionToAskDto> GetQuestionToAsk(int id)
         {
-            return await _craninumService.GetUserInfoAsync();
+            return await _courseInstanceService.GetQuestionToAskAsync(id);
         }
+
+        [HttpPost("[action]")]
+        public async Task<QuestionDto> AnswerQuestionAndGetSolution([FromBody] QuestionAnswerDto vm)
+        {
+            return await _courseInstanceService.AnswerQuestionAndGetSolutionAsync(vm);
+        }
+
+        [HttpPost("[action]")]
+        [ValidateModel]
+        public async Task<CourseInstanceDto> AnswerQuestionAndGetNextQuestion([FromBody] QuestionAnswerDto vm)
+        {
+            return await _courseInstanceService.AnswerQuestionAndGetNextQuestionAsync(vm);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<CourseInstanceDto> StartCourse([FromBody] StartCourseViewModel vm)
+        {
+            return await _courseInstanceService.StartCourseAsync(vm.IdCourse);
+        }
+
+        [HttpGet("[action]/{id}")]
+        public async Task<ResultDto> GetCourseResult(int id)
+        {
+            return await _courseInstanceService.GetCourseResultAsync(id);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IList<CourseInstanceListEntryDto>> GetMyCourseInstances()
+        {
+            return await _courseInstanceService.GetMyCourseInstancesAsync();
+        }
+
+        [HttpDelete("[action]/{id}")]
+        public async Task DeleteCourseInstance(int id)
+        {
+            await _courseInstanceService.DeleteCourseInstanceAsync(id);
+        }
+
+        #endregion
+
+        #region SecurityService
+
+        [HttpGet("[action]")]
+        public IList<string> GetRolesOfUser()
+        {
+            return _securityService.GetRolesOfUser();
+        }
+        
+        #endregion
+
+
 
     }
 }
