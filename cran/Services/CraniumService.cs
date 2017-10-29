@@ -104,6 +104,7 @@ namespace cran.Services
                 CourseDto dtoSource = (CourseDto)dto;
                 Course entityDestination = (Course)entity;
                 entityDestination.Title = dtoSource.Title;
+                entityDestination.NumQuestionsToAsk = dtoSource.NumQuestionsToAsk;
                 entityDestination.Description = dtoSource.Description;                
             }
             else if (dto is RelCourseTagDto && entity is RelCourseTag)

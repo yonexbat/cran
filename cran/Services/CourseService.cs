@@ -52,6 +52,7 @@ namespace cran.Services
                 Id = course.Id,
                 Title = course.Title,
                 Description = course.Description,
+                NumQuestionsToAsk = course.NumQuestionsToAsk,
                 IsEditable = _currentPrincipal.IsInRole(Roles.Admin),
             };
 

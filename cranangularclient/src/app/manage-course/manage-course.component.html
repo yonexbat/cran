@@ -7,7 +7,7 @@
         <div class="row form-group">
             
                   <!-- Title -->
-                  <div class="col-md-9">
+                  <div class="col-md-6">
                       
                     <label for="title">Titel</label>
             
@@ -22,29 +22,55 @@
                     </div>
                   </div>   
                   
-                  <!-- Tags -->
-                  <div class="col-md-3">
-                    <app-tag-finder [tagsArray]="course.tags"></app-tag-finder>
-                  </div>
+                 <!-- Anzahl Fragen -->
+                 <div class="col-md-6">
+
+                    <label for="title">Anzahl Fragen</label>
+                    
+                    <input type="number" 
+                            class="form-control" 
+                            id="numQuestionsToAsk"
+                            min="1"
+                            required
+                            [(ngModel)]="course.numQuestionsToAsk" 
+                            name="numQuestionsToAsk"
+
+                            #numQuestionsToAsk="ngModel">
+            
+                    <div [hidden]="numQuestionsToAsk.valid || numQuestionsToAsk.pristine"
+                          class="alert alert-danger">
+                        Anzahl Fragen ist ein Mussfeld
+                    </div>
+
+                 </div>
             
         </div>
 
-    <!-- Description -->
-    <div class="row form-group">
-      
-      <div class="col-md-12">
+        <div  class="row form-group">
+
+             <!-- Tags -->
+             <div class="col-md-3">
+              <app-tag-finder [tagsArray]="course.tags"></app-tag-finder>
+            </div>
+
+        </div>
+
+        <!-- Description -->
+        <div class="row form-group">
           
-        <label for="questiontext">Beschreibung</label>        
+          <div class="col-md-12">
+              
+            <label for="questiontext">Beschreibung</label>        
 
-        <app-rich-text-box 
-          [elementId]="'description'"
-          [content]="course.description"
-          [required]="true"
-          (htmlString)="course.description = $event"></app-rich-text-box>
+            <app-rich-text-box 
+              [elementId]="'description'"
+              [content]="course.description"
+              [required]="true"
+              (htmlString)="course.description = $event"></app-rich-text-box>
 
-      </div>
-    
-    </div>
+          </div>
+        
+        </div>
 
         <!-- Statusmessage -->
         <app-status-message #statusMessage></app-status-message>

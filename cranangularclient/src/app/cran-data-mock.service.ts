@@ -33,7 +33,7 @@ export class CranDataServiceMock implements ICranDataService {
   getCourse(id: number): Promise<Course> {
     const promiseResult = new Promise<Course>((resolve, reject) => {
       setTimeout(function() {
-        const athing: Course = {id: id, title: 'CouseTitle' , description: 'desc', 
+        const athing: Course = {id: id, title: 'CouseTitle' , description: 'desc', numQuestionsToAsk: 5,
           tags: [{id: 1, description: 'Desc', name: 'TagName'}] };
         resolve(athing);
       }, 1000);
@@ -421,13 +421,15 @@ export class CranDataServiceMock implements ICranDataService {
     const courses: Courses = {
       courses: [
         {id: 1, description: 'Test Kurs bla', title: 'Kursus',
+          numQuestionsToAsk: 3,
           tags: [{id: 3, name: 'Js', description: 'desc'},
                  {id: 5, name: 'Hello', description: 'desc'}]},
-        {id: 1, description: 'Test Kurs bla', title: 'Kursus', tags: [{id: 3, name: 'Js', description: 'desc'}]},
-        {id: 1, description: 'Test Kurs bla', title: 'Kursus', tags: [{id: 3, name: 'Js', description: 'desc'}]},
-        {id: 1, description: 'Test Kurs bla', title: 'Kursus', tags: [{id: 3, name: 'Js', description: 'desc'}]},
-        {id: 1, description: 'Test Kurs bla', title: 'Kursus', tags: [{id: 3, name: 'Js', description: 'desc'}]},
-        {id: 1, description: 'GLOBI in den Ferien', title: 'Kursus', tags: [{id: 3, name: 'Js', description: 'desc'}]},
+        {id: 1,  numQuestionsToAsk: 3, description: 'Test Kurs bla', title: 'Kursus', tags: [{id: 3, name: 'Js', description: 'desc'}]},
+        {id: 1, numQuestionsToAsk: 3, description: 'Test Kurs bla', title: 'Kursus', tags: [{id: 3, name: 'Js', description: 'desc'}]},
+        {id: 1, numQuestionsToAsk: 3, description: 'Test Kurs bla', title: 'Kursus', tags: [{id: 3, name: 'Js', description: 'desc'}]},
+        {id: 1, numQuestionsToAsk: 3, description: 'Test Kurs bla', title: 'Kursus', tags: [{id: 3, name: 'Js', description: 'desc'}]},
+        {id: 1, numQuestionsToAsk: 3, description: 'GLOBI in den Ferien', title: 'Kursus', 
+         tags: [{id: 3, name: 'Js', description: 'desc'}]},
       ],
     };
 

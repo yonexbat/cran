@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+
 
 namespace cran.Model.Dto
 {
@@ -11,6 +9,7 @@ namespace cran.Model.Dto
         public string Title { get; set; }
         public string Description { get; set; }
         public bool IsEditable { get; set; }
+        public int NumQuestionsToAsk { get; set; }
 
         public IList<TagDto> Tags = new List<TagDto>();
     }
