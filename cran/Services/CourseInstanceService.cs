@@ -42,8 +42,6 @@ namespace cran.Services
             CourseInstanceDto result = await GetNextQuestion(courseInstanceEntity);
 
             return result;
-
-
         }
 
         public async Task<QuestionToAskDto> GetQuestionToAskAsync(int courseInstanceQuestionId)
@@ -115,102 +113,9 @@ namespace cran.Services
             CourseInstanceQuestion courseInstanceQuestion = await _context.FindAsync<CourseInstanceQuestion>(answer.IdCourseInstanceQuestion);
             await _context.SaveChangesCranAsync(_currentPrincipal);
 
+
             return await _questionService.GetQuestionAsync(questionId);
         }
-
-        private IQueryable<int> PossibleQuestionsQuery(int idCourseInstance)
-        {
-            //Get Tags of course
-            IQueryable<int> tagIds = _context.RelCourseTags.Where(x => x.Course.CourseInstances.Any(y => y.Id == idCourseInstance))
-                .Select(x => x.Tag.Id);
-
-            //Questions already asked
-            IQueryable<int> questionIdsAlreadyAsked = _context.CourseInstancesQuestion
-                .Where(x => x.CourseInstance.Id == idCourseInstance)
-                .Select(x => x.Question.Id);
-
-            //Possible Quetions Query
-            IQueryable<int> questionIds = _context.RelQuestionTags
-                .Where(x => tagIds.Contains(x.Tag.Id))
-                .Where(x => !questionIdsAlreadyAsked.Contains(x.Question.Id))
-                .Where(x => x.Question.Status == QuestionStatus.Released)
-                .Select(x => x.Question.Id);
-
-            return questionIds;
-        }
-
-        private async Task<CourseInstanceDto> GetNextQuestion(CourseInstance courseInstanceEntity)
-        {
-            CourseInstanceDto result = new CourseInstanceDto();
-            result.IdCourse = courseInstanceEntity.IdCourse;
-            result.IdCourseInstance = courseInstanceEntity.Id;
-
-            Course courseEntity = await _context.FindAsync<Course>(courseInstanceEntity.IdCourse);
-
-            result.NumQuestionsAlreadyAsked = await _context.CourseInstancesQuestion.Where(x => x.CourseInstance.Id == courseInstanceEntity.Id)
-                .CountAsync();
-
-            result.NumQuestionsTotal = courseEntity.NumQuestionsToAsk;
-
-            //Possible Quetions Query
-            IQueryable<int> questionIds = PossibleQuestionsQuery(courseInstanceEntity.Id);
-
-            int count = await questionIds.CountAsync();
-            if (count == 0 || result.NumQuestionsAlreadyAsked >= courseEntity.NumQuestionsToAsk)
-            {
-                result.IdCourseInstanceQuestion = 0;
-                result.NumQuestionsTotal = result.NumQuestionsAlreadyAsked;
-                result.Done = true;
-                await EndCourseAsync(courseInstanceEntity.Id);
-            }
-            else
-            {
-                if (count <= result.NumQuestionsTotal - result.NumQuestionsAlreadyAsked)
-                {
-                    result.NumQuestionsTotal = result.NumQuestionsAlreadyAsked + count;
-                }
-                int quesitonNo = random.Next(0, count - 1);
-                int questionId = await questionIds.Skip(quesitonNo).FirstAsync();
-                Question questionEntity = await _context.FindAsync<Question>(questionId);
-
-                //Course instance question
-                CourseInstanceQuestion courseInstanceQuestionEntity = new CourseInstanceQuestion
-                {
-                    CourseInstance = courseInstanceEntity,
-                    Question = questionEntity,
-                    Number = result.NumQuestionsAlreadyAsked + 1,
-                };
-                _context.Add(courseInstanceQuestionEntity);
-
-                //Course instance question options
-                IList<QuestionOption> options = await _context.QuestionOptions.Where(option => option.Question.Id == questionEntity.Id).ToListAsync();
-                foreach (QuestionOption questionOptionEntity in options)
-                {
-                    CourseInstanceQuestionOption courseInstanceQuestionOptionEntity = new CourseInstanceQuestionOption();
-
-                    courseInstanceQuestionOptionEntity.QuestionOption = questionOptionEntity;
-
-                    courseInstanceQuestionOptionEntity.CourseInstanceQuestion = courseInstanceQuestionEntity;
-                    courseInstanceQuestionEntity.CourseInstancesQuestionOption.Add(courseInstanceQuestionOptionEntity);
-
-                    _context.Add(courseInstanceQuestionOptionEntity);
-                }
-
-                await SaveChangesAsync();
-                result.IdCourseInstanceQuestion = courseInstanceQuestionEntity.Id;
-            }
-
-
-            return result;
-        }
-
-        private async Task EndCourseAsync(int courseInstanceId)
-        {
-            CourseInstance courseInstance = await _context.FindAsync<CourseInstance>(courseInstanceId);
-            courseInstance.EndedAt = DateTime.Now;
-            await SaveChangesAsync();
-        }
-
 
         public async Task<CourseInstanceDto> NextQuestion(int courseInstanceId)
         {
@@ -230,41 +135,6 @@ namespace cran.Services
             CourseInstanceDto result = await GetNextQuestion(courseInstanceEntity);
             result.AnsweredCorrectly = courseInstanceQuestionEntity.Correct;
             return result;
-        }
-
-        private async Task SaveAnswers(QuestionAnswerDto answer)
-        {
-
-            CourseInstanceQuestion courseInstanceQuestionEntity = await _context.FindAsync<CourseInstanceQuestion>(answer.IdCourseInstanceQuestion);
-
-            //Check if already answered.
-            if (courseInstanceQuestionEntity.AnsweredAt.HasValue)
-            {
-                return;
-            }
-
-            IList<CourseInstanceQuestionOption> options = await _context.CourseInstancesQuestionOption
-                .Where(x => x.CourseInstanceQuestion.Id == courseInstanceQuestionEntity.Id)
-                .OrderBy(x => x.Id)
-                .Include(x => x.QuestionOption).ToListAsync();
-
-            if (options.Count != answer.Answers.Count)
-            {
-                throw new InvalidOperationException($"Num options in client-answer and database do not match");
-            }
-            for (int i = 0; i < options.Count; i++)
-            {
-                CourseInstanceQuestionOption optionInstanceEntity = options[i];
-                bool thisAnswer = answer.Answers[i];
-                bool optioncorrect = optionInstanceEntity.QuestionOption.IsTrue == thisAnswer;
-
-                optionInstanceEntity.Checked = thisAnswer;
-                optionInstanceEntity.Correct = optioncorrect;
-            }
-            courseInstanceQuestionEntity.Correct = options.All(x => x.Correct);
-            courseInstanceQuestionEntity.AnsweredAt = DateTime.Now;
-
-            await SaveChangesAsync();
         }
 
         public async Task<ResultDto> GetCourseResultAsync(int idCourseInstance)
@@ -365,6 +235,135 @@ namespace cran.Services
 
             await SaveChangesAsync();
 
+        }
+
+        private IQueryable<int> PossibleQuestionsQuery(int idCourseInstance)
+        {
+            //Get Tags of course
+            IQueryable<int> tagIds = _context.RelCourseTags.Where(x => x.Course.CourseInstances.Any(y => y.Id == idCourseInstance))
+                .Select(x => x.Tag.Id);
+
+            //Questions already asked
+            IQueryable<int> questionIdsAlreadyAsked = _context.CourseInstancesQuestion
+                .Where(x => x.CourseInstance.Id == idCourseInstance)
+                .Select(x => x.Question.Id);
+
+            //Possible Quetions Query
+            IQueryable<int> questionIds = _context.RelQuestionTags
+                .Where(x => tagIds.Contains(x.Tag.Id))
+                .Where(x => !questionIdsAlreadyAsked.Contains(x.Question.Id))
+                .Where(x => x.Question.Status == QuestionStatus.Released)
+                .Select(x => x.Question.Id);
+
+            return questionIds;
+        }
+
+        private async Task<CourseInstanceDto> GetNextQuestion(CourseInstance courseInstanceEntity)
+        {
+            CourseInstanceDto result = new CourseInstanceDto();
+            result.IdCourse = courseInstanceEntity.IdCourse;
+            result.IdCourseInstance = courseInstanceEntity.Id;
+
+            Course courseEntity = await _context.FindAsync<Course>(courseInstanceEntity.IdCourse);
+
+            result.NumQuestionsAlreadyAsked = await _context.CourseInstancesQuestion.Where(x => x.CourseInstance.Id == courseInstanceEntity.Id)
+                .CountAsync();
+
+            result.NumQuestionsTotal = courseEntity.NumQuestionsToAsk;
+
+            //Possible Quetions Query
+            IQueryable<int> questionIds = PossibleQuestionsQuery(courseInstanceEntity.Id);
+
+            int count = await questionIds.CountAsync();
+            if (count == 0 || result.NumQuestionsAlreadyAsked >= courseEntity.NumQuestionsToAsk)
+            {
+                result.IdCourseInstanceQuestion = 0;
+                result.NumQuestionsTotal = result.NumQuestionsAlreadyAsked;
+                result.Done = true;
+                await EndCourseAsync(courseInstanceEntity.Id);
+            }
+            else
+            {
+                if (count <= result.NumQuestionsTotal - result.NumQuestionsAlreadyAsked)
+                {
+                    result.NumQuestionsTotal = result.NumQuestionsAlreadyAsked + count;
+                }
+                int quesitonNo = random.Next(0, count - 1);
+                int questionId = await questionIds.Skip(quesitonNo).FirstAsync();
+                Question questionEntity = await _context.FindAsync<Question>(questionId);
+
+                //Course instance question
+                CourseInstanceQuestion courseInstanceQuestionEntity = new CourseInstanceQuestion
+                {
+                    CourseInstance = courseInstanceEntity,
+                    Question = questionEntity,
+                    Number = result.NumQuestionsAlreadyAsked + 1,
+                };
+                _context.Add(courseInstanceQuestionEntity);
+
+                //Course instance question options
+                IList<QuestionOption> options = await _context.QuestionOptions.Where(option => option.Question.Id == questionEntity.Id).ToListAsync();
+                foreach (QuestionOption questionOptionEntity in options)
+                {
+                    CourseInstanceQuestionOption courseInstanceQuestionOptionEntity = new CourseInstanceQuestionOption();
+
+                    courseInstanceQuestionOptionEntity.QuestionOption = questionOptionEntity;
+
+                    courseInstanceQuestionOptionEntity.CourseInstanceQuestion = courseInstanceQuestionEntity;
+                    courseInstanceQuestionEntity.CourseInstancesQuestionOption.Add(courseInstanceQuestionOptionEntity);
+
+                    _context.Add(courseInstanceQuestionOptionEntity);
+                }
+
+                await SaveChangesAsync();
+                result.IdCourseInstanceQuestion = courseInstanceQuestionEntity.Id;
+            }
+
+
+            return result;
+        }
+
+        private async Task EndCourseAsync(int courseInstanceId)
+        {
+            CourseInstance courseInstance = await _context.FindAsync<CourseInstance>(courseInstanceId);
+            courseInstance.EndedAt = DateTime.Now;
+            await SaveChangesAsync();
+        }
+
+        
+        private async Task SaveAnswers(QuestionAnswerDto answer)
+        {
+
+            CourseInstanceQuestion courseInstanceQuestionEntity = await _context.FindAsync<CourseInstanceQuestion>(answer.IdCourseInstanceQuestion);
+
+            //Check if already answered.
+            if (courseInstanceQuestionEntity.AnsweredAt.HasValue)
+            {
+                return;
+            }
+
+            IList<CourseInstanceQuestionOption> options = await _context.CourseInstancesQuestionOption
+                .Where(x => x.CourseInstanceQuestion.Id == courseInstanceQuestionEntity.Id)
+                .OrderBy(x => x.Id)
+                .Include(x => x.QuestionOption).ToListAsync();
+
+            if (options.Count != answer.Answers.Count)
+            {
+                throw new InvalidOperationException($"Num options in client-answer and database do not match");
+            }
+            for (int i = 0; i < options.Count; i++)
+            {
+                CourseInstanceQuestionOption optionInstanceEntity = options[i];
+                bool thisAnswer = answer.Answers[i];
+                bool optioncorrect = optionInstanceEntity.QuestionOption.IsTrue == thisAnswer;
+
+                optionInstanceEntity.Checked = thisAnswer;
+                optionInstanceEntity.Correct = optioncorrect;
+            }
+            courseInstanceQuestionEntity.Correct = options.All(x => x.Correct);
+            courseInstanceQuestionEntity.AnsweredAt = DateTime.Now;
+
+            await SaveChangesAsync();
         }
 
         private async Task CheckAccessToCourseInstance(int idCourseInstance)
