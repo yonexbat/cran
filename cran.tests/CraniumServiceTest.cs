@@ -41,22 +41,37 @@ namespace cran.tests
             return context;
         }
 
-        private TestingObject<CraniumService> GetTestingObject()
+        private T GetService<T>() where T : class
         {
             IConfiguration config = GetConfiguration();
             ApplicationDbContext context = CreateDbContext(config);
-
-
-
-            var testingObject = new TestingObject<CraniumService>();
+            
+            var testingObject = new TestingObject<T>();
             testingObject.AddDependency(context);
             testingObject.AddDependency(new Mock<IDbLogService>(MockBehavior.Loose));
             testingObject.AddDependency(GetPrincipalMock());
-            return testingObject;
+            return testingObject.GetResolvedTestingObject();
+        }   
+
+        private ICourseInstanceService CourseInstanceService()
+        {
+            IQuestionService questionService = QuestionService();
+
+            IConfiguration config = GetConfiguration();
+            ApplicationDbContext context = CreateDbContext(config);
+
+            var testingObject = new TestingObject<CourseInstanceService>();
+            testingObject.AddDependency(context);
+            testingObject.AddDependency(new Mock<IDbLogService>(MockBehavior.Loose));
+            testingObject.AddDependency(GetPrincipalMock());
+            testingObject.AddDependency(questionService);
+            return testingObject.GetResolvedTestingObject();
         }
 
-        private TestingObject<QuestionService> GetTestingObjectQuestionService()
+        private IQuestionService QuestionService()
         {
+            ICommentsService commentsService = GetService<CommentsService>();
+
             IConfiguration config = GetConfiguration();
             ApplicationDbContext context = CreateDbContext(config);
 
@@ -64,44 +79,11 @@ namespace cran.tests
             testingObject.AddDependency(context);
             testingObject.AddDependency(new Mock<IDbLogService>(MockBehavior.Loose));
             testingObject.AddDependency(GetPrincipalMock());
-            return testingObject;
-        }
-
-        private TestingObject<CourseService> GetTestingObjectCourseService()
-        {
-            IConfiguration config = GetConfiguration();
-            ApplicationDbContext context = CreateDbContext(config);
-
-            var testingObject = new TestingObject<CourseService>();
-            testingObject.AddDependency(context);
-            testingObject.AddDependency(new Mock<IDbLogService>(MockBehavior.Loose));
-            testingObject.AddDependency(GetPrincipalMock());
-            return testingObject;
-        }
-
-        private TestingObject<ICourseInstanceService> GetTestingObjectCourseInstanceService()
-        {
-            IConfiguration config = GetConfiguration();
-            ApplicationDbContext context = CreateDbContext(config);
-
-            var testingObject = new TestingObject<ICourseInstanceService>();
-            testingObject.AddDependency(context);
-            testingObject.AddDependency(new Mock<IDbLogService>(MockBehavior.Loose));
-            testingObject.AddDependency(GetPrincipalMock());
-            return testingObject;
-        }
-
-        private IBinaryService GetBinaryService()
-        {
-            IConfiguration config = GetConfiguration();
-            ApplicationDbContext context = CreateDbContext(config);
-
-            var testingObject = new TestingObject<BinaryService>();
-            testingObject.AddDependency(context);
-            testingObject.AddDependency(new Mock<IDbLogService>(MockBehavior.Loose));
-            testingObject.AddDependency(GetPrincipalMock());
+            testingObject.AddDependency(commentsService);
             return testingObject.GetResolvedTestingObject();
         }
+
+
 
         private IPrincipal GetPrincipalMock()
         {
@@ -118,9 +100,9 @@ namespace cran.tests
         [Fact]
         public async Task TestStartTest()
         {
-            var testignObject = GetTestingObject();          
-            ICourseService courseService = GetTestingObjectCourseService().GetResolvedTestingObject();
-            ICourseInstanceService courseInstanceService = GetTestingObjectCourseInstanceService().GetResolvedTestingObject();
+
+            ICourseService courseService = GetService<CourseService>();
+            ICourseInstanceService courseInstanceService = CourseInstanceService();
 
             var courses = await courseService.GetCoursesAsync();
             int courseId = courses.Courses.Where(x => x.Title == "JS").Select(x => x.Id).First();
@@ -159,8 +141,8 @@ namespace cran.tests
         [Fact]
         public async Task TestAddImage()
         {
-            var testignObject = GetTestingObject();
-            IQuestionService questionService = GetTestingObjectQuestionService().GetResolvedTestingObject();
+
+            IQuestionService questionService = QuestionService();
 
 
             //Add Q
@@ -172,7 +154,7 @@ namespace cran.tests
             var  q = await questionService.InsertQuestionAsync(qdto);
 
             //Add Binary
-            IBinaryService  binaryService = GetBinaryService();
+            IBinaryService binaryService = GetService<BinaryService>();
             int id = await binaryService.AddBinaryAsync(new BinaryDto
             {
                 ContentDisposition = "ContentDisposition",
