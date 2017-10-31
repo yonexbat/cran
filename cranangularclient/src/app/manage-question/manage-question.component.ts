@@ -93,8 +93,8 @@ export class ManageQuestionComponent implements OnInit {
 
   private async handleRouteChanged(id: number): Promise<void> {
     if (id > 0) {
-      this.buttonText = 'Speichern';
-      this.headingText = 'Frage #' + id + ' editieren';
+      this.buttonText = this.ls.label('save');
+      this.headingText = this.ls.label('editquestion', String(id)); // 'Frage #' + id + ' editieren';
       try {
         this.notificationService.emitLoading();
         this.question = await this.cranDataService.getQuestion(id);
@@ -103,8 +103,8 @@ export class ManageQuestionComponent implements OnInit {
         this.notificationService.emitError(error);
       }
     } else {
-      this.buttonText = 'Hinzufügen';
-      this.headingText = 'Frage hinzufügen';
+      this.buttonText = this.ls.label('add');
+      this.headingText = this.ls.label('addquestion');
     }
     this.actionInProgress = false;
   }

@@ -20,6 +20,22 @@ export class LanguageService {
     'addtag' : {valueDe : 'Tag hinzufügen', valueEn : 'Add a tag'},
     'addcourse' : {valueDe : 'Kurs hinzufügen', valueEn : 'Add course'},
     'logout' : {valueDe : 'Ausloggen', valueEn : 'Log out'},
+    'title' : {valueDe : 'Titel', valueEn : 'Title'},
+    'titelrequired' : {valueDe : 'Titel ist ein Mussfeld', valueEn : 'Title is required'},
+    'language' : {valueDe : 'Sprache', valueEn : 'Langauge'},
+    'languagerequired' : {valueDe : 'Sprache ist ein Mussfeld', valueEn : 'Language is required'},
+    'state' : {valueDe : 'Status', valueEn : 'State'},
+    'created' : {valueDe : 'erstellt', valueEn : 'created'},
+    'approved' : {valueDe : 'freigeschalten', valueEn : 'approved'},
+    'text' : {valueDe : 'Text', valueEn : 'Text'},
+    'addimage' : {valueDe : 'Bild hinzufügen', valueEn : 'Add image'},
+    'option' : {valueDe : 'Option', valueEn : 'Option'},
+    'removeoption' : {valueDe : 'Option entfernen', valueEn : 'Remove option'},
+    'addoption' : {valueDe : 'Option hinzufügen', valueEn : 'Add option'},
+    'explanation' : {valueDe : 'Erklärung', valueEn : 'Explanation'},
+    'preview' : {valueDe : 'Vorschau', valueEn : 'Preview'},
+    'save' : {valueDe : 'Speichern', valueEn : 'Save'},
+    'editquestion' : {valueDe : 'Frage #{0} editieren', valueEn : 'Edit question #{0}'},
   };
 
 
@@ -28,14 +44,24 @@ export class LanguageService {
 
   constructor() { }
 
-  public label(key: string): string {
+  public label(key: string, ...placeholders: string[]): string {
     const tuple = this.map[key];
+    let result;
     switch (this.languageInfo) {
       case LanguageInfo.En:
-        return tuple.valueEn;
+        result = tuple.valueEn;
+        break;
       default:
-        return tuple.valueDe;
+        result = tuple.valueDe;
+        break;
     }
+
+    for (let i = 0; i < placeholders.length; i++) {
+      const toReplace = `{${i}}`;
+      result = result.replace(toReplace, placeholders[i]);
+    }
+
+    return result;
   }
 
   public selectLanguage(lang: LanguageInfo) {

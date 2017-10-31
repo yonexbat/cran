@@ -12,7 +12,7 @@
        <!-- Titel -->
       <div class="col-md-3">
           
-        <label for="title">Titel</label>
+        <label for="title">{{ls.label('title')}}</label>
 
         <input type="text" class="form-control" id="title"
                 required
@@ -21,7 +21,7 @@
 
         <div [hidden]="title.valid || title.pristine"
               class="alert alert-danger">
-            Titel ist ein Mussfeld
+            {{ls.label('titelrequired')}}
         </div>
       </div>
 
@@ -29,7 +29,7 @@
       <div class="col-md-3">
         
           <label for="language">
-            Sprache
+            {{ls.label('language')}}
           </label>
   
           <select class="form-control"
@@ -45,7 +45,7 @@
 
           <div [hidden]="language.valid || language.pristine"
               class="alert alert-danger">
-               Sprache ist ein Mussfeld
+              {{ls.label('languagerequired')}}
            </div>
         
       </div>
@@ -54,15 +54,15 @@
       <div class="col-md-3">
 
         <label for="status">
-          Status
+          {{ls.label('state')}}
         </label>
 
         <select class="form-control"
                 #status="ngModel"
                 [(ngModel)]="question.status"
                 name="status" id="status">
-          <option [value]="0">erstellt</option>
-          <option [value]="1">freigeschalten</option>
+          <option [value]="0">{{ls.label('created')}}</option>
+          <option [value]="1">{{ls.label('approved')}}</option>
         </select>
 
       </div>
@@ -78,7 +78,7 @@
       
       <div class="col-md-12">
           
-        <label for="questiontext">Text</label>        
+        <label for="questiontext">{{ls.label('text')}}</label>        
 
         <app-rich-text-box 
           [elementId]="'questiontext'"
@@ -98,7 +98,7 @@
                          (onDeleted)="onRemoveImage($event)"></app-imagelist>
       </div>
       <div class="col-md-12">
-        <label>Bild hinzufügen</label>   
+        <label>{{ls.label('addimage')}}</label>   
         <app-file-upload (onUploaded)="addImages($event)"></app-file-upload>
       </div>
     </div>
@@ -109,7 +109,7 @@
       <div class="row form-group">
 
         <div class="col-md-10">
-          <label for="optionText{{optionIndex}}">Option {{optionIndex + 1}}</label>
+          <label for="optionText{{optionIndex}}">{{ls.label('option')}} {{optionIndex + 1}}</label>
 
           <app-rich-text-box 
           [elementId]="'questionoption' + (optionIndex + 1)"
@@ -131,7 +131,7 @@
 
         <div class="col-md-1">
           <button type="button" class="btn btn-default cranbutton" (click)="removeOption(optionIndex)">
-            <span class="glyphicon glyphicon-trash" title="Option entfernen"></span>
+            <span class="glyphicon glyphicon-trash" title="{{ls.label('removeoption')}}"></span>
           </button>
         </div>
 
@@ -148,7 +148,7 @@
               type="button" 
               class="btn btn-default" 
               (click)="addOpton()">
-            <span class="glyphicon glyphicon-plus" title="Option hinzufügen"></span>
+            <span class="glyphicon glyphicon-plus" title="{{ls.label('addoption')}}"></span>
           </button>
       </div>
     </div>
@@ -158,7 +158,7 @@
       
       <div class="col-md-12">
           
-        <label for="explanation">Erklärung</label>
+        <label for="explanation">{{ls.label('explanation')}}</label>
 
         <app-rich-text-box 
         [elementId]="'richtextboxexplanation'"
@@ -182,7 +182,7 @@
           class="btn btn btn-success" 
           (click)="showPreview()" 
           [disabled]="!questionForm.form.valid || actionInProgress">
-          Vorschau
+          {{ls.label('preview')}}
       </button>      
 
       <!-- Speichern -->
