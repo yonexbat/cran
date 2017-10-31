@@ -38,6 +38,9 @@ export class LanguageService {
     'editquestion' : {valueDe : 'Frage #{0} editieren', valueEn : 'Edit question #{0}'},
     'add' : {valueDe : 'Hinzufügen', valueEn : 'Add'},
     'editcourse' : {valueDe : 'Kurs #{0} editieren', valueEn : 'Edit question #{0}'},
+    'numquestions' : {valueDe : 'Anzahl Fragen', valueEn : 'Number of questions'},
+    'numquestionsrequired' : {valueDe : 'Anzahl Fragen ist ein Mussfeld', valueEn : 'Number of questions required'},
+    'description' : {valueDe : 'Beschreibung', valueEn : 'Description'},
   };
 
 

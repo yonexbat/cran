@@ -9,7 +9,7 @@
                   <!-- Title -->
                   <div class="col-md-6">
                       
-                    <label for="title">Titel</label>
+                    <label for="title">{{ls.label('title')}}</label>
             
                     <input type="text" class="form-control" id="title"
                             required
@@ -18,7 +18,7 @@
             
                     <div [hidden]="title.valid || title.pristine"
                           class="alert alert-danger">
-                        Titel ist ein Mussfeld
+                          {{ls.label('titelrequired')}}
                     </div>
                   </div>   
 
@@ -50,7 +50,7 @@
                  <!-- Anzahl Fragen -->
                  <div class="col-md-3">
 
-                    <label for="title">Anzahl Fragen</label>
+                    <label for="numQuestionsToAsk">{{ls.label('numquestions')}}</label>
                     
                     <input type="number" 
                             class="form-control" 
@@ -64,7 +64,7 @@
             
                     <div [hidden]="numQuestionsToAsk.valid || numQuestionsToAsk.pristine"
                           class="alert alert-danger">
-                        Anzahl Fragen ist ein Mussfeld
+                          {{ls.label('numquestionsrequired')}}
                     </div>
 
                  </div>
@@ -85,7 +85,7 @@
           
           <div class="col-md-12">
               
-            <label for="questiontext">Beschreibung</label>        
+            <label for="questiontext"> {{ls.label('description')}}</label>        
 
             <app-rich-text-box 
               [elementId]="'description'"
