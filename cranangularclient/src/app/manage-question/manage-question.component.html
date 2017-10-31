@@ -2,7 +2,7 @@
 
   <app-question-preview #questionPreview></app-question-preview>
 
-  <h1>{{headingText}}</h1>
+  <h1>{{getHeadingText()}}</h1>
 
   <form  #questionForm="ngForm">
 
@@ -191,7 +191,7 @@
           class="btn btn btn-success" 
           (click)="save()" 
           [disabled]="!questionForm.form.valid || actionInProgress">
-        {{buttonText}}
+        {{getSaveButtonText()}}
       </button> 
     </div>    
 

@@ -41,8 +41,6 @@ export class ManageCourseComponent implements OnInit {
 
   private async handleRouteChanged(id: number): Promise<void> {
     if (id > 0) {
-      this.buttonText = this.ls.label('save');
-      this.headingText = this.ls.label('editcourse', String(id));
       try {
         this.notificationService.emitLoading();
         this.course = await this.cranDataService.getCourse(id);
@@ -50,11 +48,24 @@ export class ManageCourseComponent implements OnInit {
       } catch (error) {
         this.notificationService.emitError(error);
       }
-    } else {
-      this.buttonText = this.ls.label('add');
-      this.headingText = this.ls.label('addcourse');
     }
     this.actionInProgress = false;
+  }
+
+  private getSaveButtonText(): string  {
+    if (this.course.id > 0) {
+      return this.ls.label('save');
+    } else {
+      return this.ls.label('add');
+    }
+  }
+
+  private getHeadingText(): string {
+    if (this.course.id > 0) {
+      return this.ls.label('editcourse', String(this.course.id ));
+    } else {
+      return this.ls.label('addcourse');
+    }
   }
 
   private async save(): Promise<void> {

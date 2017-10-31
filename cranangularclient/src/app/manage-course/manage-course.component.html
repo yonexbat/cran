@@ -1,7 +1,7 @@
 <div class="container">
   
     
-    <h1>{{headingText}}</h1>    
+    <h1>{{getHeadingText()}}</h1>    
     <form  #tagForm="ngForm">
            
         <div class="row form-group">
@@ -109,7 +109,7 @@
                   class="btn btn btn-success" 
                   (click)="save()" 
                   [disabled]="!tagForm.form.valid || actionInProgress">
-                {{buttonText}}
+                {{getSaveButtonText()}}
               </button> 
             </div>    
     

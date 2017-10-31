@@ -1,7 +1,7 @@
 <div class="container" *ngIf="courseInstances">
 
     <p *ngIf="courseInstances.length === 0">
-        Keine Kurse absolviert.
+        {{ls.label('nocoursesdone')}}
     </p>
 
     <div class="list-group">

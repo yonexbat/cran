@@ -7,6 +7,7 @@ import {PagedResult} from '../model/pagedresult';
 import {Comment} from '../model/comment';
 import {GetComments} from '../model/getcomments';
 import {NotificationService} from '../notification.service';
+import {LanguageService} from '../language.service';
 
 @Component({
   selector: 'app-comments',
@@ -22,7 +23,8 @@ export class CommentsComponent implements OnInit {
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
     private notificationService: NotificationService,
     private router: Router,
-    private activeRoute: ActivatedRoute) {
+    private activeRoute: ActivatedRoute,
+    private ls: LanguageService) {
       this.comment = new Comment();
       this.comment.commentText = '';
     }

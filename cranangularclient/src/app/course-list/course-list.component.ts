@@ -9,6 +9,7 @@ import {Course} from '../model/course';
 import {CourseInstance} from '../model/courseinstance';
 import {StatusMessageComponent} from '../status-message/status-message.component';
 import {NotificationService} from '../notification.service';
+import {LanguageService} from '../language.service';
 
 
 @Component({
@@ -22,7 +23,8 @@ export class CourseListComponent implements OnInit {
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
     private router: Router,
-    private notificationService: NotificationService) { }
+    private notificationService: NotificationService,
+    private ls: LanguageService) { }
 
   ngOnInit() {
     this.getCourses();

@@ -2,7 +2,7 @@
   <form #questionForm="ngForm">
 
     <h4>
-      Frage {{questionToAsk.numQuestionsAsked}} von {{questionToAsk.numQuestions}}
+      {{ls.label('questionofnum', questionToAsk.numQuestionsAsked, questionToAsk.numQuestions)}}
     </h4>
 
     <!-- Titel -->
@@ -47,8 +47,10 @@
               name="checkBox{{optionIndex}}"
               #optionChecked="ngModel"
               [disabled] = "checkShown">
-          <span class="glyphicon glyphicon-ok" aria-hidden="true" *ngIf="checkShown && option.isTrue"></span> 
-          <span class="glyphicon glyphicon-remove" aria-hidden="true" *ngIf="checkShown && !option.isTrue"></span>                       
+          <span class="glyphicon glyphicon-ok" aria-hidden="true" 
+            *ngIf="checkShown && option.isTrue"></span> 
+          <span class="glyphicon glyphicon-remove" aria-hidden="true" 
+            *ngIf="checkShown && !option.isTrue"></span>                       
           <span [innerHtml] = "option?.text | safeHtml"></span>
         </div>     
 
@@ -70,7 +72,7 @@
           type="button" 
           class="btn btn btn-success"
           (click)="getSolution()">
-        Prüfen
+        {{ls.label('check')}}
       </button>
 
       <button 
@@ -78,7 +80,7 @@
         type="button" 
         class="btn btn btn-success"
         (click)="goToEditQuestion()">
-        Frage bearbeiten
+        {{ls.label('editquestion')}}
       </button>      
 
       <button 
@@ -86,7 +88,7 @@
         type="button" 
         class="btn btn btn-success"
         (click)="goToResult()">
-        Zurück
+        {{ls.label('back')}}
       </button>      
       
       <button 
@@ -94,8 +96,12 @@
           type="button" 
           class="btn btn btn-success"
           (click)="nextQuestion()">          
-        <span *ngIf="(questionToAsk?.numQuestionsAsked != questionToAsk?.numQuestions)">Nächste Frage</span>
-        <span *ngIf="(questionToAsk?.numQuestionsAsked == questionToAsk?.numQuestions)">Kurs beenden</span>
+        <span *ngIf="(questionToAsk?.numQuestionsAsked != questionToAsk?.numQuestions)">
+          {{ls.label('nextquestion')}}
+        </span>
+        <span *ngIf="(questionToAsk?.numQuestionsAsked == questionToAsk?.numQuestions)">
+            {{ls.label('endcourse')}}
+        </span>
       </button>
     </div>
   </form>

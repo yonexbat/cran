@@ -25,10 +25,6 @@ export class ManageQuestionComponent implements OnInit {
 
   public actionInProgress = false;
 
-  public headingText: string;
-
-  public buttonText: string;
-
   private language: string;
 
   @ViewChild('statusMessage') statusMessage: StatusMessageComponent;
@@ -93,8 +89,6 @@ export class ManageQuestionComponent implements OnInit {
 
   private async handleRouteChanged(id: number): Promise<void> {
     if (id > 0) {
-      this.buttonText = this.ls.label('save');
-      this.headingText = this.ls.label('editquestion', String(id)); // 'Frage #' + id + ' editieren';
       try {
         this.notificationService.emitLoading();
         this.question = await this.cranDataService.getQuestion(id);
@@ -102,11 +96,24 @@ export class ManageQuestionComponent implements OnInit {
       } catch (error) {
         this.notificationService.emitError(error);
       }
-    } else {
-      this.buttonText = this.ls.label('add');
-      this.headingText = this.ls.label('addquestion');
     }
     this.actionInProgress = false;
+  }
+
+  private getSaveButtonText(): string  {
+    if (this.question.id > 0) {
+      return this.ls.label('save');
+    } else {
+      return this.ls.label('add');
+    }
+  }
+
+  private getHeadingText(): string {
+    if (this.question.id > 0) {
+      return this.ls.label('editquestion', String(this.question.id ));
+    } else {
+      return this.ls.label('addquestion');
+    }
   }
 
   private removeOption(index: number) {

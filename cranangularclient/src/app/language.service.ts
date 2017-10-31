@@ -41,6 +41,14 @@ export class LanguageService {
     'numquestions' : {valueDe : 'Anzahl Fragen', valueEn : 'Number of questions'},
     'numquestionsrequired' : {valueDe : 'Anzahl Fragen ist ein Mussfeld', valueEn : 'Number of questions required'},
     'description' : {valueDe : 'Beschreibung', valueEn : 'Description'},
+    'questionofnum' : {valueDe : 'Frage {0} von {1}', valueEn : 'Question {0} of {1}'},
+    'back' : {valueDe : 'Zurück', valueEn : 'Back'},
+    'nextquestion' : {valueDe : 'Nächste Frage', valueEn : 'Next question'},
+    'endcourse' : {valueDe : 'Kurs beenden', valueEn : 'End course'},
+    'check' : {valueDe : 'Prüfen', valueEn : 'Check'},
+    'comment' : {valueDe : 'Kommentar', valueEn : 'Comment'},
+    'addcomment' : {valueDe : 'Kommentar hinzufügen', valueEn : 'Add comment'},
+    'nocoursesdone' : {valueDe : 'Keine Kurse absolviert.', valueEn : 'No courses done.'},
   };
 
 

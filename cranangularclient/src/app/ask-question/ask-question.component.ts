@@ -3,6 +3,7 @@ import { Router, ActivatedRoute, ParamMap, } from '@angular/router';
 
 import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
+import {LanguageService} from '../language.service';
 import {QuestionToAsk} from '../model/questiontoask';
 import {Question} from '../model/question';
 import {QuestionOption} from '../model/questionoption';
@@ -27,7 +28,8 @@ export class AskQuestionComponent implements OnInit {
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
     private router: Router,
     private activeRoute: ActivatedRoute,
-    private notificationService: NotificationService) {
+    private notificationService: NotificationService,
+    private ls: LanguageService) {
 
     this.activeRoute.paramMap.subscribe((params: ParamMap)  => {
       const id = params.get('id');
@@ -46,10 +48,9 @@ export class AskQuestionComponent implements OnInit {
       const question =  await this.cranDataServiceService.answerQuestionAndGetSolution(answer);
       await this.commentsControl.showComments(question.id);
       this.showSolution(question);
+      this.notificationService.emitDone();
     } catch (error) {
       this.notificationService.emitError(error);
-    } finally {
-      this.notificationService.emitDone();
     }
   }
 
@@ -103,8 +104,7 @@ export class AskQuestionComponent implements OnInit {
       if (questionToAsk.courseEnded) {
         question =  await this.cranDataServiceService.getQuestion(questionToAsk.idQuestion);
         await this.commentsControl.showComments(question.id);
-      }
-      else {
+      } else {
         await this.commentsControl.showComments(null);
       }
       this.questionToAsk = questionToAsk;

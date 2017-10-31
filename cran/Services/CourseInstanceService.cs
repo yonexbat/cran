@@ -61,6 +61,7 @@ namespace cran.Services
                 }).SingleAsync();
 
 
+
             //Images
             questionToAskDto.Images = await _context.RelQuestionImages
                .Where(x => x.Question.CourseInstancesQuestion.Any(y => y.Id == courseInstanceQuestionId))
@@ -77,7 +78,10 @@ namespace cran.Services
             //Diese Infos ist nur nötig, wenn Kurs noch nicht beendet ist.
             if (!questionToAskDto.CourseEnded)
             {
-                int possibleQuestions = await PossibleQuestionsQuery(questionToAskDto.IdCourseInstance).CountAsync();
+                Language language = await _context.CourseInstancesQuestion.Where(x => x.Id == courseInstanceQuestionId)
+                    .Select(x => x.CourseInstance.Course.Language).SingleAsync();
+
+                int possibleQuestions = await PossibleQuestionsQuery(questionToAskDto.IdCourseInstance, language).CountAsync();
                 questionToAskDto.NumQuestions = possibleQuestions <= questionToAskDto.NumQuestions - questionToAskDto.NumQuestionsAsked ? possibleQuestions + questionToAskDto.NumQuestionsAsked : questionToAskDto.NumQuestions;
 
                 //Id nicht leaken, wenn Kurs noch nicht beendet ist.
@@ -237,7 +241,7 @@ namespace cran.Services
 
         }
 
-        private IQueryable<int> PossibleQuestionsQuery(int idCourseInstance)
+        private IQueryable<int> PossibleQuestionsQuery(int idCourseInstance, Language language)
         {
             //Get Tags of course
             IQueryable<int> tagIds = _context.RelCourseTags.Where(x => x.Course.CourseInstances.Any(y => y.Id == idCourseInstance))
@@ -253,6 +257,7 @@ namespace cran.Services
                 .Where(x => tagIds.Contains(x.Tag.Id))
                 .Where(x => !questionIdsAlreadyAsked.Contains(x.Question.Id))
                 .Where(x => x.Question.Status == QuestionStatus.Released)
+                .Where(x => x.Question.Language == language)
                 .Select(x => x.Question.Id);
 
             return questionIds;
@@ -272,7 +277,7 @@ namespace cran.Services
             result.NumQuestionsTotal = courseEntity.NumQuestionsToAsk;
 
             //Possible Quetions Query
-            IQueryable<int> questionIds = PossibleQuestionsQuery(courseInstanceEntity.Id);
+            IQueryable<int> questionIds = PossibleQuestionsQuery(courseInstanceEntity.Id, courseEntity.Language);
 
             int count = await questionIds.CountAsync();
             if (count == 0 || result.NumQuestionsAlreadyAsked >= courseEntity.NumQuestionsToAsk)

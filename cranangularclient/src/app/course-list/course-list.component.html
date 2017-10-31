@@ -3,7 +3,7 @@
   <div class="list-group">
     <div  *ngFor="let item of courses" class="list-group-item">
       <h4>
-        {{item.title}}
+        {{item.title}} [{{ls.label('language')}}: {{item.language}}]
 
         <span class="btn-group pull-right">
             <button class="btn btn-default" type="button" (click)="editCourse(item)" *ngIf="item.isEditable">

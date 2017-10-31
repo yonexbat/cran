@@ -6,7 +6,7 @@ import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {CourseInstanceListEntry} from '../model/courseinstancelistentry';
 import {NotificationService} from '../notification.service';
-
+import {LanguageService} from '../language.service';
 
 @Component({
   selector: 'app-course-instance-list',
@@ -19,7 +19,8 @@ export class CourseInstanceListComponent implements OnInit {
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
     private router: Router,
-    private notificationService: NotificationService) { }
+    private notificationService: NotificationService,
+    private ls: LanguageService) { }
 
   ngOnInit() {
     this.loadInstances();
