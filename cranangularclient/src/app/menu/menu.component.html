@@ -17,15 +17,15 @@
         <ul class="nav navbar-nav">
          
           <li routerLinkActive="active">
-             <a [routerLink]="['/home']">Home</a>
+             <a [routerLink]="['/home']">{{ls.label('home')}}</a>
           </li>
 
           <li  routerLinkActive="active">
-            <a [routerLink]="['/list']">Themen</a>
+            <a [routerLink]="['/list']">{{ls.label('courses')}}</a>
           </li>
 
           <li >
-            <a [routerLink]="['/results']">Meine Resultate</a>
+            <a [routerLink]="['/results']">{{ls.label('myresults')}}</a>
           </li>
 
           <li class="dropdown">
@@ -35,17 +35,17 @@
                 role="button" 
                 aria-haspopup="true" 
                 aria-expanded="false">
-                Fragen <span class="caret"></span>
+                {{ls.label('questions')}} <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
               <li  routerLinkActive="active">
-                <a [routerLink]="['/addquestion']">Frage hinzufügen</a>
+                <a [routerLink]="['/addquestion']">{{ls.label('addquestion')}}</a>
               </li>
               <li  routerLinkActive="active" *ngIf="isAdmin">
-                <a [routerLink]="['/searchq']">Fragen suchen</a>
+                <a [routerLink]="['/searchq']">{{ls.label('searchquestion')}}</a>
               </li>
               <li  routerLinkActive="active">
-                <a [routerLink]="['/questionlist']">Meine Fragen</a>
+                <a [routerLink]="['/questionlist']">{{ls.label('myquestions')}}</a>
               </li>
             </ul>
           </li>  
@@ -57,23 +57,23 @@
               role="button" 
               aria-haspopup="true" 
               aria-expanded="false">
-              Admin <span class="caret"></span>
+              {{ls.label('admin')}} <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
               <li  routerLinkActive="active" *ngIf="isAdmin">
-                <a [routerLink]="['/managetags']">Tags</a>
+                <a [routerLink]="['/managetags']">{{ls.label('tags')}}</a>
               </li>    
               <li  routerLinkActive="active" *ngIf="isAdmin">
-                <a [routerLink]="['/managetag/0']">Tag hinzufügen</a>
+                <a [routerLink]="['/managetag/0']">{{ls.label('addtag')}}</a>
               </li>   
               <li  routerLinkActive="active" *ngIf="isAdmin">
-                <a [routerLink]="['/managecourse/0']">Kurs hinzufügen</a>
+                <a [routerLink]="['/managecourse/0']">{{ls.label('addcourse')}}</a>
               </li>                          
             </ul>
           </li>
 
           <li>
-            <a href="/Account/DoLogout">Log out</a>
+            <a href="/Account/DoLogout">{{ls.label('logout')}}</a>
           </li>
         </ul>
      </div>

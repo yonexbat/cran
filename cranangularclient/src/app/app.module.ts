@@ -13,6 +13,7 @@ import { ICranDataService } from './icrandataservice';
 import { CRAN_SERVICE_TOKEN } from './cran-data.servicetoken';
 import { CranDataService  } from './cran-data.service';
 import { CranDataServiceMock } from './cran-data-mock.service';
+import { LanguageService } from './language.service';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { HomeComponent } from './home/home.component';
 import { ManageQuestionComponent } from './manage-question/manage-question.component';
@@ -90,6 +91,7 @@ if (isDevelopment()) {
     { provide: CRAN_SERVICE_TOKEN, useClass: cranDataService },
     HttpModule,
     NotificationService,
+    LanguageService,
   ],
   bootstrap: [AppComponent]
 })

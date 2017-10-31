@@ -1,3 +1,7 @@
 <span *ngIf="userInfo">
-  {{userInfo.name}}
+  {{userInfo.name}} 
+  <span (click)= "setEn()" 
+        [class.activeLanguage]="isEn()">E</span>
+  <span (click)="setDe()"
+      [class.activeLanguage]="isDe()">D</span>
 </span>

@@ -3,6 +3,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
+import {LanguageService} from '../language.service';
 
 @Component({
   selector: 'app-menu',
@@ -13,8 +14,10 @@ export class MenuComponent implements OnInit {
 
   private isAdmin = false;
 
-  constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
-    private notificationService: NotificationService) { }
+  constructor(@Inject(CRAN_SERVICE_TOKEN)
+    private cranDataService: ICranDataService,
+    private notificationService: NotificationService,
+    private ls: LanguageService) { }
 
   ngOnInit() {
     this.setRoles();
