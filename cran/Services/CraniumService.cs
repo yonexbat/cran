@@ -105,6 +105,7 @@ namespace cran.Services
                 CourseDto dtoSource = (CourseDto)dto;
                 Course entityDestination = (Course)entity;
                 entityDestination.Title = dtoSource.Title;
+                entityDestination.Language = Enum.Parse<Language>(dtoSource.Language);
                 entityDestination.NumQuestionsToAsk = dtoSource.NumQuestionsToAsk;
                 entityDestination.Description = dtoSource.Description;                
             }

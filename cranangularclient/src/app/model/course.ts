@@ -5,5 +5,6 @@ export class Course {
     public title: string;
     public description: string;
     public numQuestionsToAsk: number;
+    public language = '';
     public tags: Tag[] = [];
 }

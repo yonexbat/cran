@@ -36,6 +36,8 @@ export class LanguageService {
     'preview' : {valueDe : 'Vorschau', valueEn : 'Preview'},
     'save' : {valueDe : 'Speichern', valueEn : 'Save'},
     'editquestion' : {valueDe : 'Frage #{0} editieren', valueEn : 'Edit question #{0}'},
+    'add' : {valueDe : 'Hinzufügen', valueEn : 'Add'},
+    'editcourse' : {valueDe : 'Kurs #{0} editieren', valueEn : 'Edit question #{0}'},
   };
 
 

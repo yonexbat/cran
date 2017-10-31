@@ -6,6 +6,7 @@ import {Course} from '../model/course';
 import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
+import {LanguageService} from '../language.service';
 import {StatusMessageComponent} from '../status-message/status-message.component';
 
 
@@ -24,9 +25,10 @@ export class ManageCourseComponent implements OnInit {
   @ViewChild('statusMessage') statusMessage: StatusMessageComponent;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
-  private router: Router,
-  private activeRoute: ActivatedRoute,
-  private notificationService: NotificationService) {
+    private router: Router,
+    private activeRoute: ActivatedRoute,
+    private notificationService: NotificationService,
+    private ls: LanguageService) {
     this.activeRoute.paramMap.subscribe((params: ParamMap)  => {
       const id = params.get('id');
       this.handleRouteChanged(+id);
@@ -39,8 +41,8 @@ export class ManageCourseComponent implements OnInit {
 
   private async handleRouteChanged(id: number): Promise<void> {
     if (id > 0) {
-      this.buttonText = 'Speichern';
-      this.headingText = 'Kurs #' + id + ' editieren';
+      this.buttonText = this.ls.label('save');
+      this.headingText = this.ls.label('editcourse', String(id));
       try {
         this.notificationService.emitLoading();
         this.course = await this.cranDataService.getCourse(id);
@@ -49,8 +51,8 @@ export class ManageCourseComponent implements OnInit {
         this.notificationService.emitError(error);
       }
     } else {
-      this.buttonText = 'Hinzufügen';
-      this.headingText = 'Kurs hinzufügen';
+      this.buttonText = this.ls.label('add');
+      this.headingText = this.ls.label('addcourse');
     }
     this.actionInProgress = false;
   }

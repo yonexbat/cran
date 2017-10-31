@@ -237,6 +237,9 @@ namespace cran.Data
         private void MapCourse(EntityTypeBuilder<Course> typeBuilder)
         {
             typeBuilder.ToTable("CranCourse");
+
+            typeBuilder.Property(c => c.Language)
+           .HasColumnName("IdLanguage");
         }
 
         private void MapQuestionOption(EntityTypeBuilder<QuestionOption> typeBuilder)

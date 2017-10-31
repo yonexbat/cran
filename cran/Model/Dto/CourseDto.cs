@@ -10,7 +10,9 @@ namespace cran.Model.Dto
         public string Description { get; set; }
         public bool IsEditable { get; set; }
         public int NumQuestionsToAsk { get; set; }
+        public string Language { get; set; }
 
-        public IList<TagDto> Tags = new List<TagDto>();
+        public IList<TagDto> Tags = new List<TagDto>();        
+
     }
 }
