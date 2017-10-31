@@ -58,6 +58,7 @@ namespace cran.Services
                 Title = questionEntity.Title,
                 Explanation = questionEntity.Explanation,
                 Status = (int)questionEntity.Status,
+                Language = questionEntity.Language.ToString(),
             };
             questionVm.IsEditable = await HasWriteAccess(questionEntity.IdUser);
             questionVm.Votes = await _commentsService.GetVoteAsync(id);

@@ -424,11 +424,11 @@ export class CranDataServiceMock implements ICranDataService {
           numQuestionsToAsk: 3,
           tags: [{id: 3, name: 'Js', description: 'desc'},
                  {id: 5, name: 'Hello', description: 'desc'}]},
-        {id: 1,  numQuestionsToAsk: 3, description: 'Test Kurs bla', title: 'Kursus', tags: [{id: 3, name: 'Js', description: 'desc'}]},
         {id: 1, numQuestionsToAsk: 3, description: 'Test Kurs bla', title: 'Kursus', tags: [{id: 3, name: 'Js', description: 'desc'}]},
         {id: 1, numQuestionsToAsk: 3, description: 'Test Kurs bla', title: 'Kursus', tags: [{id: 3, name: 'Js', description: 'desc'}]},
         {id: 1, numQuestionsToAsk: 3, description: 'Test Kurs bla', title: 'Kursus', tags: [{id: 3, name: 'Js', description: 'desc'}]},
-        {id: 1, numQuestionsToAsk: 3, description: 'GLOBI in den Ferien', title: 'Kursus', 
+        {id: 1, numQuestionsToAsk: 3, description: 'Test Kurs bla', title: 'Kursus', tags: [{id: 3, name: 'Js', description: 'desc'}]},
+        {id: 1, numQuestionsToAsk: 3, description: 'GLOBI in den Ferien', title: 'Kursus',
          tags: [{id: 3, name: 'Js', description: 'desc'}]},
       ],
     };
@@ -457,6 +457,7 @@ export class CranDataServiceMock implements ICranDataService {
         question.explanation = 'My explanation';
         question.status = 1;
         question.isEditable = true;
+        question.language = 'De';
         question.votes = {
           downVotes: 2,
           upVotes: 12,

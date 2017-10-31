@@ -3,11 +3,13 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 import {Question} from '../model/question';
 import {QuestionOption} from '../model/questionoption';
+import {LanguageInfo} from '../model/languageInfo';
 import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {StatusMessageComponent} from '../status-message/status-message.component';
 import {QuestionPreviewComponent} from '../question-preview/question-preview.component';
 import {NotificationService} from '../notification.service';
+import {LanguageService} from '../language.service';
 import {Binary} from '../model/binary';
 import {Image} from '../model/image';
 
@@ -27,6 +29,8 @@ export class ManageQuestionComponent implements OnInit {
 
   public buttonText: string;
 
+  private language: string;
+
   @ViewChild('statusMessage') statusMessage: StatusMessageComponent;
 
   @ViewChild('questionPreview') questionPreview: QuestionPreviewComponent;
@@ -35,7 +39,8 @@ export class ManageQuestionComponent implements OnInit {
     @Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
     private router: Router,
     private activeRoute: ActivatedRoute,
-    private notificationService: NotificationService) {
+    private notificationService: NotificationService,
+    private ls: LanguageService) {
 
         this.activeRoute.paramMap.subscribe((params: ParamMap)  => {
           const id = params.get('id');

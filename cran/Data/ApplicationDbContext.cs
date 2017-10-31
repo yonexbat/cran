@@ -266,6 +266,10 @@ namespace cran.Data
                 .HasOne(q => q.User)
                 .WithMany(u => u.Questions)
                 .HasForeignKey(q => q.IdUser);
+
+            typeBuilder.Property(q => q.Language)
+            .HasColumnName("IdLanguage");
+
         }
 
         private void MapTag(EntityTypeBuilder<Tag> typeBuilder)

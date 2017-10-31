@@ -25,5 +25,7 @@ namespace cran.Model.Dto
         public VotesDto Votes { get; set; }
 
         public IList<ImageDto> Images = new List<ImageDto>();
+        
+        public string Language { get;set; }
     }
 }

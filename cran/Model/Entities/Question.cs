@@ -13,6 +13,7 @@ namespace cran.Model.Entities
         public virtual string Explanation { get; set; }
         public virtual int IdUser { get; set; }
         public virtual QuestionStatus Status { get; set; }
+        public virtual Language Language { get; set; }
 
         public virtual CranUser User { get; set; }
         public virtual IList<QuestionOption> Options { get; set; } = new List<QuestionOption>();

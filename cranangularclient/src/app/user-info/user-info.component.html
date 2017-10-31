@@ -1,7 +1,9 @@
 <span *ngIf="userInfo">
   {{userInfo.name}} 
   <span (click)= "setEn()" 
-        [class.activeLanguage]="isEn()">E</span>
+        [class.activeLanguage]="isEn()"
+        title="English">E</span>
   <span (click)="setDe()"
-      [class.activeLanguage]="isDe()">D</span>
+      [class.activeLanguage]="isDe()"
+      title="Deutsch">D</span>
 </span>
