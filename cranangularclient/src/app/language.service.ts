@@ -49,6 +49,8 @@ export class LanguageService {
     'comment' : {valueDe : 'Kommentar', valueEn : 'Comment'},
     'addcomment' : {valueDe : 'Kommentar hinzufügen', valueEn : 'Add comment'},
     'nocoursesdone' : {valueDe : 'Keine Kurse absolviert.', valueEn : 'No courses done.'},
+    'namerequired' : {valueDe : 'Name ist ein Mussfeld', valueEn : 'Name is required'},
+    'edittag' : {valueDe : 'Tag #{0} editieren', valueEn : 'Edit tag #{0}'},
   };
 
 

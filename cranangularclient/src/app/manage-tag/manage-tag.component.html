@@ -1,7 +1,7 @@
 <div class="container">
   
     
-    <h1>{{headingText}}</h1>    
+    <h1>{{getHeadingText()}}</h1>    
     <form  #tagForm="ngForm">
            
         <div class="row form-group">
@@ -18,7 +18,7 @@
             
                     <div [hidden]="name.valid || name.pristine"
                           class="alert alert-danger">
-                        Name ist ein Mussfeld
+                        {{ls.label('namerequired')}}
                     </div>
                   </div>                             
             
@@ -30,7 +30,7 @@
       
       <div class="col-md-12">
           
-        <label for="description">Beschreibung</label>        
+        <label for="description">{{ls.label('description')}}</label>        
 
         <app-rich-text-box 
           [elementId]="'description'"
@@ -54,7 +54,7 @@
                   class="btn btn btn-success" 
                   (click)="save()" 
                   [disabled]="!tagForm.form.valid || actionInProgress">
-                {{buttonText}}
+                {{getSaveButtonText()}}
               </button> 
             </div>    
     

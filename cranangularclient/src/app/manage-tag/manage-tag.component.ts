@@ -6,6 +6,7 @@ import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
 import {StatusMessageComponent} from '../status-message/status-message.component';
+import {LanguageService} from '../language.service';
 
 
 @Component({
@@ -25,7 +26,8 @@ export class ManageTagComponent implements OnInit {
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
   private router: Router,
   private activeRoute: ActivatedRoute,
-  private notificationService: NotificationService) {
+  private notificationService: NotificationService,
+  private ls: LanguageService) {
     this.activeRoute.paramMap.subscribe((params: ParamMap)  => {
       const id = params.get('id');
       this.handleRouteChanged(+id);
@@ -54,6 +56,22 @@ export class ManageTagComponent implements OnInit {
       this.headingText = 'Tag hinzufügen';
     }
     this.actionInProgress = false;
+  }
+
+  private getSaveButtonText(): string  {
+    if (this.tag.id > 0) {
+      return this.ls.label('save');
+    } else {
+      return this.ls.label('add');
+    }
+  }
+
+  private getHeadingText(): string {
+    if (this.tag.id > 0) {
+      return this.ls.label('edittag', String(this.tag.id ));
+    } else {
+      return this.ls.label('addtag');
+    }
   }
 
   private async save(): Promise<void> {
