@@ -7,7 +7,7 @@
         <!-- Titel -->
         <div class="col-md-4">
             
-          <label for="title">Titel</label>
+          <label for="title">{{ls.label('title')}}</label>
 
           <input type="text" class="form-control" id="title"
                   [(ngModel)]="search.title" name="title"
@@ -18,7 +18,7 @@
         <div class="col-md-4">
             <app-tag-finder 
                 [tagsArray]="search.andTags" 
-                [title]="'Und Tags'"
+                [title]="ls.label('andtags')"
                 (tagSelectionChanged) = "tagSelectionChanged()">              
             </app-tag-finder>
         </div>
@@ -27,7 +27,7 @@
         <div class="col-md-4">
           <app-tag-finder 
             [tagsArray]="search.orTags"
-            [title]="'Oder Tags'"
+            [title]="ls.label('ortags')"
             (tagSelectionChanged) = "tagSelectionChanged()">            
           </app-tag-finder>
         </div>

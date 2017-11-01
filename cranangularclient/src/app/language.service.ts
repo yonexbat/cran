@@ -57,6 +57,8 @@ export class LanguageService {
     'saveok' : {valueDe : 'Die Daten wurden gespeichert', valueEn : 'Data saved'},
     'edit' : {valueDe : 'Bearbeiten', valueEn : 'Edit'},
     'count' : {valueDe : 'Anzahl', valueEn : 'Elements found'},
+    'andtags' : {valueDe : 'Und Tags', valueEn : 'And tags'},
+    'ortags' : {valueDe : 'Oder Tags', valueEn : 'Or tags'},
   };
 
 
