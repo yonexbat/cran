@@ -1,5 +1,7 @@
 import { Component, OnInit, TemplateRef, Input, EventEmitter, Output } from '@angular/core';
+
 import {PagedResult} from '../model/pagedresult';
+import {LanguageService} from '../language.service';
 
 const numpages = 5;
 
@@ -10,7 +12,7 @@ const numpages = 5;
 })
 export class PagerComponent implements OnInit {
 
-  constructor() { }
+  constructor(private ls: LanguageService) { }
 
   @Input()
   public itemTemplate: TemplateRef<any>;

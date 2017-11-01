@@ -1,4 +1,5 @@
 import { Component, OnInit, trigger, state, animate, transition, style } from '@angular/core';
+import {LanguageService} from '../language.service';
 
 @Component({
   selector: 'app-status-message',
@@ -16,23 +17,19 @@ import { Component, OnInit, trigger, state, animate, transition, style } from '@
 })
 export class StatusMessageComponent implements OnInit {
 
-  public messageVisible = false;
-
-  visibility = 'hidden';
-
-  readonly SaveOk = `Die Daten wurden gespeichert`;
-
-  public message: string;
-  public clazzes: string;
+  private messageVisible = false;
+  private visibility = 'hidden';
+  private message: string;
+  private clazzes: string;
 
 
-  constructor() { }
+  constructor(private ls: LanguageService) { }
 
   ngOnInit() {
   }
 
   public showSaveSuccess() {
-    this.message = this.SaveOk;
+    this.message = this.ls.label('saveok');
     this.messageVisible = true;
     this.visibility = 'shown';
     this.clazzes = 'alert-success';
@@ -54,7 +51,6 @@ export class StatusMessageComponent implements OnInit {
   public animationDone(event: any) {
 
     if (event.toState === 'shown' && event.phaseName === 'done') {
-        // this.messageVisible = false;
         this.visibility = 'hidden';
     }
 

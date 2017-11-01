@@ -23,7 +23,7 @@
             <span (click)="pageClicked(nextPagesFirstPage())" aria-hidden="true">&raquo;</span>          
         </li>
       </ul>  
-      <div><span>Anzahl: {{pagedResult.count}}</span></div>
+      <div><span>{{ls.label('count')}}: {{pagedResult.count}}</span></div>
   </ng-template>
   
   <div *ngIf="pagedResult && pagedResult.data && pagedResult.data.length > 0;then datalist else nodatafound">

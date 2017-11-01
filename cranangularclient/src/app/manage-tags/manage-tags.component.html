@@ -5,7 +5,7 @@
            <!-- Tag-Name -->
            <div class="col-md-4">
               
-            <label for="title">Tag Name</label>
+            <label for="title">{{ls.label('tagname')}}</label>
   
             <input type="text" class="form-control" id="title"
                     [(ngModel)]="search.name" name="title"
@@ -21,7 +21,7 @@
               type="button" 
               class="btn btn btn-success" 
               (click)="searchTags(0)">
-              Suchen
+              {{ls.label('search')}}
             </button>                
           </div>
         </div>

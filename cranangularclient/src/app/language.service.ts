@@ -51,6 +51,12 @@ export class LanguageService {
     'nocoursesdone' : {valueDe : 'Keine Kurse absolviert.', valueEn : 'No courses done.'},
     'namerequired' : {valueDe : 'Name ist ein Mussfeld', valueEn : 'Name is required'},
     'edittag' : {valueDe : 'Tag #{0} editieren', valueEn : 'Edit tag #{0}'},
+    'name' : {valueDe : 'Name', valueEn : 'Name'},
+    'tagname' : {valueDe : 'Tagname', valueEn : 'Name of tag'},
+    'search' : {valueDe : 'Suchen', valueEn : 'Search'},
+    'saveok' : {valueDe : 'Die Daten wurden gespeichert', valueEn : 'Data saved'},
+    'edit' : {valueDe : 'Bearbeiten', valueEn : 'Edit'},
+    'count' : {valueDe : 'Anzahl', valueEn : 'Elements found'},
   };
 
 

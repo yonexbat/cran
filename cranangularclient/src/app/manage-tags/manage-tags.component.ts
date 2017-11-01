@@ -8,6 +8,7 @@ import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
 import {PagedResult} from '../model/pagedresult';
 import {Tag} from '../model/tag';
+import {LanguageService} from '../language.service';
 
 @Component({
   selector: 'app-manage-tags',
@@ -21,9 +22,10 @@ export class ManageTagsComponent implements OnInit {
   private pagedResult: PagedResult<Tag> = new PagedResult<Tag>();
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
-  private router: Router,
-  private activeRoute: ActivatedRoute,
-  private notificationService: NotificationService) {
+    private router: Router,
+    private activeRoute: ActivatedRoute,
+    private notificationService: NotificationService,
+    private ls: LanguageService) {
     this.activeRoute.queryParams.subscribe((params: ParamMap)  => {
       this.handleRouteChanged(params);
     });

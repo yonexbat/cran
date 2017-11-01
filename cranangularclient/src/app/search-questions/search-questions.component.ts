@@ -7,6 +7,7 @@ import {QuestionListEntry} from '../model/questionlistentry';
 import {SearchQParameters} from '../model/searchqparameters';
 import {PagedResult} from '../model/pagedresult';
 import {NotificationService} from '../notification.service';
+import {LanguageService} from '../language.service';
 
 @Component({
   selector: 'app-search-questions',
@@ -22,7 +23,8 @@ export class SearchQuestionsComponent implements OnInit {
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
     private router: Router,
     private activeRoute: ActivatedRoute,
-    private notificationService: NotificationService) {
+    private notificationService: NotificationService,
+    private ls: LanguageService) {
 
       this.activeRoute.queryParams.subscribe((params: ParamMap)  => {
         this.handleRouteChanged(params);

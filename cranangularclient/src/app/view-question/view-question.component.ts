@@ -7,6 +7,7 @@ import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
 import {Question} from '../model/question';
 import {CommentsComponent} from '../comments/comments.component';
+import {LanguageService} from '../language.service';
 
 @Component({
   selector: 'app-view-question',
@@ -20,10 +21,11 @@ export class ViewQuestionComponent implements OnInit {
   private question: Question;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
-  private router: Router,
-  private activeRoute: ActivatedRoute,
-  private notificationService: NotificationService) {
-    this.activeRoute.paramMap.subscribe((params: ParamMap)  => {
+    private router: Router,
+    private activeRoute: ActivatedRoute,
+    private notificationService: NotificationService,
+    private ls: LanguageService) {
+      this.activeRoute.paramMap.subscribe((params: ParamMap)  => {
       const id = params.get('id');
       this.handleRouteChanged(+id);
     });
