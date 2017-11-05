@@ -36,6 +36,8 @@ export class SearchQuestionsComponent implements OnInit {
     this.lastParams = params;
     this.search.page = +params['pageNumber'];
     this.search.title = params['title'];
+    this.search.language = params['language'];
+    this.search.status = +params['status'];
 
     const andTagsJson = params['andTags'];
     const orTagsJson = params['orTags'];
@@ -73,6 +75,8 @@ export class SearchQuestionsComponent implements OnInit {
          title: this.search.title,
          andTags: andTags,
          orTags: orTags,
+         language: this.search.language,
+         status: this.search.status,
       }
     };
 
@@ -91,7 +95,7 @@ export class SearchQuestionsComponent implements OnInit {
     }
   }
 
-  private tagSelectionChanged() {
+  private executeSearch() {
     this.searchQuestions(0);
   }
 

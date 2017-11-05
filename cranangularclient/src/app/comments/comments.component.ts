@@ -72,7 +72,7 @@ export class CommentsComponent implements OnInit {
   }
 
   private async deleteComment(comment: Comment): Promise<void> {
-    if (!confirm('Kommentar löschen?')) {
+    if (!confirm(this.ls.label('deletecomment'))) {
       return;
     }
     try {

@@ -19,7 +19,7 @@
             <app-tag-finder 
                 [tagsArray]="search.andTags" 
                 [title]="ls.label('andtags')"
-                (tagSelectionChanged) = "tagSelectionChanged()">              
+                (tagSelectionChanged) = "executeSearch()">              
             </app-tag-finder>
         </div>
 
@@ -28,11 +28,53 @@
           <app-tag-finder 
             [tagsArray]="search.orTags"
             [title]="ls.label('ortags')"
-            (tagSelectionChanged) = "tagSelectionChanged()">            
+            (tagSelectionChanged) = "executeSearch()">            
           </app-tag-finder>
         </div>
 
       </div>  
+
+      <div class="row form-group">
+        
+        <!-- Sprache -->
+        <div class="col-md-4">
+
+          <label for="language">
+                {{ls.label('language')}}
+          </label>
+
+          <select class="form-control"
+            #language="ngModel"
+            [(ngModel)]="search.language"
+            (change)="executeSearch()"
+            name="language" 
+            id="language"
+            required>
+              <option [value]=""></option>                  
+              <option [value]="'De'">Deutsch</option>
+              <option [value]="'En'">English</option>
+          </select>
+        </div>
+
+        <!-- Status -->
+        <div class="col-md-4">
+
+          <label for="status">
+            {{ls.label('state')}}
+          </label>
+
+          <select class="form-control"
+            #status="ngModel"
+            [(ngModel)]="search.status"
+            (change)="executeSearch()"
+            name="status" id="status">
+            <option [value]=""></option> 
+            <option [value]="0">{{ls.label('created')}}</option>
+            <option [value]="1">{{ls.label('approved')}}</option>
+          </select>
+        </div>
+
+      </div>
 
       <div class="row form-group">
         <!-- Buttons -->

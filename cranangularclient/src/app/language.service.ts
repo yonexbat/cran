@@ -59,6 +59,8 @@ export class LanguageService {
     'count' : {valueDe : 'Anzahl', valueEn : 'Elements found'},
     'andtags' : {valueDe : 'Und Tags', valueEn : 'And tags'},
     'ortags' : {valueDe : 'Oder Tags', valueEn : 'Or tags'},
+    'deletecomment' : {valueDe : 'Kommentar löschen?', valueEn : 'Delete comment?'},
+    'nocomments' : {valueDe : 'Keine Kommentare vorhanden', valueEn : 'No comments yet'},
   };
 
 

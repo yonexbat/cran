@@ -54,7 +54,7 @@
     <div class="pagedresult">    
       <app-pager [itemTemplate]="listItem"
                 [pagedResult]="comments"
-                [nodatafoundmessage]="'Keine Kommentare vorhanden'"
+                [nodatafoundmessage]="ls.label('nocomments')"
                 (onSelectedPageChanged)="pageSelected($event)">            
       </app-pager>
     </div>
