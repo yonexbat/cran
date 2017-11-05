@@ -34,6 +34,7 @@ export interface ICranDataService {
   getTag(id: number): Promise<Tag>;
   insertTag(tag: Tag): Promise<number>;
   updateTag(tag: Tag): Promise<any>;
+  deleteTag(id: number): Promise<any>;
   searchForTags(parameters: SearchTags): Promise<PagedResult<Tag>>;
   startCourse(courseId: number): Promise<CourseInstance>;
   answerQuestionAndGetSolution(answer: QuestionAnswer): Promise<Question>;

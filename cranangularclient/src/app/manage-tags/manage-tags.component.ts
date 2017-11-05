@@ -9,6 +9,7 @@ import {NotificationService} from '../notification.service';
 import {PagedResult} from '../model/pagedresult';
 import {Tag} from '../model/tag';
 import {LanguageService} from '../language.service';
+import {ConfirmService} from '../confirm.service';
 
 @Component({
   selector: 'app-manage-tags',
@@ -25,7 +26,8 @@ export class ManageTagsComponent implements OnInit {
     private router: Router,
     private activeRoute: ActivatedRoute,
     private notificationService: NotificationService,
-    private ls: LanguageService) {
+    private ls: LanguageService,
+    private confirmService: ConfirmService) {
     this.activeRoute.queryParams.subscribe((params: ParamMap)  => {
       this.handleRouteChanged(params);
     });
@@ -72,6 +74,18 @@ export class ManageTagsComponent implements OnInit {
   }
 
   private async deleteTag(tag: Tag): Promise<any> {
+    try {
+      await this.confirmService.confirm(this.ls.label('deletetag'), this.ls.label('deletetagq', tag.name));
+      try {
+        this.notificationService.emitLoading();
+        await this.cranDataServiceService.deleteTag(tag.id);
+        this.notificationService.emitDone();
+        await this.handleRouteChanged(this.lastParams);
+      } catch (error) {
+        this.notificationService.emitError(error);
+      }
+    } catch (error) {
+      // that is ok, cancel from user.
+    }
   }
-
 }

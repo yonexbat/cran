@@ -129,6 +129,12 @@ namespace cran.Controllers
             return await _tagService.SearchForTags(parameters);
         }
 
+        [HttpDelete("[action]/{id}")]
+        public async Task DeleteTag(int id)
+        {
+            await _tagService.DeleteTagAsync(id);
+        }
+
         #endregion
 
         #region CourseService

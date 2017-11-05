@@ -33,6 +33,12 @@ export class CranDataService implements ICranDataService {
 
   }
 
+  deleteTag(id: number): Promise<any> {
+    return this.http.delete('/api/Data/DeleteTag/' + id)
+    .toPromise()
+    .catch(this.handleError);
+  }
+
   getCourse(id: number): Promise<Course> {
     return this.http.get('/api/Data/GetCourse/' + id)
     .toPromise()

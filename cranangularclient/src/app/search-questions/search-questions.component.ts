@@ -103,7 +103,7 @@ export class SearchQuestionsComponent implements OnInit {
 
   public async deleteQuestion(question: QuestionListEntry): Promise<void> {
     try {
-      await this.confirmService.confirm(this.ls.label('deletequestion'), this.ls.label('deletequestionq'));
+      await this.confirmService.confirm(this.ls.label('deletequestion'), this.ls.label('deletequestionq', String(question.id)));
       try {
         this.notificationService.emitLoading();
         await this.cranDataServiceService.deleteQuestion(question.id);

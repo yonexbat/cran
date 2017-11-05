@@ -1,6 +1,7 @@
-import { Component, OnInit, Inject, } from '@angular/core';
+import { Component, OnInit, Inject,  } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { Router, } from '@angular/router';
+import { DatePipe,  } from '@angular/common';
 
 import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
@@ -22,7 +23,8 @@ export class CourseInstanceListComponent implements OnInit {
     private router: Router,
     private notificationService: NotificationService,
     private ls: LanguageService,
-    private confirmService: ConfirmService) { }
+    private confirmService: ConfirmService,
+    private datePipe: DatePipe) { }
 
   ngOnInit() {
     this.loadInstances();
@@ -40,7 +42,9 @@ export class CourseInstanceListComponent implements OnInit {
 
   public async deleteCourseInstance(instance: CourseInstanceListEntry): Promise<void>  {
     try {
-      await this.confirmService.confirm(this.ls.label('deletecourseinstance'), this.ls.label('deletecourseinstanceq'));
+      const timespamp = this.datePipe.transform(instance.insertDate, 'dd.MM.yyyy HH:mm');
+      await this.confirmService.confirm(this.ls.label('deletecourseinstance'),
+        this.ls.label('deletecourseinstanceq', `${instance.title} ${timespamp}`));
       try {
         this.notificationService.emitLoading();
         await this.cranDataServiceService.deleteCourseInstance(instance.idCourseInstance);

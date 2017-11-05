@@ -90,5 +90,28 @@ namespace cran.Services
             return resultDto;
 
         }
+
+        public async Task DeleteTagAsync(int id)
+        {
+            Tag tag = await _context.FindAsync<Tag>(id);
+            
+            //Tags question
+            IList<RelQuestionTag> relQuestionTags = await _context.RelQuestionTags.Where(x => x.Tag.Id == id).ToListAsync(); 
+            foreach(RelQuestionTag relQuestionTag in relQuestionTags)
+            {
+                _context.Remove(relQuestionTag);
+            }
+
+            //Tags Course
+            IList<RelCourseTag> relCourseTags = await _context.RelCourseTags.Where(x => x.Tag.Id == id).ToListAsync();
+            foreach (RelCourseTag relcourseTag in relCourseTags)
+            {
+                _context.Remove(relcourseTag);
+            }
+
+            _context.Remove(tag);
+
+            await SaveChangesAsync();
+        }
     }
 }

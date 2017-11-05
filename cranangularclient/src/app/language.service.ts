@@ -64,9 +64,11 @@ export class LanguageService {
     'ok' : {valueDe : 'Ok', valueEn : 'Ok'},
     'cancel' : {valueDe : 'Abbrechen', valueEn : 'Cancel'},
     'deletecourseinstance' : {valueDe : 'Resultat löschen', valueEn : 'Delete result'},
-    'deletecourseinstanceq' : {valueDe : 'Resultat löschen?', valueEn : 'Delete result?'},
+    'deletecourseinstanceq' : {valueDe : 'Resultat {0} löschen?', valueEn : 'Delete result?'},
     'deletequestion' : {valueDe : 'Frage löschen', valueEn : 'Delete question'},
-    'deletequestionq' : {valueDe : 'Frage löschen?', valueEn : 'Delete question?'},
+    'deletequestionq' : {valueDe : 'Frage mit Id {0} löschen?', valueEn : 'Delete question with id {0}?'},
+    'deletetag' : {valueDe : 'Tag löschen', valueEn : 'Delete tag'},
+    'deletetagq' : {valueDe : 'Tag {0} löschen?', valueEn : 'Delete tag {0}?'},
   };
 
 
