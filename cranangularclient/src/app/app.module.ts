@@ -39,6 +39,8 @@ import { UserInfoComponent } from './user-info/user-info.component';
 import { ManageTagsComponent } from './manage-tags/manage-tags.component';
 import { ManageTagComponent } from './manage-tag/manage-tag.component';
 import { ManageCourseComponent } from './manage-course/manage-course.component';
+import { ConfirmComponent } from './confirm/confirm.component';
+import { ConfirmService } from './confirm.service';
 
 function isDevelopment() {
   return window.location && window.location.port && window.location.port === '4200';
@@ -78,6 +80,7 @@ if (isDevelopment()) {
     ManageTagsComponent,
     ManageTagComponent,
     ManageCourseComponent,
+    ConfirmComponent,
   ],
   imports: [
     BrowserModule,
@@ -92,6 +95,7 @@ if (isDevelopment()) {
     HttpModule,
     NotificationService,
     LanguageService,
+    ConfirmService,
   ],
   bootstrap: [AppComponent]
 })

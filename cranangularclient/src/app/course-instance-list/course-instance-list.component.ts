@@ -7,6 +7,7 @@ import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {CourseInstanceListEntry} from '../model/courseinstancelistentry';
 import {NotificationService} from '../notification.service';
 import {LanguageService} from '../language.service';
+import {ConfirmService} from '../confirm.service';
 
 @Component({
   selector: 'app-course-instance-list',
@@ -20,7 +21,8 @@ export class CourseInstanceListComponent implements OnInit {
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
     private router: Router,
     private notificationService: NotificationService,
-    private ls: LanguageService) { }
+    private ls: LanguageService,
+    private confirmService: ConfirmService) { }
 
   ngOnInit() {
     this.loadInstances();
@@ -37,7 +39,8 @@ export class CourseInstanceListComponent implements OnInit {
   }
 
   public async deleteCourseInstance(instance: CourseInstanceListEntry): Promise<void>  {
-    if (confirm('Resultat löschen?')) {
+    try {
+      await this.confirmService.confirm(this.ls.label('deletecourseinstance'), this.ls.label('deletecourseinstanceq'));
       try {
         this.notificationService.emitLoading();
         await this.cranDataServiceService.deleteCourseInstance(instance.idCourseInstance);
@@ -46,6 +49,8 @@ export class CourseInstanceListComponent implements OnInit {
       } catch (error) {
         this.notificationService.emitError(error);
       }
+    } catch (error) {
+      // that is ok, cancel from user.
     }
   }
 

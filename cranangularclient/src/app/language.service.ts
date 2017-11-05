@@ -61,6 +61,10 @@ export class LanguageService {
     'ortags' : {valueDe : 'Oder Tags', valueEn : 'Or tags'},
     'deletecomment' : {valueDe : 'Kommentar löschen?', valueEn : 'Delete comment?'},
     'nocomments' : {valueDe : 'Keine Kommentare vorhanden', valueEn : 'No comments yet'},
+    'ok' : {valueDe : 'Ok', valueEn : 'Ok'},
+    'cancel' : {valueDe : 'Abbrechen', valueEn : 'Cancel'},
+    'deletecourseinstance' : {valueDe : 'Resultat löschen', valueEn : 'Delete result'},
+    'deletecourseinstanceq' : {valueDe : 'Resultat löschen?', valueEn : 'Delete result?'},
   };
 
 

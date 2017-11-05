@@ -272,16 +272,14 @@ namespace cran.Services
                 queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x => x.RelTags.Any(rel => tagids.Contains(rel.Tag.Id)));
             }
 
-            if(!string.IsNullOrWhiteSpace(parameters.Language))
+            if(parameters.Language.HasValue)
             {
-                Language lang = System.Enum.Parse<Language>(parameters.Language);
-                queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x => x.Language == lang);
+                queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x => x.Language == parameters.Language);
             }
 
             if(parameters.Status.HasValue)
             {
-                QuestionStatus status = (QuestionStatus) parameters.Status;
-                queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x => x.Status == status);
+                queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x => x.Status == parameters.Status);
             }
 
             PagedResultDto<QuestionListEntryDto> resultDto = new PagedResultDto<QuestionListEntryDto>();
