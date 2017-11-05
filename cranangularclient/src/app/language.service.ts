@@ -65,6 +65,8 @@ export class LanguageService {
     'cancel' : {valueDe : 'Abbrechen', valueEn : 'Cancel'},
     'deletecourseinstance' : {valueDe : 'Resultat löschen', valueEn : 'Delete result'},
     'deletecourseinstanceq' : {valueDe : 'Resultat löschen?', valueEn : 'Delete result?'},
+    'deletequestion' : {valueDe : 'Frage löschen', valueEn : 'Delete question'},
+    'deletequestionq' : {valueDe : 'Frage löschen?', valueEn : 'Delete question?'},
   };
 
 

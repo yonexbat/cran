@@ -6,6 +6,8 @@ import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {QuestionListEntry} from '../model/questionlistentry';
 import {NotificationService} from '../notification.service';
+import {ConfirmService} from '../confirm.service';
+import {LanguageService} from '../language.service';
 
 
 @Component({
@@ -19,7 +21,9 @@ export class QuestionListComponent implements OnInit {
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
     private router: Router,
-    private notificationService: NotificationService) { }
+    private notificationService: NotificationService,
+    private confirmService: ConfirmService,
+    private ls: LanguageService) { }
 
   ngOnInit() {
     this.loadQuestions();
@@ -34,7 +38,8 @@ export class QuestionListComponent implements OnInit {
   }
 
   public async deleteQuestion(question: QuestionListEntry): Promise<void> {
-    if (confirm('Frage löschen?')) {
+    try {
+      await this.confirmService.confirm(this.ls.label('deletequestion'), this.ls.label('deletequestionq'));
       try {
         this.notificationService.emitLoading();
         await this.cranDataServiceService.deleteQuestion(question.id);
@@ -43,6 +48,8 @@ export class QuestionListComponent implements OnInit {
         this.notificationService.emitError(error);
       }
       await this.loadQuestions();
+    } catch (err) {
+      // that is ok
     }
   }
 

@@ -8,6 +8,7 @@ import {SearchQParameters} from '../model/searchqparameters';
 import {PagedResult} from '../model/pagedresult';
 import {NotificationService} from '../notification.service';
 import {LanguageService} from '../language.service';
+import {ConfirmService} from '../confirm.service';
 
 @Component({
   selector: 'app-search-questions',
@@ -24,7 +25,8 @@ export class SearchQuestionsComponent implements OnInit {
     private router: Router,
     private activeRoute: ActivatedRoute,
     private notificationService: NotificationService,
-    private ls: LanguageService) {
+    private ls: LanguageService,
+    private confirmService: ConfirmService) {
 
       this.activeRoute.queryParams.subscribe((params: ParamMap)  => {
         this.handleRouteChanged(params);
@@ -100,11 +102,20 @@ export class SearchQuestionsComponent implements OnInit {
   }
 
   public async deleteQuestion(question: QuestionListEntry): Promise<void> {
-    if (confirm('Frage löschen?')) {
-      await this.cranDataServiceService.deleteQuestion(question.id);
-      if (this.lastParams) {
-        await this.handleRouteChanged(this.lastParams);
+    try {
+      await this.confirmService.confirm(this.ls.label('deletequestion'), this.ls.label('deletequestionq'));
+      try {
+        this.notificationService.emitLoading();
+        await this.cranDataServiceService.deleteQuestion(question.id);
+        this.notificationService.emitDone();
+        if (this.lastParams) {
+          await this.handleRouteChanged(this.lastParams);
+        }
+      } catch (error) {
+        this.notificationService.emitError(error);
       }
+    } catch (err) {
+      // Thats ok, user cancels deletion
     }
   }
 
