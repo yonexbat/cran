@@ -63,8 +63,8 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
         body: formData,
       }).then((response: any) => {
         if (response.status !== 200) {
-          onError.emit(`An error occured. Status: ${response.status}`);
-          return;
+          const error = `An error occured. Status: ${response.status}`;
+          throw new Error(error);
         }
         return response.json();
       }).then(files => {
