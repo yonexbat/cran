@@ -145,6 +145,10 @@ export class ManageQuestionComponent implements OnInit {
     }
   }
 
+  private addImagesError(error: string) {
+    this.notificationService.emitError(error);
+  }
+
   private onRemoveImage(image: Image) {
     const index = this.question.images.indexOf(image);
     this.question.images.splice(index, 1);

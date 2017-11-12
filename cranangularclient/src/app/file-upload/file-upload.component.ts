@@ -57,19 +57,22 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
       const onUploaded = this.onUploaded;
       const onError = this.onError;
       const addFileInput = this.addFileInput.bind(this);
-      const xhr = new XMLHttpRequest();
-      xhr.open('POST', '/api/Data/UploadFiles');
-      xhr.onload = function () {
-        if (this['status'] === 200) {
-            const responseText = this['responseText'];
-            const files = JSON.parse(responseText);
-            onUploaded.emit(files);
-            addFileInput();
-        } else {
-          onError.emit(this['statusText']);
+      fetch('/api/Data/UploadFiles', {
+        credentials: 'include',
+        method: 'POST',
+        body: formData,
+      }).then((response: any) => {
+        if (response.status !== 200) {
+          onError.emit(`An error occured. Status: ${response.status}`);
+          return;
         }
-      };
-      xhr.send(formData);
+        return response.json();
+      }).then(files => {
+        onUploaded.emit(files);
+        addFileInput();
+      }).catch((error) => {
+        onError.emit(error);
+      });
     }
 
   }

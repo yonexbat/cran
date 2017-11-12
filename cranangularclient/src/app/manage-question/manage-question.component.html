@@ -99,7 +99,9 @@
       </div>
       <div class="col-md-12">
         <label>{{ls.label('addimage')}}</label>   
-        <app-file-upload (onUploaded)="addImages($event)"></app-file-upload>
+        <app-file-upload 
+           (onUploaded)="addImages($event)"
+           (onError)="addImagesError($event)"></app-file-upload>
       </div>
     </div>
 
