@@ -24,6 +24,7 @@ namespace cran.Controllers
         private readonly ICommentsService _commentsService;
         private readonly IUserProfileService _userProfileService;
         private readonly ICourseInstanceService _courseInstanceService;
+        private const string Ok = "Ok";
 
         public DataController(ISecurityService securityService,
             IBinaryService binaryService,
@@ -74,9 +75,10 @@ namespace cran.Controllers
 
         [HttpPost("[action]")]
         [ValidateModel]
-        public async Task UpdateQuestion([FromBody] QuestionDto vm)
+        public async Task<JsonResult> UpdateQuestion([FromBody] QuestionDto vm)
         {
             await _questionService.UpdateQuestionAsync(vm);
+            return Json(Ok);
         }
 
         [HttpPost("[action]")]
@@ -117,9 +119,10 @@ namespace cran.Controllers
 
         [HttpPost("[action]")]
         [ValidateModel]
-        public async Task UpdateTag([FromBody] TagDto vm)
+        public async Task<JsonResult> UpdateTag([FromBody] TagDto vm)
         {
             await _tagService.UpdateTagAsync(vm);
+            return Json(Ok);
         }
 
         [HttpPost("[action]")]
@@ -130,9 +133,10 @@ namespace cran.Controllers
         }
 
         [HttpDelete("[action]/{id}")]
-        public async Task DeleteTag(int id)
+        public async Task<JsonResult> DeleteTag(int id)
         {
             await _tagService.DeleteTagAsync(id);
+            return Json(Ok);
         }
 
         #endregion
@@ -160,9 +164,10 @@ namespace cran.Controllers
 
         [HttpPost("[action]")]
         [ValidateModel]
-        public async Task UpdateCourse([FromBody] CourseDto vm)
+        public async Task<JsonResult> UpdateCourse([FromBody] CourseDto vm)
         {
             await _courseService.UpdateCourseAsync(vm);
+            return Json(Ok);
         }
 
         #endregion
@@ -184,9 +189,10 @@ namespace cran.Controllers
         }
 
         [HttpDelete("[action]/{id}")]
-        public async Task DeleteComment(int id)
+        public async Task<JsonResult> DeleteComment(int id)
         {
             await _commentsService.DeleteCommentAsync(id);
+            return Json(Ok);
         }
 
         [HttpPost("[action]")]
@@ -265,9 +271,10 @@ namespace cran.Controllers
         }
 
         [HttpDelete("[action]/{id}")]
-        public async Task DeleteCourseInstance(int id)
+        public async Task<JsonResult> DeleteCourseInstance(int id)
         {
             await _courseInstanceService.DeleteCourseInstanceAsync(id);
+            return Json(Ok);
         }
 
         #endregion

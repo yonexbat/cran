@@ -1,7 +1,6 @@
 import { Injectable, InjectionToken  } from '@angular/core';
-import { Headers, Http, RequestOptionsArgs } from '@angular/http';
+import {HttpClient} from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
-
 import {Courses} from './model/courses';
 import {Course} from './model/course';
 import {Question} from './model/question';
@@ -25,11 +24,12 @@ import {Votes} from './model/votes';
 import {Image} from './model/image';
 import {UserInfo} from './model/userinfo';
 import {SearchTags} from './model/searchtags';
+import {InsertAction} from './model/insertaction';
 
 @Injectable()
 export class CranDataService implements ICranDataService {
 
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
 
   }
 
@@ -40,21 +40,16 @@ export class CranDataService implements ICranDataService {
   }
 
   getCourse(id: number): Promise<Course> {
-    return this.http.get('/api/Data/GetCourse/' + id)
+    return this.http.get<Course>('/api/Data/GetCourse/' + id)
     .toPromise()
-    .then(  response => {
-      const result = response.json() as Course;
-      return result;
-    })
     .catch(this.handleError);
   }
 
   insertCourse(course: Course): Promise<number> {
-    return this.http.post('/api/Data/InsertCourse', course)
+    return this.http.post<InsertAction>('/api/Data/InsertCourse', course)
     .toPromise()
     .then(  data => {
-      const result = data.json();
-      return result.newId;
+      return data.newId;
     })
     .catch(this.handleError);
   }
@@ -66,22 +61,14 @@ export class CranDataService implements ICranDataService {
   }
 
   getTag(id: number): Promise<Tag> {
-    return this.http.get('/api/Data/GetTag/' + id)
+    return this.http.get<Tag>('/api/Data/GetTag/' + id)
     .toPromise()
-    .then(  response => {
-      const result = response.json() as Tag;
-      return result;
-    })
     .catch(this.handleError);
   }
 
   insertTag(tag: Tag): Promise<number> {
-    return this.http.post('/api/Data/InsertTag', tag)
+    return this.http.post<InsertAction>('/api/Data/InsertTag', tag)
     .toPromise()
-    .then(  data => {
-      const result = data.json();
-      return result.newId;
-    })
     .catch(this.handleError);
   }
 
@@ -92,42 +79,26 @@ export class CranDataService implements ICranDataService {
   }
 
   searchForTags(parameters: SearchTags): Promise<PagedResult<Tag>> {
-    return this.http.post('/api/Data/SearchForTags', parameters)
+    return this.http.post<PagedResult<Tag>>('/api/Data/SearchForTags', parameters)
     .toPromise()
-    .then(  response => {
-      const result = response.json() as PagedResult<Tag>;
-      return result;
-    })
     .catch(this.handleError);
   }
 
   getUserInfo(): Promise<UserInfo> {
-    return this.http.get('/api/Data/GetUserInfo')
+    return this.http.get<UserInfo>('/api/Data/GetUserInfo')
     .toPromise()
-    .then(response => {
-      const data = response.json() as UserInfo;
-      return data;
-     })
     .catch(this.handleError);
   }
 
   addImage(image: Image): Promise<Image> {
-    return this.http.post('/api/Data/AddImage', image)
+    return this.http.post<Image>('/api/Data/AddImage', image)
     .toPromise()
-    .then(  response => {
-      const result = response.json() as Votes;
-      return result;
-    })
     .catch(this.handleError);
   }
 
   vote(votes: Votes): Promise<Votes> {
-    return this.http.post('/api/Data/Vote', votes)
+    return this.http.post<Votes>('/api/Data/Vote', votes)
     .toPromise()
-    .then(  response => {
-      const result = response.json() as Votes;
-      return result;
-    })
     .catch(this.handleError);
   }
 
@@ -138,42 +109,26 @@ export class CranDataService implements ICranDataService {
   }
 
   addComment(comment: Comment): Promise<number> {
-    return this.http.post('/api/Data/AddComment', comment)
+    return this.http.post<Comment>('/api/Data/AddComment', comment)
     .toPromise()
-    .then(  response => {
-      const result = response.json() as number;
-      return result;
-    })
     .catch(this.handleError);
   }
 
   getComments(parameters: GetComments): Promise<PagedResult<Comment>> {
-    return this.http.post('/api/Data/GetComments', parameters)
+    return this.http.post<PagedResult<Comment>>('/api/Data/GetComments', parameters)
     .toPromise()
-    .then(  response => {
-      const result = response.json() as PagedResult<Comment>;
-      return result;
-    })
     .catch(this.handleError);
   }
 
   getRolesOfUser(): Promise<string[]> {
-    return this.http.get('/api/Data/GetRolesOfUser')
+    return this.http.get<string[]>('/api/Data/GetRolesOfUser')
     .toPromise()
-    .then(response => {
-      const data = response.json() as string[];
-      return data;
-     })
     .catch(this.handleError);
   }
 
   searchForQuestions(parameters: SearchQParameters): Promise<PagedResult<QuestionListEntry>> {
-    return this.http.post('/api/Data/SearchForQuestions', parameters)
+    return this.http.post<PagedResult<QuestionListEntry>>('/api/Data/SearchForQuestions', parameters)
     .toPromise()
-    .then(  response => {
-      const result = response.json() as PagedResult<QuestionListEntry>;
-      return result;
-    })
     .catch(this.handleError);
   }
 
@@ -184,12 +139,8 @@ export class CranDataService implements ICranDataService {
   }
 
   getCourseResult(courseInstanceId: number): Promise<Result> {
-     return this.http.get('/api/Data/GetCourseResult/' + courseInstanceId)
+     return this.http.get<Result>('/api/Data/GetCourseResult/' + courseInstanceId)
                .toPromise()
-               .then(response => {
-                 const data = response.json() as QuestionListEntry[];
-                 return data;
-                })
                .catch(this.handleError);
   }
 
@@ -200,114 +151,76 @@ export class CranDataService implements ICranDataService {
   }
 
   getMyQuestions(): Promise<QuestionListEntry[]> {
-       return this.http.get('/api/Data/GetMyQuestions')
+       return this.http.get<QuestionListEntry[]>('/api/Data/GetMyQuestions')
                .toPromise()
-               .then(response => {
-                 const data = response.json() as QuestionListEntry[];
-                 return data;
-                })
                .catch(this.handleError);
   }
 
   getMyCourseInstances(): Promise<CourseInstanceListEntry[]> {
-    return this.http.get('/api/Data/GetMyCourseInstances')
+    return this.http.get<CourseInstanceListEntry[]>('/api/Data/GetMyCourseInstances')
     .toPromise()
-    .then(response => {
-      const data = response.json() as CourseInstanceListEntry[];
-      return data;
-     })
     .catch(this.handleError);
   }
 
   answerQuestionAndGetSolution(answer: QuestionAnswer): Promise<Question> {
-     return this.http.post('/api/Data/AnswerQuestionAndGetSolution', answer)
+     return this.http.post<Question>('/api/Data/AnswerQuestionAndGetSolution', answer)
                     .toPromise()
-                    .then(  response => {
-                      const result = response.json() as Question;
-                      return result;
-                    })
                     .catch(this.handleError);
   }
 
   answerQuestionAndGetNextQuestion(answer: QuestionAnswer): Promise<CourseInstance> {
-    return this.http.post('/api/Data/AnswerQuestionAndGetNextQuestion', answer)
+    return this.http.post<CourseInstance>('/api/Data/AnswerQuestionAndGetNextQuestion', answer)
                     .toPromise()
-                    .then(  data => {
-                      const result = data.json() as CourseInstance;
-                      return result;
-                    })
                     .catch(this.handleError);
   }
 
   getQuestionToAsk(id: number): Promise<QuestionToAsk> {
-    return this.http.get('/api/Data/GetQuestionToAsk/' + id)
+    return this.http.get<QuestionToAsk>('/api/Data/GetQuestionToAsk/' + id)
                     .toPromise()
-                    .then(  response => {
-                      const result = response.json() as QuestionToAsk;
-                      return result;
-                    })
                     .catch(this.handleError);
   }
 
   startCourse(courseId: number): Promise<CourseInstance> {
     const param = new StartCourse();
     param.idCourse = courseId;
-    return this.http.post('/api/Data/StartCourse', param)
+    return this.http.post<CourseInstance>('/api/Data/StartCourse', param)
                 .toPromise()
-                .then(  data => {
-                  const result = data.json() as CourseInstance;
-                  return result;
-                })
                 .catch(this.handleError);
   }
 
   findTags(name: string): Promise<Tag[]> {
-   const params: RequestOptionsArgs = {params: {searchTerm: name}};
-   return this.http.get('/api/Data/FindTags', params)
+   const requestOptions = {
+    params: {searchTerm: name}
+   };
+   return this.http.get<Tag[]>('/api/Data/FindTags', requestOptions)
                .toPromise()
-               .then(response => {
-                 const data = response.json() as Tag[];
-                 return data;
-                })
                .catch(this.handleError);
   }
 
   public getCourses(): Promise<Courses> {
-    return this.http.get('/api/Data/GetCourses')
+    return this.http.get<Courses>('/api/Data/GetCourses')
                .toPromise()
-               .then(response => {
-                 const data = response.json() as Courses;
-                 return data;
-                })
                .catch(this.handleError);
   }
 
   public insertQuestion(question: Question): Promise<number> {
-    return this.http.post('/api/Data/InsertQuestion', question)
+    return this.http.post<InsertAction>('/api/Data/InsertQuestion', question)
                     .toPromise()
                     .then(  data => {
-                      const result = data.json();
-                      return result.newId;
+                      return data.newId;
                     })
                     .catch(this.handleError);
   }
 
-  public updateQuestion(question: Question): Promise<any> {
-    return this.http.post('/api/Data/UpdateQuestion', question)
+  public updateQuestion(question: Question): Promise<string> {
+    return this.http.post<string>('/api/Data/UpdateQuestion', question)
                     .toPromise()
-                    .then(  data => {
-                      return 'Ok';
-                    })
                     .catch(this.handleError);
   }
 
   public getQuestion(id: number): Promise<Question> {
-    return this.http.get('/api/Data/GetQuestion/' + id)
+    return this.http.get<Question>('/api/Data/GetQuestion/' + id)
                     .toPromise()
-                    .then(  response => {
-                      const result = response.json() as Question;
-                      return result;
-                    })
                     .catch(this.handleError);
   }
 

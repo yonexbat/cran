@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -87,6 +88,7 @@ if (isDevelopment()) {
     BrowserModule,
     RouterModule,
     HttpModule,
+    HttpClientModule,
     FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
