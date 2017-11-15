@@ -13,7 +13,7 @@ namespace cran.Services
 {
     public class CourseInstanceService : CraniumService, ICourseInstanceService
     {
-        private static Random random = new Random(98789);
+        private Random _random;
 
         private readonly IQuestionService _questionService;
 
@@ -23,6 +23,7 @@ namespace cran.Services
             IQuestionService questionService) : base(context, dbLogService, principal)
         {
             _questionService = questionService;
+            _random = new Random();
         }
 
         public async Task<CourseInstanceDto> StartCourseAsync(int courseId)
@@ -293,7 +294,7 @@ namespace cran.Services
                 {
                     result.NumQuestionsTotal = result.NumQuestionsAlreadyAsked + count;
                 }
-                int quesitonNo = random.Next(0, count - 1);
+                int quesitonNo = _random.Next(0, count - 1);
                 int questionId = await questionIds.Skip(quesitonNo).FirstAsync();
                 Question questionEntity = await _context.FindAsync<Question>(questionId);
 
