@@ -72,7 +72,7 @@ namespace cran.Services
             return courseVm;
         }
 
-        public async Task<InsertActionDto> InsertCourseAsync(CourseDto courseDto)
+        public async Task<int> InsertCourseAsync(CourseDto courseDto)
         {
             await _dbLogService.LogMessageAsync("Adding course");
 
@@ -85,11 +85,7 @@ namespace cran.Services
             courseDto.Id = entity.Id;
             await UpdateCourseAsync(courseDto);
 
-            return new InsertActionDto
-            {
-                NewId = courseDto.Id,
-                Status = "Ok",
-            };
+            return courseDto.Id;         
         }
 
         public async Task UpdateCourseAsync(CourseDto courseDto)

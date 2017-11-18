@@ -151,7 +151,7 @@ namespace cran.tests
                 Title = "Bla",
                 Explanation = "bla",
             };
-            var  q = await questionService.InsertQuestionAsync(qdto);
+            int  newId = await questionService.InsertQuestionAsync(qdto);
 
             //Add Binary
             IBinaryService binaryService = GetService<BinaryService>();
@@ -174,12 +174,12 @@ namespace cran.tests
             };          
 
             imageDto = await questionService.AddImageAsync(imageDto);
-            QuestionDto questionDto = await questionService.GetQuestionAsync(q.NewId);
+            QuestionDto questionDto = await questionService.GetQuestionAsync(newId);
             questionDto.Images.Add(imageDto);
 
             await questionService.UpdateQuestionAsync(questionDto);
 
-            questionDto = await questionService.GetQuestionAsync(q.NewId);
+            questionDto = await questionService.GetQuestionAsync(newId);
 
             Assert.True(questionDto.Images.Count == 1);
 

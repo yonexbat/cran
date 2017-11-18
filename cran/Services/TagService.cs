@@ -35,7 +35,7 @@ namespace cran.Services
             await SaveChangesAsync();
         }
 
-        public async Task<InsertActionDto> InsertTagAsync(TagDto vm)
+        public async Task<int> InsertTagAsync(TagDto vm)
         {
 
             Tag tag = new Tag();
@@ -43,11 +43,7 @@ namespace cran.Services
             tag.Description = vm.Description;
             _context.Tags.Add(tag);
             await SaveChangesAsync();
-            return new InsertActionDto
-            {
-                NewId = tag.Id,
-                Status = "Ok",
-            };
+            return tag.Id;           
         }
 
         public async Task<IList<TagDto>> FindTagsAsync(string searchTerm)

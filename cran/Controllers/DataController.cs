@@ -24,7 +24,7 @@ namespace cran.Controllers
         private readonly ICommentsService _commentsService;
         private readonly IUserProfileService _userProfileService;
         private readonly ICourseInstanceService _courseInstanceService;
-        private const string Ok = "Ok";
+        private const string OkReturnString = "Ok";
 
         public DataController(ISecurityService securityService,
             IBinaryService binaryService,
@@ -54,9 +54,10 @@ namespace cran.Controllers
         }
 
         [HttpDelete("[action]/{id}")]
-        public async Task DeleteQuestion(int id)
+        public async Task<JsonResult> DeleteQuestion(int id)
         {
             await _questionService.DeleteQuestionAsync(id);
+            return Json(OkReturnString);
         }
 
 
@@ -68,7 +69,7 @@ namespace cran.Controllers
 
         [HttpPost("[action]")]
         [ValidateModel]
-        public async Task<InsertActionDto> InsertQuestion([FromBody] QuestionDto vm)
+        public async Task<int> InsertQuestion([FromBody] QuestionDto vm)
         {
             return await _questionService.InsertQuestionAsync(vm);
         }
@@ -78,7 +79,7 @@ namespace cran.Controllers
         public async Task<JsonResult> UpdateQuestion([FromBody] QuestionDto vm)
         {
             await _questionService.UpdateQuestionAsync(vm);
-            return Json(Ok);
+            return Json(OkReturnString);
         }
 
         [HttpPost("[action]")]
@@ -112,7 +113,7 @@ namespace cran.Controllers
 
         [HttpPost("[action]")]
         [ValidateModel]
-        public async Task<InsertActionDto> InsertTag([FromBody] TagDto vm)
+        public async Task<int> InsertTag([FromBody] TagDto vm)
         {
             return await _tagService.InsertTagAsync(vm);
         }
@@ -122,7 +123,7 @@ namespace cran.Controllers
         public async Task<JsonResult> UpdateTag([FromBody] TagDto vm)
         {
             await _tagService.UpdateTagAsync(vm);
-            return Json(Ok);
+            return Json(OkReturnString);
         }
 
         [HttpPost("[action]")]
@@ -136,7 +137,7 @@ namespace cran.Controllers
         public async Task<JsonResult> DeleteTag(int id)
         {
             await _tagService.DeleteTagAsync(id);
-            return Json(Ok);
+            return Json(OkReturnString);
         }
 
         #endregion
@@ -157,7 +158,7 @@ namespace cran.Controllers
 
         [HttpPost("[action]")]
         [ValidateModel]
-        public async Task<InsertActionDto> InsertCourse([FromBody] CourseDto vm)
+        public async Task<int> InsertCourse([FromBody] CourseDto vm)
         {
             return await _courseService.InsertCourseAsync(vm);
         }
@@ -167,7 +168,7 @@ namespace cran.Controllers
         public async Task<JsonResult> UpdateCourse([FromBody] CourseDto vm)
         {
             await _courseService.UpdateCourseAsync(vm);
-            return Json(Ok);
+            return Json(OkReturnString);
         }
 
         #endregion
@@ -192,7 +193,7 @@ namespace cran.Controllers
         public async Task<JsonResult> DeleteComment(int id)
         {
             await _commentsService.DeleteCommentAsync(id);
-            return Json(Ok);
+            return Json(OkReturnString);
         }
 
         [HttpPost("[action]")]
@@ -274,7 +275,7 @@ namespace cran.Controllers
         public async Task<JsonResult> DeleteCourseInstance(int id)
         {
             await _courseInstanceService.DeleteCourseInstanceAsync(id);
-            return Json(Ok);
+            return Json(OkReturnString);
         }
 
         #endregion

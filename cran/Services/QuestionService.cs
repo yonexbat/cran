@@ -28,7 +28,7 @@ namespace cran.Services
 
 
 
-        public async Task<InsertActionDto> InsertQuestionAsync(QuestionDto questionDto)
+        public async Task<int> InsertQuestionAsync(QuestionDto questionDto)
         {
             await _dbLogService.LogMessageAsync("Adding question");
 
@@ -40,12 +40,7 @@ namespace cran.Services
             questionDto.Id = questionEntity.Id;
             await UpdateQuestionAsync(questionDto);
 
-
-            return new InsertActionDto
-            {
-                NewId = questionEntity.Id,
-                Status = "Ok",
-            };
+            return questionEntity.Id;         
         }
 
         public async Task<QuestionDto> GetQuestionAsync(int id)

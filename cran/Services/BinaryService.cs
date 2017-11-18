@@ -51,6 +51,7 @@ namespace cran.Services
         private async Task<BinaryDto> CreateFileEntity(IFormFile formfile)
         {
             Binary fileEntity = new Binary();
+
             fileEntity.Length = (int) formfile.Length;
             fileEntity.ContentType = formfile.ContentType;
             fileEntity.FileName = formfile.FileName;

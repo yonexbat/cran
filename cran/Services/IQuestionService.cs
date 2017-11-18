@@ -6,7 +6,7 @@ namespace cran.Services
 {
     public interface IQuestionService
     {
-        Task<InsertActionDto> InsertQuestionAsync(QuestionDto question);
+        Task<int> InsertQuestionAsync(QuestionDto question);
         Task UpdateQuestionAsync(QuestionDto question);
         Task DeleteQuestionAsync(int idQuestion);
         Task<IList<QuestionListEntryDto>> GetMyQuestionsAsync();

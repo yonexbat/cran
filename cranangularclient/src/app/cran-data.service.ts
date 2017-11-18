@@ -24,7 +24,6 @@ import {Votes} from './model/votes';
 import {Image} from './model/image';
 import {UserInfo} from './model/userinfo';
 import {SearchTags} from './model/searchtags';
-import {InsertAction} from './model/insertaction';
 
 @Injectable()
 export class CranDataService implements ICranDataService {
@@ -46,11 +45,8 @@ export class CranDataService implements ICranDataService {
   }
 
   insertCourse(course: Course): Promise<number> {
-    return this.http.post<InsertAction>('/api/Data/InsertCourse', course)
+    return this.http.post<number>('/api/Data/InsertCourse', course)
     .toPromise()
-    .then(  data => {
-      return data.newId;
-    })
     .catch(this.handleError);
   }
 
@@ -67,7 +63,7 @@ export class CranDataService implements ICranDataService {
   }
 
   insertTag(tag: Tag): Promise<number> {
-    return this.http.post<InsertAction>('/api/Data/InsertTag', tag)
+    return this.http.post<number>('/api/Data/InsertTag', tag)
     .toPromise()
     .catch(this.handleError);
   }
@@ -204,11 +200,8 @@ export class CranDataService implements ICranDataService {
   }
 
   public insertQuestion(question: Question): Promise<number> {
-    return this.http.post<InsertAction>('/api/Data/InsertQuestion', question)
+    return this.http.post<number>('/api/Data/InsertQuestion', question)
                     .toPromise()
-                    .then(  data => {
-                      return data.newId;
-                    })
                     .catch(this.handleError);
   }
 

@@ -10,7 +10,7 @@ namespace cran.Services
     {
         Task<TagDto> GetTagAsync(int id);
         Task UpdateTagAsync(TagDto vm);
-        Task<InsertActionDto> InsertTagAsync(TagDto vm);
+        Task<int> InsertTagAsync(TagDto vm);
         Task<IList<TagDto>> FindTagsAsync(string searchTerm);
         Task<PagedResultDto<TagDto>> SearchForTags(SearchTags parameters);
         Task DeleteTagAsync(int id);

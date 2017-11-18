@@ -7,7 +7,7 @@ namespace cran.Services
     {
         Task<CoursesDto> GetCoursesAsync();
         Task<CourseDto> GetCourseAsync(int id);
-        Task<InsertActionDto> InsertCourseAsync(CourseDto vm);
+        Task<int> InsertCourseAsync(CourseDto vm);
         Task UpdateCourseAsync(CourseDto vm);
     }
 }
