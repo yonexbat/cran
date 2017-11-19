@@ -27,6 +27,7 @@ export interface ICranDataService {
   insertCourse(course: Course): Promise<number>;
   updateCourse(course: Course): Promise<any>;
   insertQuestion(question: Question): Promise<number>;
+  copyQuestion(id: number): Promise<number>;
   getQuestion(id: number): Promise<Question>;
   getQuestionToAsk(id: number): Promise<QuestionToAsk>;
   updateQuestion(question: Question): Promise<any>;

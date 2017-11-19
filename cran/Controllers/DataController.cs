@@ -60,6 +60,11 @@ namespace cran.Controllers
             return Json(OkReturnString);
         }
 
+        [HttpPost("[action]")]
+        public async Task<int> CopyQuestion([FromBody] int id)
+        {
+            return await _questionService.CopyQuestionAsync(id);
+        }
 
         [HttpGet("[action]/{id}")]
         public async Task<QuestionDto> GetQuestion(int id)

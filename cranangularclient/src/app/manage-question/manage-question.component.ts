@@ -5,6 +5,7 @@ import {Question} from '../model/question';
 import {QuestionOption} from '../model/questionoption';
 import {LanguageInfo} from '../model/languageInfo';
 import {ICranDataService} from '../icrandataservice';
+import {ConfirmService} from '../confirm.service';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {StatusMessageComponent} from '../status-message/status-message.component';
 import {QuestionPreviewComponent} from '../question-preview/question-preview.component';
@@ -36,7 +37,8 @@ export class ManageQuestionComponent implements OnInit {
     private router: Router,
     private activeRoute: ActivatedRoute,
     private notificationService: NotificationService,
-    private ls: LanguageService) {
+    private ls: LanguageService,
+    private confirmService: ConfirmService) {
 
         this.activeRoute.paramMap.subscribe((params: ParamMap)  => {
           const id = params.get('id');
@@ -59,8 +61,8 @@ export class ManageQuestionComponent implements OnInit {
   }
 
   private async save(): Promise<void> {
-    this.actionInProgress = true;
 
+    this.actionInProgress = true;
 
     // save current question
     try {
@@ -84,6 +86,31 @@ export class ManageQuestionComponent implements OnInit {
       this.notificationService.emitError(error);
       this.actionInProgress = false;
 
+    }
+  }
+
+  private async copyQuestion() {
+    if (this.question && this.question.id > 0) {
+      // save current question
+      try {
+        await this.confirmService.confirm(this.ls.label('copyquestion'), this.ls.label('copyquestionq'));
+        await this.doCopyQuestion();
+      } catch (error) {
+        // thats ok.
+      }
+    }
+  }
+
+  private async doCopyQuestion() {
+    try {
+      this.actionInProgress = true;
+      this.notificationService.emitLoading();
+      const newQuestionId = await this.cranDataService.copyQuestion(this.question.id);
+      this.notificationService.emitDone();
+      this.router.navigate(['/editquestion', newQuestionId]);
+    } catch (error) {
+      this.notificationService.emitError(error);
+      this.actionInProgress = false;
     }
   }
 

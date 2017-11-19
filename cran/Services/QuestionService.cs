@@ -326,5 +326,13 @@ namespace cran.Services
             }
             return result;
         }
+
+        public async Task<int> CopyQuestionAsync(int id)
+        {
+            QuestionDto questionDto = await GetQuestionAsync(id);
+            questionDto.Status = (int)QuestionStatus.Created;
+            questionDto.Id = 0;
+            return await InsertQuestionAsync(questionDto);
+        }
     }
 }

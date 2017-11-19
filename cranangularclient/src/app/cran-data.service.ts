@@ -26,10 +26,16 @@ import {UserInfo} from './model/userinfo';
 import {SearchTags} from './model/searchtags';
 
 @Injectable()
-export class CranDataService implements ICranDataService {
+export class CranDataService implements ICranDataService {  
 
   constructor(private http: HttpClient) {
 
+  }
+
+  copyQuestion(id: number): Promise<number> {
+    return this.http.post<number>('/api/Data/CopyQuestion/', id)
+    .toPromise()
+    .catch(this.handleError);
   }
 
   deleteTag(id: number): Promise<any> {
