@@ -331,6 +331,10 @@ namespace cran.Services
         {
             QuestionDto questionDto = await GetQuestionAsync(id);
             questionDto.Status = (int)QuestionStatus.Created;
+            foreach(QuestionOptionDto option in questionDto.Options)
+            {
+                option.Id = 0;
+            }
             questionDto.Id = 0;
             return await InsertQuestionAsync(questionDto);
         }

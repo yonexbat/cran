@@ -26,14 +26,14 @@ namespace cran.Services
         }
               
 
-        protected void UpdateRelation<Tdto, Tentity>(IList<Tdto> dtos, IList<Tentity> entitties) 
+        protected void UpdateRelation<Tdto, Tentity>(IList<Tdto> dtos, IList<Tentity> entities) 
             where Tdto: IDto 
             where Tentity : CranEntity, IIdentifiable, new()
         {
-            IEnumerable<int> idsEntities = entitties.Select(x => x.Id);
+            IEnumerable<int> idsEntities = entities.Select(x => x.Id);
             IEnumerable<int> idsDtos = dtos.Select(x => x.Id);
-            IEnumerable<IIdentifiable> entitiesToDelete = entitties.Where(x => idsDtos.All(id => id != x.Id)).Cast<IIdentifiable>();
-            IEnumerable<IIdentifiable> entitiesToUpdate = entitties.Where(x => idsDtos.Any(id => id == x.Id)).Cast<IIdentifiable>();
+            IEnumerable<IIdentifiable> entitiesToDelete = entities.Where(x => idsDtos.All(id => id != x.Id)).Cast<IIdentifiable>();
+            IEnumerable<IIdentifiable> entitiesToUpdate = entities.Where(x => idsDtos.Any(id => id == x.Id)).Cast<IIdentifiable>();
             IEnumerable<IIdentifiable> dtosToAdd = dtos.Where(x => x.Id <= 0).Cast<IIdentifiable>();
             
             //Delete
