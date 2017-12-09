@@ -255,17 +255,22 @@ export class CranDataServiceMock implements ICranDataService {
     return promiseResult;
   }
 
-  getMyCourseInstances(): Promise<CourseInstanceListEntry[]> {
-    const result: CourseInstanceListEntry[] = [
+  getMyCourseInstances(page: number): Promise<PagedResult<CourseInstanceListEntry>> {
+    const instanceList: CourseInstanceListEntry[] = [
       {idCourseInstance: 1, insertDate: new Date(2017, 9, 8), percentage: 80, title: 'Course1'},
       {idCourseInstance: 2, insertDate: new Date(2017, 9, 25), percentage: 55, title: 'Course2'},
       {idCourseInstance: 3, insertDate: new Date(2017, 9, 25), percentage: 8, title:  'Course3'},
       {idCourseInstance: 4, insertDate: new Date(2017, 9, 25), percentage: 98, title: 'Course4'},
       {idCourseInstance: 5, insertDate: new Date(2017, 9, 25), percentage: 10, title: 'JavaScript'}
     ];
+    const result: PagedResult<CourseInstanceListEntry> = new PagedResult<CourseInstanceListEntry>();
+    result.pagesize = 5;
+    result.count = 100;
+    result.data = instanceList;
+    result.currentPage = page;
+    result.numpages = 20;
 
-
-    const promiseResult = new Promise<CourseInstanceListEntry[]>(function(resolve, reject){
+    const promiseResult = new Promise<PagedResult<CourseInstanceListEntry>>(function(resolve, reject){
       setTimeout(function() {
         resolve(result);
       }, 1000);

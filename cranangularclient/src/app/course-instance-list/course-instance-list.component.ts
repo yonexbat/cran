@@ -9,6 +9,7 @@ import {CourseInstanceListEntry} from '../model/courseinstancelistentry';
 import {NotificationService} from '../notification.service';
 import {LanguageService} from '../language.service';
 import {ConfirmService} from '../confirm.service';
+import {PagedResult} from '../model/pagedresult';
 
 @Component({
   selector: 'app-course-instance-list',
@@ -17,7 +18,7 @@ import {ConfirmService} from '../confirm.service';
 })
 export class CourseInstanceListComponent implements OnInit {
 
-  courseInstances: CourseInstanceListEntry[];
+  private pagedResult: PagedResult<CourseInstanceListEntry> = new PagedResult<CourseInstanceListEntry>();
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
     private router: Router,
@@ -27,13 +28,13 @@ export class CourseInstanceListComponent implements OnInit {
     private datePipe: DatePipe) { }
 
   ngOnInit() {
-    this.loadInstances();
+    this.loadInstances(0);
   }
 
-  private async loadInstances(): Promise<void> {
+  private async loadInstances(page: number): Promise<void> {
     try {
       this.notificationService.emitLoading();
-      this.courseInstances = await this.cranDataServiceService.getMyCourseInstances();
+      this.pagedResult = await this.cranDataServiceService.getMyCourseInstances(page);
       this.notificationService.emitDone();
     } catch (error) {
       this.notificationService.emitError(error);
@@ -49,13 +50,17 @@ export class CourseInstanceListComponent implements OnInit {
         this.notificationService.emitLoading();
         await this.cranDataServiceService.deleteCourseInstance(instance.idCourseInstance);
         this.notificationService.emitDone();
-        await this.loadInstances();
+        await this.loadInstances(0);
       } catch (error) {
         this.notificationService.emitError(error);
       }
     } catch (error) {
       // that is ok, cancel from user.
     }
+  }
+
+  public pageSelected(pageNumber: number) {
+    this.loadInstances(pageNumber);
   }
 
   public goToCourseInstance(instance: CourseInstanceListEntry) {

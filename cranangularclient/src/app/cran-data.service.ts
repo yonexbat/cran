@@ -26,7 +26,7 @@ import {UserInfo} from './model/userinfo';
 import {SearchTags} from './model/searchtags';
 
 @Injectable()
-export class CranDataService implements ICranDataService {  
+export class CranDataService implements ICranDataService {
 
   constructor(private http: HttpClient) {
 
@@ -158,8 +158,8 @@ export class CranDataService implements ICranDataService {
                .catch(this.handleError);
   }
 
-  getMyCourseInstances(): Promise<CourseInstanceListEntry[]> {
-    return this.http.get<CourseInstanceListEntry[]>('/api/Data/GetMyCourseInstances')
+  getMyCourseInstances(page: number): Promise<PagedResult<CourseInstanceListEntry>> {
+    return this.http.get<PagedResult<CourseInstanceListEntry>>('/api/Data/GetMyCourseInstances/' + page)
     .toPromise()
     .catch(this.handleError);
   }

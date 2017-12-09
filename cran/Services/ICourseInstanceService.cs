@@ -14,7 +14,7 @@ namespace cran.Services
         Task<CourseInstanceDto> AnswerQuestionAndGetNextQuestionAsync(QuestionAnswerDto answer);
         Task<QuestionToAskDto> GetQuestionToAskAsync(int idCourseInstance);
         Task<ResultDto> GetCourseResultAsync(int idCourseInstance);
-        Task<IList<CourseInstanceListEntryDto>> GetMyCourseInstancesAsync();
+        Task<PagedResultDto<CourseInstanceListEntryDto>> GetMyCourseInstancesAsync(int page);
         Task DeleteCourseInstanceAsync(int idCourseInstance);
     }
 }

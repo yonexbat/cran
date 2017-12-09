@@ -191,24 +191,7 @@ namespace cran.Services
 
             return result;
         }
-
-        public async Task<IList<CourseInstanceListEntryDto>> GetMyCourseInstancesAsync()
-        {
-            string userid = GetUserId();
-            IQueryable<CourseInstanceListEntryDto> query = _context.CourseInstances.Where(x => x.User.UserId == userid)
-                .Select(x => new CourseInstanceListEntryDto()
-                {
-                    IdCourseInstance = x.Id,
-                    Title = x.Course.Title,
-                    NumQuestionsCorrect = x.CourseInstancesQuestion.Count(y => y.Correct),
-                    NumQuestionsTotal = x.CourseInstancesQuestion.Count(),
-                    InsertDate = x.InsertDate,
-                })
-                .OrderByDescending(x => x.InsertDate);
-
-            IList<CourseInstanceListEntryDto> result = await query.ToListAsync();
-            return result;
-        }
+     
 
         public async Task DeleteCourseInstanceAsync(int idCourseInstance)
         {
@@ -386,5 +369,29 @@ namespace cran.Services
             }
         }
 
+        public async Task<PagedResultDto<CourseInstanceListEntryDto>> GetMyCourseInstancesAsync(int page)
+        {
+            string userid = GetUserId();
+            IQueryable<CourseInstanceListEntryDto> query = _context.CourseInstances.Where(x => x.User.UserId == userid)
+                .Select(x => new CourseInstanceListEntryDto()
+                {
+                    IdCourseInstance = x.Id,
+                    Title = x.Course.Title,
+                    NumQuestionsCorrect = x.CourseInstancesQuestion.Count(y => y.Correct),
+                    NumQuestionsTotal = x.CourseInstancesQuestion.Count(),
+                    InsertDate = x.InsertDate,
+                })
+                .OrderByDescending(x => x.InsertDate);
+
+            PagedResultDto<CourseInstanceListEntryDto> resultDto = new PagedResultDto<CourseInstanceListEntryDto>();
+
+            //Count und paging.
+            int count = await query.CountAsync();
+            int startindex = InitPagedResult(resultDto, count, page);
+            query = query.Skip(startindex).Take(PageSize);
+            resultDto.Data = await query.ToListAsync();
+           
+            return resultDto;
+        }
     }
 }

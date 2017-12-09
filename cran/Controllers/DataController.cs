@@ -268,12 +268,12 @@ namespace cran.Controllers
         public async Task<ResultDto> GetCourseResult(int id)
         {
             return await _courseInstanceService.GetCourseResultAsync(id);
-        }
+        }    
 
-        [HttpGet("[action]")]
-        public async Task<IList<CourseInstanceListEntryDto>> GetMyCourseInstances()
+        [HttpGet("[action]/{page}")]
+        public async Task<PagedResultDto<CourseInstanceListEntryDto>> GetMyCourseInstances(int page)
         {
-            return await _courseInstanceService.GetMyCourseInstancesAsync();
+            return await _courseInstanceService.GetMyCourseInstancesAsync(page);
         }
 
         [HttpDelete("[action]/{id}")]
