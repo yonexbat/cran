@@ -104,8 +104,8 @@ namespace cran.tests
             ICourseService courseService = GetService<CourseService>();
             ICourseInstanceService courseInstanceService = CourseInstanceService();
 
-            var courses = await courseService.GetCoursesAsync();
-            int courseId = courses.Courses.Where(x => x.Title == "JS").Select(x => x.Id).First();
+            var courses = await courseService.GetCoursesAsync(0);
+            int courseId = courses.Data.Where(x => x.Title == "JS").Select(x => x.Id).First();
             var result = await courseInstanceService.StartCourseAsync(courseId);
             Assert.True(result.IdCourseInstance > 0);
             Assert.True(result.IdCourse == courseId);
