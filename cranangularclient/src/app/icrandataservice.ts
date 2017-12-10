@@ -1,6 +1,6 @@
 import { Injectable, InjectionToken  } from '@angular/core';
 
-import {Courses} from './model/courses';
+
 import {Course} from './model/course';
 import {Question} from './model/question';
 import {Tag} from './model/tag';
@@ -22,7 +22,7 @@ import {UserInfo} from './model/userinfo';
 import {SearchTags} from './model/searchtags';
 
 export interface ICranDataService {
-  getCourses(): Promise<Courses>;
+  getCourses(page: number): Promise<PagedResult<Course>>;
   getCourse(id: number): Promise<Course>;
   insertCourse(course: Course): Promise<number>;
   updateCourse(course: Course): Promise<any>;

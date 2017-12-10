@@ -24,7 +24,18 @@ namespace cran.Services
             _dbLogService = dbLogService;
             _currentPrincipal = principal;
         }
-              
+
+        protected IList<T> ToDtoList<T, Q>(IList<Q> input, Func<Q, T> func)
+        {
+            IList<T> result = new List<T>();
+            foreach (Q q in input)
+            {
+                T t = func(q);
+                result.Add(t);
+            }
+            return result;
+        }
+
 
         protected void UpdateRelation<Tdto, Tentity>(IList<Tdto> dtos, IList<Tentity> entities) 
             where Tdto: IDto 

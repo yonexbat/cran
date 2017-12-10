@@ -28,22 +28,23 @@ namespace cran.Services
             return result;
         }
 
-        public async Task<CoursesDto> GetCoursesAsync()
+        public async Task<PagedResultDto<CourseDto>> GetCoursesAsync(int page)
         {
-            await _dbLogService.LogMessageAsync("courses");
-            CoursesDto result = new CoursesDto();
-            IList<Course> list = await this._context.Courses
-                .Include(x => x.RelTags)
-                .ThenInclude(x => x.Tag)
-                .ToListAsync();
-
-            foreach (Course course in list)
-            {
-                CourseDto courseVm = ToCourseDto(course);
-                result.Courses.Add(courseVm);
-            }
-            return result;
+            IQueryable<Course> query = this._context.Courses;
+            PagedResultDto<CourseDto> result = new PagedResultDto<CourseDto>();
+            int count = await query.CountAsync();
+            int skip = InitPagedResult(result, count, page);
+            query = query.Skip(skip).Take(result.Pagesize).Include(x => x.RelTags)
+                .ThenInclude(x => x.Tag).OrderBy(x => x.Title);
+            IList<Course> list = await query
+               .Include(x => x.RelTags)
+               .ThenInclude(x => x.Tag)
+               .ToListAsync();
+            result.Data = ToDtoList(list, ToCourseDto);
+            return result;           
         }
+
+     
 
         private CourseDto ToCourseDto(Course course)
         {

@@ -1,7 +1,6 @@
 import { Injectable, InjectionToken  } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
-import {Courses} from './model/courses';
 import {Course} from './model/course';
 import {Question} from './model/question';
 import {QuestionOption} from './model/questionoption';
@@ -199,8 +198,8 @@ export class CranDataService implements ICranDataService {
                .catch(this.handleError);
   }
 
-  public getCourses(): Promise<Courses> {
-    return this.http.get<Courses>('/api/Data/GetCourses')
+  public getCourses(page: number): Promise<PagedResult<Course>> {
+    return this.http.get<PagedResult<Course>>('/api/Data/GetCourses/' + page)
                .toPromise()
                .catch(this.handleError);
   }

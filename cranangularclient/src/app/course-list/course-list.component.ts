@@ -4,12 +4,12 @@ import { Router, } from '@angular/router';
 
 import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
-import {Courses} from '../model/courses';
 import {Course} from '../model/course';
 import {CourseInstance} from '../model/courseinstance';
 import {StatusMessageComponent} from '../status-message/status-message.component';
 import {NotificationService} from '../notification.service';
 import {LanguageService} from '../language.service';
+import {PagedResult} from '../model/pagedresult';
 
 
 @Component({
@@ -19,7 +19,7 @@ import {LanguageService} from '../language.service';
 })
 export class CourseListComponent implements OnInit {
 
-  courses: Course[] = [];
+  private pagedResult: PagedResult<Course> = new PagedResult<Course>();
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
     private router: Router,
@@ -27,18 +27,22 @@ export class CourseListComponent implements OnInit {
     private ls: LanguageService) { }
 
   ngOnInit() {
-    this.getCourses();
+    this.getCourses(0);
   }
 
-  private async getCourses(): Promise<void> {
+  private async getCourses(page: number): Promise<void> {
     try {
       this.notificationService.emitLoading();
-      const result = await this.cranDataServiceService.getCourses();
-      this.courses = result.courses;
+      const result = await this.cranDataServiceService.getCourses(page);
+      this.pagedResult = result;
       this.notificationService.emitDone();
     } catch (error) {
       this.notificationService.emitError(error);
     }
+  }
+
+  private pageSelected(pageNumber: number) {
+    this.getCourses(pageNumber);
   }
 
   public async startCourse(course: Course): Promise<void> {

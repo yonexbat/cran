@@ -149,10 +149,10 @@ namespace cran.Controllers
 
         #region CourseService
 
-        [HttpGet("[action]")]
-        public async Task<CoursesDto> GetCourses()
+        [HttpGet("[action]/{page}")]
+        public async Task<PagedResultDto<CourseDto>> GetCourses(int page)
         {
-            return await _courseService.GetCoursesAsync();
+            return await _courseService.GetCoursesAsync(page);
         }
 
         [HttpGet("[action]/{id}")]

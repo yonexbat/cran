@@ -2,7 +2,6 @@ import { Injectable, InjectionToken  } from '@angular/core';
 import { Headers, Http, RequestOptionsArgs } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
-import {Courses} from './model/courses';
 import {Course} from './model/course';
 import {Question} from './model/question';
 import {QuestionOption} from './model/questionoption';
@@ -447,9 +446,9 @@ export class CranDataServiceMock implements ICranDataService {
 
   }
 
-  getCourses(): Promise<Courses> {
-    const courses: Courses = {
-      courses: [
+  getCourses(page: number): Promise<PagedResult<Course>> {
+    const courses: PagedResult<Course> = {
+      data: [
         {id: 1, language: 'De', description: 'Test Kurs bla', title: 'Kursus',
           numQuestionsToAsk: 3,
           tags: [{id: 3, name: 'Js', description: 'desc'},
@@ -466,9 +465,13 @@ export class CranDataServiceMock implements ICranDataService {
           description: 'GLOBI in den Ferien', title: 'Kursus',
          tags: [{id: 3, name: 'Js', description: 'desc'}]},
       ],
+      count: 100,
+      currentPage: page,
+      numpages: 100,
+      pagesize: 5,
     };
 
-    const promiseResult: Promise<Courses> = new Promise<Courses>((resolve, reject) => {
+    const promiseResult: Promise<PagedResult<Course>> = new Promise<PagedResult<Course>>((resolve, reject) => {
       setTimeout(function() {
         resolve(courses);
       }, 1000);
