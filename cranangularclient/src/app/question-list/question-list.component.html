@@ -30,11 +30,12 @@
     </div>      
   </ng-template> 
 
-  <div class="list-group">
-    <ng-container *ngFor="let item of questions">
-      <ng-container *ngTemplateOutlet="listItem;context:{item:item}">
-      </ng-container>          
-    </ng-container>
-  </div>
+  <!-- Pager -->
+  <app-pager 
+      [itemTemplate]="listItem"
+      [pagedResult]="pagedResult"
+      [nodatafoundmessage]="ls.label('nomyquestions')"
+      (onSelectedPageChanged)="pageSelected($event)">            
+  </app-pager>  
  
 </div>

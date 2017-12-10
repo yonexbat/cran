@@ -26,6 +26,7 @@
     <app-pager 
             [itemTemplate]="listItem"
             [pagedResult]="pagedResult"
+            [nodatafoundmessage]="ls.label('nocoursesdone')"
             (onSelectedPageChanged)="pageSelected($event)">            
     </app-pager>
    

@@ -47,10 +47,10 @@ namespace cran.Controllers
 
         #region QuestionService
 
-        [HttpGet("[action]")]
-        public async Task<IList<QuestionListEntryDto>> GetMyQuestions()
+        [HttpGet("[action]/{page}")]
+        public async Task<PagedResultDto<QuestionListEntryDto>> GetMyQuestions(int page)
         {
-            return await _questionService.GetMyQuestionsAsync();
+            return await _questionService.GetMyQuestionsAsync(page);
         }
 
         [HttpDelete("[action]/{id}")]

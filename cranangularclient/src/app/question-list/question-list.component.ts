@@ -8,6 +8,7 @@ import {QuestionListEntry} from '../model/questionlistentry';
 import {NotificationService} from '../notification.service';
 import {ConfirmService} from '../confirm.service';
 import {LanguageService} from '../language.service';
+import {PagedResult} from '../model/pagedresult';
 
 
 @Component({
@@ -17,7 +18,7 @@ import {LanguageService} from '../language.service';
 })
 export class QuestionListComponent implements OnInit {
 
-  questions: QuestionListEntry[] = [];
+  private pagedResult: PagedResult<QuestionListEntry> = new PagedResult<QuestionListEntry>();
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
     private router: Router,
@@ -26,7 +27,7 @@ export class QuestionListComponent implements OnInit {
     private ls: LanguageService) { }
 
   ngOnInit() {
-    this.loadQuestions();
+    this.loadQuestions(0);
   }
 
   public goToQuestion(question: QuestionListEntry) {
@@ -47,19 +48,23 @@ export class QuestionListComponent implements OnInit {
       } catch (error) {
         this.notificationService.emitError(error);
       }
-      await this.loadQuestions();
+      await this.loadQuestions(0);
     } catch (err) {
       // that is ok
     }
   }
 
-  private async loadQuestions(): Promise<void> {
+  private async loadQuestions(page: number): Promise<void> {
     try {
       this.notificationService.emitLoading();
-      this.questions = await this.cranDataServiceService.getMyQuestions();
+      this.pagedResult = await this.cranDataServiceService.getMyQuestions(page);
       this.notificationService.emitDone();
     } catch (error) {
       this.notificationService.emitError(error);
     }
+  }
+
+  private pageSelected(pageNumber: number) {
+    this.loadQuestions(pageNumber);
   }
 }

@@ -72,6 +72,7 @@ export class LanguageService {
     'copy' : {valueDe : 'Kopieren', valueEn : 'Copy'},
     'copyquestion' :  {valueDe : 'Frage kopieren', valueEn : 'Copy question'},
     'copyquestionq' :  {valueDe : 'Frage kopieren?', valueEn : 'Copy question?'},
+    'nomyquestions' :  {valueDe : 'Noch keine Fragen erfasst', valueEn : 'No questions created yet'},
   };
 
 

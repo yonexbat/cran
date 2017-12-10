@@ -40,7 +40,7 @@ export interface ICranDataService {
   startCourse(courseId: number): Promise<CourseInstance>;
   answerQuestionAndGetSolution(answer: QuestionAnswer): Promise<Question>;
   answerQuestionAndGetNextQuestion(answer: QuestionAnswer): Promise<CourseInstance>;
-  getMyQuestions(): Promise<QuestionListEntry[]>;
+  getMyQuestions(page: number): Promise<PagedResult<QuestionListEntry>>;
   getMyCourseInstances(page: number): Promise<PagedResult<CourseInstanceListEntry>>;
   deleteQuestion(id: number): Promise<any>;
   deleteCourseInstance(id: number): Promise<any>;

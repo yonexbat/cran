@@ -312,7 +312,7 @@ export class CranDataServiceMock implements ICranDataService {
     return promiseResult;
   }
 
-  getMyQuestions(): Promise<QuestionListEntry[]> {
+  getMyQuestions(page: number): Promise<PagedResult<QuestionListEntry>> {
     const myList: QuestionListEntry[]  = [
       {id: 1, title: 'Hello', status: 1, tags : [{id : 23, description : '', name : 'MyTag'}]},
       {id: 2, title: 'World', status: 1, tags : []},
@@ -320,9 +320,16 @@ export class CranDataServiceMock implements ICranDataService {
       {id: 4, title: 'zep',   status: 0, tags : []},
     ];
 
-    const promiseResult = new Promise<QuestionListEntry[]>(function(resolve, reject){
+    const result: PagedResult<QuestionListEntry> = new  PagedResult<QuestionListEntry>();
+    result.data = myList;
+    result.count = myList.length;
+    result.pagesize = 5;
+    result.numpages = 5;
+    result.currentPage = page;
+
+    const promiseResult = new Promise<PagedResult<QuestionListEntry>>(function(resolve, reject){
       setTimeout(function() {
-        resolve(myList);
+        resolve(result);
       }, 1000);
     });
     return promiseResult;

@@ -233,11 +233,16 @@ namespace cran.Services
             await SaveChangesAsync();
         }
 
-        public async Task<IList<QuestionListEntryDto>> GetMyQuestionsAsync()
+        public async Task<PagedResultDto<QuestionListEntryDto>> GetMyQuestionsAsync(int page)
         {
             string userId = GetUserId();
             IQueryable<Question> query = _context.Questions.Where(q => q.User.UserId == userId).OrderBy(x => x.Title);
-            var result = await MaterializeQuestionList(query);
+
+            PagedResultDto<QuestionListEntryDto> result = new PagedResultDto<QuestionListEntryDto>();
+            int count = await query.CountAsync();
+            int skip = InitPagedResult(result, count, page);
+            query = query.Skip(skip).Take(result.Pagesize);
+            result.Data = await MaterializeQuestionList(query);
             return result;
         }
 

@@ -152,8 +152,8 @@ export class CranDataService implements ICranDataService {
             .catch(this.handleError);
   }
 
-  getMyQuestions(): Promise<QuestionListEntry[]> {
-       return this.http.get<QuestionListEntry[]>('/api/Data/GetMyQuestions')
+  getMyQuestions(page: number): Promise<PagedResult<QuestionListEntry>>  {
+       return this.http.get<PagedResult<QuestionListEntry>>('/api/Data/GetMyQuestions/' + page)
                .toPromise()
                .catch(this.handleError);
   }
