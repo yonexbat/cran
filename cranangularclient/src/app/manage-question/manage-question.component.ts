@@ -114,6 +114,31 @@ export class ManageQuestionComponent implements OnInit {
     }
   }
 
+  private async accept() {
+    if (this.question && this.question.id > 0) {
+      // save current question
+      try {
+        await this.confirmService.confirm(this.ls.label('acceptquestion'), this.ls.label('acceptquestionq'));
+        await this.doAccept();
+      } catch (error) {
+        // thats ok.
+      }
+    }
+  }
+
+  private async doAccept() {
+    try {
+      this.actionInProgress = true;
+      this.notificationService.emitLoading();
+      await this.cranDataService.acceptQuestion(this.question.id);
+      this.notificationService.emitDone();
+      this.router.navigate(['/viewquestion', this.question.id]);
+    } catch (error) {
+      this.notificationService.emitError(error);
+      this.actionInProgress = false;
+    }
+  }
+
   private async handleRouteChanged(id: number): Promise<void> {
     if (id > 0) {
       try {

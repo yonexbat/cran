@@ -14,6 +14,8 @@ namespace cran.Services
         Task<PagedResultDto<QuestionListEntryDto>> SearchForQuestionsAsync(SearchQParametersDto parameters);
         Task<ImageDto> AddImageAsync(ImageDto imageDto);
         Task<int> CopyQuestionAsync(int id);
+        Task AcceptQuestionAsync(int id);
+        Task<int> VersionQuestionAsync(int id);        
     }
 
 }

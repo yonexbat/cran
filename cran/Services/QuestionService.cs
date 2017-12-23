@@ -236,6 +236,7 @@ namespace cran.Services
         public async Task<PagedResultDto<QuestionListEntryDto>> GetMyQuestionsAsync(int page)
         {
             string userId = GetUserId();
+
             IQueryable<Question> query = _context.Questions.Where(q => q.User.UserId == userId)
                 .OrderBy(x => x.Title)
                 .ThenBy(x => x.Id);
@@ -350,6 +351,41 @@ namespace cran.Services
             }
             questionDto.Id = 0;
             return await InsertQuestionAsync(questionDto);
+        }
+
+        public async Task AcceptQuestionAsync(int id)
+        {
+            Question question = await _context.FindAsync<Question>(id);
+            if(question.Status != QuestionStatus.Created)
+            {
+                new CraniumException($"Question #{id} is not in state created.");
+            }
+            question.Status = QuestionStatus.Released;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> VersionQuestionAsync(int id)
+        {
+            Question question = await GetLatestVersion(id);
+            if (question.Status != QuestionStatus.Released)
+            {
+                new CraniumException($"Question #{id} is not in state released.");
+            }
+            int newId = await CopyQuestionAsync(id);
+            question.IdQuestionSucessor = newId;
+            question.Status = QuestionStatus.Obsolete;
+            await _context.SaveChangesAsync();
+            return newId;
+        }
+
+        private async Task<Question> GetLatestVersion(int id)
+        {
+            Question question = await _context.FindAsync<Question>(id);
+            while(question.IdQuestionSucessor  > 0)
+            {
+                question = await _context.FindAsync<Question>(id);
+            }
+            return question;
         }
     }
 }

@@ -73,6 +73,11 @@ export class LanguageService {
     'copyquestion' :  {valueDe : 'Frage kopieren', valueEn : 'Copy question'},
     'copyquestionq' :  {valueDe : 'Frage kopieren?', valueEn : 'Copy question?'},
     'nomyquestions' :  {valueDe : 'Noch keine Fragen erfasst', valueEn : 'No questions created yet'},
+    'accept' :  {valueDe : 'Freigeben', valueEn : 'Release'},
+    'acceptquestion' :  {valueDe : 'Freigeben', valueEn : 'Release'},
+    'acceptquestionq' :  {valueDe : 'Frage für andere freigeben?', valueEn : 'Make question accessible by other users?'},
+    'version' :  {valueDe : 'Neue Version erstellen', valueEn : 'create new version'},
+    'versionq' :  {valueDe : 'Neue Version erstellen?', valueEn : 'create a new version?'},
   };
 
 

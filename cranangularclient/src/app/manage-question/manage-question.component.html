@@ -176,7 +176,7 @@
     <app-status-message #statusMessage></app-status-message>
 
     <!-- Buttons -->
-    <div class="btn-group pull-right" role="group" aria-label="Basic example">
+    <div class="btn-group pull-right" role="group">
 
       <!-- Kopieren -->
       <button 
@@ -195,7 +195,16 @@
           (click)="showPreview()" 
           [disabled]="!questionForm.form.valid || actionInProgress">
           {{ls.label('preview')}}
-      </button>      
+      </button>   
+      
+      <!-- Freigeben -->
+      <button
+        type="button"
+        class="btn btn btn-success" 
+        (click)="accept()"
+        [disabled]="!questionForm.form.valid || actionInProgress">
+        {{ls.label('accept')}}
+      </button>
 
       <!-- Speichern -->
       <button 

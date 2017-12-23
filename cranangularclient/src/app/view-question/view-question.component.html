@@ -56,6 +56,14 @@
         *ngIf="question.isEditable"
         type="button" 
         class="btn btn btn-success"
+        (click)="createNewVersion()">
+        {{ls.label('version')}}
+      </button>      
+
+      <button 
+        *ngIf="question.isEditable"
+        type="button" 
+        class="btn btn btn-success"
         (click)="goToEditQuestion()">
         {{ls.label('edit')}}
       </button>      

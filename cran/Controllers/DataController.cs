@@ -100,6 +100,19 @@ namespace cran.Controllers
             return await _questionService.AddImageAsync(image);
         }
 
+        [HttpPost("[action]")]
+        public async Task<JsonResult> AcceptQuestion([FromBody]int id)
+        {
+            await _questionService.AcceptQuestionAsync(id);
+            return Json(OkReturnString);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<int> VersionQuestion([FromBody]int id)
+        {
+            return await _questionService.VersionQuestionAsync(id);
+        }
+
         #endregion
 
         #region TagService

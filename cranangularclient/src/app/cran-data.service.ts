@@ -31,6 +31,18 @@ export class CranDataService implements ICranDataService {
 
   }
 
+  versionQuestion(id: number): Promise<number> {
+    return this.http.post<number>('/api/Data/VersionQuestion/', id)
+    .toPromise()
+    .catch(this.handleError);
+  }
+
+  acceptQuestion(id: number): Promise<any> {
+    return this.http.post<number>('/api/Data/AcceptQuestion/', id)
+    .toPromise()
+    .catch(this.handleError);
+  }
+
   copyQuestion(id: number): Promise<number> {
     return this.http.post<number>('/api/Data/CopyQuestion/', id)
     .toPromise()
