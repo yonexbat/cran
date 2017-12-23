@@ -9,5 +9,6 @@ namespace cran.Model.Entities
     {
         Created = 0,
         Released = 1,
+        Obsolete = 2,
     }
 }

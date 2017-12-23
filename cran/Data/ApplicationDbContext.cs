@@ -261,6 +261,11 @@ namespace cran.Data
                 .HasForeignKey(x => x.IdQuestion);
 
             typeBuilder
+                .HasOne(x => x.Successor)
+                .WithOne(x => x.Predecessor)
+                .HasForeignKey<Question>(x => x.IdQuestionSucessor);
+
+            typeBuilder
                 .HasMany(x => x.RelImages)
                 .WithOne(o => o.Question)
                 .HasForeignKey(x => x.IdQuestion);

@@ -18,28 +18,9 @@ namespace cran.tests
 {
 
 
-    public class CraniumServiceTest
+    public class CraniumServiceTest : Base
     {
-
-        protected IConfiguration GetConfiguration()
-        {
-            // Adding JSON file into IConfiguration.
-            IConfiguration config = new ConfigurationBuilder()
-                .AddUserSecrets<CraniumServiceTest>()
-                .Build();
-
-            return config;
-        }
-
-        private ApplicationDbContext CreateDbContext(IConfiguration config)
-        {
-            string connString = config["ConnectionString"];
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseSqlServer(connString)
-            .Options;
-            ApplicationDbContext context = new ApplicationDbContext(options, GetPrincipalMock());
-            return context;
-        }
+       
 
         private T GetService<T>() where T : class
         {
@@ -83,20 +64,6 @@ namespace cran.tests
             return testingObject.GetResolvedTestingObject();
         }
 
-
-
-        private IPrincipal GetPrincipalMock()
-        {
-            var identityMock = new Mock<IIdentity>(MockBehavior.Loose);
-            identityMock.Setup(x => x.Name).Returns("testuser");
-            IIdentity identity = identityMock.Object;
-
-            var pricipalMock = new Mock<IPrincipal>(MockBehavior.Loose);
-            pricipalMock.Setup(x => x.Identity).Returns(identity);
-            IPrincipal principal = pricipalMock.Object;
-            return principal;
-        }
-
         [Fact]
         public async Task TestStartTest()
         {
@@ -137,6 +104,7 @@ namespace cran.tests
 
             var result6 = await courseInstanceService.AnswerQuestionAndGetNextQuestionAsync(answer);
         }
+       
 
         [Fact]
         public async Task TestAddImage()

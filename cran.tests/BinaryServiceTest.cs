@@ -18,28 +18,10 @@ namespace cran.tests
 {    
     
 
-    public class BinaryServiceTest
+    public class BinaryServiceTest : Base
     {
 
-        protected IConfiguration GetConfiguration()
-        {
-            // Adding JSON file into IConfiguration.
-            IConfiguration config = new ConfigurationBuilder()
-                .AddUserSecrets<CraniumServiceTest>()
-                .Build();            
-
-            return config;
-        }
-
-        private ApplicationDbContext CreateDbContext(IConfiguration config)
-        {            
-            string connString = config["ConnectionString"];
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseSqlServer(connString)
-            .Options;
-            ApplicationDbContext context = new ApplicationDbContext(options, GetPrincipalMock());
-            return context;
-        }
+      
 
         private TestingObject<BinaryService> GetTestingObject()
         {
@@ -51,18 +33,6 @@ namespace cran.tests
             testingObject.AddDependency(new Mock<IDbLogService>(MockBehavior.Loose));
             testingObject.AddDependency(GetPrincipalMock());
             return testingObject;
-        }
-
-        private IPrincipal GetPrincipalMock()
-        {
-            var identityMock = new Mock<IIdentity>(MockBehavior.Loose);
-            identityMock.Setup(x => x.Name).Returns("testuser");
-            IIdentity identity = identityMock.Object;
-
-            var pricipalMock = new Mock<IPrincipal>(MockBehavior.Loose);
-            pricipalMock.Setup(x => x.Identity).Returns(identity);
-            IPrincipal principal = pricipalMock.Object;
-            return principal;
         }
 
         [Fact]
