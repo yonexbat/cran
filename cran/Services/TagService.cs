@@ -66,7 +66,10 @@ namespace cran.Services
 
         public async Task<PagedResultDto<TagDto>> SearchForTags(SearchTags parameters)
         {
-            IQueryable<Tag> queryBeforeSkipAndTake = _context.Tags.OrderBy(x => x.Name);
+            IQueryable<Tag> queryBeforeSkipAndTake = _context.Tags
+                .OrderBy(x => x.Name)
+                .ThenBy(x => x.Id);
+
             if (!string.IsNullOrWhiteSpace(parameters.Name))
             {
                 queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x => x.Name.Contains(parameters.Name));

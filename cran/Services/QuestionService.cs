@@ -236,7 +236,9 @@ namespace cran.Services
         public async Task<PagedResultDto<QuestionListEntryDto>> GetMyQuestionsAsync(int page)
         {
             string userId = GetUserId();
-            IQueryable<Question> query = _context.Questions.Where(q => q.User.UserId == userId).OrderBy(x => x.Title);
+            IQueryable<Question> query = _context.Questions.Where(q => q.User.UserId == userId)
+                .OrderBy(x => x.Title)
+                .ThenBy(x => x.Id);
 
             PagedResultDto<QuestionListEntryDto> result = new PagedResultDto<QuestionListEntryDto>();
             int count = await query.CountAsync();
@@ -249,8 +251,9 @@ namespace cran.Services
         public async Task<PagedResultDto<QuestionListEntryDto>> SearchForQuestionsAsync(SearchQParametersDto parameters)
         {
 
-
-            IQueryable<Question> queryBeforeSkipAndTake = _context.Questions.OrderBy(x => x.Title);
+            IQueryable<Question> queryBeforeSkipAndTake = _context.Questions
+                .OrderBy(x => x.Title)
+                .ThenBy(x => x.Id);
 
             if (!string.IsNullOrWhiteSpace(parameters.Title))
             {
@@ -309,11 +312,16 @@ namespace cran.Services
 
         private async Task<IList<QuestionListEntryDto>> MaterializeQuestionList(IQueryable<Question> query)
         {
-            IList<QuestionListEntryDto> result = await query
+            IQueryable<int> questionIds = query.Select(q => q.Id);
+            return await MaterializeQuestionList(questionIds);
+        }
+
+        private async Task<IList<QuestionListEntryDto>> MaterializeQuestionList(IQueryable<int> questionIds)
+        {
+           
+            IList<QuestionListEntryDto> result = await _context.Questions.Where(x => questionIds.Contains(x.Id))
               .Select(q => new QuestionListEntryDto { Title = q.Title, Id = q.Id, Status = (int)q.Status })
               .ToListAsync();
-
-            IQueryable<int> questionIds = query.Select(q => q.Id);
 
             var relTags = await _context.RelQuestionTags.Where(rel => questionIds.Contains(rel.Question.Id))
                 .Select(rel => new { TagId = rel.Tag.Id, QuestionId = rel.Question.Id, TagName = rel.Tag.Name })

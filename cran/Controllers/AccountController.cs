@@ -10,6 +10,8 @@ using cran.Model.ViewModel;
 using cran.Model.Entities;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authentication;
+using System;
+using System.Security;
 
 namespace cran.Controllers
 {
@@ -19,6 +21,8 @@ namespace cran.Controllers
         private UserManager<ApplicationUser> _userManager;
         private RoleManager<IdentityRole> _roleManager;
         private readonly ILogger _logger;
+
+        private static string Anonymous = "Anonymous";
 
         public AccountController(
             ILoggerFactory loggerFactory,
@@ -42,12 +46,23 @@ namespace cran.Controllers
         {
             LoginViewModel vm = new LoginViewModel();
             vm.ReturnUrl = Request.Query["ReturnUrl"];
+
+            //External Login Providers
             IEnumerable<AuthenticationScheme> providers = await _signInManager.GetExternalAuthenticationSchemesAsync();
             vm.LoginProviders = providers.Select(x => new Model.Dto.LoginProviderDto()
             {
                 DisplayName = x.DisplayName,
                 Name = x.Name,
             }).ToList();
+
+            //Anonymous
+            vm.LoginProviders.Add(new Model.Dto.LoginProviderDto
+            {
+                DisplayName = "Anonymous",
+                Name= Anonymous,
+            });
+
+
             return vm;
         }
 
@@ -55,16 +70,37 @@ namespace cran.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public IActionResult ExternalLogin(string provider, string returnUrl = null)
+        public async Task<IActionResult> ExternalLogin(string provider, string returnUrl = null)
         {
+            if(provider == Anonymous)
+            {
+                return await SignInAnonnymous();
+            }
+
             // Request a redirect to the external login provider.
             var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Account", new { ReturnUrl = returnUrl });
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             return Challenge(properties, provider);
         }
 
-        //
-        // GET: /Account/ExternalLoginCallback
+        private async Task<IActionResult> SignInAnonnymous(string returnUrl = null)
+        {
+            Guid guid = Guid.NewGuid();
+            ApplicationUser user = new ApplicationUser { UserName = guid.ToString(),};
+            IdentityResult identityResult = await _userManager.CreateAsync(user);
+
+            if (identityResult.Succeeded)
+            {
+                await _signInManager.SignInAsync(user, isPersistent: true);                   
+            }
+            else
+            {
+                throw new SecurityException("Creating user failed");
+            }
+            return RedirectToLocal(returnUrl);
+        }
+
+
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
@@ -117,8 +153,8 @@ namespace cran.Controllers
             {
                 return View("Error");
             }
-            var userFactors = await _userManager.GetValidTwoFactorProvidersAsync(user);
-            var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
+            IList<string> userFactors = await _userManager.GetValidTwoFactorProvidersAsync(user);
+            IList<SelectListItem> factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
             return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 
@@ -147,7 +183,7 @@ namespace cran.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                ApplicationUser user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 IdentityResult result = await _userManager.CreateAsync(user);
 
                 if (result.Succeeded)

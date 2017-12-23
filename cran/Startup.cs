@@ -111,9 +111,7 @@ namespace cran
             app.UseStaticFiles();
 
             //Google login
-            app.UseAuthentication();      
-
-           
+            app.UseAuthentication();                 
 
             //Routes
             app.UseMvc(routes =>

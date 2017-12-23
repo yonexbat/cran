@@ -99,7 +99,8 @@ namespace cran.Services
 
             IQueryable<Comment> queryBeforeSkipAndTake = _context.Comments
                 .Where(x => x.Question.Id == parameters.IdQuestion)
-                .OrderByDescending(x => x.InsertDate);
+                .OrderByDescending(x => x.InsertDate)
+                .ThenBy(x => x.Id);
 
             //Count und Paging
             int count = await queryBeforeSkipAndTake.CountAsync();

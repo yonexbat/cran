@@ -381,7 +381,8 @@ namespace cran.Services
                     NumQuestionsTotal = x.CourseInstancesQuestion.Count(),
                     InsertDate = x.InsertDate,
                 })
-                .OrderByDescending(x => x.InsertDate);
+                .OrderByDescending(x => x.InsertDate)
+                .ThenBy(x => x.IdCourseInstance);
 
             PagedResultDto<CourseInstanceListEntryDto> resultDto = new PagedResultDto<CourseInstanceListEntryDto>();
 

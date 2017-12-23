@@ -30,12 +30,18 @@ namespace cran.Services
 
         public async Task<PagedResultDto<CourseDto>> GetCoursesAsync(int page)
         {
-            IQueryable<Course> query = this._context.Courses;
+            IQueryable<Course> query = this._context.Courses
+                .OrderBy(x => x.Title)
+                .ThenBy(x => x.Id);
+
             PagedResultDto<CourseDto> result = new PagedResultDto<CourseDto>();
             int count = await query.CountAsync();
             int skip = InitPagedResult(result, count, page);
-            query = query.Skip(skip).Take(result.Pagesize).Include(x => x.RelTags)
-                .ThenInclude(x => x.Tag).OrderBy(x => x.Title);
+            query =
+                query.Skip(skip)
+                .Take(result.Pagesize).Include(x => x.RelTags)
+                .ThenInclude(x => x.Tag);
+
             IList<Course> list = await query
                .Include(x => x.RelTags)
                .ThenInclude(x => x.Tag)
