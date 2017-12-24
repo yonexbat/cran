@@ -511,7 +511,11 @@ export class CranDataServiceMock implements ICranDataService {
         question.title = 'MyTitle';
         question.id = id;
         question.explanation = 'My explanation';
-        question.status = 1;
+        if (id > 10) {
+          question.status = 1;
+        } else {
+          question.status = 0;
+        }
         question.isEditable = true;
         question.language = 'De';
         question.votes = {

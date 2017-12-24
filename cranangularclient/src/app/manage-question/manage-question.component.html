@@ -57,13 +57,17 @@
           {{ls.label('state')}}
         </label>
 
-        <select class="form-control"
-                #status="ngModel"
-                [(ngModel)]="question.status"
-                name="status" id="status">
-          <option [value]="0">{{ls.label('created')}}</option>
-          <option [value]="1">{{ls.label('approved')}}</option>
-        </select>
+        <div class="form-control" disabled="disabled">
+          <span *ngIf="question.status == 0">
+            {{ls.label('created')}}
+          </span>
+          <span *ngIf="question.status == 1">
+            {{ls.label('approved')}}
+          </span>
+          <span *ngIf="question.status == 2">
+            {{ls.label('created')}}
+          </span>
+        </div>
 
       </div>
 

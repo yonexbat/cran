@@ -3,7 +3,7 @@
   <!-- Template for ListItem -->
   <ng-template #listItem let-item="item">      
     <div  class="list-group-item questionstatus"
-          [ngClass]="{'questionstatusok' : item.status === 1, 'questionstatusnok' :item.status === 0 }">
+    [ngClass]="{'questionstatusok' : item.status === 1, 'questionstatusnok' :item.status === 0, 'questionstatussuperseded' : item.status === 2 }">
       <h4>                  
         #{{item.id}}
 

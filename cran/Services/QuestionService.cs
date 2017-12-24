@@ -355,25 +355,36 @@ namespace cran.Services
 
         public async Task AcceptQuestionAsync(int id)
         {
+            //security check
+            await CheckWriteAccessToQuestion(id);
+
             Question question = await _context.FindAsync<Question>(id);
             if(question.Status != QuestionStatus.Created)
             {
                 new CraniumException($"Question #{id} is not in state created.");
             }
             question.Status = QuestionStatus.Released;
+            Question previosQuestion = await _context.Questions.Where(x => x.IdQuestionSucessor == id).SingleOrDefaultAsync();
+            if(previosQuestion != null)
+            {
+                previosQuestion.Status = QuestionStatus.Obsolete;
+                previosQuestion.Successor = question;
+            }
             await _context.SaveChangesAsync();
         }
 
         public async Task<int> VersionQuestionAsync(int id)
         {
+            //security check
+            await CheckWriteAccessToQuestion(id);
+
             Question question = await GetLatestVersion(id);
             if (question.Status != QuestionStatus.Released)
             {
                 new CraniumException($"Question #{id} is not in state released.");
             }
             int newId = await CopyQuestionAsync(id);
-            question.IdQuestionSucessor = newId;
-            question.Status = QuestionStatus.Obsolete;
+            question.IdQuestionSucessor = newId;           
             await _context.SaveChangesAsync();
             return newId;
         }

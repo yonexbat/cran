@@ -52,16 +52,27 @@
 
   <div class="btn-group pull-right">   
 
+      <!-- Neue Version erstellen -->
       <button 
-        *ngIf="question.isEditable"
+        *ngIf="question.isEditable && question.status !== 0"
         type="button" 
         class="btn btn btn-success"
         (click)="createNewVersion()">
         {{ls.label('version')}}
+      </button>   
+      
+      <!-- Kopieren -->
+      <button 
+           type="button" 
+           class="btn btn btn-success" 
+           (click)="copyQuestion()" 
+           *ngIf="question?.id > 0">
+           {{ls.label('copy')}} 
       </button>      
 
+      <!-- Editieren -->
       <button 
-        *ngIf="question.isEditable"
+        *ngIf="question.isEditable && question.status == 0"
         type="button" 
         class="btn btn btn-success"
         (click)="goToEditQuestion()">

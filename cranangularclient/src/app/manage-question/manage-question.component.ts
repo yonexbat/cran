@@ -45,8 +45,9 @@ export class ManageQuestionComponent implements OnInit {
           this.handleRouteChanged(+id);
         });
 
-        // Create two options for default.
+        // Create two question-options (in case creating a new question)
         this.question = new Question();
+
         this.question.options.push({
           isTrue: false,
           text: '',
@@ -145,6 +146,9 @@ export class ManageQuestionComponent implements OnInit {
         this.notificationService.emitLoading();
         this.question = await this.cranDataService.getQuestion(id);
         this.notificationService.emitDone();
+        if (this.question.status !== 0) {
+          this.router.navigate(['/viewquestion', this.question.id]);
+        }
       } catch (error) {
         this.notificationService.emitError(error);
       }

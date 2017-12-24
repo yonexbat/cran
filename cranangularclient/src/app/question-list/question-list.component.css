@@ -14,6 +14,11 @@
     border-left-color: #E6A5A6;
 }
 
+.questionstatussuperseded
+{
+    border-left-color: rgb(229, 236, 120);
+}
+
 .list-group-item:after {
     content: "";
     display: table;

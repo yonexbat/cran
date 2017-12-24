@@ -27,6 +27,7 @@ export class LanguageService {
     'state' : {valueDe : 'Status', valueEn : 'State'},
     'created' : {valueDe : 'erstellt', valueEn : 'created'},
     'approved' : {valueDe : 'freigeschalten', valueEn : 'approved'},
+    'superseded' : {valueDe : 'überholt', valueEn : 'superseded'},
     'text' : {valueDe : 'Text', valueEn : 'Text'},
     'addimage' : {valueDe : 'Bild hinzufügen', valueEn : 'Add image'},
     'option' : {valueDe : 'Option', valueEn : 'Option'},
