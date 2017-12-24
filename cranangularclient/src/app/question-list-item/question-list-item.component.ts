@@ -1,6 +1,7 @@
 import { Component, OnInit,
   ViewEncapsulation, Input, Output,
-  EventEmitter } from '@angular/core';
+  EventEmitter, HostBinding } from '@angular/core';
+import { Router, } from '@angular/router';
 
 import {QuestionListEntry} from '../model/questionlistentry';
 
@@ -9,13 +10,29 @@ import {QuestionListEntry} from '../model/questionlistentry';
   templateUrl: './question-list-item.component.html',
   styleUrls: ['./question-list-item.component.css'],
   encapsulation: ViewEncapsulation.None,
-  host: {'[class.list-group-item]': 'true', 
-         '[class.questionstatus]': 'true',
-         '[class.questionstatusok]':'item.status === 1',
-         '[class.questionstatussuperseded]':'item.status === 2',
-         '[class.questionstatusnok]':'item.status === 0',}
 })
 export class QuestionListItemComponent implements OnInit {
+
+  @HostBinding('class.list-group-item')
+  private groupClass = true;
+
+  @HostBinding('class.questionstatus')
+  private questionStatus = true;
+
+  @HostBinding('class.questionstatusnok')
+  private get classStatusCreated(): boolean {
+    return this.item.status === 0;
+  }
+
+  @HostBinding('class.questionstatusok')
+  private get classStatusReleased(): boolean {
+    return this.item.status === 1;
+  }
+
+  @HostBinding('class.questionstatussuperseded')
+  private get classStatusSuperseded(): boolean {
+    return this.item.status === 2;
+  }
 
   @Input()
   private item: QuestionListEntry;
@@ -29,7 +46,7 @@ export class QuestionListItemComponent implements OnInit {
   @Output()
   onItemEditclick = new EventEmitter<QuestionListEntry>();
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   private itemDelete() {
     this.onItemDeletedClick.emit(this.item);
@@ -37,10 +54,12 @@ export class QuestionListItemComponent implements OnInit {
 
   private itemView() {
     this.onItemViewClick.emit(this.item);
+    this.router.navigate(['/viewquestion', this.item.id]);
   }
 
   private itemEdit() {
     this.onItemEditclick.emit(this.item);
+    this.router.navigate(['/editquestion', this.item.id]);
   }
 
   ngOnInit() {

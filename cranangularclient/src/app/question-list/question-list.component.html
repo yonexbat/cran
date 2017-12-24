@@ -3,9 +3,7 @@
   <!-- Template for ListItem -->
   <ng-template #listItem let-item="item">       
     <app-question-list-item 
-      [item]="item"
-      (onItemEditclick)="goToQuestion($event)"
-      (onItemViewClick)="goToQuestion($event)"
+      [item]="item"     
       (onItemDeletedClick)="deleteQuestion($event)">
     </app-question-list-item>
   </ng-template> 

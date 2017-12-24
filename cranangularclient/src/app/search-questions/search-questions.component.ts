@@ -89,14 +89,6 @@ export class SearchQuestionsComponent implements OnInit {
     this.searchQuestions(pageNumber);
   }
 
-  public goToQuestion(question: QuestionListEntry) {
-    if (question.status === 1) {
-      this.router.navigate(['/viewquestion', question.id]);
-    } else {
-      this.router.navigate(['/editquestion', question.id]);
-    }
-  }
-
   private executeSearch() {
     this.searchQuestions(0);
   }
