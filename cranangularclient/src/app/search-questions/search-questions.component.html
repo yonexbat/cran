@@ -92,31 +92,15 @@
   
   
   <!-- Template for ListItem -->
-  <ng-template #listItem let-item="item">      
-    <div  class="list-group-item questionstatus"
-          [ngClass]="{'questionstatusok' : item.status === 1, 'questionstatusnok' :item.status === 0, 'questionstatussuperseded' : item.status === 2 }">
-      <h4>                  
-        #{{item.id}}
-
-        {{item.title}}
-
-        <span class="btn-group pull-right">
-
-
-          <button class="btn btn-default" type="button" (click)="deleteQuestion(item)">
-            <span class="glyphicon glyphicon-trash"></span>
-          </button>
-          
-          <button class="btn btn-default" type="button" (click)="goToQuestion(item)">
-            <span class="glyphicon glyphicon-pencil" *ngIf="item.status !== 1"></span>
-            <span class="glyphicon glyphicon-info-sign" *ngIf="item.status === 1"></span>
-          </button>
-
-        </span>
-      
-      </h4> 
-      <app-tags [tagList]="item.tags"></app-tags>      
-    </div>      
+  <ng-template #listItem let-item="item">    
+    
+    <app-question-list-item 
+      [item]="item"
+      (onItemEditclick)="goToQuestion($event)"
+      (onItemViewClick)="goToQuestion($event)"
+      (onItemDeletedClick)="deleteQuestion($event)">
+    </app-question-list-item>
+    
   </ng-template> 
   
   <app-pager [itemTemplate]="listItem"

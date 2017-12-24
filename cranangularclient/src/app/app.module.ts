@@ -43,6 +43,7 @@ import { ManageTagComponent } from './manage-tag/manage-tag.component';
 import { ManageCourseComponent } from './manage-course/manage-course.component';
 import { ConfirmComponent } from './confirm/confirm.component';
 import { ConfirmService } from './confirm.service';
+import { QuestionListItemComponent } from './question-list-item/question-list-item.component';
 
 function isDevelopment() {
   return window.location && window.location.port && window.location.port === '4200';
@@ -83,6 +84,7 @@ if (isDevelopment()) {
     ManageTagComponent,
     ManageCourseComponent,
     ConfirmComponent,
+    QuestionListItemComponent,
   ],
   imports: [
     BrowserModule,

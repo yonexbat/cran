@@ -1,0 +1,25 @@
+<div>
+  <h4>                  
+    #{{item.id}}
+
+    {{item.title}}
+
+    <span class="btn-group pull-right">
+
+
+      <button class="btn btn-default" type="button" (click)="itemDelete()">
+        <span class="glyphicon glyphicon-trash"></span>
+      </button>
+      
+      <button class="btn btn-default" type="button" (click)="itemView(item)">
+        <span class="glyphicon glyphicon-pencil" *ngIf="item.status !== 1"></span>
+        <span class="glyphicon glyphicon-info-sign" *ngIf="item.status === 1"></span>
+      </button>
+
+    </span>
+  
+  </h4> 
+
+  <app-tags [tagList]="item.tags"></app-tags>
+       
+</div>      
