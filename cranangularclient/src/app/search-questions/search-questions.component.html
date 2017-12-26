@@ -59,19 +59,36 @@
         <!-- Status -->
         <div class="col-md-4">
 
-          <label for="status">
+          <label>
             {{ls.label('state')}}
           </label>
-
-          <select class="form-control"
-            #status="ngModel"
-            [(ngModel)]="search.status"
-            (change)="executeSearch()"
-            name="status" id="status">
-            <option [value]=""></option> 
-            <option [value]="0">{{ls.label('created')}}</option>
-            <option [value]="1">{{ls.label('approved')}}</option>
-          </select>
+          <div>
+            <label class="checkbox-inline">
+              <input type="checkbox" 
+                  name="statusCreated" 
+                  id="statusCreated"
+                  #statusCreated="ngModel"
+                  (change)="executeSearch()" 
+                  [(ngModel)]="search.statusCreated"> {{ls.label('created')}}
+            </label>
+            <label class="checkbox-inline">
+              <input type="checkbox" 
+                  name="statusReleased" 
+                  id="statusReleased"
+                  #statusCreated="ngModel"
+                  (change)="executeSearch()" 
+                  [(ngModel)]="search.statusReleased"> {{ls.label('approved')}}
+            </label>
+            <label class="checkbox-inline">
+              <input type="checkbox" 
+                  name="statusObsolete" 
+                  id="statusObsolete"
+                  #statusCreated="ngModel"
+                  (change)="executeSearch()" 
+                  [(ngModel)]="search.statusObsolete"> {{ls.label('superseded')}}
+            </label>
+          </div> 
+  
         </div>
 
       </div>

@@ -303,9 +303,18 @@ namespace cran.Services
                 queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x => x.Language == parameters.Language);
             }
 
-            if(parameters.Status.HasValue)
+            if(parameters.StatusCreated || parameters.StatusReleased || parameters.StatusObsolete)
             {
-                queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x => x.Status == parameters.Status);
+                queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x => 
+                    x.Status == QuestionStatus.Created && parameters.StatusCreated ||
+                    x.Status == QuestionStatus.Released && parameters.StatusReleased ||
+                    x.Status == QuestionStatus.Obsolete && parameters.StatusObsolete);
+            }
+            else
+            {
+                queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x =>
+                   x.Status == QuestionStatus.Created ||
+                   x.Status == QuestionStatus.Released);
             }
 
             PagedResultDto<QuestionListEntryDto> resultDto = new PagedResultDto<QuestionListEntryDto>();

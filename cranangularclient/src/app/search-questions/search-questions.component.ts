@@ -39,7 +39,16 @@ export class SearchQuestionsComponent implements OnInit {
     this.search.page = +params['pageNumber'];
     this.search.title = params['title'];
     this.search.language = params['language'];
-    this.search.status = +params['status'];
+
+    if (params['statusCreated']) {
+      this.search.statusCreated = params['statusCreated'] === 'true';
+    }
+    if (params['statusReleased']) {
+      this.search.statusReleased =  params['statusReleased'] === 'true';
+    }
+    if (params['statusObsolete']) {
+      this.search.statusObsolete = params['statusObsolete'] === 'true';
+    }
 
     const andTagsJson = params['andTags'];
     const orTagsJson = params['orTags'];
@@ -78,7 +87,9 @@ export class SearchQuestionsComponent implements OnInit {
          andTags: andTags,
          orTags: orTags,
          language: this.search.language,
-         status: this.search.status,
+         statusCreated: this.search.statusCreated,
+         statusReleased: this.search.statusReleased,
+         statusObsolete: this.search.statusObsolete,
       }
     };
 
