@@ -229,9 +229,31 @@ namespace cran.Services
                 _context.Remove(relImage);
             }
 
+            //Set successor of predecessor to null, so we can delete it
+            //Fixup link form precedessor to successor will be done later, seems to be a bug in ef-core.
+            //Circular bla bla exception if we do it here.
+            Question precedessor = await _context.Questions.Where(x => x.IdQuestionSucessor == questionEntity.Id).SingleOrDefaultAsync();           
+            if(precedessor != null)
+            {
+                precedessor.Successor = null;
+            }
             _context.Remove(questionEntity);
             await SaveChangesAsync();
+
+            await LinkQuestions(precedessor?.Id, questionEntity.IdQuestionSucessor);
         }
+
+        private async Task LinkQuestions(int? idPredecessor, int? idSccessor)
+        {
+            Question precedessor = await _context.Questions.Where(x => x.Id == idPredecessor).SingleOrDefaultAsync();
+            Question successor = await _context.Questions.Where(x => x.Id == idSccessor).SingleOrDefaultAsync();
+            if (precedessor != null)
+            {
+                precedessor.Successor = successor;
+            }
+            await this.SaveChangesAsync();
+        }
+       
 
         public async Task<PagedResultDto<QuestionListEntryDto>> GetMyQuestionsAsync(int page)
         {
@@ -314,12 +336,11 @@ namespace cran.Services
         private async Task<IList<QuestionListEntryDto>> MaterializeQuestionList(IQueryable<Question> query)
         {
             IQueryable<int> questionIds = query.Select(q => q.Id);
-            return await MaterializeQuestionList(questionIds);
+            return await MaterializeQuestionListItems(questionIds);
         }
 
-        private async Task<IList<QuestionListEntryDto>> MaterializeQuestionList(IQueryable<int> questionIds)
-        {
-           
+        private async Task<IList<QuestionListEntryDto>> MaterializeQuestionListItems(IQueryable<int> questionIds)
+        {           
             IList<QuestionListEntryDto> result = await _context.Questions.Where(x => questionIds.Contains(x.Id))
               .Select(q => new QuestionListEntryDto { Title = q.Title, Id = q.Id, Status = (int)q.Status })
               .ToListAsync();
@@ -368,7 +389,6 @@ namespace cran.Services
             if(previosQuestion != null)
             {
                 previosQuestion.Status = QuestionStatus.Obsolete;
-                previosQuestion.Successor = question;
             }
             await _context.SaveChangesAsync();
         }

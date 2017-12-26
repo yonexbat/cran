@@ -12,6 +12,8 @@ import {QuestionAnswer} from '../model/questionanswer';
 import {CourseInstance} from '../model/courseinstance';
 import {NotificationService} from '../notification.service';
 import {CommentsComponent} from '../comments/comments.component';
+import { ConfirmService } from '../confirm.service';
+import { CourseInstanceListComponent } from '../course-instance-list/course-instance-list.component';
 
 @Component({
   selector: 'app-ask-question',
@@ -29,6 +31,7 @@ export class AskQuestionComponent implements OnInit {
     private router: Router,
     private activeRoute: ActivatedRoute,
     private notificationService: NotificationService,
+    private confirmService: ConfirmService,
     private ls: LanguageService) {
 
     this.activeRoute.paramMap.subscribe((params: ParamMap)  => {
@@ -66,7 +69,7 @@ export class AskQuestionComponent implements OnInit {
       const answer: QuestionAnswer = this.getAnswerDto();
       try {
         this.notificationService.emitLoading();
-        const data = await this.cranDataServiceService.answerQuestionAndGetNextQuestion(answer);
+        const data: CourseInstance = await this.cranDataServiceService.answerQuestionAndGetNextQuestion(answer);
         this.checkShown = false;
         if (data.idCourseInstanceQuestion > 0) {
           this.router.navigate(['/askquestion', data.idCourseInstanceQuestion]);
@@ -92,8 +95,25 @@ export class AskQuestionComponent implements OnInit {
     this.router.navigate(['/resultlist', this.questionToAsk.idCourseInstance]);
   }
 
-  public goToEditQuestion() {
-    this.router.navigate(['/editquestion', this.questionToAsk.question.id]);
+  private async createNewVersion() {
+    // save current question
+    try {
+      await this.confirmService.confirm(this.ls.label('version'), this.ls.label('versionq'));
+      await this.doCreateNewVersion();
+    } catch (error) {
+      // thats ok.
+    }
+  }
+
+  private async doCreateNewVersion() {
+    try {
+      this.notificationService.emitLoading();
+      const newId = await this.cranDataServiceService.versionQuestion( this.questionToAsk.question.id);
+      this.notificationService.emitDone();
+      this.router.navigate(['/editquestion', newId]);
+    } catch (error) {
+      this.notificationService.emitError(error);
+    }
   }
 
   private async handleRouteChanged(id: number): Promise<void> {
