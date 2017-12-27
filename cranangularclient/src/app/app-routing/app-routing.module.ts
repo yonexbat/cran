@@ -15,6 +15,7 @@ import {FileUploadComponent} from '../file-upload/file-upload.component';
 import {ManageTagsComponent} from '../manage-tags/manage-tags.component';
 import {ManageTagComponent} from '../manage-tag/manage-tag.component';
 import {ManageCourseComponent} from '../manage-course/manage-course.component';
+import {CourseStarterComponent} from '../course-starter/course-starter.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent},
@@ -31,7 +32,8 @@ const routes: Routes = [
   { path: 'fileupload', component: FileUploadComponent},
   { path: 'managetags', component: ManageTagsComponent},
   { path: 'managetag/:id', component: ManageTagComponent},
-  { path: 'managecourse/:id', component: ManageCourseComponent}
+  { path: 'managecourse/:id', component: ManageCourseComponent},
+  { path: 'coursestarter/:id', component: CourseStarterComponent},
 ];
 
 @NgModule({

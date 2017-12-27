@@ -1,0 +1,34 @@
+﻿
+@using cran.Model.ViewModel; 
+@model CourseViewModel;
+
+<div class="container">
+
+    <h1>@Model.Course.Title</h1>
+
+    <div>
+        @Html.Raw(Model.Course.Description)
+    </div>
+    <form asp-action="Start" method="get">
+        <input type="hidden" asp-for="Id" />
+        <div class="btn-group float-right" role="group" aria-label="Start course">
+            <button type="submit" 
+                    class="btn btn-secondary"
+                    title="Kurs starten"
+                    data-toggle="tooltip" data-placement="top">Start</button>
+        </div>
+    </form>
+
+</div>
+
+@section scripts {
+
+    <script>
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+
+    </script>
+
+}

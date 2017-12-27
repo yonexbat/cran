@@ -44,6 +44,7 @@ import { ManageCourseComponent } from './manage-course/manage-course.component';
 import { ConfirmComponent } from './confirm/confirm.component';
 import { ConfirmService } from './confirm.service';
 import { QuestionListItemComponent } from './question-list-item/question-list-item.component';
+import { CourseStarterComponent } from './course-starter/course-starter.component';
 
 function isDevelopment() {
   return window.location && window.location.port && window.location.port === '4200';
@@ -85,6 +86,7 @@ if (isDevelopment()) {
     ManageCourseComponent,
     ConfirmComponent,
     QuestionListItemComponent,
+    CourseStarterComponent,
   ],
   imports: [
     BrowserModule,

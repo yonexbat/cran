@@ -1,33 +1,35 @@
 @using  cran.Model.Dto
 @model cran.Model.ViewModel.LoginViewModel
 
-<div>
-    <section>
-        <div class="jumbotron text-center">           
-            <h1>Cranium</h1>
+<div class="container">
+
+    <p>Log-in</p>
+
+    <form asp-controller="Account" asp-action="ExternalLogin" method="post" class="form-horizontal">      
+        <input asp-for="ReturnUrl" type="hidden" />
+        <div class="btn-group float-right" role="group" aria-label="Start course">            
+            @foreach (LoginProviderDto provider in Model.LoginProviders)
+            {
+                <button type="submit" class="btn btn-primary" name="provider"
+                        value="@provider.Name"
+                        title="Log in using your @provider.DisplayName account"
+                        data-toggle="tooltip" data-placement="top">
+                    @provider.DisplayName
+                </button>
+            }                
         </div>
-            
-                
-        <form asp-controller="Account" asp-action="ExternalLogin"  method="post" class="form-horizontal">
-            <div style="margin-left: 20px;">
-                <p>
-                    @Html.HiddenFor(m => m.ReturnUrl)
-                    @foreach (LoginProviderDto provider in Model.LoginProviders)
-                    {
-                        <button type="submit" class="btn btn-primary btn-lg" name="provider"
-                                value="@provider.Name"
-                                title="Log in using your @provider.DisplayName account">
-                            @provider.DisplayName
-                        </button>
-                    }                       
-                </p>
-            </div>
-        </form>
-               
-            
-    </section>
-
-   
-
+    </form>
 
 </div>
+
+@section scripts {
+
+    <script>
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+
+    </script>
+
+}

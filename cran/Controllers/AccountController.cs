@@ -79,7 +79,7 @@ namespace cran.Controllers
         {
             if(provider == Anonymous)
             {
-                return await SignInAnonnymous();
+                return await SignInAnonnymous(returnUrl);
             }
 
             // Request a redirect to the external login provider.
