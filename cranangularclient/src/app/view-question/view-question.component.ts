@@ -61,6 +61,28 @@ export class ViewQuestionComponent implements OnInit {
     }
   }
 
+  private async copyQuestion() {
+    if (this.question && this.question.id > 0) {
+      try {
+        await this.confirmService.confirm(this.ls.label('copyquestion'), this.ls.label('copyquestionq'));
+        await this.doCopyQuestion();
+      } catch (error) {
+        // thats ok.
+      }
+    }
+  }
+
+  private async doCopyQuestion() {
+    try {
+      this.notificationService.emitLoading();
+      const newQuestionId = await this.cranDataService.copyQuestion(this.question.id);
+      this.notificationService.emitDone();
+      this.router.navigate(['/editquestion', newQuestionId]);
+    } catch (error) {
+      this.notificationService.emitError(error);
+    }
+  }
+
 
   private async handleRouteChanged(id: number): Promise<void> {
     try {

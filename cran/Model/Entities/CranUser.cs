@@ -8,7 +8,7 @@ namespace cran.Model.Entities
     public class CranUser : CranEntity
     {
         public virtual string UserId { get; set; }
-
+        public virtual bool IsAnonymous { get; set; }
         public virtual IList<CourseInstance> CourseInstances { get; set; } = new List<CourseInstance>();
         public virtual IList<Question> Questions { get; set; } = new List<Question>();
         public virtual IList<Comment> Comments { get; set; } = new List<Comment>();

@@ -1,5 +1,9 @@
 <span *ngIf="userInfo" class="navbar-brand">
-  {{userInfo.name}} 
+ 
+  <span  *ngIf="userInfo.isAnonymous === false">
+        {{userInfo.name}}
+  </span>
+ 
   <span (click)= "setEn()" 
         [class.activeLanguage]="isEn()"
         title="English">E</span>

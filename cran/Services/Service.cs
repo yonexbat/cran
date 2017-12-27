@@ -38,10 +38,13 @@ namespace cran.Services
                 cranUserEntity = new CranUser
                 {
                     UserId = userId,
+                    IsAnonymous = true,
                 };
                 _context.CranUsers.Add(cranUserEntity);
             }
+            await SaveChangesAsync();
             return cranUserEntity;
         }
+     
     }
 }

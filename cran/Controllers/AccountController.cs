@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Authentication;
 using System;
 using System.Security;
+using cran.Services;
+using cran.Model.Dto;
 
 namespace cran.Controllers
 {
@@ -21,6 +23,7 @@ namespace cran.Controllers
         private UserManager<ApplicationUser> _userManager;
         private RoleManager<IdentityRole> _roleManager;
         private readonly ILogger _logger;
+        private readonly IUserProfileService _userProfileService;
 
         private static string Anonymous = "Anonymous";
 
@@ -28,12 +31,14 @@ namespace cran.Controllers
             ILoggerFactory loggerFactory,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            IUserProfileService userProfileService)
         {
             this._logger = loggerFactory.CreateLogger<AccountController>();
             this._signInManager = signInManager;
             this._userManager = userManager;
             this._roleManager = roleManager;
+            this._userProfileService = userProfileService;
         }
 
         public async Task<IActionResult> Login()
@@ -91,7 +96,8 @@ namespace cran.Controllers
 
             if (identityResult.Succeeded)
             {
-                await _signInManager.SignInAsync(user, isPersistent: true);                   
+                await _signInManager.SignInAsync(user, isPersistent: true);
+                await _userProfileService.CreateUserAsync(new UserInfoDto { Name = user.UserName, IsAnonymous = true });
             }
             else
             {
@@ -192,7 +198,7 @@ namespace cran.Controllers
                     if (result.Succeeded)
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
-                        _logger.LogInformation(6, "User created an account using {Name} provider.", info.LoginProvider);
+                        await _userProfileService.CreateUserAsync(new UserInfoDto {Name = model.Email, IsAnonymous = false });                        
                         return RedirectToLocal(returnUrl);
                     }
                 }

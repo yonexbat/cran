@@ -9,5 +9,6 @@ namespace cran.Services
     public interface IUserProfileService
     {
         Task<UserInfoDto> GetUserInfoAsync();
+        Task CreateUserAsync(UserInfoDto userInfo);
     }
 }

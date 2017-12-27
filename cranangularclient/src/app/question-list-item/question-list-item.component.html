@@ -12,8 +12,8 @@
       </button>
       
       <button class="btn btn-default" type="button" (click)="itemView(item)">
-        <span class="glyphicon glyphicon-pencil" *ngIf="item.status !== 1"></span>
-        <span class="glyphicon glyphicon-info-sign" *ngIf="item.status === 1"></span>
+        <span class="glyphicon glyphicon-pencil" *ngIf="item.status === 0"></span>
+        <span class="glyphicon glyphicon-info-sign" *ngIf="item.status === 1 || item.status === 2"></span>
       </button>
 
     </span>

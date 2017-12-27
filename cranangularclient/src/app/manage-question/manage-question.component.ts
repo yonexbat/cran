@@ -90,31 +90,6 @@ export class ManageQuestionComponent implements OnInit {
     }
   }
 
-  private async copyQuestion() {
-    if (this.question && this.question.id > 0) {
-      // save current question
-      try {
-        await this.confirmService.confirm(this.ls.label('copyquestion'), this.ls.label('copyquestionq'));
-        await this.doCopyQuestion();
-      } catch (error) {
-        // thats ok.
-      }
-    }
-  }
-
-  private async doCopyQuestion() {
-    try {
-      this.actionInProgress = true;
-      this.notificationService.emitLoading();
-      const newQuestionId = await this.cranDataService.copyQuestion(this.question.id);
-      this.notificationService.emitDone();
-      this.router.navigate(['/editquestion', newQuestionId]);
-    } catch (error) {
-      this.notificationService.emitError(error);
-      this.actionInProgress = false;
-    }
-  }
-
   private async accept() {
     if (this.question && this.question.id > 0) {
       // save current question
