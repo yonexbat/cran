@@ -5,24 +5,31 @@
   </ng-template>
 
   <ng-template #datalist>
+
+      <!-- Render Items here -->
       <div class="list-group">
         <ng-container *ngFor="let item of pagedResult.data">
             <ng-container *ngTemplateOutlet="itemTemplate;context:{item:item}">
             </ng-container>          
         </ng-container>
       </div>
-  
-      <ul class="pagination" *ngIf="pagedResult.numpages > 1">
-        <li aria-label="previous page" *ngIf="showPreviousPagesButton()">          
-          <span (click)="pageClicked(previousPagesFirstPage())" aria-hidden="true">&laquo;</span>          
-        </li>
-        <li *ngFor="let number of getPages()" [ngClass]="{'active': this.pagedResult.currentPage===number}" >
-          <span (click)="pageClicked(number)">{{number + 1}}</span>
-        </li>
-        <li aria-label="next page" *ngIf="showNextPagesButton()">          
-            <span (click)="pageClicked(nextPagesFirstPage())" aria-hidden="true">&raquo;</span>          
-        </li>
-      </ul>  
+
+      <!-- Page selector control  -->      
+      <nav aria-label="select page">
+        <ul class="pagination" *ngIf="pagedResult.numpages > 1">
+
+            <li  aria-label="previous page" *ngIf="showPreviousPagesButton()"  class="page-item">          
+              <span (click)="pageClicked(previousPagesFirstPage())" aria-hidden="true" class="page-link">&laquo;</span>          
+            </li>
+            <li *ngFor="let number of getPages()" [ngClass]="{'active': this.pagedResult.currentPage===number}"  class="page-item">
+              <span (click)="pageClicked(number)" class="page-link">{{number + 1}}</span>
+            </li>
+            <li aria-label="next page" *ngIf="showNextPagesButton()"  class="page-item">          
+                <span (click)="pageClicked(nextPagesFirstPage())" aria-hidden="true" class="page-link">&raquo;</span>          
+            </li>
+
+        </ul>  
+      </nav>
       <div><span>{{ls.label('count')}}: {{pagedResult.count}}</span></div>
   </ng-template>
   

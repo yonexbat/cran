@@ -1,83 +1,117 @@
-<nav class="navbar navbar-default">
-   <div class="container-fluid">
-    
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">Cranium </a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+    <span class="navbar-brand" href="#">
+      Cranium
+      <!-- user info -->
       <app-user-info></app-user-info>
-    </div>
+    </span>
+  
+    <!-- burger button -->
+    <button class="navbar-toggler" 
+            type="button" 
+            data-toggle="collapse" 
+            data-target="#navbarNav" 
+            aria-controls="navbarNav" 
+            aria-expanded="false" 
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav">
-         
-          <li routerLinkActive="active">
-             <a [routerLink]="['/home']">{{ls.label('home')}}</a>
-          </li>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
 
-          <li  routerLinkActive="active">
-            <a [routerLink]="['/list']">{{ls.label('courses')}}</a>
-          </li>
-
-          <li >
-            <a [routerLink]="['/results']">{{ls.label('myresults')}}</a>
-          </li>
-
-          <li class="dropdown">
-            <a href="#" 
-                class="dropdown-toggle" 
-                data-toggle="dropdown" 
-                role="button" 
-                aria-haspopup="true" 
-                aria-expanded="false">
-                {{ls.label('questions')}} <span class="caret"></span>
+          <!-- Home -->
+          <li routerLinkActive="active" class="nav-item">
+            <a [routerLink]="['/home']" class="nav-link">
+              {{ls.label('home')}}
             </a>
-            <ul class="dropdown-menu">
-              <li  routerLinkActive="active">
-                <a [routerLink]="['/addquestion']">{{ls.label('addquestion')}}</a>
-              </li>
-              <li  routerLinkActive="active" *ngIf="isAdmin">
-                <a [routerLink]="['/searchq']">{{ls.label('searchquestion')}}</a>
-              </li>
-              <li  routerLinkActive="active">
-                <a [routerLink]="['/questionlist']">{{ls.label('myquestions')}}</a>
-              </li>
-            </ul>
-          </li>  
+          </li>
+
+          <!-- Courses -->
+          <li  routerLinkActive="active"  class="nav-item">
+            <a [routerLink]="['/list']" class="nav-link">
+              {{ls.label('courses')}}
+            </a>
+          </li>
+
+          <!-- Results -->
+          <li class="nav-item">
+            <a [routerLink]="['/results']" class="nav-link">
+              {{ls.label('myresults')}}
+            </a>
+          </li>
+
+          <!-- Fragen -->
+          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" 
+                href="#" 
+                id="navbarQuestions" 
+                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ls.label('questions')}}
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <!-- add question -->
+                <a class="dropdown-item" [routerLink]="['/addquestion']" routerLinkActive="active">
+                  {{ls.label('addquestion')}}
+                </a>
+
+                <!-- search for questions -->
+                <a   class="dropdown-item" routerLinkActive="active" *ngIf="isAdmin" [routerLink]="['/searchq']">
+                  {{ls.label('searchquestion')}}
+                </a>
+
+                <div class="dropdown-divider"></div>
+
+                <!-- My questions -->
+                <a  class="dropdown-item" [routerLink]="['/questionlist']" routerLinkActive="active">
+                  {{ls.label('myquestions')}}
+                </a>
+                               
+              </div>
+          </li>          
+
+          <!-- Admin  -->
+          <li *ngIf="isAdmin" class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" 
+                href="#" 
+                id="navbarQuestions" 
+                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ls.label('admin')}}
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                <!-- Tags -->
+                <a class="dropdown-item" [routerLink]="['/managetags']"
+                    routerLinkActive="active" *ngIf="isAdmin">
+                  {{ls.label('tags')}}
+                </a>
+
+                <!--Add tag -->
+                <a class="dropdown-item" [routerLink]="['/managetag/0']"
+                    routerLinkActive="active" *ngIf="isAdmin">
+                  {{ls.label('addtag')}}
+                </a>
+
+                <div class="dropdown-divider"></div>
+
+                <!-- Add course  -->
+                <a  class="dropdown-item" [routerLink]="['/managetag/0']"
+                   routerLinkActive="active" *ngIf="isAdmin">
+                  {{ls.label('addtag')}}
+                </a>
+                               
+              </div>
+          </li>
           
-          <li class="dropdown" *ngIf="isAdmin">
-            <a href="#" 
-              class="dropdown-toggle" 
-              data-toggle="dropdown" 
-              role="button" 
-              aria-haspopup="true" 
-              aria-expanded="false">
-              {{ls.label('admin')}} <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-              <li  routerLinkActive="active" *ngIf="isAdmin">
-                <a [routerLink]="['/managetags']">{{ls.label('tags')}}</a>
-              </li>    
-              <li  routerLinkActive="active" *ngIf="isAdmin">
-                <a [routerLink]="['/managetag/0']">{{ls.label('addtag')}}</a>
-              </li>   
-              <li  routerLinkActive="active" *ngIf="isAdmin">
-                <a [routerLink]="['/managecourse/0']">{{ls.label('addcourse')}}</a>
-              </li>                          
-            </ul>
+          <!-- Logout  -->
+          <li class="nav-item">
+              <a href="/Account/DoLogout"  class="nav-link">
+                {{ls.label('logout')}}
+              </a>
           </li>
-
-          <li>
-            <a href="/Account/DoLogout">{{ls.label('logout')}}</a>
-          </li>
-        </ul>
-     </div>
-
-
-   </div>
+          
+          
+      </ul>
+    </div>
 </nav>
