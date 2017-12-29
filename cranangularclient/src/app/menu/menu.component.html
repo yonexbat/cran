@@ -96,10 +96,9 @@
                 <div class="dropdown-divider"></div>
 
                 <!-- Add course  -->
-                <a  class="dropdown-item" [routerLink]="['/managetag/0']"
-                   routerLinkActive="active" *ngIf="isAdmin">
-                  {{ls.label('addtag')}}
-                </a>
+                <a class="dropdown-item" [routerLink]="['/managecourse/0']" routerLinkActive="active" *ngIf="isAdmin">
+                    {{ls.label('addcourse')}}
+                </a>               
                                
               </div>
           </li>
