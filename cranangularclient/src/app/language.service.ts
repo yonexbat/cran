@@ -79,6 +79,8 @@ export class LanguageService {
     'acceptquestionq' :  {valueDe : 'Frage für andere freigeben?', valueEn : 'Make question accessible by other users?'},
     'version' :  {valueDe : 'Neue Version erstellen', valueEn : 'create new version'},
     'versionq' :  {valueDe : 'Neue Version erstellen?', valueEn : 'create a new version?'},
+    'removeImage' :  {valueDe : 'Bild entfernen', valueEn : 'remove image'},
+    'removeTag' :  {valueDe : 'Tag entfernen', valueEn : 'remove tag'},
   };
 
 

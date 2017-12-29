@@ -6,14 +6,13 @@
 
     <span class="btn-group pull-right">
 
-
-      <button class="btn btn-default" type="button" (click)="itemDelete()">
-        <span class="glyphicon glyphicon-trash"></span>
+      <button class="btn btn-default" type="button" (click)="itemDelete()">        
+        <app-icon [icon]="'trash'"></app-icon>
       </button>
       
       <button class="btn btn-default" type="button" (click)="itemView(item)">
-        <span class="glyphicon glyphicon-pencil" *ngIf="item.status === 0"></span>
-        <span class="glyphicon glyphicon-info-sign" *ngIf="item.status === 1 || item.status === 2"></span>
+        <app-icon [icon]="'edit'" *ngIf="item.status === 0"></app-icon>
+        <app-icon [icon]="'info'" *ngIf="item.status === 1 || item.status === 2"></app-icon>        
       </button>
 
     </span>

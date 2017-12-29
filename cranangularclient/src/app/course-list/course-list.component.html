@@ -8,10 +8,11 @@
   
           <span class="btn-group pull-right">
               <button class="btn btn-default" type="button" (click)="editCourse(item)" *ngIf="item.isEditable">
-                  <span class="glyphicon glyphicon-pencil"></span>
+                  <app-icon [icon]="'edit'"></app-icon>    
               </button>
-              <button class="btn btn-default" type="button" (click)="startCourse(item)">
-                  <span class="glyphicon glyphicon-play"></span>
+              <button class="btn btn-default" type="button" (click)="startCourse(item)">                
+                  <!-- play -->
+                  <app-icon [icon]="'start'"></app-icon>
               </button>
           </span>
   

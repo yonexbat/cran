@@ -137,7 +137,7 @@
 
         <div class="col-md-1">
           <button type="button" class="btn btn-default cranbutton" (click)="removeOption(optionIndex)">
-            <span class="glyphicon glyphicon-trash" title="{{ls.label('removeoption')}}"></span>
+            <app-icon [icon]="'trash'" title="{{ls.label('removeoption')}}"></app-icon>            
           </button>
         </div>
 
@@ -154,7 +154,7 @@
               type="button" 
               class="btn btn-default" 
               (click)="addOpton()">
-            <span class="glyphicon glyphicon-plus" title="{{ls.label('addoption')}}"></span>
+            <app-icon [icon]="'add'" title="{{ls.label('addoption')}}"></app-icon>            
           </button>
       </div>
     </div>

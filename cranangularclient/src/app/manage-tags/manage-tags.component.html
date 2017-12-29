@@ -41,11 +41,11 @@
     
     
               <button class="btn btn-default" type="button" (click)="deleteTag(item)">
-                <span class="glyphicon glyphicon-trash"></span>
+                <app-icon [icon]="'trash'"></app-icon>                
               </button>
               
               <button class="btn btn-default" type="button" (click)="goToTag(item)">
-                <span class="glyphicon glyphicon-pencil"></span>
+                  <app-icon [icon]="'edit'"></app-icon>  
               </button>
     
             </span>

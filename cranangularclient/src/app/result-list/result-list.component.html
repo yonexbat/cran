@@ -8,8 +8,8 @@
         {{item.title}}
 
         <span class="btn-group pull-right">
-            <button class="btn btn-default" type="button" (click)="showQuestion(item)">
-                <span class="glyphicon glyphicon-info-sign"></span>
+            <button class="btn btn-default" type="button" (click)="showQuestion(item)">               
+                <app-icon [icon]="'info'"></app-icon>
               </button>
         </span>
 
@@ -17,8 +17,8 @@
       <app-tags [tagList]="item.tags"></app-tags>
 
       <div>
-          <span class="glyphicon glyphicon-ok" aria-hidden="true" *ngIf="item.correct"></span> 
-          <span class="glyphicon glyphicon-remove" aria-hidden="true" *ngIf="!item.correct"></span>  
+          <app-icon [icon]="'ok'" *ngIf="item.correct"></app-icon>
+          <app-icon [icon]="'nok'" *ngIf="!item.correct"></app-icon>         
       </div>  
     </div>
   </div>
