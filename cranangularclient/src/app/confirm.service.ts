@@ -34,7 +34,7 @@ export class ConfirmService {
   }
 
   public nok() {
-    this.promiseResolver.reject();
+    this.promiseResolver.reject('cancel');
   }
 
   public on():  Observable<ConfirmRequest> {

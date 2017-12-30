@@ -1,9 +1,9 @@
 <div class="container" *ngIf="questionToAsk">
   <form #questionForm="ngForm">
 
-    <h4>
+    <h6>
       {{ls.label('questionofnum', questionToAsk.numQuestionsAsked, questionToAsk.numQuestions)}}
-    </h4>
+    </h6>
 
     <!-- Titel -->
     <p *ngIf="checkShown && questionToAsk.question">
@@ -33,24 +33,28 @@
     <div>
 
       <!-- iterate over options  -->
-      <div *ngFor="let option of questionToAsk?.options; let optionIndex=index" class="row form-group form-inline">
+      <div *ngFor="let option of questionToAsk?.options; let optionIndex=index">
         
         <hr/>      
 
         <div [class.crananswercorrect]="checkShown && (option.isChecked == option.isTrue)"
-             [class.crananswerwrong]="checkShown && !(option.isChecked == option.isTrue)">                
-          <label for="checkBox{{optionIndex}}">{{optionIndex+1}}</label>      
-          <input type="checkbox"
-              class="checkbox"
-              [(ngModel)]="option.isChecked" 
-              id="checkBox{{optionIndex}}"
-              name="checkBox{{optionIndex}}"
-              #optionChecked="ngModel"
-              [disabled] = "checkShown">
-          <span class="glyphicon glyphicon-ok" aria-hidden="true" 
-            *ngIf="checkShown && option.isTrue"></span> 
-          <span class="glyphicon glyphicon-remove" aria-hidden="true" 
-            *ngIf="checkShown && !option.isTrue"></span>                       
+             [class.crananswerwrong]="checkShown && !(option.isChecked == option.isTrue)">     
+          
+          <div class="form-group">
+            <label for="checkBox{{optionIndex}}">{{optionIndex+1}}</label>      
+            <input type="checkbox"
+                class="checkbox"
+                [(ngModel)]="option.isChecked" 
+                id="checkBox{{optionIndex}}"
+                name="checkBox{{optionIndex}}"
+                #optionChecked="ngModel"
+                [disabled] = "checkShown">
+            
+            <app-icon [icon]="'ok'"  *ngIf="checkShown && option.isTrue"></app-icon>
+            <app-icon [icon]="'nok'" *ngIf="checkShown && !option.isTrue"></app-icon>
+          </div>
+
+          <!-- Option text -->                    
           <span [innerHtml] = "option?.text | safeHtml"></span>
         </div>     
 
@@ -58,10 +62,9 @@
     </div>
 
     <!-- question explanation -->
-    <div class="row" *ngIf="checkShown">
-      <div class="col-md-12">                
-        <div [innerHtml] = "questionToAsk?.question?.explanation | safeHtml"></div> 
-      </div>
+    <div *ngIf="checkShown">
+      <hr/>                  
+      <div [innerHtml] = "questionToAsk?.question?.explanation | safeHtml"></div>       
     </div>
 
     <hr/>

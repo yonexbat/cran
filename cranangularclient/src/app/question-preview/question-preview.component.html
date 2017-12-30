@@ -3,10 +3,14 @@
   
       <!-- Modal content-->
       <div class="modal-content">
+
+        <!-- header -->
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">{{question?.title}}</h4>
+          <h6 class="modal-title">{{question?.title}}</h6>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>          
         </div>
+
+        <!-- body  -->
         <div class="modal-body">
 
           <!-- question text -->
@@ -26,13 +30,15 @@
           <div>
       
             <!-- iterate over options  -->
-            <div *ngFor="let option of question?.options; let optionIndex=index" class="row form-group form-inline">
+            <div *ngFor="let option of question?.options; let optionIndex=index">
               
               <hr/>      
       
-              <div>                                        
-                <span class="glyphicon glyphicon-ok" aria-hidden="true" *ngIf="option.isTrue"></span> 
-                <span class="glyphicon glyphicon-remove" aria-hidden="true" *ngIf="!option.isTrue"></span>                       
+              <div>       
+
+                <app-icon [icon]="'ok'"  *ngIf="option.isTrue"></app-icon>                                 
+                <app-icon [icon]="'nok'" *ngIf="!option.isTrue"></app-icon>
+                                  
                 <span [innerHtml] = "option?.text | safeHtml"></span>
               </div>     
       

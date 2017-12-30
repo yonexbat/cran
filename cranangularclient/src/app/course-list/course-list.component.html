@@ -3,19 +3,20 @@
   <!-- Template for ListItem -->
   <ng-template #listItem let-item="item"> 
       <div class="list-group-item">
-        <h4>
+        <h6>
           {{item.title}} [{{ls.label('language')}}: {{item.language}}]
   
           <span class="btn-group pull-right">
               <button class="btn btn-default" type="button" (click)="editCourse(item)" *ngIf="item.isEditable">
-                  <span class="glyphicon glyphicon-pencil"></span>
+                  <app-icon [icon]="'edit'"></app-icon>    
               </button>
-              <button class="btn btn-default" type="button" (click)="startCourse(item)">
-                  <span class="glyphicon glyphicon-play"></span>
+              <button class="btn btn-default" type="button" (click)="startCourse(item)">                
+                  <!-- play -->
+                  <app-icon [icon]="'start'"></app-icon>
               </button>
           </span>
   
-        </h4>
+        </h6>
         <app-tags [tagList]="item.tags"></app-tags>   
           
         <div [innerHtml] = "item.description | safeHtml"></div>     

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, } from '@angular/core';
 
+import {LanguageService} from '../language.service';
 import {Image} from '../model/image';
 
 @Component({
@@ -15,7 +16,7 @@ export class ImagelistComponent implements OnInit {
 
   @Output() onDeleted = new EventEmitter<Image[]>();
 
-  constructor() { }
+  constructor(private ls: LanguageService) { }
 
   ngOnInit() {
   }

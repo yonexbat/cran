@@ -1,26 +1,26 @@
 <div class="container">
   
     
-    <h1>{{getHeadingText()}}</h1>    
+    <h2>{{getHeadingText()}}</h2>    
     <form  #tagForm="ngForm">
            
         <div class="row form-group">
             
-                  <!-- Name -->
-                  <div class="col-md-6">
-                      
-                    <label for="title">{{ls.label('name')}}</label>
-            
-                    <input type="text" class="form-control" id="name"
-                            required
-                            [(ngModel)]="tag.name" name="name"
-                            #name="ngModel">
-            
-                    <div [hidden]="name.valid || name.pristine"
-                          class="alert alert-danger">
-                        {{ls.label('namerequired')}}
-                    </div>
-                  </div>                             
+          <!-- Name -->
+          <div class="col-md-6">
+              
+            <label for="title">{{ls.label('name')}}</label>
+    
+            <input type="text" class="form-control" id="name"
+                    required
+                    [(ngModel)]="tag.name" name="name"
+                    #name="ngModel">
+    
+            <div [hidden]="name.valid || name.pristine"
+                  class="alert alert-danger">
+                {{ls.label('namerequired')}}
+            </div>
+          </div>                             
             
         </div>
 

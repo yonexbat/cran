@@ -1,17 +1,18 @@
 <span *ngIf="votes">
     &nbsp;
     {{votes.downVotes}}
-    <span class="glyphicon glyphicon-thumbs-down" 
-      aria-hidden="true"
-      [class.votedfor]="votes.myVote < 0"
-      (click)="downVote()"
-    >
-    </span>
+    <app-icon 
+        [icon]="'thumbs-down'" 
+        [class.votedfor]="votes.myVote < 0"
+        (click)="downVote()">
+    </app-icon>     
+    
+
 
     {{votes.upVotes}}
-    <span class="glyphicon glyphicon-thumbs-up" 
-          aria-hidden="true"
+    <app-icon  
+          [icon]="'thumbs-up'" 
           [class.votedfor]="votes.myVote > 0"
           (click)="upVote()">
-    </span>    
+    </app-icon>    
 </span>

@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, Input, Output, EventEmitter, } from '@angular/core';
 
 import {Tag} from '../model/tag';
-
+import {LanguageService} from '../language.service';
 
 @Component({
   selector: 'app-tags',
@@ -15,7 +15,7 @@ export class TagsComponent implements OnInit {
 
   @Output() onRemoveTagClick = new EventEmitter<Tag>();
 
-  constructor() { }
+  constructor(private ls: LanguageService) { }
 
   ngOnInit() {
 
