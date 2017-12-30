@@ -12,35 +12,36 @@
   <br/>
 
   <!-- question text -->
-  <div class="row">
+  <div>
     <div class="col-md-12">       
       <div [innerHtml] = "question?.text | safeHtml"></div>
     </div>
   </div>
 
   <!-- images -->
-  <div class="cranimage row">
+  <div class="cranimage">
     <div class="col-md-12">
         <app-imagelist [images]="question?.images"></app-imagelist>
     </div>
   </div>
 
-  <div>
+  <div>   
 
     <!-- iterate over options  -->
-    <div *ngFor="let option of question?.options; let optionIndex=index" class="row form-group form-inline">
+    <div *ngFor="let option of question?.options; let optionIndex=index">
       
       <hr/>      
 
       <div> 
         <app-icon [icon]="'ok'" *ngIf="option.isTrue"></app-icon>
-        <app-icon [icon]="'nok'" *ngIf="!option.isTrue"></app-icon>                                               
-
-        <span [innerHtml] = "option?.text | safeHtml"></span>
+        <app-icon [icon]="'nok'" *ngIf="!option.isTrue"></app-icon>                                                       
       </div>     
+      <span [innerHtml] = "option?.text | safeHtml"></span>
 
     </div>
   </div>
+
+  <hr/> 
 
   <!-- question explanation -->
   <div class="row">
