@@ -43,7 +43,7 @@ namespace cran.tests
             context.Questions.Add(question2);
             context.SaveChanges();
 
-            question1.Successor = question2;
+            //question1.Successor = question2;
 
             context.SaveChanges();
 
@@ -72,7 +72,7 @@ namespace cran.tests
             context.Questions.Add(question2);
             context.SaveChanges();
 
-            question2.Predecessor = question1;
+            //question2.Predecessor = question1;
 
             context.SaveChanges();
 

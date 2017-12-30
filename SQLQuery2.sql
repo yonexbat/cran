@@ -1,3 +1,2 @@
-﻿SELECT
-*
-FROM dbo.AspNetUsers;
+﻿SELECT *
+FROM dbo.CranQuestion;

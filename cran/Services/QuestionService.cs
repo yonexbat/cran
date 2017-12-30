@@ -32,9 +32,12 @@ namespace cran.Services
         {
             await _dbLogService.LogMessageAsync("Adding question");
 
+            Container container = new Container();
+            _context.Containers.Add(container);                        
             Question questionEntity = new Question();
             CopyData(questionDto, questionEntity);
             questionEntity.User = await GetCranUserAsync();
+            questionEntity.Container = container;
             _context.Add(questionEntity);
             await SaveChangesAsync();
             questionDto.Id = questionEntity.Id;
@@ -243,31 +246,18 @@ namespace cran.Services
                 _context.Remove(comment);
             }
 
-
-            //Set successor of predecessor to null, so we can delete it
-            //Fixup link form precedessor to successor will be done later, seems to be a bug in ef-core.
-            //Circular bla bla exception if we do it here.
-            Question precedessor = await _context.Questions.Where(x => x.IdQuestionSucessor == questionEntity.Id).SingleOrDefaultAsync();           
-            if(precedessor != null)
+            //Copy sources
+            IList<Question> copies = await _context.Questions.Where(x => x.IdQuestionCopySource == idQuestion).ToListAsync();
+            foreach(Question copy in copies)
             {
-                precedessor.Successor = null;
+                copy.IdQuestionCopySource = null;
             }
             _context.Remove(questionEntity);
             await SaveChangesAsync();
-
-            await LinkQuestions(precedessor?.Id, questionEntity.IdQuestionSucessor);
+           
         }
 
-        private async Task LinkQuestions(int? idPredecessor, int? idSccessor)
-        {
-            Question precedessor = await _context.Questions.Where(x => x.Id == idPredecessor).SingleOrDefaultAsync();
-            Question successor = await _context.Questions.Where(x => x.Id == idSccessor).SingleOrDefaultAsync();
-            if (precedessor != null)
-            {
-                precedessor.Successor = successor;
-            }
-            await this.SaveChangesAsync();
-        }
+       
        
 
         public async Task<PagedResultDto<QuestionListEntryDto>> GetMyQuestionsAsync(int page)
@@ -388,14 +378,12 @@ namespace cran.Services
 
         public async Task<int> CopyQuestionAsync(int id)
         {
-            QuestionDto questionDto = await GetQuestionAsync(id);
-            questionDto.Status = (int)QuestionStatus.Created;
-            foreach(QuestionOptionDto option in questionDto.Options)
-            {
-                option.Id = 0;
-            }
-            questionDto.Id = 0;
-            return await InsertQuestionAsync(questionDto);
+            QuestionDto questionDto = await CreateQuestionDtoCopy(id);
+            int newId = await InsertQuestionAsync(questionDto);
+            Question questionNew = await _context.FindAsync<Question>(newId);
+            questionNew.IdQuestionCopySource = id;
+            await SaveChangesAsync();
+            return newId;
         }
 
         public async Task AcceptQuestionAsync(int id)
@@ -409,11 +397,18 @@ namespace cran.Services
                 new CraniumException($"Question #{id} is not in state created.");
             }
             question.Status = QuestionStatus.Released;
-            Question previosQuestion = await _context.Questions.Where(x => x.IdQuestionSucessor == id).SingleOrDefaultAsync();
-            if(previosQuestion != null)
+
+            IList<Question> previousQuestions = await _context.Questions
+                .Where(x => x.IdContainer == question.IdContainer)
+                .Where(x => x.Status == QuestionStatus.Released)
+                .Where(x => x.Id != id)
+                .ToListAsync();
+
+            foreach(Question previousQuestion in previousQuestions)
             {
-                previosQuestion.Status = QuestionStatus.Obsolete;
+                previousQuestion.Status = QuestionStatus.Obsolete;
             }
+            
             await _context.SaveChangesAsync();
         }
 
@@ -422,25 +417,42 @@ namespace cran.Services
             //security check
             await CheckWriteAccessToQuestion(id);
 
-            Question question = await GetLatestVersion(id);
-            if (question.Status != QuestionStatus.Released)
+            Question questionSourceEntity = await _context.FindAsync<Question>(id);
+            if (questionSourceEntity.Status != QuestionStatus.Released)
             {
                 new CraniumException($"Question #{id} is not in state released.");
             }
-            int newId = await CopyQuestionAsync(id);
-            question.IdQuestionSucessor = newId;           
-            await _context.SaveChangesAsync();
-            return newId;
+            QuestionDto questionDto = await CreateQuestionDtoCopy(questionSourceEntity.Id);
+
+            //Create new Question
+            Question newQuestion = new Question();
+            newQuestion.Container = questionSourceEntity.Container;
+            newQuestion.IdContainer = questionSourceEntity.IdContainer;
+            newQuestion.User = questionSourceEntity.User;
+            newQuestion.IdQuestionCopySource = id;
+            CopyData(questionDto, newQuestion);
+            
+            _context.Questions.Add(newQuestion);
+            await SaveChangesAsync();
+
+            //Copy all data                    
+            questionDto.Id = newQuestion.Id;
+            await UpdateQuestionAsync(questionDto);
+
+            return newQuestion.Id;
         }
 
-        private async Task<Question> GetLatestVersion(int id)
+        private async Task<QuestionDto> CreateQuestionDtoCopy(int id)
         {
-            Question question = await _context.FindAsync<Question>(id);
-            while(question.IdQuestionSucessor  > 0)
+            QuestionDto questionDto = await GetQuestionAsync(id);
+            questionDto.Status = (int)QuestionStatus.Created;
+            foreach (QuestionOptionDto option in questionDto.Options)
             {
-                question = await _context.FindAsync<Question>(id);
+                option.Id = 0;
             }
-            return question;
+            questionDto.Id = 0;
+            return questionDto;
         }
+       
     }
 }

@@ -15,6 +15,7 @@ namespace cran.Data
     {
         public DbSet<Course> Courses { get; set; }
         public DbSet<LogEntry> LogEntires { get; set; }
+        public DbSet<Container> Containers { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<QuestionOption> QuestionOptions { get; set; }
         public DbSet<RelQuestionTag> RelQuestionTags { get; set; }
@@ -110,6 +111,18 @@ namespace cran.Data
             MapRelQuestionImage(builder.Entity<RelQuestionImage>());
             MapBinary(builder.Entity<Binary>());
             MapImage(builder.Entity<Image>());
+            MapContainer(builder.Entity<Container>());
+        }
+
+        private void MapContainer(EntityTypeBuilder<Container> typeBuilder)
+        {
+            typeBuilder.ToTable("CranContainer");
+
+            typeBuilder
+               .HasMany(x => x.Questions)
+               .WithOne(o => o.Container)
+               .HasForeignKey(x => x.IdContainer);
+
         }
 
         private void MapImage(EntityTypeBuilder<Image> typeBuilder)
@@ -261,9 +274,10 @@ namespace cran.Data
                 .HasForeignKey(x => x.IdQuestion);
 
             typeBuilder
-                .HasOne(x => x.Successor)
-                .WithOne(x => x.Predecessor)
-                .HasForeignKey<Question>(x => x.IdQuestionSucessor);
+                .HasOne(x => x.QuestionCopySource)
+                .WithMany(x => x.CopiedQuestions)
+                .HasForeignKey(x => x.IdQuestionCopySource);
+                                                
 
             typeBuilder
                 .HasMany(x => x.RelImages)
@@ -274,6 +288,11 @@ namespace cran.Data
                 .HasOne(q => q.User)
                 .WithMany(u => u.Questions)
                 .HasForeignKey(q => q.IdUser);
+
+            typeBuilder
+                .HasOne(q => q.Container)
+                .WithMany(u => u.Questions)
+                .HasForeignKey(q => q.IdContainer);
 
             typeBuilder.Property(q => q.Language)
             .HasColumnName("IdLanguage");

@@ -33,7 +33,7 @@ namespace cran.Controllers
            
         }
 
-        public async Task<IActionResult> Start(CourseViewModel vm)
+        public IActionResult Start(CourseViewModel vm)
         {
             string url = $"~/jsclient/coursestarter/{vm.Id}";
             return Redirect(url);
