@@ -1,9 +1,9 @@
 <div class="container" *ngIf="questionToAsk">
   <form #questionForm="ngForm">
 
-    <h4>
+    <h6>
       {{ls.label('questionofnum', questionToAsk.numQuestionsAsked, questionToAsk.numQuestions)}}
-    </h4>
+    </h6>
 
     <!-- Titel -->
     <p *ngIf="checkShown && questionToAsk.question">

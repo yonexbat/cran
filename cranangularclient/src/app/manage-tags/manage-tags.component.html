@@ -32,7 +32,7 @@
     <ng-template #listItem let-item="item">      
         <div  class="list-group-item questionstatus"
               [ngClass]="{'questionstatusok' : item.status === 1, 'questionstatusnok' :item.status === 0 }">
-          <h4>                  
+          <h6>                  
             #{{item.id}}
     
             {{item.name}}
@@ -50,7 +50,7 @@
     
             </span>
           
-          </h4>           
+          </h6>           
         </div>      
     </ng-template> 
       

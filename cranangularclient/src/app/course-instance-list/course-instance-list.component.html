@@ -3,7 +3,7 @@
     <!-- Template for ListItem -->
     <ng-template #listItem let-item="item">      
         <div class="list-group-item">
-            <h4>
+            <h6>
               {{item.insertDate | date:'dd.MM.yyyy HH:mm'}}
               {{item.title}}
               ({{item.percentage}}%)
@@ -17,7 +17,7 @@
                   </button>
               </span>           
   
-            </h4>
+            </h6>
    
           </div>
     </ng-template> 

@@ -1,10 +1,11 @@
 <div class="container">
-  <h4>{{result.courseTitle}}</h4>
+  <h6>{{result.courseTitle}}</h6>
   <div class="list-group">
+
     <div  *ngFor="let item of result.questions" 
           class="list-group-item questionstatus"
           [ngClass]="{'questionstatusok': item.correct === true, 'questionstatusnok': item.correct === false }">
-      <h4>
+      <h6>
         {{item.title}}
 
         <span class="btn-group pull-right">
@@ -13,13 +14,14 @@
               </button>
         </span>
 
-      </h4> 
+      </h6> 
       <app-tags [tagList]="item.tags"></app-tags>
 
       <div>
           <app-icon [icon]="'ok'" *ngIf="item.correct"></app-icon>
           <app-icon [icon]="'nok'" *ngIf="!item.correct"></app-icon>         
-      </div>  
+      </div>
+        
     </div>
   </div>
 </div> 
