@@ -8,6 +8,7 @@ import {Comment} from '../model/comment';
 import {GetComments} from '../model/getcomments';
 import {NotificationService} from '../notification.service';
 import {LanguageService} from '../language.service';
+import {ConfirmService} from '../confirm.service';
 
 @Component({
   selector: 'app-comments',
@@ -24,7 +25,8 @@ export class CommentsComponent implements OnInit {
     private notificationService: NotificationService,
     private router: Router,
     private activeRoute: ActivatedRoute,
-    private ls: LanguageService) {
+    private ls: LanguageService,
+    private confirmService: ConfirmService) {
       this.comment = new Comment();
       this.comment.commentText = '';
     }
@@ -72,16 +74,18 @@ export class CommentsComponent implements OnInit {
   }
 
   private async deleteComment(comment: Comment): Promise<void> {
-    if (!confirm(this.ls.label('deletecomment'))) {
-      return;
-    }
     try {
+      await this.confirmService.confirm(this.ls.label('deletecomment'), this.ls.label('deletecommentq'));
       this.notificationService.emitLoading();
       await this.cranDataServiceService.deleteComment(comment.idComment);
       this.notificationService.emitDone();
       await this.getCommentsPage(0);
     } catch (error) {
-      this.notificationService.emitError(error);
+      if (error === 'cancel') {
+        // thats ok.
+      } else {
+        this.notificationService.emitError(error);
+      }
     }
   }
 
