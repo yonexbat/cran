@@ -28,8 +28,7 @@
         "../node_modules/tinymce/themes/modern/theme.js",
         "../node_modules/tinymce/plugins/link/plugin.js",
         "../node_modules/tinymce/plugins/paste/plugin.js",
-        "../node_modules/tinymce/plugins/table/plugin.js",
-        "../node_modules/popper.js/dist/popper.js",
+        "../node_modules/tinymce/plugins/table/plugin.js",        
         "../node_modules/bootstrap/dist/js/bootstrap.js"
       ],
       "environmentSource": "environments/environment.ts",
