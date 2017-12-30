@@ -229,6 +229,21 @@ namespace cran.Services
                 _context.Remove(relImage);
             }
 
+            //Ratings
+            IList<Rating> ratigns = await _context.Ratings.Where(x => x.Question.Id == questionEntity.Id).ToListAsync();
+            foreach(Rating rating in ratigns)
+            {
+                _context.Remove(rating);
+            }
+
+            //Comments
+            IList<Comment> comments = await _context.Comments.Where(x => x.Question.Id == questionEntity.Id).ToListAsync();
+            foreach(Comment comment in comments)
+            {
+                _context.Remove(comment);
+            }
+
+
             //Set successor of predecessor to null, so we can delete it
             //Fixup link form precedessor to successor will be done later, seems to be a bug in ef-core.
             //Circular bla bla exception if we do it here.
