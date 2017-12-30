@@ -44,20 +44,16 @@ export class ViewQuestionComponent implements OnInit {
     // save current question
     try {
       await this.confirmService.confirm(this.ls.label('version'), this.ls.label('versionq'));
-      await this.doCreateNewVersion();
-    } catch (error) {
-      // thats ok.
-    }
-  }
-
-  private async doCreateNewVersion() {
-    try {
       this.notificationService.emitLoading();
       const newId = await this.cranDataService.versionQuestion(this.question.id);
       this.notificationService.emitDone();
       this.router.navigate(['/editquestion', newId]);
     } catch (error) {
-      this.notificationService.emitError(error);
+      if (error === 'cancel') {
+        // that is ok
+      } else {
+        this.notificationService.emitError(error);
+      }
     }
   }
 
@@ -65,24 +61,40 @@ export class ViewQuestionComponent implements OnInit {
     if (this.question && this.question.id > 0) {
       try {
         await this.confirmService.confirm(this.ls.label('copyquestion'), this.ls.label('copyquestionq'));
-        await this.doCopyQuestion();
+        this.notificationService.emitLoading();
+        const newQuestionId = await this.cranDataService.copyQuestion(this.question.id);
+        this.notificationService.emitDone();
+        this.router.navigate(['/editquestion', newQuestionId]);
       } catch (error) {
-        // thats ok.
+        if (error === 'cancel') {
+          // that is ok
+        } else {
+          this.notificationService.emitError(error);
+        }
       }
     }
   }
 
-  private async doCopyQuestion() {
-    try {
-      this.notificationService.emitLoading();
-      const newQuestionId = await this.cranDataService.copyQuestion(this.question.id);
-      this.notificationService.emitDone();
-      this.router.navigate(['/editquestion', newQuestionId]);
-    } catch (error) {
-      this.notificationService.emitError(error);
+  private async accept() {
+    if (this.question && this.question.id > 0) {
+      // save current question
+      try {
+        await this.confirmService.confirm(this.ls.label('acceptquestion'), this.ls.label('acceptquestionq'));
+        this.notificationService.emitLoading();
+        await this.cranDataService.acceptQuestion(this.question.id);
+        this.question = await this.cranDataService.getQuestion(this.question.id);
+        await this.comments.showComments(this.question.id);
+        this.notificationService.emitDone();
+        this.router.navigate(['/viewquestion', this.question.id]);
+      } catch (error) {
+        if (error === 'cancel') {
+          // that is ok
+        } else {
+          this.notificationService.emitError(error);
+        }
+      }
     }
   }
-
 
   private async handleRouteChanged(id: number): Promise<void> {
     try {

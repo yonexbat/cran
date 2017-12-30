@@ -109,7 +109,7 @@
       </div>
     </div>
 
-    <!-- optionen -->
+    <!-- options -->
     <div *ngFor="let option of question.options; let optionIndex=index">
       <hr/>
       <div class="row form-group">
@@ -199,16 +199,7 @@
           (click)="showPreview()" 
           [disabled]="!questionForm.form.valid || actionInProgress">
           {{ls.label('preview')}}
-      </button>   
-      
-      <!-- Freigeben -->
-      <button
-        type="button"
-        class="btn btn btn-success" 
-        (click)="accept()"
-        [disabled]="!questionForm.form.valid || actionInProgress">
-        {{ls.label('accept')}}
-      </button>
+      </button>        
 
       <!-- Speichern -->
       <button 

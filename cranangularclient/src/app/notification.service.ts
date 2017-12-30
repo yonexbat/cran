@@ -18,6 +18,9 @@ export class NotificationService {
   }
 
   public emitError(message: string): void {
+    if (message === 'cancel') {
+      return;
+    }
     const event: NotificationEvent = {
       message: message,
       type: NotificationType.Error,
