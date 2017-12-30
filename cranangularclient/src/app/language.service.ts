@@ -81,6 +81,7 @@ export class LanguageService {
     'versionq' :  {valueDe : 'Neue Version erstellen?', valueEn : 'create a new version?'},
     'removeImage' :  {valueDe : 'Bild entfernen', valueEn : 'remove image'},
     'removeTag' :  {valueDe : 'Tag entfernen', valueEn : 'remove tag'},
+    'width' :  {valueDe : 'Breite', valueEn : 'width'},
   };
 
 
