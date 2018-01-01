@@ -1,5 +1,6 @@
 import {QuestionOptionToAsk} from './questionoptiontoask';
 import {Question} from './question';
+import {QuestionSelectorInfo} from './questionSelectorInfo';
 
 export class QuestionToAsk {
     public idCourseInstanceQuestion: number;
@@ -7,9 +8,11 @@ export class QuestionToAsk {
     public idQuestion: number;
     public text: string;
     public numQuestions: number;
-    public numQuestionsAsked: number;
+    public numCurrentQuestion: number;
     public courseEnded = false;
     public answered: boolean;
+    public answerShown: boolean;
     public options: QuestionOptionToAsk[] = [];
     public question: Question;
+    public questionSelectors: QuestionSelectorInfo[] = [];
 }

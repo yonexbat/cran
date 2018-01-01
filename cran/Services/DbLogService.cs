@@ -23,7 +23,7 @@ namespace cran.Services
             logEntry.Message = message;
 
             _context.LogEntires.Add(logEntry);
-            await _context.SaveChangesCranAsync(_currentPrincipal);
+            await SaveChangesAsync();
         }
     }
 }

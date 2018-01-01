@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace cran.Model.Entities
 {
@@ -10,6 +8,7 @@ namespace cran.Model.Entities
         public virtual int IdCourseInstance { get; set; }
         public virtual int IdQuestion { get; set; }
         public virtual bool Correct { get; set; }
+        public virtual bool AnswerShown { get; set; }
         public virtual int Number { get; set; }
         public virtual DateTime? AnsweredAt { get; set; }
         public virtual Question Question { get; set; }

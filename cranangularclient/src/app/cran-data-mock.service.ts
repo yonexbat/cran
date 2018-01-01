@@ -373,14 +373,20 @@ export class CranDataServiceMock implements ICranDataService {
       const questiontoask: QuestionToAsk = {
         courseEnded: false,
         idCourseInstance: 342423,
-        numQuestions: 23,
+        numQuestions: 5,
         idQuestion: 800,
         options: [],
         text: 'Ich frage mal nach',
         idCourseInstanceQuestion: id,
-        numQuestionsAsked: 3,
+        numCurrentQuestion: 3,
         question: undefined,
         answered: false,
+        answerShown: true,
+        questionSelectors: [
+          {answerShown: true, correct: true, number: 1, idCourseInstanceQuestion: 122},
+          {answerShown: false, correct: null, number: 2, idCourseInstanceQuestion: 123},
+          {answerShown: true, correct: false, number: 3, idCourseInstanceQuestion: 124}
+        ],
       };
 
       if (id >= 8000) {

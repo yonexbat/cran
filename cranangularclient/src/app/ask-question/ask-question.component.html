@@ -1,8 +1,23 @@
 <div class="container" *ngIf="questionToAsk">
+
+  <!-- Question selector  -->
+  <div>
+    <a *ngFor="let selector of questionToAsk?.questionSelectors; let selectorIndex=index"
+        [routerLink]="['/askquestion', selector.idCourseInstanceQuestion]"
+        [class.crananswercorrect]="selector.correct===true"
+        [class.crananswerwrong]="selector.correct===false"
+        [class.currentquestion]="selector.number === questionToAsk.numCurrentQuestion">
+      {{selectorIndex+1}}
+    </a>
+    <span *ngFor="let selector of remainingQuestions">
+      {{selector}}
+    </span>
+  </div>
+
   <form #questionForm="ngForm">
 
     <h6>
-      {{ls.label('questionofnum', questionToAsk.numQuestionsAsked, questionToAsk.numQuestions)}}
+      {{ls.label('questionofnum', questionToAsk.numCurrentQuestion, questionToAsk.numQuestions)}}
     </h6>
 
     <!-- Titel -->
@@ -103,10 +118,10 @@
           type="button" 
           class="btn btn btn-success"
           (click)="nextQuestion()">          
-        <span *ngIf="(questionToAsk?.numQuestionsAsked != questionToAsk?.numQuestions)">
+        <span *ngIf="(questionToAsk?.numCurrentQuestion != questionToAsk?.numQuestions)">
           {{ls.label('nextquestion')}}
         </span>
-        <span *ngIf="(questionToAsk?.numQuestionsAsked == questionToAsk?.numQuestions)">
+        <span *ngIf="(questionToAsk?.numCurrentQuestion == questionToAsk?.numQuestions)">
             {{ls.label('endcourse')}}
         </span>
       </button>

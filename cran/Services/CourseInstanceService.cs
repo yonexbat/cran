@@ -56,12 +56,14 @@ namespace cran.Services
                     IdQuestion = x.Question.Id,
                     Text = x.Question.Text,
                     CourseEnded = x.CourseInstance.EndedAt.HasValue,
-                    NumQuestionsAsked = x.Number,
+                    NumCurrentQuestion = x.Number,
                     NumQuestions = x.CourseInstance.Course.NumQuestionsToAsk,
                     Answered = x.AnsweredAt.HasValue,
+                    AnswerShown = x.AnswerShown,
                 }).SingleAsync();
 
-
+            //Check access
+            await CheckAccessToCourseInstance(questionToAskDto.IdCourseInstance);
 
             //Images
             questionToAskDto.Images = await _context.RelQuestionImages
@@ -83,17 +85,20 @@ namespace cran.Services
                     .Select(x => x.CourseInstance.Course.Language).SingleAsync();
 
                 int possibleQuestions = await PossibleQuestionsQuery(questionToAskDto.IdCourseInstance, language).CountAsync();
-                questionToAskDto.NumQuestions = possibleQuestions <= questionToAskDto.NumQuestions - questionToAskDto.NumQuestionsAsked ? possibleQuestions + questionToAskDto.NumQuestionsAsked : questionToAskDto.NumQuestions;
+                questionToAskDto.NumQuestions = possibleQuestions <= questionToAskDto.NumQuestions - questionToAskDto.NumCurrentQuestion ? possibleQuestions + questionToAskDto.NumCurrentQuestion : questionToAskDto.NumQuestions;
 
                 //Id nicht leaken, wenn Kurs noch nicht beendet ist.
-                questionToAskDto.IdQuestion = 0;
+                if (!questionToAskDto.AnswerShown)
+                {
+                    questionToAskDto.IdQuestion = 0;
+                }
             }
             else
             {
                 questionToAskDto.NumQuestions = await _context.CourseInstancesQuestion.Where(x => x.CourseInstance.Id == questionToAskDto.IdCourseInstance).CountAsync();
             }
 
-
+            //Optionen
             questionToAskDto.Options = await _context.CourseInstancesQuestionOption
                             .Where(x => x.CourseInstanceQuestion.Id == courseInstanceQuestionId)
                             .OrderBy(x => x.CourseInstanceQuestion.Id)
@@ -104,6 +109,24 @@ namespace cran.Services
                                 IsChecked = x.Checked,
                             }).ToListAsync();
 
+
+            //Questions already asked
+            questionToAskDto.QuestionSelectors = await _context.CourseInstancesQuestion.Where(x => x.CourseInstance.Id == questionToAskDto.IdCourseInstance)
+                .Select(x => new QuestionSelectorInfoDto()
+                {
+                    IdCourseInstanceQuestion = x.Id,
+                    Number = x.Number,
+                    Correct = x.Correct,
+                    AnswerShown = x.AnswerShown,
+                }).OrderBy(x => x.Number).ToListAsync();
+
+            if (!questionToAskDto.CourseEnded)
+            {
+                foreach(var q in questionToAskDto.QuestionSelectors.Where(x => !x.AnswerShown))
+                {
+                    q.Correct = null;
+                }
+            }
 
             return questionToAskDto;
         }
@@ -116,7 +139,8 @@ namespace cran.Services
                 .Select(x => x.Question.Id).SingleAsync();
 
             CourseInstanceQuestion courseInstanceQuestion = await _context.FindAsync<CourseInstanceQuestion>(answer.IdCourseInstanceQuestion);
-            await _context.SaveChangesCranAsync(_currentPrincipal);
+            courseInstanceQuestion.AnswerShown = true;
+            await SaveChangesAsync();
 
 
             return await _questionService.GetQuestionAsync(questionId);
@@ -326,7 +350,7 @@ namespace cran.Services
             CourseInstanceQuestion courseInstanceQuestionEntity = await _context.FindAsync<CourseInstanceQuestion>(answer.IdCourseInstanceQuestion);
 
             //Check if already answered.
-            if (courseInstanceQuestionEntity.AnsweredAt.HasValue)
+            if (courseInstanceQuestionEntity.AnsweredAt.HasValue && courseInstanceQuestionEntity.AnswerShown)
             {
                 return;
             }

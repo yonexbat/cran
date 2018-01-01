@@ -12,11 +12,14 @@ namespace cran.Model.Dto
         public int IdQuestion { get; set; }
         public string Text { get; set; }
         public int NumQuestions { get; set; }
-        public int NumQuestionsAsked { get; set; }
+        public int NumCurrentQuestion { get; set; }
         public bool CourseEnded { get; set; }
         public bool Answered { get; set; }
-                
+        public bool AnswerShown { get; set; }
+
+
         public IList<QuestionOptionToAskDto> Options = new List<QuestionOptionToAskDto>();
         public IList<ImageDto> Images = new List<ImageDto>();
+        public IList<QuestionSelectorInfoDto> QuestionSelectors = new List<QuestionSelectorInfoDto>();
     }
 }

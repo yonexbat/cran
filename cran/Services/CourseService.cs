@@ -124,7 +124,7 @@ namespace cran.Services
 
             CopyData(courseDto, courseEntity);
 
-            await _context.SaveChangesCranAsync(_currentPrincipal);
+            await SaveChangesAsync();
         }
     }
 }

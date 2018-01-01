@@ -26,6 +26,7 @@ export class AskQuestionComponent implements OnInit {
 
   private checkShown: boolean;
   private questionToAsk: QuestionToAsk;
+  private remainingQuestions: number[];
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
     private router: Router,
@@ -99,14 +100,6 @@ export class AskQuestionComponent implements OnInit {
     // save current question
     try {
       await this.confirmService.confirm(this.ls.label('version'), this.ls.label('versionq'));
-      await this.doCreateNewVersion();
-    } catch (error) {
-      // thats ok.
-    }
-  }
-
-  private async doCreateNewVersion() {
-    try {
       this.notificationService.emitLoading();
       const newId = await this.cranDataServiceService.versionQuestion( this.questionToAsk.question.id);
       this.notificationService.emitDone();
@@ -121,14 +114,18 @@ export class AskQuestionComponent implements OnInit {
       this.notificationService.emitLoading();
       const questionToAsk: QuestionToAsk  = await this.cranDataServiceService.getQuestionToAsk(id);
       let question: Question = null;
-      if (questionToAsk.courseEnded) {
+      if (questionToAsk.courseEnded || questionToAsk.answerShown) {
         question =  await this.cranDataServiceService.getQuestion(questionToAsk.idQuestion);
         await this.commentsControl.showComments(question.id);
       } else {
         await this.commentsControl.showComments(null);
       }
       this.questionToAsk = questionToAsk;
-      if (this.questionToAsk.courseEnded) {
+      this.remainingQuestions = [];
+      for (let i = this.questionToAsk.questionSelectors.length; i < this.questionToAsk.numQuestions; i++) {
+        this.remainingQuestions.push(i + 1);
+      }
+      if (this.questionToAsk.courseEnded || questionToAsk.answerShown) {
         this.showSolution(question);
       }
       this.notificationService.emitDone();

@@ -165,8 +165,7 @@ namespace cran.Services
 
             CopyData(questionDto, questionEntity);
 
-
-            await _context.SaveChangesCranAsync(_currentPrincipal);
+            await SaveChangesAsync();            
         }
 
         public async Task<ImageDto> AddImageAsync(ImageDto imageDto)
