@@ -127,7 +127,9 @@
           *ngIf="!(questionToAsk?.courseEnded)"
           type="button" 
           class="btn btn btn-success"
-          (click)="nextQuestion()">          
+          (click)="nextQuestion()">   
+
+        <!-- Nächste Frage -->
         <span *ngIf="(questionToAsk?.questionSelectors.length < questionToAsk?.numQuestions)">
           {{ls.label('nextquestion')}}
         </span>
@@ -136,6 +138,7 @@
         <span *ngIf="(questionToAsk?.questionSelectors.length >= questionToAsk?.numQuestions)">
             {{ls.label('endcourse')}}
         </span>
+
       </button>
     </div>
   </form>
