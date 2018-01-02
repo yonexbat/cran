@@ -111,17 +111,29 @@
         class="btn btn btn-success"
         (click)="goToResult()">
         {{ls.label('back')}}
-      </button>      
+      </button>  
       
+      <!-- Speichern  -->
+      <button 
+        *ngIf="!(questionToAsk?.courseEnded) && !(questionToAsk?.answerShown)"
+        type="button" 
+        class="btn btn btn-success"
+        (click)="saveAnswer()">
+        {{ls.label('save')}}
+      </button>  
+      
+      <!-- nächste Frage oder Kurs beenden -->    
       <button 
           *ngIf="!(questionToAsk?.courseEnded)"
           type="button" 
           class="btn btn btn-success"
           (click)="nextQuestion()">          
-        <span *ngIf="(questionToAsk?.numCurrentQuestion != questionToAsk?.numQuestions)">
+        <span *ngIf="(questionToAsk?.questionSelectors.length < questionToAsk?.numQuestions)">
           {{ls.label('nextquestion')}}
         </span>
-        <span *ngIf="(questionToAsk?.numCurrentQuestion == questionToAsk?.numQuestions)">
+
+        <!-- Kurs beenden -->
+        <span *ngIf="(questionToAsk?.questionSelectors.length >= questionToAsk?.numQuestions)">
             {{ls.label('endcourse')}}
         </span>
       </button>

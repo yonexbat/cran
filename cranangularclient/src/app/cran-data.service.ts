@@ -175,6 +175,12 @@ export class CranDataService implements ICranDataService {
     .catch(this.handleError);
   }
 
+  answerQuestion(answer: QuestionAnswer): Promise<any> {
+    return this.http.post<Question>('/api/Data/AnswerQuestion', answer)
+    .toPromise()
+    .catch(this.handleError);
+  }
+
   answerQuestionAndGetSolution(answer: QuestionAnswer): Promise<Question> {
      return this.http.post<Question>('/api/Data/AnswerQuestionAndGetSolution', answer)
                     .toPromise()

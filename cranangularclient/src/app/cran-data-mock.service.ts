@@ -29,6 +29,15 @@ import {SearchTags} from './model/searchtags';
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
 
+  answerQuestion(answer: QuestionAnswer): Promise<any> {
+    const promiseResult = new Promise<any>((resolve, reject) => {
+      setTimeout(function() {
+        resolve();
+      }, 1000);
+    });
+    return promiseResult;
+  }
+
   versionQuestion(id: number): Promise<number> {
      const promiseResult = new Promise<number>((resolve, reject) => {
       setTimeout(function() {

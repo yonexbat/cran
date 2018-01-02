@@ -418,5 +418,10 @@ namespace cran.Services
            
             return resultDto;
         }
+
+        public async Task AnswerQuestionAsync(QuestionAnswerDto answer)
+        {
+            await SaveAnswers(answer);
+        }
     }
 }

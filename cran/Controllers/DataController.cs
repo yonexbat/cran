@@ -259,6 +259,13 @@ namespace cran.Controllers
         }
 
         [HttpPost("[action]")]
+        public async Task<JsonResult> AnswerQuestion([FromBody] QuestionAnswerDto vm)
+        {
+            await _courseInstanceService.AnswerQuestionAsync(vm);
+            return Json(OkReturnString);
+        }
+
+        [HttpPost("[action]")]
         public async Task<QuestionDto> AnswerQuestionAndGetSolution([FromBody] QuestionAnswerDto vm)
         {
             return await _courseInstanceService.AnswerQuestionAndGetSolutionAsync(vm);

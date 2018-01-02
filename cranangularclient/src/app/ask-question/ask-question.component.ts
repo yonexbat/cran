@@ -14,6 +14,7 @@ import {NotificationService} from '../notification.service';
 import {CommentsComponent} from '../comments/comments.component';
 import { ConfirmService } from '../confirm.service';
 import { CourseInstanceListComponent } from '../course-instance-list/course-instance-list.component';
+import { QuestionSelectorInfo } from '../model/questionSelectorInfo';
 
 @Component({
   selector: 'app-ask-question',
@@ -51,19 +52,28 @@ export class AskQuestionComponent implements OnInit {
       this.notificationService.emitLoading();
       const question =  await this.cranDataServiceService.answerQuestionAndGetSolution(answer);
       await this.commentsControl.showComments(question.id);
-      this.showSolution(question);
+      const answeredCorrectly = this.showSolution(question);
+      const questionSelector =
+        this.questionToAsk.questionSelectors.find(x => x.idCourseInstanceQuestion === this.questionToAsk.idCourseInstanceQuestion);
+      questionSelector.answerShown = true;
+      questionSelector.correct = answeredCorrectly;
       this.notificationService.emitDone();
     } catch (error) {
       this.notificationService.emitError(error);
     }
   }
 
-  private showSolution(question: Question) {
+  private showSolution(question: Question): boolean {
+    let answeredCorrectly = true;
     for (let i = 0; i < question.options.length; i++) {
       this.questionToAsk.options[i].isTrue = question.options[i].isTrue;
+      if (this.questionToAsk.options[i].isTrue !== this.questionToAsk.options[i].isChecked) {
+        answeredCorrectly = false;
+      }
     }
     this.questionToAsk.question = question;
     this.checkShown = true;
+    return answeredCorrectly;
   }
 
   public async nextQuestion(): Promise<void> {
@@ -71,7 +81,6 @@ export class AskQuestionComponent implements OnInit {
       try {
         this.notificationService.emitLoading();
         const data: CourseInstance = await this.cranDataServiceService.answerQuestionAndGetNextQuestion(answer);
-        this.checkShown = false;
         if (data.idCourseInstanceQuestion > 0) {
           this.router.navigate(['/askquestion', data.idCourseInstanceQuestion]);
         } else {
@@ -109,24 +118,33 @@ export class AskQuestionComponent implements OnInit {
     }
   }
 
+  public async saveAnswer(): Promise<void> {
+      const answer: QuestionAnswer = this.getAnswerDto();
+      try {
+        this.notificationService.emitLoading();
+        await this.cranDataServiceService.answerQuestion(answer);
+        this.notificationService.emitDone();
+      } catch (error) {
+        this.notificationService.emitError(error);
+      }
+  }
+
   private async handleRouteChanged(id: number): Promise<void> {
     try {
+      this.checkShown = false;
       this.notificationService.emitLoading();
-      const questionToAsk: QuestionToAsk  = await this.cranDataServiceService.getQuestionToAsk(id);
+      this.questionToAsk   = await this.cranDataServiceService.getQuestionToAsk(id);
       let question: Question = null;
-      if (questionToAsk.courseEnded || questionToAsk.answerShown) {
-        question =  await this.cranDataServiceService.getQuestion(questionToAsk.idQuestion);
+      if (this.questionToAsk.courseEnded || this.questionToAsk.answerShown) {
+        question =  await this.cranDataServiceService.getQuestion(this.questionToAsk.idQuestion);
         await this.commentsControl.showComments(question.id);
+        this.showSolution(question);
       } else {
         await this.commentsControl.showComments(null);
       }
-      this.questionToAsk = questionToAsk;
       this.remainingQuestions = [];
       for (let i = this.questionToAsk.questionSelectors.length; i < this.questionToAsk.numQuestions; i++) {
         this.remainingQuestions.push(i + 1);
-      }
-      if (this.questionToAsk.courseEnded || questionToAsk.answerShown) {
-        this.showSolution(question);
       }
       this.notificationService.emitDone();
     } catch (error) {
