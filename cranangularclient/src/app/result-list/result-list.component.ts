@@ -7,6 +7,7 @@ import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
 import {Result} from '../model/result';
 import {QuestionResult} from '../model/questionresult';
+import {LanguageService} from '../language.service';
 
 @Component({
   selector: 'app-result-list',
@@ -17,10 +18,11 @@ export class ResultListComponent implements OnInit {
 
   public result: Result = new Result();
 
-  constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
+  constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
     private router: Router,
     private activeRoute: ActivatedRoute,
-    private notificationService: NotificationService) {
+    private notificationService: NotificationService,
+    private ls: LanguageService) {
 
       this.activeRoute.paramMap.subscribe((params: ParamMap)  => {
         const id = params.get('id');
@@ -35,10 +37,23 @@ export class ResultListComponent implements OnInit {
     this.router.navigate(['/askquestion', result.idCourseInstanceQuestion]);
   }
 
+  private async startCourse(): Promise<void> {
+    try {
+      this.notificationService.emitLoading();
+      const courseInstance = await this.cranDataService.startCourse(this.result.idCourseInstance);
+      if (courseInstance.numQuestionsAlreadyAsked < courseInstance.numQuestionsTotal) {
+        this.router.navigate(['/askquestion', courseInstance.idCourseInstanceQuestion]);
+      }
+      this.notificationService.emitDone();
+    } catch (error) {
+      this.notificationService.emitError(error);
+    }
+  }
+
   private async handleRouteChanged(id: number): Promise<void> {
     try {
       this.notificationService.emitLoading();
-      this.result = await this.cranDataServiceService.getCourseResult(id);
+      this.result = await this.cranDataService.getCourseResult(id);
       this.notificationService.emitDone();
     } catch (error) {
       this.notificationService.emitError(error);

@@ -5,23 +5,38 @@
     <div  *ngFor="let item of result.questions" 
           class="list-group-item questionstatus"
           [ngClass]="{'questionstatusok': item.correct === true, 'questionstatusnok': item.correct === false }">
+
+      
       <h6>
-        {{item.title}}
+        <span>
+            <app-icon [icon]="'ok'" *ngIf="item.correct"></app-icon>
+            <app-icon [icon]="'nok'" *ngIf="!item.correct"></app-icon> 
+            {{item.title}}    
+        </span>
+        
 
         <span class="btn-group pull-right">
             <button class="btn btn-default" type="button" (click)="showQuestion(item)">               
                 <app-icon [icon]="'info'"></app-icon>
-              </button>
+            </button>
         </span>
 
       </h6> 
-      <app-tags [tagList]="item.tags"></app-tags>
-
-      <div>
-          <app-icon [icon]="'ok'" *ngIf="item.correct"></app-icon>
-          <app-icon [icon]="'nok'" *ngIf="!item.correct"></app-icon>         
-      </div>
-        
+      <app-tags [tagList]="item.tags"></app-tags>        
     </div>
+
   </div>
+
+  <!-- Buttons -->
+  <div class="btn-group pull-right buttonsafterlist" role="group" aria-label="Basic example">                  
+
+    <!-- Speichern -->
+    <button 
+        type="button" 
+        class="btn btn btn-success"
+        (click)="startCourse()">
+       {{ls.label('startcourse')}}
+    </button> 
+    
+  </div>    
 </div> 

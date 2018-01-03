@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import {Question} from '../model/question';
+import {LanguageService} from '../language.service';
 
 declare var $: any;
 
@@ -11,7 +12,7 @@ declare var $: any;
 })
 export class QuestionPreviewComponent implements OnInit {
 
-  constructor() { }
+  constructor(private ls: LanguageService) { }
 
   public question: Question;
 

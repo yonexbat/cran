@@ -15,11 +15,11 @@ import {LanguageService} from '../language.service';
 export class CourseStarterComponent implements OnInit {
 
   constructor(  @Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
-  private router: Router,
-  private activeRoute: ActivatedRoute,
-  private notificationService: NotificationService,
-  private ls: LanguageService,
-  private confirmService: ConfirmService) {
+    private router: Router,
+    private activeRoute: ActivatedRoute,
+    private notificationService: NotificationService,
+    private ls: LanguageService,
+    private confirmService: ConfirmService) {
       this.activeRoute.paramMap.subscribe((params: ParamMap)  => {
       const id = params.get('id');
       this.handleRouteChanged(+id);

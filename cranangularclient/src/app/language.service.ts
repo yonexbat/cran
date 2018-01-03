@@ -83,6 +83,8 @@ export class LanguageService {
     'removeImage' :  {valueDe : 'Bild entfernen', valueEn : 'remove image'},
     'removeTag' :  {valueDe : 'Tag entfernen', valueEn : 'remove tag'},
     'width' :  {valueDe : 'Breite', valueEn : 'width'},
+    'startcourse' :  {valueDe : 'Kurs starten', valueEn : 'start course'},
+    'close' :  {valueDe : 'Schliessen', valueEn : 'close'},
   };
 
 
