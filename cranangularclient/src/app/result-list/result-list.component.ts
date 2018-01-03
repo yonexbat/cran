@@ -40,9 +40,12 @@ export class ResultListComponent implements OnInit {
   private async startCourse(): Promise<void> {
     try {
       this.notificationService.emitLoading();
-      const courseInstance = await this.cranDataService.startCourse(this.result.idCourseInstance);
+      const courseInstance = await this.cranDataService.startCourse(this.result.idCourse);
       if (courseInstance.numQuestionsAlreadyAsked < courseInstance.numQuestionsTotal) {
         this.router.navigate(['/askquestion', courseInstance.idCourseInstanceQuestion]);
+      } else {
+        const noQuestionsMessage = this.ls.label('noquestionsavailable');
+        this.notificationService.emitError(noQuestionsMessage);
       }
       this.notificationService.emitDone();
     } catch (error) {

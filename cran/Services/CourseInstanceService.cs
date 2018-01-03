@@ -172,6 +172,7 @@ namespace cran.Services
             Course course = await _context.FindAsync<Course>(courseInstance.IdCourse);
             ResultDto result = new ResultDto()
             {
+                IdCourse = course.Id,
                 IdCourseInstance = idCourseInstance,
                 CourseTitle = course.Title,
             };

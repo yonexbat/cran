@@ -36,6 +36,9 @@ export class CourseStarterComponent implements OnInit {
         const courseInstance = await this.cranDataService.startCourse(id);
         if (courseInstance.numQuestionsAlreadyAsked < courseInstance.numQuestionsTotal) {
           this.router.navigate(['/askquestion', courseInstance.idCourseInstanceQuestion]);
+        } else {
+          const noQuestionsMessage = this.ls.label('noquestionsavailable');
+          this.notificationService.emitError(noQuestionsMessage);
         }
         this.notificationService.emitDone();
       } catch (error) {

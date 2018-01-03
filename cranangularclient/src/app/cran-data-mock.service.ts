@@ -307,7 +307,8 @@ export class CranDataServiceMock implements ICranDataService {
 
   getCourseResult(courseInstanceId: number): Promise<Result> {
     const result: Result = {
-      idCourseInstance: 3,
+      idCourseInstance: courseInstanceId,
+      idCourse: 2,
       courseTitle: 'Dies und das',
       questions: [
         {correct: true, idCourseInstanceQuestion: 8000, idQuestion: 800, title: 'some title 1',
