@@ -7,11 +7,17 @@
           {{item.title}} [{{ls.label('language')}}: {{item.language}}]
   
           <span class="btn-group pull-right">
-              <button class="btn btn-default" type="button" (click)="editCourse(item)" *ngIf="item.isEditable">
+              <button class="btn btn-default" 
+                    type="button" 
+                    (click)="editCourse(item)" 
+                    *ngIf="item.isEditable"
+                    title="{{ls.label('edit')}}">
                   <app-icon [icon]="'edit'"></app-icon>    
               </button>
-              <button class="btn btn-default" type="button" (click)="startCourse(item)"
-                 title="{{ls.label('startcourse')}}">                
+              <button class="btn btn-default" 
+                      type="button" 
+                      (click)="startCourse(item)"
+                      title="{{ls.label('startcourse')}}">                
                   <!-- play -->
                   <app-icon [icon]="'start'"></app-icon>
               </button>

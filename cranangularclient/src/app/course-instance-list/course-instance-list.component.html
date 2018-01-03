@@ -9,10 +9,17 @@
               ({{item.percentage}}%)
   
               <span class="btn-group pull-right">
-                  <button class="btn btn-default" type="button" (click)="deleteCourseInstance(item)">
+                  <button class="btn btn-default" 
+                          type="button" 
+                          (click)="deleteCourseInstance(item)"
+                          title="{{ls.label('delete')}}">
                         <app-icon [icon]="'trash'"></app-icon>
                   </button>
-                  <button class="btn btn-default" type="button" (click)="goToCourseInstance(item)">                                             
+
+                  <button class="btn btn-default" 
+                          type="button" 
+                          (click)="goToCourseInstance(item)"
+                          title="{{ls.label('view')}}">                                             
                       <app-icon [icon]="'info'"></app-icon>
                   </button>
               </span>           

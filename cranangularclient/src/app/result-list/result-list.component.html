@@ -16,7 +16,10 @@
         
 
         <span class="btn-group pull-right">
-            <button class="btn btn-default" type="button" (click)="showQuestion(item)">               
+            <button class="btn btn-default" 
+                    type="button" 
+                    (click)="showQuestion(item)"
+                    title="{{ls.label('view')}}">               
                 <app-icon [icon]="'info'"></app-icon>
             </button>
         </span>

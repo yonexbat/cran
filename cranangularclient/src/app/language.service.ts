@@ -86,6 +86,8 @@ export class LanguageService {
     'startcourse' :  {valueDe : 'Kurs starten', valueEn : 'start course'},
     'close' :  {valueDe : 'Schliessen', valueEn : 'close'},
     'noquestionsavailable' :  {valueDe : 'Keine Fragen vorhanden', valueEn : 'no questions available'},
+    'view' :  {valueDe : 'Anschauen', valueEn : 'View'},
+    'delete' :  {valueDe : 'Löschen', valueEn : 'Delete'},
   };
 
 

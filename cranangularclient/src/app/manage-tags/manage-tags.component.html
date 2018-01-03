@@ -39,12 +39,15 @@
     
             <span class="btn-group pull-right">
     
-    
-              <button class="btn btn-default" type="button" (click)="deleteTag(item)">
+              <!-- Löschen -->
+              <button class="btn btn-default" type="button" (click)="deleteTag(item)"
+                title="{{ls.label('delete')}}">
                 <app-icon [icon]="'trash'"></app-icon>                
               </button>
               
-              <button class="btn btn-default" type="button" (click)="goToTag(item)">
+              <!-- Edit -->
+              <button class="btn btn-default" type="button" (click)="goToTag(item)"
+                title="{{ls.label('edit')}}">
                   <app-icon [icon]="'edit'"></app-icon>  
               </button>
     
