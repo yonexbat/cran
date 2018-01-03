@@ -136,7 +136,10 @@
         </div>
 
         <div class="col-md-1">
-          <button type="button" class="btn btn-default cranbutton" (click)="removeOption(optionIndex)">
+          <button type="button" 
+              class="btn btn-default cranbutton" 
+              (click)="removeOption(optionIndex)" 
+              [appTooltip] = "'delete'">
             <app-icon [icon]="'trash'" title="{{ls.label('removeoption')}}"></app-icon>            
           </button>
         </div>
