@@ -8,21 +8,21 @@
 
       <!-- Delete button -->
       <button class="btn btn-default" type="button" (click)="itemDelete()"
-          title="{{ls.label('delete')}}">        
+          [appTooltip] = "'delete'">        
         <app-icon [icon]="'trash'"></app-icon>
       </button>
 
       <!-- Edit -->
       <button class="btn btn-default" type="button" (click)="itemView(item)"
           *ngIf="item.status === 0"
-          title="{{ls.label('edit')}}">
+          [appTooltip] = "'edit'">
         <app-icon [icon]="'edit'"></app-icon>         
       </button>
 
       <!-- View -->
       <button class="btn btn-default" type="button" (click)="itemView(item)"
-        *ngIf="item.status === 1 || item.status === 2"
-        title="{{ls.label('view')}}">       
+        *ngIf="item.status === 1 || item.status === 2"        
+        [appTooltip] = "'view'">       
         <app-icon [icon]="'info'" *ngIf="item.status === 1 || item.status === 2"></app-icon>        
       </button>
 

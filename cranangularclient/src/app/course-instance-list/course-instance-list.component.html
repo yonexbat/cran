@@ -12,14 +12,14 @@
                   <button class="btn btn-default" 
                           type="button" 
                           (click)="deleteCourseInstance(item)"
-                          title="{{ls.label('delete')}}">
+                          [appTooltip] = "'delete'">
                         <app-icon [icon]="'trash'"></app-icon>
                   </button>
 
                   <button class="btn btn-default" 
                           type="button" 
                           (click)="goToCourseInstance(item)"
-                          title="{{ls.label('view')}}">                                             
+                          [appTooltip] = "'view'">                                             
                       <app-icon [icon]="'info'"></app-icon>
                   </button>
               </span>           

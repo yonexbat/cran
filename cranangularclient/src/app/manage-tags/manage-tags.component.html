@@ -41,13 +41,13 @@
     
               <!-- Löschen -->
               <button class="btn btn-default" type="button" (click)="deleteTag(item)"
-                title="{{ls.label('delete')}}">
+                [appTooltip] = "'delete'">
                 <app-icon [icon]="'trash'"></app-icon>                
               </button>
               
               <!-- Edit -->
               <button class="btn btn-default" type="button" (click)="goToTag(item)"
-                title="{{ls.label('edit')}}">
+                 [appTooltip] = "'edit'">
                   <app-icon [icon]="'edit'"></app-icon>  
               </button>
     

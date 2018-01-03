@@ -8,7 +8,7 @@
         <app-icon 
           [icon]="'remove'"
           *ngIf="isEditable"
-          title="{{ls.label('removeTag')}}"
+          [appTooltip] = "'removeTag'"         
           (click)="removeTag(tag)"></app-icon>        
       </span>
     </div>

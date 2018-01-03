@@ -29,7 +29,7 @@
         "../node_modules/tinymce/plugins/link/plugin.js",
         "../node_modules/tinymce/plugins/paste/plugin.js",
         "../node_modules/tinymce/plugins/table/plugin.js",        
-        "../node_modules/bootstrap/dist/js/bootstrap.js"
+        "../node_modules/bootstrap/dist/js/bootstrap.bundle.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

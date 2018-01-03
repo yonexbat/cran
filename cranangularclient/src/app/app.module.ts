@@ -46,6 +46,7 @@ import { ConfirmService } from './confirm.service';
 import { QuestionListItemComponent } from './question-list-item/question-list-item.component';
 import { CourseStarterComponent } from './course-starter/course-starter.component';
 import { IconComponent } from './icon/icon.component';
+import { TooltipDirective } from './tooltip.directive';
 
 function isDevelopment() {
   return window.location && window.location.port && window.location.port === '4200';
@@ -89,6 +90,7 @@ if (isDevelopment()) {
     QuestionListItemComponent,
     CourseStarterComponent,
     IconComponent,
+    TooltipDirective,
   ],
   imports: [
     BrowserModule,
