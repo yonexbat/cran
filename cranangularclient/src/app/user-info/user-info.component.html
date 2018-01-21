@@ -1,13 +1,18 @@
 <span *ngIf="userInfo" class="navbar-brand">
  
-  <span  *ngIf="userInfo.isAnonymous === false">
-        {{userInfo.name}}
-  </span>
- 
-  <span (click)= "setEn()" 
-        [class.activeLanguage]="isEn()"
-        title="English">E</span>
-  <span (click)="setDe()"
-      [class.activeLanguage]="isDe()"
-      title="Deutsch">D</span>
+      <span  *ngIf="userInfo.isAnonymous === false">
+            {{userInfo.name}}
+      </span>
+
+      <span (click)= "setEn()" 
+            [class.activeLanguage]="isEn()"
+            [appTooltip]="'english'">
+            E
+      </span>
+
+      <span (click)="setDe()"
+            [class.activeLanguage]="isDe()"
+            [appTooltip]="'german'">
+            D
+      </span>
 </span>

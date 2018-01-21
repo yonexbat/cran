@@ -88,6 +88,8 @@ export class LanguageService {
     'noquestionsavailable' :  {valueDe : 'Keine Fragen vorhanden', valueEn : 'no questions available'},
     'view' :  {valueDe : 'Anschauen', valueEn : 'View'},
     'delete' :  {valueDe : 'Löschen', valueEn : 'Delete'},
+    'english' :  {valueDe : 'Englisch', valueEn : 'English'},
+    'german' :  {valueDe : 'Deutsch', valueEn : 'German'},
   };
 
 

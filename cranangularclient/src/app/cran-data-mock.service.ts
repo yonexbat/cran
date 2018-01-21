@@ -158,7 +158,7 @@ export class CranDataServiceMock implements ICranDataService {
   getUserInfo(): Promise<UserInfo> {
     const promiseResult = new Promise<UserInfo>((resolve, reject) => {
       setTimeout(function() {
-        const userInfo: UserInfo = {name: 'yonexi'};
+        const userInfo: UserInfo = {name: 'yonexi', isAnonymous: false, };
         resolve(userInfo);
       }, 1000);
     });
