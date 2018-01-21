@@ -310,6 +310,8 @@ export class CranDataServiceMock implements ICranDataService {
       idCourseInstance: courseInstanceId,
       idCourse: 2,
       courseTitle: 'Dies und das',
+      startedAt: new Date('2018-12-17T03:24:00'),
+      endedAt: new Date('2018-12-17T03:50:00'),
       questions: [
         {correct: true, idCourseInstanceQuestion: 8000, idQuestion: 800, title: 'some title 1',
           tags: [{id: 2, description: '', name: 'Js'}, {id: 2, description: '', name: 'Tag2'}]},

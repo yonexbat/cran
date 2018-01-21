@@ -1,13 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "CranDataBase", "Database\CranDataBase\CranDataBase.sqlproj", "{0FAD4223-5CF8-4674-9B70-3374D5A94768}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cran", "cran\cran.csproj", "{64E7BE42-DD30-4304-8BB9-208AB7521E93}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cran.tests", "cran.tests\cran.tests.csproj", "{B599D169-4133-4C00-AA59-F9FF9E4A3B76}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B40403A3-F28B-4DB9-8998-FB3EEAC871EB}"
+	ProjectSection(SolutionItems) = preProject
+		cranangularclient\src\favicon.ico = cranangularclient\src\favicon.ico
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,5 +1,5 @@
 <div class="container">
-  <h6>{{result.courseTitle}}</h6>
+  <h6>{{result.courseTitle}} ({{result.startedAt | date:'dd.MM.yyyy HH:mm'}} - {{result.endedAt | date:'dd.MM.yyyy HH:mm'}})</h6>
   <div class="list-group">
 
     <div  *ngFor="let item of result.questions" 

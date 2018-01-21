@@ -175,6 +175,8 @@ namespace cran.Services
                 IdCourse = course.Id,
                 IdCourseInstance = idCourseInstance,
                 CourseTitle = course.Title,
+                StartedAt = courseInstance.InsertDate,
+                EndedAt = courseInstance.EndedAt,
             };
 
             result.Questions = await _context.CourseInstancesQuestion.Where(x => x.CourseInstance.Id == idCourseInstance)
