@@ -31,6 +31,12 @@ export class CranDataService implements ICranDataService {
 
   }
 
+  getTags(ids: number[]): Promise<Tag[]> {
+    return this.http.post<number>('/api/Data/GetTags/', ids)
+    .toPromise()
+    .catch(this.handleError);
+  }
+
   versionQuestion(id: number): Promise<number> {
     return this.http.post<number>('/api/Data/VersionQuestion/', id)
     .toPromise()

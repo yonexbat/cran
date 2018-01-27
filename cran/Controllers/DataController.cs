@@ -151,6 +151,13 @@ namespace cran.Controllers
             return await _tagService.SearchForTags(parameters);
         }
 
+        [HttpPost("[action]")]
+        [ValidateModel]
+        public async Task<IList<TagDto>> GetTags([FromBody]  IList<int> ids)
+        {
+            return await _tagService.GetTagsAsync(ids);
+        }
+
         [HttpDelete("[action]/{id}")]
         public async Task<JsonResult> DeleteTag(int id)
         {

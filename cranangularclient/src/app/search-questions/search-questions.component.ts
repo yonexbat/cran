@@ -50,14 +50,14 @@ export class SearchQuestionsComponent implements OnInit {
       this.search.statusObsolete = params['statusObsolete'] === 'true';
     }
 
-    const andTagsJson = params['andTags'];
-    const orTagsJson = params['orTags'];
+    const andTagsJson: number[] = params['andTags'];
+    const orTagsJson: number[] = params['orTags'];
 
-    if (andTagsJson) {
-      this.search.andTags = JSON.parse(andTagsJson);
+    if (andTagsJson && andTagsJson.length > 0) {
+      this.search.andTags = await this.cranDataServiceService.getTags(andTagsJson);
     }
-    if (orTagsJson) {
-      this.search.orTags = JSON.parse(orTagsJson);
+    if (orTagsJson && orTagsJson.length  > 0) {
+      this.search.orTags = await this.cranDataServiceService.getTags(orTagsJson);
     }
     if (isNaN(this.search.page)) {
       this.search.page = 0;
@@ -77,8 +77,8 @@ export class SearchQuestionsComponent implements OnInit {
 
   public searchQuestions(pageNumber: number) {
 
-    const andTags: string = JSON.stringify(this.search.andTags);
-    const orTags: string = JSON.stringify(this.search.orTags);
+    const andTags: number[] = this.search.andTags.map(x => x.id);
+    const orTags: number[] = this.search.orTags.map(x => x.id);
 
     const navigationExtras: NavigationExtras = {
       queryParams: {

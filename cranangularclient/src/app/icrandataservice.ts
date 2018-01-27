@@ -35,6 +35,7 @@ export interface ICranDataService {
   updateQuestion(question: Question): Promise<any>;
   findTags(name: string): Promise<Tag[]>;
   getTag(id: number): Promise<Tag>;
+  getTags(ids: number[]): Promise<Tag[]>;
   insertTag(tag: Tag): Promise<number>;
   updateTag(tag: Tag): Promise<any>;
   deleteTag(id: number): Promise<any>;

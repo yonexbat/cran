@@ -13,6 +13,7 @@ namespace cran.Services
         Task<int> InsertTagAsync(TagDto vm);
         Task<IList<TagDto>> FindTagsAsync(string searchTerm);
         Task<PagedResultDto<TagDto>> SearchForTags(SearchTags parameters);
+        Task<IList<TagDto>> GetTagsAsync(IList<int> ids);
         Task DeleteTagAsync(int id);
     }
 }

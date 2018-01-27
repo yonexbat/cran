@@ -83,11 +83,10 @@ namespace cran.Services
 
             //Daten 
             IQueryable<Tag> query = queryBeforeSkipAndTake.Skip(startindex).Take(PageSize);
-            IList<Tag> tags = await query.ToListAsync();
-            resultDto.Data = tags.Select(x => new TagDto { Id = x.Id, Name = x.Name, Description = x.Description }).ToList();
+
+            resultDto.Data = await ToDto(query);
 
             return resultDto;
-
         }
 
         public async Task DeleteTagAsync(int id)
@@ -112,5 +111,21 @@ namespace cran.Services
 
             await SaveChangesAsync();
         }
+
+        public async Task<IList<TagDto>> GetTagsAsync(IList<int> ids)
+        {
+            IQueryable<Tag> query = _context.Tags
+                .Where(x => ids.Contains(x.Id))
+                .OrderBy(x => x.Name);
+            IList<TagDto> tags = await ToDto(query);
+            return tags;
+        }
+
+        private async Task<IList<TagDto>> ToDto(IQueryable<Tag> query)
+        {
+            return await query.Select(x => new TagDto { Id = x.Id, Name = x.Name, Description = x.Description })
+                .ToListAsync();
+        }
+
     }
 }
