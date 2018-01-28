@@ -73,6 +73,15 @@ export class ManageTagsComponent implements OnInit {
     this.router.navigate(['/managetag', tag.id]);
   }
 
+  private async listQuestions(tag: Tag): Promise<any> {
+    const navigationExtras: NavigationExtras = {
+      queryParams: {
+         andTags: [tag.id],
+      }
+    };
+    this.router.navigate(['/searchq'], navigationExtras);
+  }
+
   private async deleteTag(tag: Tag): Promise<any> {
     try {
       await this.confirmService.confirm(this.ls.label('deletetag'), this.ls.label('deletetagq', tag.name));

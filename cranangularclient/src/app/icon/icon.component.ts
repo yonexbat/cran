@@ -49,6 +49,9 @@ export class IconComponent implements OnInit {
       case 'add':
         internalIcon = 'fa-plus';
         break;
+      case 'list':
+        internalIcon = 'fa-list-ul';
+        break;
     }
     return internalIcon;
   }

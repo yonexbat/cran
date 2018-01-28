@@ -44,11 +44,17 @@
                 [appTooltip] = "'delete'">
                 <app-icon [icon]="'trash'"></app-icon>                
               </button>
+
+              <!-- Anzeigen -->
+              <button class="btn btn-default" type="button" (click)="listQuestions(item)"
+                [appTooltip] = "'listquestions'">
+                <app-icon [icon]="'list'"></app-icon>                
+              </button>
               
               <!-- Edit -->
               <button class="btn btn-default" type="button" (click)="goToTag(item)"
-                 [appTooltip] = "'edit'">
-                  <app-icon [icon]="'edit'"></app-icon>  
+                [appTooltip] = "'edit'">
+                <app-icon [icon]="'edit'"></app-icon>  
               </button>
     
             </span>

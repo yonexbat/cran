@@ -50,14 +50,14 @@ export class SearchQuestionsComponent implements OnInit {
       this.search.statusObsolete = params['statusObsolete'] === 'true';
     }
 
-    const andTagsJson: number[] = params['andTags'];
-    const orTagsJson: number[] = params['orTags'];
+    const andTagsIds = this.toNumberArray(params['andTags']);
+    const orTagsIds: number[] = this.toNumberArray(params['orTags']);  
 
-    if (andTagsJson && andTagsJson.length > 0) {
-      this.search.andTags = await this.cranDataServiceService.getTags(andTagsJson);
+    if (andTagsIds.length > 0) {
+      this.search.andTags = await this.cranDataServiceService.getTags(andTagsIds);
     }
-    if (orTagsJson && orTagsJson.length  > 0) {
-      this.search.orTags = await this.cranDataServiceService.getTags(orTagsJson);
+    if (orTagsIds.length  > 0) {
+      this.search.orTags = await this.cranDataServiceService.getTags(orTagsIds);
     }
     if (isNaN(this.search.page)) {
       this.search.page = 0;
@@ -69,6 +69,17 @@ export class SearchQuestionsComponent implements OnInit {
     } catch (error) {
       this.notificationService.emitError(error);
     }
+  }
+
+  private toNumberArray(parameter): number[] {
+    let result = [];
+    if (typeof parameter === 'string') {
+      result.push(Number.parseInt(parameter));
+    } else if (parameter instanceof Array) {
+      result = parameter.map(x => Number.parseInt(x));
+    }
+
+    return result;
   }
 
   ngOnInit() {

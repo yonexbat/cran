@@ -90,6 +90,7 @@ export class LanguageService {
     'delete' :  {valueDe : 'Löschen', valueEn : 'Delete'},
     'english' :  {valueDe : 'Englisch', valueEn : 'English'},
     'german' :  {valueDe : 'Deutsch', valueEn : 'German'},
+    'listquestions' :  {valueDe : 'Fragen auflisten', valueEn : 'list questions'},
   };
 
 
@@ -99,15 +100,20 @@ export class LanguageService {
   constructor() { }
 
   public label(key: string, ...placeholders: string[]): string {
+
     const tuple = this.map[key];
     let result;
-    switch (this.languageInfo) {
-      case LanguageInfo.En:
-        result = tuple.valueEn;
-        break;
-      default:
-        result = tuple.valueDe;
-        break;
+    if (tuple === undefined) {
+      result = key;
+    } else {
+      switch (this.languageInfo) {
+        case LanguageInfo.En:
+          result = tuple.valueEn;
+          break;
+        default:
+          result = tuple.valueDe;
+          break;
+      }
     }
 
     for (let i = 0; i < placeholders.length; i++) {
