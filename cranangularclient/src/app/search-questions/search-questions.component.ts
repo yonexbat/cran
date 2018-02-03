@@ -51,7 +51,7 @@ export class SearchQuestionsComponent implements OnInit {
     }
 
     const andTagsIds = this.toNumberArray(params['andTags']);
-    const orTagsIds: number[] = this.toNumberArray(params['orTags']);  
+    const orTagsIds: number[] = this.toNumberArray(params['orTags']);
 
     if (andTagsIds.length > 0) {
       this.search.andTags = await this.cranDataServiceService.getTags(andTagsIds);

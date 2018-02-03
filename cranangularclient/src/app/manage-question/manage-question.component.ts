@@ -132,8 +132,9 @@ export class ManageQuestionComponent implements OnInit {
     this.question.options.push(option);
   }
 
-  private showPreview() {
+  private async showPreview() {
     if (this.question.id > 0) {
+      await this.save();
       this.router.navigate(['/viewquestion', this.question.id]);
     } else {
       this.questionPreview.showDialog(this.question);

@@ -5,18 +5,23 @@
 
     <p>Log-in</p>
 
-    <form asp-controller="Account" asp-action="ExternalLogin" method="post" class="form-horizontal">      
+    <form asp-controller="Account" asp-action="ExternalLogin" method="post" class="form-horizontal">
         <input asp-for="ReturnUrl" type="hidden" />
-        <div class="btn-group float-right" role="group" aria-label="Start course">            
+
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="btn-group float-right" role="group" aria-label="Start course">
             @foreach (LoginProviderDto provider in Model.LoginProviders)
             {
-                <button type="submit" class="btn btn-primary" name="provider"
+                <button type="submit"
+                        class="btn btn-primary"
+                        name="provider"
                         value="@provider.Name"
                         title="Log in using your @provider.DisplayName account"
                         data-toggle="tooltip" data-placement="top">
                     @provider.DisplayName
                 </button>
-            }                
+            }
         </div>
     </form>
 

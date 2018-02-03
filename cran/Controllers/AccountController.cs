@@ -19,9 +19,9 @@ namespace cran.Controllers
 {
     public class AccountController : Controller
     {
-        private SignInManager<ApplicationUser> _signInManager;
-        private UserManager<ApplicationUser> _userManager;
-        private RoleManager<IdentityRole> _roleManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger _logger;
         private readonly IUserProfileService _userProfileService;
 
@@ -54,14 +54,14 @@ namespace cran.Controllers
 
             //External Login Providers
             IEnumerable<AuthenticationScheme> providers = await _signInManager.GetExternalAuthenticationSchemesAsync();
-            vm.LoginProviders = providers.Select(x => new Model.Dto.LoginProviderDto()
+            vm.LoginProviders = providers.Select(x => new LoginProviderDto()
             {
                 DisplayName = x.DisplayName,
                 Name = x.Name,
             }).ToList();
 
             //Anonymous
-            vm.LoginProviders.Add(new Model.Dto.LoginProviderDto
+            vm.LoginProviders.Add(new LoginProviderDto
             {
                 DisplayName = "Anonymous",
                 Name= Anonymous,
@@ -112,41 +112,64 @@ namespace cran.Controllers
         public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
         {
             if (remoteError != null)
-            {
-                ModelState.AddModelError(string.Empty, $"Error from external provider: {remoteError}");
-                return View(nameof(Login));
+            {               
+                return await ShowError($"Fehler: {remoteError}");                
             }
             ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
-                return RedirectToAction(nameof(Login));
+                return await ShowError($"Keine Infos zum User vorhanden");
             }
 
             // Sign in the user with this external login provider if the user already has a login.
-            Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false);
+            Microsoft.AspNetCore.Identity.SignInResult signInResult = 
+                await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false);
 
-
-            if (result.Succeeded)
+            if (signInResult.Succeeded)
             {
                 _logger.LogInformation(5, "User logged in with {Name} provider.", info.LoginProvider);
                 return RedirectToLocal(returnUrl);
             }
-            if (result.RequiresTwoFactor)
+            if (signInResult.RequiresTwoFactor)
             {
                 return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl });
             }
-            if (result.IsLockedOut)
+            if (signInResult.IsLockedOut)
             {
-                return View("Lockout");
+                return View("LockedOut");
             }
             else
             {
-                // If the user does not have an account, then ask the user to create an account.
-                ViewData["ReturnUrl"] = returnUrl;
-                ViewData["LoginProvider"] = info.LoginProvider;
-                string email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email });
+                return await CreateUser(returnUrl);                
             }
+        }
+
+        private async Task<IActionResult> ShowError(string error)
+        {
+            ModelState.AddModelError(string.Empty, error);
+            LoginViewModel vm = await GetLoginVm();
+            return View(nameof(Login), vm);
+        }
+
+        private async Task<IActionResult> CreateUser(string returnUrl)
+        {
+            ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
+            string email = info.Principal.FindFirstValue(ClaimTypes.Email);
+            ApplicationUser user = new ApplicationUser { UserName = email, Email = email };
+            IdentityResult createUserResult = await _userManager.CreateAsync(user);
+
+            if (createUserResult.Succeeded)
+            {
+                createUserResult = await _userManager.AddLoginAsync(user, info);
+                if (createUserResult.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    await _userProfileService.CreateUserAsync(new UserInfoDto { Name = email, IsAnonymous = false });
+                    return RedirectToLocal(returnUrl);
+                }
+            }
+            AddErrors(createUserResult);
+            return RedirectToLocal(returnUrl);
         }
 
         // GET: /Account/SendCode
@@ -174,39 +197,6 @@ namespace cran.Controllers
             {
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl = null)
-        {
-            if (ModelState.IsValid)
-            {
-                // Get the information about the user from the external login provider
-                ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
-                if (info == null)
-                {
-                    return View("ExternalLoginFailure");
-                }
-                ApplicationUser user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                IdentityResult result = await _userManager.CreateAsync(user);
-
-                if (result.Succeeded)
-                {
-                    result = await _userManager.AddLoginAsync(user, info);
-                    if (result.Succeeded)
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        await _userProfileService.CreateUserAsync(new UserInfoDto {Name = model.Email, IsAnonymous = false });                        
-                        return RedirectToLocal(returnUrl);
-                    }
-                }
-                AddErrors(result);
-            }
-
-            ViewData["ReturnUrl"] = returnUrl;
-            return View(model);
         }
 
         private void AddErrors(IdentityResult result)
