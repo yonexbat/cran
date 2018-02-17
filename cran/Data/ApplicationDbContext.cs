@@ -30,6 +30,7 @@ namespace cran.Data
         public DbSet<Binary> Binaries { get; set; }
         public DbSet<RelQuestionImage> RelQuestionImages { get; set; }
         public DbSet<Image> Images { get; set; }
+        public DbSet<Text> Texts { get; set; }
 
         protected IPrincipal _principal;
 
@@ -112,6 +113,12 @@ namespace cran.Data
             MapBinary(builder.Entity<Binary>());
             MapImage(builder.Entity<Image>());
             MapContainer(builder.Entity<Container>());
+            MapText(builder.Entity<Text>());
+        }
+
+        private void MapText(EntityTypeBuilder<Text> typeBuilder)
+        {
+            typeBuilder.ToTable("CranText");
         }
 
         private void MapContainer(EntityTypeBuilder<Container> typeBuilder)

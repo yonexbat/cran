@@ -9,5 +9,6 @@ namespace cran.Model.Dto
     {
         public string Name { get; set; }
         public string DisplayName { get; set; }
+        public string Tooltip { get; set; }
     }
 }

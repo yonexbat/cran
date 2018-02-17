@@ -10,6 +10,8 @@ namespace cran.Model.ViewModel
     {
         public string ReturnUrl { get; set; }
 
+        public string LoginInfoText { get; set; }
+                
         public IList<LoginProviderDto> LoginProviders { get; set; }
     }
 }

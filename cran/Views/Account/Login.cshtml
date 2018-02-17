@@ -3,7 +3,7 @@
 
 <div class="container">
 
-    <p>Log-in</p>
+    @Html.Raw(Model.LoginInfoText)
 
     <form asp-controller="Account" asp-action="ExternalLogin" method="post" class="form-horizontal">
         <input asp-for="ReturnUrl" type="hidden" />
@@ -17,7 +17,7 @@
                         class="btn btn-primary"
                         name="provider"
                         value="@provider.Name"
-                        title="Log in using your @provider.DisplayName account"
+                        title="@provider.Tooltip"
                         data-toggle="tooltip" data-placement="top">
                     @provider.DisplayName
                 </button>

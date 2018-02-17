@@ -14,6 +14,14 @@ using System;
 using System.Security;
 using cran.Services;
 using cran.Model.Dto;
+using System.Text.RegularExpressions;
+using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Builder;
+using System.Threading;
 
 namespace cran.Controllers
 {
@@ -24,6 +32,10 @@ namespace cran.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger _logger;
         private readonly IUserProfileService _userProfileService;
+        private readonly ICourseService _courseService;
+        private readonly ITextService _textService;
+        private readonly IStringLocalizer<AccountController> _localizer;
+
 
         private static string Anonymous = "Anonymous";
 
@@ -32,19 +44,40 @@ namespace cran.Controllers
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             RoleManager<IdentityRole> roleManager,
-            IUserProfileService userProfileService)
+            IUserProfileService userProfileService,
+            ICourseService courseService,
+            ITextService textService,
+            IStringLocalizer<AccountController> localizer)
         {
             this._logger = loggerFactory.CreateLogger<AccountController>();
             this._signInManager = signInManager;
             this._userManager = userManager;
             this._roleManager = roleManager;
             this._userProfileService = userProfileService;
+            this._courseService = courseService;
+            this._textService = textService;
+            this._localizer = localizer;
+           
         }
 
         public async Task<IActionResult> Login()
         {
-            LoginViewModel vm = await GetLoginVm();
+            LoginViewModel vm = await GetLoginVm();           
             return View(vm);
+        }
+
+        private async Task<CourseDto> GetCourse(string input)
+        {
+            string pattern = @"/coursestarter/(?<id>\d+)$";
+            Match match = Regex.Match(input, pattern);
+            if(match.Success)
+            {
+                string idString = match.Groups["id"].Value;
+                int id = int.Parse(idString);
+                CourseDto dto = await _courseService.GetCourseAsync(id);
+                return dto;
+            }
+            return null;                     
         }
 
         private async  Task<LoginViewModel> GetLoginVm()
@@ -58,6 +91,7 @@ namespace cran.Controllers
             {
                 DisplayName = x.DisplayName,
                 Name = x.Name,
+                Tooltip = _localizer["LoginUsing", x.Name],
             }).ToList();
 
             //Anonymous
@@ -65,11 +99,25 @@ namespace cran.Controllers
             {
                 DisplayName = "Anonymous",
                 Name= Anonymous,
+                Tooltip = _localizer["LoginAnonymous"]
             });
+
+            //Info Login
+            string returnUrl = Request.Query["ReturnUrl"];
+            vm.LoginInfoText = await _textService.GetTextAsync("LoginDefault");
+            if (!string.IsNullOrWhiteSpace(returnUrl))
+            {
+                CourseDto course = await GetCourse(returnUrl);
+                if (course != null)
+                {
+                    vm.LoginInfoText = await _textService.GetTextAsync("LoginStartCourse", course.Title);
+                }
+            }
 
 
             return vm;
         }
+
 
 
         [HttpPost]

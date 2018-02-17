@@ -22,6 +22,10 @@ using Microsoft.Extensions.FileProviders;
 using cran.Services;
 using System.Security.Principal;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Razor;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
 
 namespace cran
 {
@@ -50,8 +54,29 @@ namespace cran
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc();
-            
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.AddMvc()               
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
+
+            services.Configure<RequestLocalizationOptions>(
+                opts =>
+                {
+                    var supportedCultures = new List<CultureInfo>
+                    {
+                        new CultureInfo("de-CH"),
+                        new CultureInfo("de"),
+                        new CultureInfo("en"),
+                    };
+
+                    opts.DefaultRequestCulture = new RequestCulture("de-CH");
+                    // Formatting numbers, dates, etc.
+                    opts.SupportedCultures = supportedCultures;
+                    // UI strings that we have localized.
+                    opts.SupportedUICultures = supportedCultures;
+                });
+
+
             string connString = Configuration["ConnectionString"];
 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -87,6 +112,7 @@ namespace cran
             services.AddScoped<ICommentsService, CommentsService>();
             services.AddScoped<IUserProfileService, UserProfileService>();
             services.AddScoped<ICourseInstanceService, CourseInstanceService>();
+            services.AddScoped<ITextService, TextService>();
 
             services.AddSingleton(_physicalProvider);
 
@@ -124,7 +150,12 @@ namespace cran
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
                 
-            });          
+            });
+
+            //Localization          
+            var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();           
+            app.UseRequestLocalization(options.Value);
+
         }
     }
 }
