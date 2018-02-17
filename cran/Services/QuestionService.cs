@@ -14,16 +14,20 @@ namespace cran.Services
     {
 
         private readonly ICommentsService _commentsService;
+        private readonly ITagService _tagService;
+       
 
         public QuestionService(ApplicationDbContext context, 
             IDbLogService dbLogService, 
             IPrincipal principal,
-            ICommentsService commentsService) :
+            ICommentsService commentsService,
+            ITagService tagService) :
             base(context, dbLogService, principal)
         {
             _context = context;
             _currentPrincipal = principal;
             _commentsService = commentsService;
+            _tagService = tagService;
         }
 
 
@@ -368,7 +372,13 @@ namespace cran.Services
               .ToListAsync();
 
             var relTags = await _context.RelQuestionTags.Where(rel => questionIds.Contains(rel.Question.Id))
-                .Select(rel => new { TagId = rel.Tag.Id, QuestionId = rel.Question.Id, TagName = rel.Tag.Name })
+                .Select(rel => new {
+                    TagId = rel.Tag.Id,
+                    QuestionId = rel.Question.Id,
+                    TagName = rel.Tag.Name,
+                    TagShortDescDe = rel.Tag.ShortDescDe,
+                    TagShortDescEn = rel.Tag.ShortDescEn,
+                })
                 .ToListAsync();
 
             foreach (var relTag in relTags)
@@ -378,6 +388,8 @@ namespace cran.Services
                 {
                     Id = relTag.TagId,
                     Name = relTag.TagName,
+                    ShortDescDe = relTag.TagShortDescDe,
+                    ShortDescEn = relTag.TagShortDescEn,
                 });
 
             }

@@ -72,6 +72,8 @@ namespace cran.Services
                     Id = tag.Id,
                     Description = tag.Description,
                     Name = tag.Name,
+                    ShortDescDe = tag.ShortDescDe,
+                    ShortDescEn = tag.ShortDescEn,
                 };
                 courseVm.Tags.Add(tagVm);
             }

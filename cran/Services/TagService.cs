@@ -19,12 +19,7 @@ namespace cran.Services
         public async Task<TagDto> GetTagAsync(int id)
         {
             Tag tag = await _context.FindAsync<Tag>(id);
-            return new TagDto
-            {
-                Id = tag.Id,
-                Description = tag.Description,
-                Name = tag.Name,
-            };
+            return ToTagDto(tag);            
         }
 
         public async Task UpdateTagAsync(TagDto vm)
@@ -53,19 +48,9 @@ namespace cran.Services
 
         public async Task<IList<TagDto>> FindTagsAsync(string searchTerm)
         {
-            IList<Tag> tags = await _context.Tags.Where(x => x.Name.Contains(searchTerm)).ToListAsync();
-            IList<TagDto> result = new List<TagDto>();
-
-            foreach (Tag tag in tags)
-            {
-                TagDto tagVm = new TagDto
-                {
-                    Id = tag.Id,
-                    Name = tag.Name,
-                    Description = tag.Description,
-                };
-                result.Add(tagVm);
-            }
+            IQueryable<Tag> tagQueryable = _context.Tags.Where(x => x.Name.Contains(searchTerm))
+                .OrderBy(x => x.Name);
+            IList<TagDto> result = await ToDto(tagQueryable);         
             return result;
         }
 
@@ -136,5 +121,16 @@ namespace cran.Services
                 .ToListAsync();
         }
 
+        private TagDto ToTagDto(Tag tag)
+        {
+            return new TagDto
+            {
+                Id = tag.Id,
+                Description = tag.Description,
+                Name = tag.Name,
+                ShortDescDe = tag.ShortDescDe,
+                ShortDescEn = tag.ShortDescEn,
+            };
+        }
     }
 }
