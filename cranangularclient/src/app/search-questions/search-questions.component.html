@@ -11,6 +11,7 @@
 
           <input type="text" class="form-control" id="title"
                   [(ngModel)]="search.title" name="title"
+                  (keyup.enter)="executeSearch()"
                   #title="ngModel">         
         </div>
 

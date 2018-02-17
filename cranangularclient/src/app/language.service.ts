@@ -91,6 +91,10 @@ export class LanguageService {
     'english' :  {valueDe : 'Englisch', valueEn : 'English'},
     'german' :  {valueDe : 'Deutsch', valueEn : 'German'},
     'listquestions' :  {valueDe : 'Fragen auflisten', valueEn : 'list questions'},
+    'tagdescde' :  {valueDe : 'Kurztext Deutsch', valueEn : 'Short text German'},
+    'tagdescen' :  {valueDe : 'Kurztext Englisch', valueEn : 'Short text English'},
+    'tagdescderequired' :  {valueDe : 'Kurztext Deutsch ist ein Mussfeld', valueEn : 'Short text German is required'},
+    'tagdescenrequired' :  {valueDe : 'Kurztext Englisch ist ein Mussfeld', valueEn : 'Short text English is required'},
   };
 
 

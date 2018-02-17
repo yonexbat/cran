@@ -30,20 +30,25 @@ namespace cran.Services
         public async Task UpdateTagAsync(TagDto vm)
         {
             Tag tag = await _context.FindAsync<Tag>(vm.Id);
-            tag.Name = vm.Name;
-            tag.Description = vm.Description;
+            UpdateEntity(tag, vm);          
             await SaveChangesAsync();
         }
 
-        public async Task<int> InsertTagAsync(TagDto vm)
+        public async Task<int> InsertTagAsync(TagDto dto)
         {
-
             Tag tag = new Tag();
-            tag.Name = vm.Name;
-            tag.Description = vm.Description;
+            UpdateEntity(tag, dto);
             _context.Tags.Add(tag);
             await SaveChangesAsync();
             return tag.Id;           
+        }
+
+        private void UpdateEntity(Tag entity, TagDto dto)
+        {
+            entity.Name = dto.Name;
+            entity.Description = dto.Description;
+            entity.ShortDescDe = dto.ShortDescDe;
+            entity.ShortDescEn = dto.ShortDescEn;
         }
 
         public async Task<IList<TagDto>> FindTagsAsync(string searchTerm)
@@ -123,7 +128,11 @@ namespace cran.Services
 
         private async Task<IList<TagDto>> ToDto(IQueryable<Tag> query)
         {
-            return await query.Select(x => new TagDto { Id = x.Id, Name = x.Name, Description = x.Description })
+            return await query.Select(x => new TagDto {
+                Id = x.Id, Name = x.Name,
+                Description = x.Description,
+                ShortDescDe = x.ShortDescDe,
+                ShortDescEn = x.ShortDescEn})
                 .ToListAsync();
         }
 

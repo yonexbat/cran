@@ -8,7 +8,9 @@ namespace cran.Model.Dto
     public class TagDto : IIdentifiable
     {
         public int Id { get; set; }
-        public virtual string Name { get; set; }
-        public virtual string Description { get; set; }
+        public string Name { get; set; }
+        public string ShortDescDe { get; set; }
+        public string ShortDescEn { get; set; }
+        public string Description { get; set; }
     }
 }

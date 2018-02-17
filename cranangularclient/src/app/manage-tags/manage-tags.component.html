@@ -7,8 +7,11 @@
               
             <label for="title">{{ls.label('tagname')}}</label>
   
-            <input type="text" class="form-control" id="title"
-                    [(ngModel)]="search.name" name="title"
+            <input  type="text" class="form-control" 
+                    id="title"
+                    [(ngModel)]="search.name"
+                    (keyup.enter)="executeSearch()" 
+                    name="title"
                     #title="ngModel"> 
 
           </div>

@@ -58,9 +58,14 @@ namespace cran.Services
                 Status = (int)questionEntity.Status,
                 Language = questionEntity.Language.ToString(),
             };
+
+            //Authorization
             questionVm.IsEditable = await HasWriteAccess(questionEntity.IdUser);
+
+            //Vote-Statistics
             questionVm.Votes = await _commentsService.GetVoteAsync(id);
 
+            //Options
             questionVm.Options = await _context.QuestionOptions
                 .Where(x => x.IdQuestion == id)
                 .OrderBy(x => x.Id)
@@ -71,6 +76,7 @@ namespace cran.Services
                     Text = x.Text,
                 }).ToListAsync();
 
+            //Tags
             questionVm.Tags = await _context.RelQuestionTags
                 .Where(x => x.IdQuestion == id)
                 .Select(x => new TagDto
@@ -78,8 +84,11 @@ namespace cran.Services
                     Id = x.Tag.Id,
                     Name = x.Tag.Name,
                     Description = x.Tag.Description,
+                    ShortDescDe = x.Tag.ShortDescDe,
+                    ShortDescEn = x.Tag.ShortDescEn,
                 }).ToListAsync();
 
+            //Images
             questionVm.Images = await _context.RelQuestionImages
                 .Where(x => x.IdQuestion == id)
                 .Select(x => new ImageDto

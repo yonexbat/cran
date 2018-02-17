@@ -65,6 +65,10 @@ export class ManageTagsComponent implements OnInit {
     this.router.navigate(['/managetags'], navigationExtras);
   }
 
+  private executeSearch() {
+    this.searchTags(0);
+  }
+
   public pageSelected(pageNumber: number) {
     this.searchTags(pageNumber);
   }

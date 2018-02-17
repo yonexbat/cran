@@ -9,5 +9,7 @@ namespace cran.Model.Entities
     {
         public virtual string Name { get; set; }
         public virtual string Description { get; set; }
+        public virtual string ShortDescDe { get; set; }
+        public virtual string ShortDescEn { get; set; }
     }
 }

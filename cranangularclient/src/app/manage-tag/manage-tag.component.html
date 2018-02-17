@@ -7,7 +7,7 @@
         <div class="row form-group">
             
           <!-- Name -->
-          <div class="col-md-6">
+          <div class="col-md-4">
               
             <label for="title">{{ls.label('name')}}</label>
     
@@ -20,27 +20,60 @@
                   class="alert alert-danger">
                 {{ls.label('namerequired')}}
             </div>
-          </div>                             
-            
+          </div>              
+          
+          <!-- Description De tagdescde -->
+          <div class="col-md-4">
+            <label for="shorttextde">{{ls.label('tagdescde')}}</label>
+            <input 
+                type="text" class="form-control" 
+                required
+                id="shorttextde"
+                [(ngModel)]="tag.shortDescDe" 
+                name="shorttextde"
+                #shorttextde="ngModel">
+
+            <div [hidden]="shorttextde.valid || shorttextde.pristine"                
+                class="alert alert-danger">
+              {{ls.label('tagdescderequired')}}
+            </div>            
+          </div>
+
+          <!-- Description En -->
+          <div class="col-md-4">
+              <label for="shorttexten">{{ls.label('tagdescen')}}</label>
+              <input 
+                  type="text" class="form-control" 
+                  required
+                  id="shorttexten" 
+                  [(ngModel)]="tag.shortDescEn"
+                  name="shorttexten"
+                  #shorttexten="ngModel">
+              <div [hidden]="shorttexten.valid || shorttexten.pristine"
+                  class="alert alert-danger">
+                {{ls.label('shorttextenrequired')}}
+              </div>        
+          </div>                            
         </div>
 
 
-    <!-- Description  -->
-    <div class="row form-group">
-      
-      <div class="col-md-12">
+
+        <!-- Description  -->
+        <div class="row form-group">
           
-        <label for="description">{{ls.label('description')}}</label>        
+          <div class="col-md-12">
+              
+            <label for="description">{{ls.label('description')}}</label>        
 
-        <app-rich-text-box 
-          [elementId]="'description'"
-          [content]="tag.description"
-          [required]="true"
-          (htmlString)="tag.description = $event"></app-rich-text-box>
+            <app-rich-text-box 
+              [elementId]="'description'"
+              [content]="tag.description"
+              [required]="true"
+              (htmlString)="tag.description = $event"></app-rich-text-box>
 
-      </div>
-    
-    </div>
+          </div>
+        
+        </div>
 
         <!-- Statusmessage -->
         <app-status-message #statusMessage></app-status-message>
