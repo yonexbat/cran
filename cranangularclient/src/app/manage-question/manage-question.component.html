@@ -10,7 +10,7 @@
     <div class="row form-group">
 
        <!-- Titel -->
-      <div class="col-md-3">
+      <div class="col-md-6">
           
         <label for="title">{{ls.label('title')}}</label>
 
@@ -48,28 +48,7 @@
               {{ls.label('languagerequired')}}
            </div>
         
-      </div>
-
-      <!-- Status -->
-      <div class="col-md-3">
-
-        <label for="status">
-          {{ls.label('state')}}
-        </label>
-
-        <div class="form-control" disabled="disabled">
-          <span *ngIf="question.status == 0">
-            {{ls.label('created')}}
-          </span>
-          <span *ngIf="question.status == 1">
-            {{ls.label('approved')}}
-          </span>
-          <span *ngIf="question.status == 2">
-            {{ls.label('created')}}
-          </span>
-        </div>
-
-      </div>
+      </div>      
 
       <!-- Tags -->
       <div class="col-md-3">
