@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject, Input, Output, EventEmitter, } from '@angular/core';
 
 import {Tag} from '../model/tag';
+import {LanguageInfo} from '../model/languageInfo';
 import {LanguageService} from '../language.service';
 
 @Component({
@@ -19,6 +20,20 @@ export class TagsComponent implements OnInit {
 
   ngOnInit() {
 
+  }
+
+  private tooltip(tag: Tag): string {
+    const language: LanguageInfo = this.ls.getLanguage();
+    let tooltip = tag.shortDescDe;
+    switch (language) {
+      case LanguageInfo.De:
+        tooltip = tag.shortDescDe;
+        break;
+      case LanguageInfo.En:
+        tooltip = tag.shortDescEn;
+        break;
+    }
+    return tooltip;
   }
 
   private removeTag(tag: Tag) {

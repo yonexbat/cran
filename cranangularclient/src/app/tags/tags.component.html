@@ -2,7 +2,9 @@
   <div  *ngIf="tagList">
     <div>
       <span *ngFor="let tag of tagList" 
-            class="badge badge-info crantag">
+            class="badge badge-info crantag"
+            [appTooltip] ="tooltip(tag)">
+
         {{tag.name}} 
 
         <app-icon 
