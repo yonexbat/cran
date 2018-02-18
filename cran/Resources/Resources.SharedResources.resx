@@ -126,4 +126,10 @@
   <data name="LoginUsing" xml:space="preserve">
     <value>Anmelden mit {0}</value>
   </data>
+  <data name="Start" xml:space="preserve">
+    <value>Starten</value>
+  </data>
+  <data name="StartCourse" xml:space="preserve">
+    <value>Kurs starten</value>
+  </data>
 </root>

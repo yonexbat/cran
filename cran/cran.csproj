@@ -30,16 +30,16 @@
     <Folder Include="wwwroot\jsclient\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Resources\Controllers.AccountController.Designer.cs">
+    <Compile Update="Resources\Resources.SharedResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Controllers.AccountController.resx</DependentUpon>
+      <DependentUpon>Resources.SharedResources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Update="Resources\Controllers.AccountController.resx">
+    <EmbeddedResource Update="Resources\Resources.SharedResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Controllers.AccountController.Designer.cs</LastGenOutput>
+      <LastGenOutput>Resources.SharedResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

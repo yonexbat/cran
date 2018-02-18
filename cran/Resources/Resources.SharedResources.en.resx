@@ -126,4 +126,10 @@
   <data name="LoginUsing" xml:space="preserve">
     <value>Sign in with {0}</value>
   </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="StartCourse" xml:space="preserve">
+    <value>Start course</value>
+  </data>
 </root>

@@ -16,6 +16,7 @@ using cran.Services;
 using cran.Model.Dto;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Localization;
+using cran.Resources;
 
 namespace cran.Controllers
 {
@@ -28,7 +29,7 @@ namespace cran.Controllers
         private readonly IUserProfileService _userProfileService;
         private readonly ICourseService _courseService;
         private readonly ITextService _textService;
-        private readonly IStringLocalizer<AccountController> _localizer;
+        private readonly IStringLocalizer<SharedResources> _localizer;
 
 
         private static string Anonymous = "Anonymous";
@@ -41,7 +42,7 @@ namespace cran.Controllers
             IUserProfileService userProfileService,
             ICourseService courseService,
             ITextService textService,
-            IStringLocalizer<AccountController> localizer)
+            IStringLocalizer<SharedResources> localizer)
         {
             this._logger = loggerFactory.CreateLogger<AccountController>();
             this._signInManager = signInManager;

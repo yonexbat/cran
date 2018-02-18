@@ -1,0 +1,22 @@
+﻿
+@using cran.Model.ViewModel;
+@using cran.Resources;
+@using Microsoft.AspNetCore.Mvc.Localization;
+@model InfoViewModel;
+
+@inject IHtmlLocalizer<SharedResources>  Resources
+<div class="container">
+    @Html.Raw(Model.InfoText)
+</div>
+
+@section scripts {
+
+    <script>
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+
+    </script>
+
+}

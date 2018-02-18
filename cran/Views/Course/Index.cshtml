@@ -1,6 +1,10 @@
 ﻿
-@using cran.Model.ViewModel; 
+@using cran.Model.ViewModel;
+@using cran.Resources;
+@using Microsoft.AspNetCore.Mvc.Localization;
 @model CourseViewModel;
+
+@inject IHtmlLocalizer<SharedResources>  Resources
 
 <div class="container">
 
@@ -12,10 +16,13 @@
     <form asp-action="Start" method="get">
         <input type="hidden" asp-for="Id" />
         <div class="btn-group float-right" role="group" aria-label="Start course">
-            <button type="submit" 
+            <button type="submit"
                     class="btn btn-secondary"
-                    title="Kurs starten"
-                    data-toggle="tooltip" data-placement="top">Start</button>
+                    title="@(Resources["StartCourse"])"
+                    data-toggle="tooltip" 
+                    data-placement="top">
+                @(Resources["Start"])
+            </button>
         </div>
     </form>
 

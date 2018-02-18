@@ -22,14 +22,14 @@ namespace cran.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Controllers_AccountController {
+    internal class Resources_SharedResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Controllers_AccountController() {
+        internal Resources_SharedResources() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace cran.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("cran.Resources.Controllers.AccountController", typeof(Controllers_AccountController).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("cran.Resources.Resources.SharedResources", typeof(Resources_SharedResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -84,6 +84,24 @@ namespace cran.Resources {
         internal static string LoginUsing {
             get {
                 return ResourceManager.GetString("LoginUsing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starten.
+        /// </summary>
+        internal static string Start {
+            get {
+                return ResourceManager.GetString("Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kurs starten.
+        /// </summary>
+        internal static string StartCourse {
+            get {
+                return ResourceManager.GetString("StartCourse", resourceCulture);
             }
         }
     }

@@ -12,16 +12,26 @@ namespace cran.Controllers
     public class CourseController : Controller
     {
         private ICourseService _courseService;
+        private ITextService _textService;
 
-        public CourseController(ICourseService courseService)
+        public CourseController(ICourseService courseService, 
+            ITextService textService)
         {
             _courseService = courseService;
+            _textService = textService;
         }
 
         public async Task<IActionResult> Index(int id)
         {
             CourseViewModel vm = new CourseViewModel();
             await InitCourse(id, vm);
+            return View(vm);
+        }
+
+        public async Task<IActionResult> Info(string id)
+        {
+            InfoViewModel vm = new InfoViewModel();
+            vm.InfoText = await _textService.GetTextAsync(id);
             return View(vm);
         }
 
