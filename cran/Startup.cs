@@ -136,6 +136,10 @@ namespace cran
 
             app.UseStaticFiles();
 
+            //Localization          
+            IOptions<RequestLocalizationOptions> options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(options.Value);
+
             //Google login
             app.UseAuthentication();                 
 
@@ -151,10 +155,6 @@ namespace cran
                     defaults: new { controller = "Home", action = "Index" });
                 
             });
-
-            //Localization          
-            var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();           
-            app.UseRequestLocalization(options.Value);
 
         }
     }

@@ -16,12 +16,6 @@ using cran.Services;
 using cran.Model.Dto;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Localization;
-using Microsoft.AspNetCore.Localization;
-using System.Globalization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Builder;
-using System.Threading;
 
 namespace cran.Controllers
 {
@@ -61,7 +55,7 @@ namespace cran.Controllers
         }
 
         public async Task<IActionResult> Login()
-        {
+        {          
             LoginViewModel vm = await GetLoginVm();           
             return View(vm);
         }
@@ -97,9 +91,9 @@ namespace cran.Controllers
             //Anonymous
             vm.LoginProviders.Add(new LoginProviderDto
             {
-                DisplayName = "Anonymous",
+                DisplayName = _localizer["anonymous"],
                 Name= Anonymous,
-                Tooltip = _localizer["LoginAnonymous"]
+                Tooltip = _localizer["LoginAnonymous"],
             });
 
             //Info Login

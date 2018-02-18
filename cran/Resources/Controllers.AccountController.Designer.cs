@@ -61,7 +61,16 @@ namespace cran.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Brauche einen anonymen Account.
+        ///   Looks up a localized string similar to anonym.
+        /// </summary>
+        internal static string anonymous {
+            get {
+                return ResourceManager.GetString("anonymous", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Anonym anmelden.
         /// </summary>
         internal static string LoginAnonymous {
             get {
@@ -70,7 +79,7 @@ namespace cran.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logge dich mit {0} ein.
+        ///   Looks up a localized string similar to Anmelden mit {0}.
         /// </summary>
         internal static string LoginUsing {
             get {

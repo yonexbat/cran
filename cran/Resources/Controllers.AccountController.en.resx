@@ -117,10 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="anonymous" xml:space="preserve">
+    <value>Anonymous</value>
+  </data>
   <data name="LoginAnonymous" xml:space="preserve">
-    <value>Login anonymously</value>
+    <value>Sign in anonymously</value>
   </data>
   <data name="LoginUsing" xml:space="preserve">
-    <value>Login with {0}</value>
+    <value>Sign in with {0}</value>
   </data>
 </root>

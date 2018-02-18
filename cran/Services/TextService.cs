@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Linq;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using cran.Data;
-using cran.Model.Dto;
 using cran.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,10 +17,10 @@ namespace cran.Services
 
         public async Task<string> GetTextAsync(string key, params string[] placeholders)
         {
-            CultureInfo cultureInfo = Thread.CurrentThread.CurrentUICulture;
+            CultureInfo uiCultureInfo = Thread.CurrentThread.CurrentUICulture;           
             Text template = await _context.Texts.Where(x => x.Key == key).SingleAsync();           
             string templateContent = template.ContentDe;
-            if(cultureInfo != null && cultureInfo.Name == "en-US")
+            if(uiCultureInfo != null && uiCultureInfo.Name.EndsWith("en"))
             {
                 templateContent = template.ContentEn;
             }
