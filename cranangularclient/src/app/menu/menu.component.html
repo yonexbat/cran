@@ -39,7 +39,7 @@
             <a [routerLink]="['/results']" class="nav-link">
               {{ls.label('myresults')}}
             </a>
-          </li>
+          </li>          
 
           <!-- Fragen -->
           <li class="nav-item dropdown">
@@ -100,12 +100,11 @@
                     {{ls.label('addcourse')}}
                 </a>  
                 
+                <!-- Texts -->
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" [routerLink]="['/textlist']" routerLinkActive="active" *ngIf="isAdmin">
                   {{ls.label('texts')}}
-                </a>  
-
-                <!-- Texts -->
+                </a>                  
                                
               </div>
           </li>
