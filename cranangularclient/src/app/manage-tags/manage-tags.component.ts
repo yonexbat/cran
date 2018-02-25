@@ -22,7 +22,7 @@ export class ManageTagsComponent implements OnInit {
   private lastParams: ParamMap;
   private pagedResult: PagedResult<Tag> = new PagedResult<Tag>();
 
-  constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
+  constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
     private router: Router,
     private activeRoute: ActivatedRoute,
     private notificationService: NotificationService,
@@ -47,7 +47,7 @@ export class ManageTagsComponent implements OnInit {
 
     try {
       this.notificationService.emitLoading();
-      this.pagedResult = await this.cranDataServiceService.searchForTags(this.search);
+      this.pagedResult = await this.cranDataService.searchForTags(this.search);
       this.notificationService.emitDone();
     } catch (error) {
       this.notificationService.emitError(error);
@@ -91,7 +91,7 @@ export class ManageTagsComponent implements OnInit {
       await this.confirmService.confirm(this.ls.label('deletetag'), this.ls.label('deletetagq', tag.name));
       try {
         this.notificationService.emitLoading();
-        await this.cranDataServiceService.deleteTag(tag.id);
+        await this.cranDataService.deleteTag(tag.id);
         this.notificationService.emitDone();
         await this.handleRouteChanged(this.lastParams);
       } catch (error) {

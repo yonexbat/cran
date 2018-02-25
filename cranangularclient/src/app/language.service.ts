@@ -95,6 +95,7 @@ export class LanguageService {
     'tagdescen' :  {valueDe : 'Kurztext Englisch', valueEn : 'Short text English'},
     'tagdescderequired' :  {valueDe : 'Kurztext Deutsch ist ein Mussfeld', valueEn : 'Short text German is required'},
     'tagdescenrequired' :  {valueDe : 'Kurztext Englisch ist ein Mussfeld', valueEn : 'Short text English is required'},
+    'texts' :  {valueDe : 'Texte', valueEn : 'Texts'},
   };
 
 

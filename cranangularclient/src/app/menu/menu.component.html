@@ -98,7 +98,14 @@
                 <!-- Add course  -->
                 <a class="dropdown-item" [routerLink]="['/managecourse/0']" routerLinkActive="active" *ngIf="isAdmin">
                     {{ls.label('addcourse')}}
-                </a>               
+                </a>  
+                
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" [routerLink]="['/textlist']" routerLinkActive="active" *ngIf="isAdmin">
+                  {{ls.label('texts')}}
+                </a>  
+
+                <!-- Texts -->
                                
               </div>
           </li>

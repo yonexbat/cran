@@ -47,6 +47,8 @@ import { QuestionListItemComponent } from './question-list-item/question-list-it
 import { CourseStarterComponent } from './course-starter/course-starter.component';
 import { IconComponent } from './icon/icon.component';
 import { TooltipDirective } from './tooltip.directive';
+import { TextlistComponent } from './textlist/textlist.component';
+import { ManageTextComponent } from './manage-text/manage-text.component';
 
 function isDevelopment() {
   return window.location && window.location.port && window.location.port === '4200';
@@ -91,6 +93,8 @@ if (isDevelopment()) {
     CourseStarterComponent,
     IconComponent,
     TooltipDirective,
+    TextlistComponent,
+    ManageTextComponent,
   ],
   imports: [
     BrowserModule,
