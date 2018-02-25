@@ -7,6 +7,7 @@ using cran.Model.Entities;
 using System.Security.Principal;
 using cran.Model.Dto;
 using cran.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace cran.Services
 {
@@ -146,7 +147,7 @@ namespace cran.Services
         }
                
 
-        protected int InitPagedResult(IPagedResult pagedResult, int count, int page)
+        private int InitPagedResult(IPagedResult pagedResult, int count, int page)
         {
             pagedResult.Count = count;
             pagedResult.Pagesize = PageSize;
@@ -155,10 +156,27 @@ namespace cran.Services
             return pagedResult.CurrentPage * PageSize;
         }
 
+        protected async Task<PagedResultDto<TModel>> ToPagedResult<TEntity, TModel>(IQueryable<TEntity> queryBeforeSkipAndTake,
+           int page, Func<IQueryable<TEntity>, Task<IList<TModel>>> toDtoFunc)
+               where TModel : class
+        {
+            PagedResultDto<TModel> resultDto = new PagedResultDto<TModel>();
+
+            //Count und paging.
+            int count = await queryBeforeSkipAndTake.CountAsync();
+            int startindex = InitPagedResult(resultDto, count, page);
+
+            //Daten 
+            IQueryable<TEntity> query = queryBeforeSkipAndTake.Skip(startindex).Take(PageSize);
+
+            resultDto.Data = await toDtoFunc(query);
+
+            return resultDto;
+        }
+
         private int CalculateNumPages(int count)
         {
-            return ((count + PageSize - 1) / PageSize);
-   
+            return ((count + PageSize - 1) / PageSize);   
         }
         
     }

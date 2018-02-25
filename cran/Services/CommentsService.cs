@@ -102,25 +102,25 @@ namespace cran.Services
                 .OrderByDescending(x => x.InsertDate)
                 .ThenBy(x => x.Id);
 
-            //Count und Paging
-            int count = await queryBeforeSkipAndTake.CountAsync();
-            int startindex = InitPagedResult(resultDto, count, parameters.Page);
+            PagedResultDto<CommentDto> result = await ToPagedResult(queryBeforeSkipAndTake, parameters.Page, ToDto);
+            return result;
+        }
 
-            //Daten
-            IQueryable<Comment> query = queryBeforeSkipAndTake.Skip(startindex).Take(PageSize);
+        private async Task<IList<CommentDto>> ToDto(IQueryable<Comment> query)
+        {            
             var data = await query.Select(x => new
             {
-                CommentText = x.CommentText,
+                x.CommentText,
                 IdQuestion = x.Question.Id,
                 IdUser = x.User.Id,
-                UserId = x.User.UserId,
+                x.User.UserId,
                 x.InsertDate,
                 x.UpdateDate,
                 IdComment = x.Id,
 
             }).ToListAsync();
 
-            resultDto.Data = new List<CommentDto>();
+            IList<CommentDto> result = new List<CommentDto>();
 
             foreach (var commentData in data)
             {
@@ -134,10 +134,10 @@ namespace cran.Services
                     UpdateDate = commentData.UpdateDate,
                     IsEditable = await HasWriteAccess(commentData.IdUser),
                 };
-                resultDto.Data.Add(commentDto);
+                result.Add(commentDto);
             }
 
-            return resultDto;
+            return result;
         }
         
     }

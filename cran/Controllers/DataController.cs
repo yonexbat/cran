@@ -148,7 +148,7 @@ namespace cran.Controllers
         [ValidateModel]
         public async Task<PagedResultDto<TagDto>> SearchForTags([FromBody]  SearchTags parameters)
         {
-            return await _tagService.SearchForTags(parameters);
+            return await _tagService.SearchForTagsAsync(parameters);
         }
 
         [HttpPost("[action]")]

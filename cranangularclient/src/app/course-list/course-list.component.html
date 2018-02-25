@@ -4,6 +4,9 @@
   <ng-template #listItem let-item="item"> 
       <div class="list-group-item">
         <h6>
+          
+          #{{item.id}}
+
           {{item.title}} [{{ls.label('language')}}: {{item.language}}]
   
           <span class="btn-group pull-right">

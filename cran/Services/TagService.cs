@@ -54,29 +54,15 @@ namespace cran.Services
             return result;
         }
 
-        public async Task<PagedResultDto<TagDto>> SearchForTags(SearchTags parameters)
+        public async Task<PagedResultDto<TagDto>> SearchForTagsAsync(SearchTags parameters)
         {
-            IQueryable<Tag> queryBeforeSkipAndTake = _context.Tags
+            IQueryable<Tag> query = _context.Tags
                 .OrderBy(x => x.Name)
                 .ThenBy(x => x.Id);
 
-            if (!string.IsNullOrWhiteSpace(parameters.Name))
-            {
-                queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x => x.Name.Contains(parameters.Name));
-            }
+            PagedResultDto<TagDto> result = await ToPagedResult(query, parameters.Page, ToDto);
+            return result;
 
-            PagedResultDto<TagDto> resultDto = new PagedResultDto<TagDto>();
-
-            //Count und paging.
-            int count = await queryBeforeSkipAndTake.CountAsync();
-            int startindex = InitPagedResult(resultDto, count, parameters.Page);
-
-            //Daten 
-            IQueryable<Tag> query = queryBeforeSkipAndTake.Skip(startindex).Take(PageSize);
-
-            resultDto.Data = await ToDto(query);
-
-            return resultDto;
         }
 
         public async Task DeleteTagAsync(int id)

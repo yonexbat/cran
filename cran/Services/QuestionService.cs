@@ -279,13 +279,8 @@ namespace cran.Services
             IQueryable<Question> query = _context.Questions.Where(q => q.User.UserId == userId)
                 .OrderBy(x => x.Title)
                 .ThenBy(x => x.Id);
-
-            PagedResultDto<QuestionListEntryDto> result = new PagedResultDto<QuestionListEntryDto>();
-            int count = await query.CountAsync();
-            int skip = InitPagedResult(result, count, page);
-            query = query.Skip(skip).Take(result.Pagesize);
-            result.Data = await MaterializeQuestionList(query);
-            return result;
+            PagedResultDto<QuestionListEntryDto> result = await ToPagedResult(query, page, MaterializeQuestionList);
+            return result;            
         }
 
         public async Task<PagedResultDto<QuestionListEntryDto>> SearchForQuestionsAsync(SearchQParametersDto parameters)
@@ -334,17 +329,8 @@ namespace cran.Services
                    x.Status == QuestionStatus.Released);
             }
 
-            PagedResultDto<QuestionListEntryDto> resultDto = new PagedResultDto<QuestionListEntryDto>();
-
-            //Count und paging.
-            int count = await queryBeforeSkipAndTake.CountAsync();
-            int startindex = InitPagedResult(resultDto, count, parameters.Page);
-
-            //Daten 
-            IQueryable<Question> query = queryBeforeSkipAndTake.Skip(startindex).Take(PageSize);
-            resultDto.Data = await MaterializeQuestionList(query);
-
-            return resultDto;
+            PagedResultDto<QuestionListEntryDto> result = await ToPagedResult(queryBeforeSkipAndTake, parameters.Page, MaterializeQuestionList);
+            return result;
         }
 
         private async Task CheckWriteAccessToQuestion(int idQuestion)

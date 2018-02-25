@@ -399,27 +399,27 @@ namespace cran.Services
         public async Task<PagedResultDto<CourseInstanceListEntryDto>> GetMyCourseInstancesAsync(int page)
         {
             string userid = GetUserId();
-            IQueryable<CourseInstanceListEntryDto> query = _context.CourseInstances.Where(x => x.User.UserId == userid)
-                .Select(x => new CourseInstanceListEntryDto()
-                {
-                    IdCourseInstance = x.Id,
-                    Title = x.Course.Title,
-                    NumQuestionsCorrect = x.CourseInstancesQuestion.Count(y => y.Correct),
-                    NumQuestionsTotal = x.CourseInstancesQuestion.Count(),
-                    InsertDate = x.InsertDate,
-                })
+            IQueryable<CourseInstance> query = _context.CourseInstances
+                .Where(x => x.User.UserId == userid)              
                 .OrderByDescending(x => x.InsertDate)
-                .ThenBy(x => x.IdCourseInstance);
+                .ThenBy(x => x.Id);
 
-            PagedResultDto<CourseInstanceListEntryDto> resultDto = new PagedResultDto<CourseInstanceListEntryDto>();
-
-            //Count und paging.
-            int count = await query.CountAsync();
-            int startindex = InitPagedResult(resultDto, count, page);
-            query = query.Skip(startindex).Take(PageSize);
-            resultDto.Data = await query.ToListAsync();
+            PagedResultDto<CourseInstanceListEntryDto> resultDto = await ToPagedResult(query, page, ToDto);
            
             return resultDto;
+        }
+
+        private async Task<IList<CourseInstanceListEntryDto>> ToDto(IQueryable<CourseInstance> query)
+        {
+            IList<CourseInstanceListEntryDto> result = await query.Select(x => new CourseInstanceListEntryDto()
+            {
+                IdCourseInstance = x.Id,
+                Title = x.Course.Title,
+                NumQuestionsCorrect = x.CourseInstancesQuestion.Count(y => y.Correct),
+                NumQuestionsTotal = x.CourseInstancesQuestion.Count(),
+                InsertDate = x.InsertDate,
+            }).ToListAsync();
+            return result;
         }
 
         public async Task AnswerQuestionAsync(QuestionAnswerDto answer)
