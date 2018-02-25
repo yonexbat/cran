@@ -334,7 +334,7 @@ namespace cran.Controllers
 
         #region TextService
 
-        [HttpGet("[action]")] 
+        [HttpGet("[action]/{id}")] 
         public async Task<TextDto> GetTextDto(int id)
         {
             return await _textService.GetTextDtoAsync(id);

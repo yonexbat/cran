@@ -96,6 +96,11 @@ export class LanguageService {
     'tagdescderequired' :  {valueDe : 'Kurztext Deutsch ist ein Mussfeld', valueEn : 'Short text German is required'},
     'tagdescenrequired' :  {valueDe : 'Kurztext Englisch ist ein Mussfeld', valueEn : 'Short text English is required'},
     'texts' :  {valueDe : 'Texte', valueEn : 'Texts'},
+    'edittext' :  {valueDe : 'Text {0} bearbeiten', valueEn : 'Edit text {0}'},
+    'textDe' :  {valueDe : 'Deutscher Text', valueEn : 'Text in German'},
+    'textEn' :  {valueDe : 'Englischer Text', valueEn : 'Text in English'},
+    'textDeRequired' :  {valueDe : 'Deutscher Text ist ein Mussfeld', valueEn : 'Text in German is required'},
+    'textEnRequired' :  {valueDe : 'Englischer Text ist ein Mussfeld', valueEn : 'Text in English is required'},
   };
 
 

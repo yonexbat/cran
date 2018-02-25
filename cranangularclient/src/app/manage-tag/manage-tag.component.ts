@@ -16,7 +16,7 @@ import {LanguageService} from '../language.service';
 })
 export class ManageTagComponent implements OnInit {
 
-  public tag: Tag;
+  public tag: Tag = new Tag();
   public headingText: string;
   public actionInProgress = false;
   public buttonText: string;
@@ -32,9 +32,6 @@ export class ManageTagComponent implements OnInit {
       const id = params.get('id');
       this.handleRouteChanged(+id);
     });
-
-    // Create two options for default.
-    this.tag = new Tag();
   }
 
   ngOnInit() {
