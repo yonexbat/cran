@@ -1,6 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 
 import { LanguageService } from '../language.service';
+import {Text} from '../model/text';
+import {LanguageInfo} from '../model/languageInfo';
+import {ICranDataService} from '../icrandataservice';
+import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
+import {NotificationService} from '../notification.service';
 
 @Component({
   selector: 'app-home',
@@ -9,9 +14,38 @@ import { LanguageService } from '../language.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private ls: LanguageService) { }
+  text: Text = new Text();
+
+  constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
+      private ls: LanguageService,
+      private notificationService: NotificationService, ) {
+
+  }
 
   ngOnInit() {
+    this.getInfo();
+  }
+
+  private async getInfo() {
+    try {
+      this.notificationService.emitLoading();
+      this.text = await this.cranDataService.getTextDtoByKey('Home');
+      this.notificationService.emitDone();
+    } catch (error) {
+      this.notificationService.emitError(error);
+    }
+  }
+
+  homeContent(): string {
+    const languageInfo: LanguageInfo = this.ls.getLanguage();
+    switch (languageInfo) {
+      case LanguageInfo.De:
+        return this.text.contentDe;
+      case LanguageInfo.En:
+        return this.text.contentEn;
+      default:
+        return this.text.contentDe;
+    }
   }
 
 }

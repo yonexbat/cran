@@ -1,5 +1,3 @@
 <div class="container">
-  {{ls.label('welcometext')}}
-
-  <i class="fa fa-american-sign-language-interpreting fa-5x" aria-hidden="true"> </i>  
+    <div [innerHTML]="homeContent() | safeHtml"></div>
 </div>

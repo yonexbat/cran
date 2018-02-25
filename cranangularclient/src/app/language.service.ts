@@ -7,7 +7,6 @@ import {LanguageInfo} from './model/languageInfo';
 export class LanguageService {
 
   private map: { [key: string]: LabelTuple; } = {
-    'welcometext' : {valueDe : 'Wilkommen hier im Cranium!', valueEn : 'Welcome!'},
     'home' : {valueDe : 'Home', valueEn : 'Home'},
     'courses' : {valueDe : 'Kurse', valueEn : 'Courses'},
     'myresults' : {valueDe : 'Meine Resultate', valueEn : 'My results'},

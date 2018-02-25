@@ -31,6 +31,21 @@ import {Text} from './model/text';
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
 
+  getTextDtoByKey(key: string): Promise<Text> {
+    const text: Text = {
+      contentDe: 'ContentDe <b>boldy</b>',
+      contentEn: 'ContentEn',
+      key: 'MyKey',
+      id: 1,
+    };
+    const promiseResult = new Promise<Text>((resolve, reject) => {
+      setTimeout(function() {
+        resolve(text);
+      }, 1000);
+    });
+    return promiseResult;
+  }
+
   getTextDto(id: number): Promise<Text> {
     const text: Text = {
       contentDe: 'ContentDe',

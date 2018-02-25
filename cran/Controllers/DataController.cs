@@ -334,12 +334,19 @@ namespace cran.Controllers
 
         #region TextService
 
-        [HttpGet("[action]/{id}")] 
+        [HttpGet("[action]/{id}")]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<TextDto> GetTextDto(int id)
         {
             return await _textService.GetTextDtoAsync(id);
         }
-        
+
+        [HttpGet("[action]/{key}")]        
+        public async Task<TextDto> GetTextDtoByKey(string key)
+        {
+            return await _textService.GetTextDtoByKeyAsync(key);
+        }
+
         [HttpPost("[action]")]
         [ValidateModel]
         [Authorize(Roles = Roles.Admin)]
@@ -356,6 +363,7 @@ namespace cran.Controllers
         {
             return await _textService.GetTextsAsync(search);
         }
+
 
 
         #endregion

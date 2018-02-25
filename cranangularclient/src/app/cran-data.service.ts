@@ -33,6 +33,12 @@ export class CranDataService implements ICranDataService {
 
   }
 
+  getTextDtoByKey(key: string): Promise<Text> {
+    return this.http.get<Text>('/api/Data/GetTextDtoByKey/' + key)
+    .toPromise()
+    .catch(this.handleError);
+  }
+
   getTextDto(id: number): Promise<Text> {
     return this.http.get<Text>('/api/Data/GetTextDto/' + id)
     .toPromise()

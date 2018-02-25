@@ -37,6 +37,13 @@ namespace cran.Services
             return ToDtoSingle(text);
         }
 
+        public async Task<TextDto> GetTextDtoByKeyAsync(string key)
+        {
+            Text text = await _context.Texts.Where(x => x.Key == key)
+                .SingleOrDefaultAsync();
+            return ToDtoSingle(text);
+        }
+
         public async Task<PagedResultDto<TextDto>> GetTextsAsync(SearchTextDto parameters)
         {
             IQueryable<Text> query = _context.Texts

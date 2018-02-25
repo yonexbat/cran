@@ -62,4 +62,5 @@ export interface ICranDataService {
   getTextDto(id: number): Promise<Text>;
   updateText(text: Text): Promise<any>;
   getTexts(search: SearchText): Promise<PagedResult<Text>>;
+  getTextDtoByKey(key: string): Promise<Text>;
 }
