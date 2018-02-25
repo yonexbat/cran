@@ -20,6 +20,8 @@ import {Votes} from './model/votes';
 import {Image} from './model/image';
 import {UserInfo} from './model/userinfo';
 import {SearchTags} from './model/searchtags';
+import {SearchText} from './model/searchtext';
+import {Text} from './model/text';
 
 export interface ICranDataService {
   getCourses(page: number): Promise<PagedResult<Course>>;
@@ -57,4 +59,7 @@ export interface ICranDataService {
   vote(votes: Votes): Promise<Votes>;
   addImage(image: Image): Promise<Image>;
   getUserInfo(): Promise<UserInfo>;
+  getTextDto(id: number): Promise<Text>;
+  updateText(text: Text): Promise<any>;
+  getTexts(search: SearchText): Promise<PagedResult<Text>>;
 }

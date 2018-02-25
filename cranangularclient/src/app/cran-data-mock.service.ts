@@ -24,11 +24,58 @@ import {Votes} from './model/votes';
 import {Image} from './model/image';
 import {UserInfo} from './model/userinfo';
 import {SearchTags} from './model/searchtags';
+import {SearchText} from './model/searchtext';
+import {Text} from './model/text';
 
 
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
 
+  getTextDto(id: number): Promise<Text> {
+    const text: Text = {
+      contentDe: 'ContentDe',
+      contentEn: 'ContentEn',
+      key: 'MyKey',
+      id: 1,
+    };
+    const promiseResult = new Promise<Text>((resolve, reject) => {
+      setTimeout(function() {
+        resolve(text);
+      }, 1000);
+    });
+    return promiseResult;
+  }
+
+  updateText(text: Text): Promise<any> {
+    const promiseResult = new Promise<Text>((resolve, reject) => {
+      setTimeout(function() {
+        resolve();
+      }, 1000);
+    });
+    return promiseResult;
+  }
+
+  getTexts(search: SearchText): Promise<PagedResult<Text>> {
+    const texts: Text[] = [];
+    for (let i = 0; i < 10; i++) {
+      texts.push({
+          contentDe: 'ContentDe',
+          contentEn: 'ContentEn',
+          key: 'MyKey',
+          id: 1,
+      });
+    }
+    const pagedResult = new PagedResult<Text>();
+    pagedResult.data = texts;
+    pagedResult.currentPage = 0;
+    pagedResult.numpages = 4;
+    const promiseResult = new Promise<PagedResult<Text>>((resolve, reject) => {
+      setTimeout(function() {
+        resolve(pagedResult);
+      }, 1000);
+    });
+    return promiseResult;
+  }
   getTags(ids: number[]): Promise<Tag[]> {
 
     const tags: Tag[]  = ids.map(id => {

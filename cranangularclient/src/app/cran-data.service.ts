@@ -23,12 +23,32 @@ import {Votes} from './model/votes';
 import {Image} from './model/image';
 import {UserInfo} from './model/userinfo';
 import {SearchTags} from './model/searchtags';
+import {SearchText} from './model/searchtext';
+import {Text} from './model/text';
 
 @Injectable()
 export class CranDataService implements ICranDataService {
 
   constructor(private http: HttpClient) {
 
+  }
+
+  getTextDto(id: number): Promise<Text> {
+    return this.http.get<Text>('/api/Data/GetTextDto/' + id)
+    .toPromise()
+    .catch(this.handleError);
+  }
+
+  updateText(text: Text): Promise<any> {
+    return this.http.post<Text>('/api/Data/UpdateText', text)
+    .toPromise()
+    .catch(this.handleError);
+  }
+
+  getTexts(search: SearchText): Promise<PagedResult<Text>> {
+    return this.http.post<PagedResult<Text>>('/api/Data/GetTexts', search)
+    .toPromise()
+    .catch(this.handleError);
   }
 
   getTags(ids: number[]): Promise<Tag[]> {
@@ -222,25 +242,25 @@ export class CranDataService implements ICranDataService {
                .catch(this.handleError);
   }
 
-  public getCourses(page: number): Promise<PagedResult<Course>> {
+  getCourses(page: number): Promise<PagedResult<Course>> {
     return this.http.get<PagedResult<Course>>('/api/Data/GetCourses/' + page)
                .toPromise()
                .catch(this.handleError);
   }
 
-  public insertQuestion(question: Question): Promise<number> {
+  insertQuestion(question: Question): Promise<number> {
     return this.http.post<number>('/api/Data/InsertQuestion', question)
                     .toPromise()
                     .catch(this.handleError);
   }
 
-  public updateQuestion(question: Question): Promise<string> {
+  updateQuestion(question: Question): Promise<string> {
     return this.http.post<string>('/api/Data/UpdateQuestion', question)
                     .toPromise()
                     .catch(this.handleError);
   }
 
-  public getQuestion(id: number): Promise<Question> {
+  getQuestion(id: number): Promise<Question> {
     return this.http.get<Question>('/api/Data/GetQuestion/' + id)
                     .toPromise()
                     .catch(this.handleError);

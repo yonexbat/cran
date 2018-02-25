@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using cran.Data;
 using cran.Model.Dto;
 using cran.Model.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace cran.Services
@@ -64,7 +65,7 @@ namespace cran.Services
             return result;
 
         }
-
+       
         public async Task DeleteTagAsync(int id)
         {
             Tag tag = await _context.FindAsync<Tag>(id);

@@ -24,6 +24,7 @@ namespace cran.Controllers
         private readonly ICommentsService _commentsService;
         private readonly IUserProfileService _userProfileService;
         private readonly ICourseInstanceService _courseInstanceService;
+        private readonly ITextService _textService;
         private const string OkReturnString = "Ok";
 
         public DataController(ISecurityService securityService,
@@ -33,7 +34,8 @@ namespace cran.Controllers
             ICourseService courseService,
             ICommentsService commentsService,
             IUserProfileService userProfileService,
-            ICourseInstanceService courseInstanceService)
+            ICourseInstanceService courseInstanceService,
+            ITextService textService)
         {
             _securityService = securityService;
             _binaryService = binaryService;
@@ -43,6 +45,7 @@ namespace cran.Controllers
             _commentsService = commentsService;
             _userProfileService = userProfileService;
             _courseInstanceService = courseInstanceService;
+            _textService = textService;
         }
 
         #region QuestionService
@@ -131,6 +134,7 @@ namespace cran.Controllers
 
         [HttpPost("[action]")]
         [ValidateModel]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<int> InsertTag([FromBody] TagDto vm)
         {
             return await _tagService.InsertTagAsync(vm);
@@ -138,6 +142,7 @@ namespace cran.Controllers
 
         [HttpPost("[action]")]
         [ValidateModel]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<JsonResult> UpdateTag([FromBody] TagDto vm)
         {
             await _tagService.UpdateTagAsync(vm);
@@ -146,6 +151,7 @@ namespace cran.Controllers
 
         [HttpPost("[action]")]
         [ValidateModel]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<PagedResultDto<TagDto>> SearchForTags([FromBody]  SearchTags parameters)
         {
             return await _tagService.SearchForTagsAsync(parameters);
@@ -159,6 +165,7 @@ namespace cran.Controllers
         }
 
         [HttpDelete("[action]/{id}")]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<JsonResult> DeleteTag(int id)
         {
             await _tagService.DeleteTagAsync(id);
@@ -183,6 +190,7 @@ namespace cran.Controllers
 
         [HttpPost("[action]")]
         [ValidateModel]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<int> InsertCourse([FromBody] CourseDto vm)
         {
             return await _courseService.InsertCourseAsync(vm);
@@ -190,6 +198,7 @@ namespace cran.Controllers
 
         [HttpPost("[action]")]
         [ValidateModel]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<JsonResult> UpdateCourse([FromBody] CourseDto vm)
         {
             await _courseService.UpdateCourseAsync(vm);
@@ -286,6 +295,7 @@ namespace cran.Controllers
         }
 
         [HttpPost("[action]")]
+        [ValidateModel]
         public async Task<CourseInstanceDto> StartCourse([FromBody] StartCourseViewModel vm)
         {
             return await _courseInstanceService.StartCourseAsync(vm.IdCourse);
@@ -319,7 +329,35 @@ namespace cran.Controllers
         {
             return _securityService.GetRolesOfUser();
         }
+
+        #endregion
+
+        #region TextService
+
+        [HttpGet("[action]")] 
+        public async Task<TextDto> GetTextDto(int id)
+        {
+            return await _textService.GetTextDtoAsync(id);
+        }
         
+        [HttpPost("[action]")]
+        [ValidateModel]
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<JsonResult> UpdateText([FromBody]TextDto dto)
+        {
+            await _textService.UpdateTextAsync(dto);
+            return Json(OkReturnString);
+        }
+
+        [HttpPost("[action]")]
+        [ValidateModel]
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<PagedResultDto<TextDto>> GetTexts([FromBody]SearchTextDto search)
+        {
+            return await _textService.GetTextsAsync(search);
+        }
+
+
         #endregion
 
     }
