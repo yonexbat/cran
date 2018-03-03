@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using cran.Data;
 using cran.Model.Dto;
 using cran.Model.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace cran.Services
