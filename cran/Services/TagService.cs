@@ -60,6 +60,10 @@ namespace cran.Services
             IQueryable<Tag> query = _context.Tags
                 .OrderBy(x => x.Name)
                 .ThenBy(x => x.Id);
+            if(!string.IsNullOrWhiteSpace(parameters.Name))
+            {
+                query = query.Where(x => x.Name.Contains(parameters.Name));
+            }
 
             PagedResultDto<TagDto> result = await ToPagedResult(query, parameters.Page, ToDto);
             return result;

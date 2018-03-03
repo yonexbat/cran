@@ -61,7 +61,6 @@ export class ManageTagsComponent implements OnInit {
          name: this.search.name,
       }
     };
-
     this.router.navigate(['/managetags'], navigationExtras);
   }
 
