@@ -20,7 +20,7 @@ export class QuestionListComponent implements OnInit {
 
   private pagedResult: PagedResult<QuestionListEntry> = new PagedResult<QuestionListEntry>();
 
-  constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
+  constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
     private router: Router,
     private notificationService: NotificationService,
     private confirmService: ConfirmService,
@@ -35,7 +35,7 @@ export class QuestionListComponent implements OnInit {
       await this.confirmService.confirm(this.ls.label('deletequestion'), this.ls.label('deletequestionq', String(question.id)));
       try {
         this.notificationService.emitLoading();
-        await this.cranDataServiceService.deleteQuestion(question.id);
+        await this.cranDataService.deleteQuestion(question.id);
         this.notificationService.emitDone();
       } catch (error) {
         this.notificationService.emitError(error);
@@ -49,7 +49,7 @@ export class QuestionListComponent implements OnInit {
   private async loadQuestions(page: number): Promise<void> {
     try {
       this.notificationService.emitLoading();
-      this.pagedResult = await this.cranDataServiceService.getMyQuestions(page);
+      this.pagedResult = await this.cranDataService.getMyQuestions(page);
       this.notificationService.emitDone();
     } catch (error) {
       this.notificationService.emitError(error);
