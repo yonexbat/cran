@@ -39,8 +39,8 @@ export class ManageTagComponent implements OnInit {
 
   private async handleRouteChanged(id: number): Promise<void> {
     if (id > 0) {
-      this.buttonText = 'Speichern';
-      this.headingText = 'Tag #' + id + ' editieren';
+      this.buttonText = this.ls.label('save');
+      this.headingText =  this.ls.label('edittag', id.toString());
       try {
         this.notificationService.emitLoading();
         this.tag = await this.cranDataService.getTag(id);
@@ -49,8 +49,8 @@ export class ManageTagComponent implements OnInit {
         this.notificationService.emitError(error);
       }
     } else {
-      this.buttonText = 'Hinzufügen';
-      this.headingText = 'Tag hinzufügen';
+      this.buttonText = this.ls.label('add');
+      this.headingText = this.ls.label('addtag');
     }
     this.actionInProgress = false;
   }
