@@ -22,18 +22,6 @@ namespace cran.tests
     {
        
 
-        private T GetService<T>() where T : class
-        {
-            IConfiguration config = GetConfiguration();
-            ApplicationDbContext context = CreateDbContext(config);
-            
-            var testingObject = new TestingObject<T>();
-            testingObject.AddDependency(context);
-            testingObject.AddDependency(new Mock<IDbLogService>(MockBehavior.Loose));
-            testingObject.AddDependency(GetPrincipalMock());
-            return testingObject.GetResolvedTestingObject();
-        }   
-
         private ICourseInstanceService CourseInstanceService()
         {
             IQuestionService questionService = QuestionService();

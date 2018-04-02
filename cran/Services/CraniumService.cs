@@ -70,7 +70,7 @@ namespace cran.Services
             }
         }
 
-        protected void CopyData(object dto, CranEntity entity)
+        protected virtual void CopyData(object dto, CranEntity entity)
         {
             if(dto is QuestionOptionDto && entity is QuestionOption)
             {

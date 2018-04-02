@@ -113,6 +113,7 @@ namespace cran
             services.AddScoped<IUserProfileService, UserProfileService>();
             services.AddScoped<ICourseInstanceService, CourseInstanceService>();
             services.AddScoped<ITextService, TextService>();
+            services.AddScoped<IExportService, ExportService>();
 
             services.AddSingleton(_physicalProvider);
 

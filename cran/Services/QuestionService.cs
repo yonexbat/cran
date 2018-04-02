@@ -53,7 +53,7 @@ namespace cran.Services
         public async Task<QuestionDto> GetQuestionAsync(int id)
         {
             Question questionEntity = await _context.FindAsync<Question>(id);
-            QuestionDto questionVm = new QuestionDto
+            QuestionDto questionDto = new QuestionDto
             {
                 Id = questionEntity.Id,
                 Text = questionEntity.Text,
@@ -64,13 +64,13 @@ namespace cran.Services
             };
 
             //Authorization
-            questionVm.IsEditable = await HasWriteAccess(questionEntity.IdUser);
+            questionDto.IsEditable = await HasWriteAccess(questionEntity.IdUser);
 
             //Vote-Statistics
-            questionVm.Votes = await _commentsService.GetVoteAsync(id);
+            questionDto.Votes = await _commentsService.GetVoteAsync(id);
 
             //Options
-            questionVm.Options = await _context.QuestionOptions
+            questionDto.Options = await _context.QuestionOptions
                 .Where(x => x.IdQuestion == id)
                 .OrderBy(x => x.Id)
                 .Select(x => new QuestionOptionDto
@@ -81,7 +81,7 @@ namespace cran.Services
                 }).ToListAsync();
 
             //Tags
-            questionVm.Tags = await _context.RelQuestionTags
+            questionDto.Tags = await _context.RelQuestionTags
                 .Where(x => x.IdQuestion == id)
                 .Select(x => new TagDto
                 {
@@ -93,7 +93,7 @@ namespace cran.Services
                 }).ToListAsync();
 
             //Images
-            questionVm.Images = await _context.RelQuestionImages
+            questionDto.Images = await _context.RelQuestionImages
                 .Where(x => x.IdQuestion == id)
                 .Select(x => new ImageDto
                 {
@@ -104,7 +104,7 @@ namespace cran.Services
                     Width = x.Image.Width,
                 }).ToListAsync();
 
-            return questionVm;
+            return questionDto;
         }
 
      
