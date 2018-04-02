@@ -15,67 +15,48 @@ using Xunit;
 
 namespace cran.tests
 {
+    /// <summary>
+    /// Test DB Mapping (on a real Database).
+    /// </summary>
     public class EntityTest : Base
     {        
 
        
 
         [Fact]
-        public async Task TestQuestionSuccessor()
+        public async Task TestQuestion()
         {
+            //Prepare
             ApplicationDbContext context = CreateDbContext(GetConfiguration());
 
+
+            Container container = new Container();
+            context.Containers.Add(container);
+
             Question question1 = new Question();
+            question1.Container = container;
             question1.Title = "hello";
             question1.Text = "Hello Text";
             question1.Status = QuestionStatus.Created;
             question1.User = await GetTestUserAsync(context);
             question1.Language = Language.De;
             context.Questions.Add(question1);
+                   
+
+            //Act
             context.SaveChanges();
 
-            Question question2 = new Question();
-            question2.Title = "hello";
-            question2.Text = "Hello Text";
-            question2.Status = QuestionStatus.Created;
-            question2.User = await GetTestUserAsync(context);
-            question2.Language = Language.De;
-            context.Questions.Add(question2);
-            context.SaveChanges();
+            //Assert
+            Question found = await context.FindAsync<Question>(question1.Id);
+            Assert.NotNull(found);
 
-            //question1.Successor = question2;
-
-            context.SaveChanges();
-
-        }
-
-        [Fact]
-        public async Task TestQuestionPredecessor()
-        {
-            ApplicationDbContext context = CreateDbContext(GetConfiguration());
-
-            Question question1 = new Question();
-            question1.Title = "hello";
-            question1.Text = "Hello Text";
-            question1.Status = QuestionStatus.Created;
-            question1.User = await GetTestUserAsync(context);
-            question1.Language = Language.De;
-            context.Questions.Add(question1);
-            context.SaveChanges();
-
-            Question question2 = new Question();
-            question2.Title = "hello";
-            question2.Text = "Hello Text";
-            question2.Status = QuestionStatus.Created;
-            question2.User = await GetTestUserAsync(context);
-            question2.Language = Language.De;
-            context.Questions.Add(question2);
-            context.SaveChanges();
-
-            //question2.Predecessor = question1;
-
+            //Cleanup
+            context.Remove(question1);
+            context.Remove(container);
             context.SaveChanges();
 
         }
+
+       
     }
 }

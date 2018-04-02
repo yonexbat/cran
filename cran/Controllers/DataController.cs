@@ -25,6 +25,7 @@ namespace cran.Controllers
         private readonly IUserProfileService _userProfileService;
         private readonly ICourseInstanceService _courseInstanceService;
         private readonly ITextService _textService;
+        private readonly IExportService _exportService;
         private const string OkReturnString = "Ok";
 
         public DataController(ISecurityService securityService,
@@ -35,7 +36,8 @@ namespace cran.Controllers
             ICommentsService commentsService,
             IUserProfileService userProfileService,
             ICourseInstanceService courseInstanceService,
-            ITextService textService)
+            ITextService textService,
+            IExportService exportService)
         {
             _securityService = securityService;
             _binaryService = binaryService;
@@ -46,6 +48,7 @@ namespace cran.Controllers
             _userProfileService = userProfileService;
             _courseInstanceService = courseInstanceService;
             _textService = textService;
+            _exportService = exportService;
         }
 
         #region QuestionService
@@ -368,5 +371,14 @@ namespace cran.Controllers
 
         #endregion
 
+        #region ExportService
+        [HttpGet("[action]")]
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<IActionResult> Export()
+        {
+            Stream stream = await _exportService.Export();
+            return File(stream, "application/zip", "export.zip");
+        }
+        #endregion
     }
 }

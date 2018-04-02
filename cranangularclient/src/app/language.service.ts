@@ -100,6 +100,7 @@ export class LanguageService {
     'textEn' :  {valueDe : 'Englischer Text', valueEn : 'Text in English'},
     'textDeRequired' :  {valueDe : 'Deutscher Text ist ein Mussfeld', valueEn : 'Text in German is required'},
     'textEnRequired' :  {valueDe : 'Englischer Text ist ein Mussfeld', valueEn : 'Text in English is required'},
+    'export' :  {valueDe : 'Exportieren', valueEn : 'Export'},
   };
 
 

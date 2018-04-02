@@ -104,7 +104,13 @@
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" [routerLink]="['/textlist']" routerLinkActive="active" *ngIf="isAdmin">
                   {{ls.label('texts')}}
-                </a>                  
+                </a>  
+                
+                <!-- Export -->
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" *ngIf="isAdmin" href="/api/Data/Export">
+                  {{ls.label('export')}}
+                </a>  
                                
               </div>
           </li>

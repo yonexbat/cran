@@ -18,5 +18,7 @@ namespace cran.Services
         Task SaveAsync(int id, Stream input);
 
         Task<int> AddBinaryAsync(BinaryDto binaryDto);
+
+        Task DeleteBinaryAsync(int id);
     }
 }

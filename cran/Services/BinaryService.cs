@@ -11,6 +11,7 @@ using System.Security.Principal;
 using Microsoft.EntityFrameworkCore;
 using cran.Model.Entities;
 using System.Data.Common;
+using System.Security;
 
 namespace cran.Services
 {
@@ -182,6 +183,17 @@ namespace cran.Services
 
             await SaveChangesAsync();
             return binary.Id;
+        }
+
+        public async Task DeleteBinaryAsync(int id)
+        {
+            if(!_currentPrincipal.IsInRole(Roles.Admin))
+            {
+                throw new SecurityException();
+            }
+            Binary binary = await _context.FindAsync<Binary>(id);
+            _context.Remove(binary);
+            await SaveChangesAsync();
         }
     }
 }

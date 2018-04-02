@@ -31,17 +31,18 @@ namespace cran.tests
             var testingObject = new TestingObject<BinaryService>();
             testingObject.AddDependency(context);
             testingObject.AddDependency(new Mock<IDbLogService>(MockBehavior.Loose));
-            testingObject.AddDependency(GetPrincipalMock());
+            testingObject.AddDependency(GetPricipalAdminMock());
             return testingObject;
         }
 
         [Fact]
-        public async Task TestStartTest()
+        public async Task SaveBinaryTest()
         {
+            //Prepare
             var testignObject = GetTestingObject();
 
             string testWord = "Hello World";
-            var bytes = System.Text.Encoding.Unicode.GetBytes(testWord);
+            var bytes = System.Text.Encoding.UTF8.GetBytes(testWord);
 
             MemoryStream stream = new MemoryStream();
             stream.Write(bytes, 0, bytes.Length);
@@ -50,23 +51,28 @@ namespace cran.tests
 
             IBinaryService service = testignObject.GetResolvedTestingObject();
 
-            int id = await service.AddBinaryAsync(new BinaryDto
+            BinaryDto binaryDto = new BinaryDto
             {
                 ContentDisposition = "ContentDisposition",
                 ContentType = "ContentType",
                 FileName = "FileName",
                 Name = "Name",
                 Length = 2334,
-            });
+            };
 
+            int id = await service.AddBinaryAsync(binaryDto);
+
+            //Act
             await service.SaveAsync(id, stream);
 
-            RelQuestionImageDto dto = new RelQuestionImageDto
-            {
-                IdBinary = 1,
-                IdQuestion = 1,
-            };
-            
+            //Assert
+            Stream streamToAssert = await service.GetBinaryAsync(id);
+            StreamReader reader = new StreamReader(streamToAssert);
+            string text = reader.ReadToEnd();
+            Assert.Equal(testWord, text);
+
+            //Cleanup
+            await service.DeleteBinaryAsync(id);
 
         }   
     }
