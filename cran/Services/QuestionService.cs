@@ -42,7 +42,7 @@ namespace cran.Services
             CopyData(questionDto, questionEntity);
             questionEntity.User = await GetCranUserAsync();
             questionEntity.Container = container;
-            _context.Add(questionEntity);
+            await _context.AddAsync(questionEntity);
             await SaveChangesAsync();
             questionDto.Id = questionEntity.Id;
             await UpdateQuestionAsync(questionDto);

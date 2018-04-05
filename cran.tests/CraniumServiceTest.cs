@@ -21,7 +21,7 @@ namespace cran.tests
     public class CraniumServiceTest : Base
     {
        
-
+        /*
         private ICourseInstanceService CourseInstanceService()
         {
             IQuestionService questionService = QuestionService();
@@ -139,6 +139,6 @@ namespace cran.tests
 
             Assert.True(questionDto.Images.Count == 1);
 
-        }
+        }*/
     }
 }

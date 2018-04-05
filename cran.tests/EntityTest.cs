@@ -1,15 +1,5 @@
 ﻿using cran.Data;
-using cran.Model.Dto;
 using cran.Model.Entities;
-using cran.Model.ViewModel;
-using cran.Services;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.UserSecrets;
-using Moq;
-using System;
-using System.Linq;
-using System.Security.Principal;
 using System.Threading.Tasks;
 using Xunit;
 

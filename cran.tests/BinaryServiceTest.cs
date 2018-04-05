@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Principal;
@@ -21,26 +22,15 @@ namespace cran.tests
     public class BinaryServiceTest : Base
     {
 
-      
-
-        private TestingObject<BinaryService> GetTestingObject()
+        protected override void SetUpDependencies(IDictionary<Type, object> dependencyMap)
         {
-            IConfiguration config = GetConfiguration();
-            ApplicationDbContext context = CreateDbContext(config);        
-
-            var testingObject = new TestingObject<BinaryService>();
-            testingObject.AddDependency(context);
-            testingObject.AddDependency(new Mock<IDbLogService>(MockBehavior.Loose));
-            testingObject.AddDependency(GetPricipalAdminMock());
-            return testingObject;
+            base.SetUpDependencies(dependencyMap);
+            dependencyMap[typeof(IPrincipal)] = GetPricipalAdminMock();
         }
 
         [Fact]
         public async Task SaveBinaryTest()
-        {
-            //Prepare
-            var testignObject = GetTestingObject();
-
+        {         
             string testWord = "Hello World";
             var bytes = System.Text.Encoding.UTF8.GetBytes(testWord);
 
@@ -49,7 +39,7 @@ namespace cran.tests
             stream.Flush();
             stream.Seek(0, SeekOrigin.Begin);
 
-            IBinaryService service = testignObject.GetResolvedTestingObject();
+            IBinaryService service = GetService<BinaryService>();
 
             BinaryDto binaryDto = new BinaryDto
             {

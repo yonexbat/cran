@@ -40,7 +40,7 @@ namespace cran.Services
                     UserId = userId,
                     IsAnonymous = true,
                 };
-                _context.CranUsers.Add(cranUserEntity);
+                await _context.AddAsync(cranUserEntity);
             }
             await SaveChangesAsync();
             return cranUserEntity;

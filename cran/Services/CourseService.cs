@@ -87,7 +87,7 @@ namespace cran.Services
             Course entity = new Course();
             CopyData(courseDto, entity);
 
-            _context.Add(entity);
+            await _context.AddAsync(entity);
 
             await SaveChangesAsync();
             courseDto.Id = entity.Id;

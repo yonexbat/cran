@@ -1,28 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
-using System.Text;
 using System.Reflection;
 using Moq;
-using Microsoft.Extensions.Configuration.UserSecrets;
 
 namespace cran.tests
 {
     public class TestingObject<T> where T : class
     {
-        private Dictionary<Type, object> dependencyMap { get; } = new Dictionary<Type, object>();
+        private Dictionary<Type, object> _dependencyMap { get; } = new Dictionary<Type, object>();
 
-        public void AddDependency<TDependency>(TDependency dependency)
-        {
-            this.dependencyMap.Add(typeof(TDependency), dependency);
-        }
+        public IDictionary<Type, object> DependencyMap => _dependencyMap;
+        
 
         public TDependency GetDependency<TDependency>() where TDependency : class
         {
             Type type = typeof(TDependency);
 
             object dependency;
-            if (!this.dependencyMap.TryGetValue(type, out dependency))
+            if (!this._dependencyMap.TryGetValue(type, out dependency))
             {
                 throw new Exception($"Testing object doesn't contain dependency of type {type}.");
             }
@@ -34,7 +30,7 @@ namespace cran.tests
         {
             IServiceCollection serviceCollection = new ServiceCollection();
 
-            foreach (var dependency in this.dependencyMap)
+            foreach (var dependency in this._dependencyMap)
             {
                 TypeInfo typeInfo = dependency.Key.GetTypeInfo();
 

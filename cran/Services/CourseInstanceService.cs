@@ -37,7 +37,8 @@ namespace cran.Services
                 Course = courseEntity,
                 IdCourse = courseId,
             };
-            _context.Add(courseInstanceEntity);
+
+            await _context.AddAsync(courseInstanceEntity);
 
             await SaveChangesAsync();
             CourseInstanceDto result = await GetNextQuestion(courseInstanceEntity);
@@ -263,7 +264,7 @@ namespace cran.Services
                 .Where(x => x.CourseInstance.Id == idCourseInstance)
                 .Select(x => x.Question.Id);
 
-            //Possible Quetions Query
+            //Possible Questions Query
             IQueryable<int> questionIds = _context.RelQuestionTags
                 .Where(x => tagIds.Contains(x.Tag.Id))
                 .Where(x => !questionIdsAlreadyAsked.Contains(x.Question.Id))
@@ -315,7 +316,7 @@ namespace cran.Services
                     Question = questionEntity,
                     Number = result.NumQuestionsAlreadyAsked + 1,
                 };
-                _context.Add(courseInstanceQuestionEntity);
+                await _context.AddAsync(courseInstanceQuestionEntity);
 
                 //Course instance question options
                 IList<QuestionOption> options = await _context.QuestionOptions.Where(option => option.Question.Id == questionEntity.Id).ToListAsync();
@@ -328,7 +329,7 @@ namespace cran.Services
                     courseInstanceQuestionOptionEntity.CourseInstanceQuestion = courseInstanceQuestionEntity;
                     courseInstanceQuestionEntity.CourseInstancesQuestionOption.Add(courseInstanceQuestionOptionEntity);
 
-                    _context.Add(courseInstanceQuestionOptionEntity);
+                    await _context.AddAsync(courseInstanceQuestionOptionEntity);
                 }
 
                 await SaveChangesAsync();

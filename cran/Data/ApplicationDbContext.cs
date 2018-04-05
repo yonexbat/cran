@@ -202,6 +202,9 @@ namespace cran.Data
 
         private void MapCranUser(EntityTypeBuilder<CranUser> typeBuilder)
         {
+            typeBuilder.Property(b => b.Id)
+                .ValueGeneratedOnAdd();
+
             typeBuilder.ToTable("CranUser");
 
             typeBuilder.HasMany(u => u.Questions)
