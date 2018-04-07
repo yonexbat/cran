@@ -15,27 +15,27 @@ using Xunit;
 
 namespace cran.tests
 {
-    public class ExportTest : Base
+    public class ExportTest 
     {
        
-
-
-        protected override void SetUpDependencies(IDictionary<Type, object> dependencyMap)
-        {
-            base.SetUpDependencies(dependencyMap);
-            dependencyMap[typeof(ICommentsService)] = GetServiceInMemoryDb<CommentsService>();
-            dependencyMap[typeof(ITextService)] = GetServiceInMemoryDb<TextService>();
-            dependencyMap[typeof(IQuestionService)] = GetServiceInMemoryDb<QuestionService>();
-            dependencyMap[typeof(IBinaryService)] = CreateBinaryServiceMock();
-            dependencyMap[typeof(IPrincipal)] = GetPricipalAdminMock();
-        }
 
 
         [Fact]
         public async void TestExport()
         {
+
+            TestingContext context = new TestingContext();
+            context.AddAdminPrincipalMock();
+            context.AddBinaryServiceMock();
+            context.AddInMemoryDb();
+            context.AddMockLogService();
+            context.DependencyMap[typeof(ITextService)] = context.GetService<TextService>();
+            context.DependencyMap[typeof(ICommentsService)] = context.GetService<CommentsService>();
+            context.DependencyMap[typeof(IQuestionService)] = context.GetService<QuestionService>();           
+
+
             //Prepare
-            IExportService exportService = GetServiceInMemoryDb<ExportService>();
+            IExportService exportService = context.GetService<ExportService>();
 
             //Act
             Stream stream = await exportService.Export();

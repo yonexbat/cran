@@ -1,5 +1,7 @@
 ﻿using cran.Data;
 using cran.Model.Entities;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -8,7 +10,7 @@ namespace cran.tests
     /// <summary>
     /// Test DB Mapping (on a real Database).
     /// </summary>
-    public class EntityTest : Base
+    public class EntityTest
     {        
 
        
@@ -17,7 +19,13 @@ namespace cran.tests
         public async Task TestQuestion()
         {
             //Prepare
-            ApplicationDbContext context = CreateDbContext(GetConfiguration());
+            TestingContext testingContext = new TestingContext();
+            testingContext.AddAdminPrincipalMock();
+            testingContext.AddMockLogService();
+            testingContext.AddRealDb();
+
+
+            ApplicationDbContext context = testingContext.GetSimple<ApplicationDbContext>();
 
 
             Container container = new Container();
@@ -47,6 +55,10 @@ namespace cran.tests
 
         }
 
-       
+        protected Task<CranUser> GetTestUserAsync(ApplicationDbContext context)
+        {
+            return context.CranUsers.Where(x => x.UserId == "testuser").SingleAsync();
+        }
+
     }
 }

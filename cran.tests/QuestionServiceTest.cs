@@ -8,22 +8,23 @@ using Xunit;
 
 namespace cran.tests
 {
-    public class QuestionServiceTest : Base
+    public class QuestionServiceTest 
     {
-        protected override void SetUpDependencies(IDictionary<Type, object> dependencyMap)
-        {
-            base.SetUpDependencies(dependencyMap);
-
-            dependencyMap[typeof(ICommentsService)] = GetServiceInMemoryDb<CommentsService>();
-            dependencyMap[typeof(ITextService)] = GetServiceInMemoryDb<TextService>();
-            dependencyMap[typeof(IQuestionService)] = GetServiceInMemoryDb<QuestionService>();           
-        }
-
 
         [Fact]
         public async Task TestImage()
         {
-            IQuestionService questionService = GetServiceInMemoryDb<QuestionService>();
+            TestingContext context = new TestingContext();
+            context.AddPrinicpalmock();
+            context.AddInMemoryDb();
+            context.AddMockLogService();
+            context.DependencyMap[typeof(IBinaryService)] = context.GetService<BinaryService>();
+            context.DependencyMap[typeof(ITextService)] = context.GetService<TextService>();
+            context.DependencyMap[typeof(ICommentsService)] = context.GetService<CommentsService>();
+          
+
+
+            IQuestionService questionService = context.GetService<QuestionService>();
 
 
             //Add Q
@@ -36,7 +37,7 @@ namespace cran.tests
             int newId = await questionService.InsertQuestionAsync(qdto);
 
             //Add Binary
-            IBinaryService binaryService = GetService<BinaryService>();
+            IBinaryService binaryService = context.GetSimple<IBinaryService>();
             int id = await binaryService.AddBinaryAsync(new BinaryDto
             {
                 ContentDisposition = "ContentDisposition",

@@ -12,34 +12,27 @@ using Xunit;
 
 namespace cran.tests
 {
-    public class CourseInstanceServiceTest : Base
+    public class CourseInstanceServiceTest 
     {
-
-        protected ICourseService _courseService;
-
-        protected override void SetUpDependencies(IDictionary<Type, object> dependencyMap)
-        {
-            base.SetUpDependencies(dependencyMap);
-            
-            dependencyMap[typeof(ICommentsService)] = GetServiceInMemoryDb<CommentsService>();
-            dependencyMap[typeof(ITextService)] = GetServiceInMemoryDb<TextService>();
-            dependencyMap[typeof(IQuestionService)] = GetServiceInMemoryDb<QuestionService>();
-
-            
-
-            _courseService = GetServiceInMemoryDb<CourseService>();
-            dependencyMap[typeof(ICourseService)] = _courseService;
-        }
-
 
         [Fact]
         public async Task TestStartTest()
         {
-            
-            ICourseInstanceService courseInstanceService = GetServiceInMemoryDb<CourseInstanceService>();
+            TestingContext context = new TestingContext();
+            context.AddPrinicpalmock();
+            context.AddBinaryServiceMock();
+            context.AddInMemoryDb();
+            context.AddMockLogService();
+            context.DependencyMap[typeof(ITextService)] = context.GetService<TextService>();
+            context.DependencyMap[typeof(ICommentsService)] = context.GetService<CommentsService>();
+            context.DependencyMap[typeof(IQuestionService)] = context.GetService<QuestionService>();
+            ICourseService courseService = context.GetService<CourseService>();
+            context.DependencyMap[typeof(ICourseService)] = courseService;
+
+            ICourseInstanceService courseInstanceService = context.GetService<CourseInstanceService>();
 
            
-            var courses = await _courseService.GetCoursesAsync(0);
+            var courses = await courseService.GetCoursesAsync(0);
             int courseId = courses.Data.Select(x => x.Id).First();
             var result = await courseInstanceService.StartCourseAsync(courseId);
             Assert.True(result.IdCourseInstance > 0);

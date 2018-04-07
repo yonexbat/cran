@@ -19,18 +19,20 @@ namespace cran.tests
 {    
     
 
-    public class BinaryServiceTest : Base
-    {
-
-        protected override void SetUpDependencies(IDictionary<Type, object> dependencyMap)
-        {
-            base.SetUpDependencies(dependencyMap);
-            dependencyMap[typeof(IPrincipal)] = GetPricipalAdminMock();
-        }
+    public class BinaryServiceTest 
+    {        
 
         [Fact]
         public async Task SaveBinaryTest()
-        {         
+        {
+
+            TestingContext context = new TestingContext();
+            context.AddAdminPrincipalMock();
+            context.AddMockLogService();
+            context.AddRealDb();
+
+            IBinaryService service = context.GetService<BinaryService>();
+
             string testWord = "Hello World";
             var bytes = System.Text.Encoding.UTF8.GetBytes(testWord);
 
@@ -39,7 +41,7 @@ namespace cran.tests
             stream.Flush();
             stream.Seek(0, SeekOrigin.Begin);
 
-            IBinaryService service = GetService<BinaryService>();
+            
 
             BinaryDto binaryDto = new BinaryDto
             {
