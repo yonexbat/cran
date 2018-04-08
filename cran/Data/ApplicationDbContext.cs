@@ -311,7 +311,10 @@ namespace cran.Data
 
         private void MapTag(EntityTypeBuilder<Tag> typeBuilder)
         {
-            typeBuilder.ToTable("CranTag");            
+            typeBuilder.ToTable("CranTag");
+
+            typeBuilder.Property(q => q.TagType)
+           .HasColumnName("IdTagType");
         }
 
         private void MapRelCourseTag(EntityTypeBuilder<RelCourseTag> typeBuilder)

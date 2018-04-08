@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using cran.Data;
 using cran.Model.Dto;
 using cran.Model.Entities;
+using cran.Services.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace cran.Services
@@ -19,6 +20,10 @@ namespace cran.Services
         public async Task<TagDto> GetTagAsync(int id)
         {
             Tag tag = await _context.FindAsync<Tag>(id);
+            if(tag == null)
+            {
+                throw new EntityNotFoundException(id, typeof(Tag));
+            }
             return ToTagDto(tag);            
         }
 
@@ -32,6 +37,7 @@ namespace cran.Services
         public async Task<int> InsertTagAsync(TagDto dto)
         {
             Tag tag = new Tag();
+            tag.TagType = TagType.Standard;
             UpdateEntity(tag, dto);
             _context.Tags.Add(tag);
             await SaveChangesAsync();
@@ -107,6 +113,7 @@ namespace cran.Services
                 Id = x.Id, Name = x.Name,
                 Description = x.Description,
                 ShortDescDe = x.ShortDescDe,
+                IdTagType = (int) x.TagType,
                 ShortDescEn = x.ShortDescEn})
                 .ToListAsync();
         }
@@ -120,6 +127,7 @@ namespace cran.Services
                 Name = tag.Name,
                 ShortDescDe = tag.ShortDescDe,
                 ShortDescEn = tag.ShortDescEn,
+                IdTagType = (int) tag.TagType,
             };
         }
     }

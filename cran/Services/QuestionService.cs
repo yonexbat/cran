@@ -1,6 +1,7 @@
 ﻿using cran.Data;
 using cran.Model.Dto;
 using cran.Model.Entities;
+using cran.Services.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -90,6 +91,7 @@ namespace cran.Services
                     Description = x.Tag.Description,
                     ShortDescDe = x.Tag.ShortDescDe,
                     ShortDescEn = x.Tag.ShortDescEn,
+                    IdTagType = (int) x.Tag.TagType,
                 }).ToListAsync();
 
             //Images

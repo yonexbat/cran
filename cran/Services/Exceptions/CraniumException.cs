@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace cran.Services
+namespace cran.Services.Exceptions
 {
     public class CraniumException : Exception
     {

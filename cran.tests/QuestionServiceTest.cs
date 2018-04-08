@@ -1,7 +1,9 @@
 ﻿using cran.Model.Dto;
+using cran.Model.Entities;
 using cran.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -12,8 +14,32 @@ namespace cran.tests
     {
 
         [Fact]
+        public async Task GetQuestion()
+        {
+            //Perpare
+            TestingContext context = new TestingContext();
+            context.AddPrinicpalmock();
+            context.AddInMemoryDb();
+            context.AddMockLogService();
+            context.DependencyMap[typeof(IBinaryService)] = context.GetService<BinaryService>();
+            context.DependencyMap[typeof(ITextService)] = context.GetService<TextService>();
+            context.DependencyMap[typeof(ICommentsService)] = context.GetService<CommentsService>();
+
+            IQuestionService questionService = context.GetService<QuestionService>();
+
+            //Act
+            QuestionDto questionDto = await questionService.GetQuestionAsync(1);
+
+            //Assert
+            Assert.Equal(1, questionDto.Id);
+            Assert.Equal(4, questionDto.Tags.Count);
+            Assert.True(questionDto.Tags.All(x => x.IdTagType == (int)TagType.Standard));
+        }
+
+        [Fact]
         public async Task TestImage()
         {
+            //Perpare
             TestingContext context = new TestingContext();
             context.AddPrinicpalmock();
             context.AddInMemoryDb();

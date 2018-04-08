@@ -11,5 +11,6 @@ namespace cran.Model.Entities
         public virtual string Description { get; set; }
         public virtual string ShortDescDe { get; set; }
         public virtual string ShortDescEn { get; set; }
+        public virtual TagType TagType { get; set; }
     }
 }

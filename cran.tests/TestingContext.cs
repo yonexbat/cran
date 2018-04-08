@@ -129,6 +129,7 @@ namespace cran.tests
                 Tag tag = new Tag()
                 {
                     Description = $"Description{i}",
+                    TagType = TagType.Standard,
                 };
                 context.Tags.Add(tag);
                 tags.Add(tag);

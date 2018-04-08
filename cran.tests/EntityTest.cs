@@ -55,6 +55,40 @@ namespace cran.tests
 
         }
 
+        [Fact]
+        public async Task TestTag()
+        {
+            //Prepare
+            TestingContext testingContext = new TestingContext();
+            testingContext.AddAdminPrincipalMock();
+            testingContext.AddMockLogService();
+            testingContext.AddRealDb();
+
+
+            ApplicationDbContext context = testingContext.GetSimple<ApplicationDbContext>();
+
+            Tag tag = new Tag
+            {
+                Name = "Test",
+                TagType = TagType.Standard,
+                Description = "Desc",
+                ShortDescDe = "ShortDescDe",
+                ShortDescEn = "ShortDescEn",
+            };
+
+            context.Tags.Add(tag);
+
+            //Act
+            await context.SaveChangesAsync();
+
+            //Assert
+            Assert.True(tag.Id > 0);
+
+            //Cleanup        
+            context.Remove(tag);            
+            context.SaveChanges();
+        }
+
         protected Task<CranUser> GetTestUserAsync(ApplicationDbContext context)
         {
             return context.CranUsers.Where(x => x.UserId == "testuser").SingleAsync();
