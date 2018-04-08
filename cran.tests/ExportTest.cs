@@ -24,6 +24,7 @@ namespace cran.tests
         public async void TestExport()
         {
 
+            //Prepare
             TestingContext context = new TestingContext();
             context.AddAdminPrincipalMock();
             context.AddBinaryServiceMock();
@@ -33,8 +34,6 @@ namespace cran.tests
             context.DependencyMap[typeof(ICommentsService)] = context.GetService<CommentsService>();
             context.DependencyMap[typeof(IQuestionService)] = context.GetService<QuestionService>();           
 
-
-            //Prepare
             IExportService exportService = context.GetService<ExportService>();
 
             //Act

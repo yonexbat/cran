@@ -8,11 +8,13 @@ using cran.Filters;
 using cran.Model.Dto;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using System;
 
 namespace cran.Controllers
 {
     [Route("api/[controller]")]
     [Authorize]
+    [AutoValidateAntiforgeryToken]
     public class DataController : Controller
     {
 
@@ -377,7 +379,7 @@ namespace cran.Controllers
         public async Task<IActionResult> Export()
         {
             Stream stream = await _exportService.Export();
-            return File(stream, "application/zip", "export.zip");
+            return File(stream, "application/zip", $"export_{DateTime.Now.ToString("yyyy_MM_dd_HH:mm")}.zip");
         }
         #endregion
     }

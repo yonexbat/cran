@@ -26,6 +26,9 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
+using cran.Middleware;
+using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace cran
 {
@@ -95,6 +98,10 @@ namespace cran
                     options.ClientSecret = clientSecret;
                 });
 
+            services.AddAntiforgery(options => {
+                options.HeaderName = "X-XSRF-TOKEN";               
+            });
+
 
             //Transient: for every object that required it a (new instance).
             //Scoped: once per request.
@@ -120,7 +127,10 @@ namespace cran
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, 
+            IHostingEnvironment env, 
+            ILoggerFactory loggerFactory,
+            IAntiforgery antiforgery)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -135,6 +145,10 @@ namespace cran
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            //Redirect to 
+            app.UseRewriter(new RewriteOptions().AddRedirectToHttps());
+
+            //Static files
             app.UseStaticFiles();
 
             //Localization          
@@ -142,7 +156,10 @@ namespace cran
             app.UseRequestLocalization(options.Value);
 
             //Google login
-            app.UseAuthentication();                 
+            app.UseAuthentication();
+
+            //AntiforgeryCookies
+            app.AddAntiforgery(antiforgery);
 
             //Routes
             app.UseMvc(routes =>
