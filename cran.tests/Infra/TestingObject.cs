@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using Moq;
 
-namespace cran.tests
+namespace cran.tests.Infra
 {
     public class TestingObject<T> where T : class
     {

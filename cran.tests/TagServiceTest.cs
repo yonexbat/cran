@@ -1,9 +1,12 @@
-﻿using cran.Model.Dto;
+﻿using cran.Data;
+using cran.Model.Dto;
 using cran.Model.Entities;
 using cran.Services;
 using cran.Services.Exceptions;
+using cran.tests.Infra;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -45,14 +48,16 @@ namespace cran.tests
         public async Task GetTags()
         {
             //Prepare
-            TestingContext context = new TestingContext();
-            context.AddPrinicpalmock();
-            context.AddBinaryServiceMock();
-            context.AddInMemoryDb();
-            context.AddMockLogService();
+            TestingContext testingContext = new TestingContext();
+            testingContext.AddPrinicpalmock();
+            testingContext.AddBinaryServiceMock();
+            testingContext.AddInMemoryDb();
+            testingContext.AddMockLogService();
 
-            ITagService tagService = context.GetService<TagService>();
-            IList<int> tagIds = new List<int> { 1, 2, 3 };
+            ApplicationDbContext dbContext = testingContext.GetSimple<ApplicationDbContext>();
+
+            ITagService tagService = testingContext.GetService<TagService>();
+            IList<int> tagIds = dbContext.Tags.Select(x => x.Id).Take(3).ToList();
 
             //Act
             IList<TagDto> tags = await tagService.GetTagsAsync(tagIds);
@@ -65,20 +70,23 @@ namespace cran.tests
         public async Task DeleteTagOk()
         {
             //Prepare
-            TestingContext context = new TestingContext();
-            context.AddAdminPrincipalMock();
-            context.AddBinaryServiceMock();
-            context.AddInMemoryDb();
-            context.AddMockLogService();
-            ITagService tagService = context.GetService<TagService>();
+            TestingContext testingContext = new TestingContext();
+            testingContext.AddAdminPrincipalMock();
+            testingContext.AddBinaryServiceMock();
+            testingContext.AddInMemoryDb();
+            testingContext.AddMockLogService();
+            ITagService tagService = testingContext.GetService<TagService>();
+            ApplicationDbContext dbContext = testingContext.GetSimple<ApplicationDbContext>();
+
+            int firstTagId = dbContext.Tags.First().Id;
 
             //Act
-            await  tagService.DeleteTagAsync(1);
+            await  tagService.DeleteTagAsync(firstTagId);
 
             //Assert
             Exception ex = await Assert.ThrowsAsync<EntityNotFoundException>(async () =>
             {
-                TagDto dto = await tagService.GetTagAsync(1);
+                TagDto dto = await tagService.GetTagAsync(firstTagId);
             });            
         }
 

@@ -54,6 +54,12 @@ namespace cran.Services
         public async Task<QuestionDto> GetQuestionAsync(int id)
         {
             Question questionEntity = await _context.FindAsync<Question>(id);
+
+            if(questionEntity == null)
+            {
+                throw new EntityNotFoundException(id, typeof(Question));
+            }
+
             QuestionDto questionDto = new QuestionDto
             {
                 Id = questionEntity.Id,

@@ -1,5 +1,6 @@
 ﻿using cran.Data;
 using cran.Model.Entities;
+using cran.tests.Infra;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;

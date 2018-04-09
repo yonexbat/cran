@@ -2,6 +2,7 @@
 using cran.Model.Dto;
 using cran.Model.Entities;
 using cran.Services;
+using cran.tests.Infra;
 using Microsoft.Extensions.Configuration;
 using Moq;
 using Newtonsoft.Json;

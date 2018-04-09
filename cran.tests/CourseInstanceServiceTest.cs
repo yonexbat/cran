@@ -1,6 +1,7 @@
 ﻿using cran.Data;
 using cran.Model.Dto;
 using cran.Services;
+using cran.tests.Infra;
 using Microsoft.Extensions.Configuration;
 using Moq;
 using System;

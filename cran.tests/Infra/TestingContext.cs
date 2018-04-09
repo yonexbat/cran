@@ -12,10 +12,12 @@ using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using Xunit;
 
 [assembly: UserSecretsId("CRANSECRETS201707021036")]
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
 
-namespace cran.tests
+namespace cran.tests.Infra
 {
     public class TestingContext
     {
@@ -39,19 +41,7 @@ namespace cran.tests
             _dependencyMap[typeof(IBinaryService)] = binaryMock.Object;
         }
 
-        public void AddAdminPrincipalMock()
-        {
-            var identityMock = new Mock<IIdentity>(MockBehavior.Loose);
-            identityMock.Setup(x => x.Name).Returns("testuser");
-            IIdentity identity = identityMock.Object;
-
-            var pricipalMock = new Mock<IPrincipal>(MockBehavior.Loose);
-            pricipalMock.Setup(x => x.Identity).Returns(identity);
-            pricipalMock.Setup(x => x.IsInRole(Roles.Admin)).Returns(true);
-            pricipalMock.Setup(x => x.IsInRole(Roles.User)).Returns(true);
-            IPrincipal principal = pricipalMock.Object;
-            _dependencyMap[typeof(IPrincipal)] = principal;
-        }
+       
 
         
 
@@ -97,16 +87,28 @@ namespace cran.tests
             return context;
         }
 
-    
-
         public void AddPrinicpalmock()
         {
+            AddPrincipalMock("testuser", Roles.User);
+        }
+
+        public void AddAdminPrincipalMock()
+        {
+            AddPrincipalMock("testuser", Roles.User, Roles.Admin);           
+        }
+
+        public void AddPrincipalMock(string name, params string[] roles)
+        {
             var identityMock = new Mock<IIdentity>(MockBehavior.Loose);
-            identityMock.Setup(x => x.Name).Returns("testuser");
+            identityMock.Setup(x => x.Name).Returns(name);
             IIdentity identity = identityMock.Object;
 
             var pricipalMock = new Mock<IPrincipal>(MockBehavior.Loose);
             pricipalMock.Setup(x => x.Identity).Returns(identity);
+            foreach(string role in roles)
+            {
+                pricipalMock.Setup(x => x.IsInRole(role)).Returns(true);
+            }          
             IPrincipal principal = pricipalMock.Object;
             _dependencyMap[typeof(IPrincipal)] = principal;
         }
@@ -178,7 +180,8 @@ namespace cran.tests
         }
 
         protected virtual void CreateMockQuestion(ApplicationDbContext context, int id, IList<Tag> tags)
-        {
+        {            
+
             Question question = new Question()
             {
                 Explanation = $"Explanation{id}",

@@ -2,6 +2,7 @@ using cran.Data;
 using cran.Model.Dto;
 using cran.Model.ViewModel;
 using cran.Services;
+using cran.tests.Infra;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.UserSecrets;
