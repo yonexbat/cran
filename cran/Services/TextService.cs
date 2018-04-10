@@ -14,19 +14,29 @@ namespace cran.Services
 {
     public class TextService : CraniumService, ITextService
     {
-        public TextService(ApplicationDbContext context, IDbLogService dbLogService, IPrincipal principal) : base(context, dbLogService, principal)
+        private ICultureService _cultureService;
+
+        public TextService(ApplicationDbContext context, 
+            IDbLogService dbLogService, 
+            IPrincipal principal,
+            ICultureService cultureService) : base(context, dbLogService, principal)
         {
+            _cultureService = cultureService;
         }
 
         public async Task<string> GetTextAsync(string key, params string[] placeholders)
-        {
-            CultureInfo uiCultureInfo = Thread.CurrentThread.CurrentUICulture;           
+        {            
             Text template = await _context.Texts.Where(x => x.Key == key).SingleAsync();           
             string templateContent = template.ContentDe;
-            if(uiCultureInfo != null && uiCultureInfo.Name.EndsWith("en"))
+            switch(_cultureService.GetCurrentLanguage())
             {
-                templateContent = template.ContentEn;
-            }
+                case Language.En:
+                    templateContent = template.ContentEn;
+                    break;
+                case Language.De:
+                    templateContent = template.ContentDe;
+                    break;
+            }           
             string result = string.Format(templateContent, placeholders);
             return result;
         }

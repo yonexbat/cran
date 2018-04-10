@@ -29,6 +29,7 @@ using Microsoft.Extensions.Options;
 using cran.Middleware;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Rewrite;
+using System.Threading;
 
 namespace cran
 {
@@ -108,6 +109,7 @@ namespace cran
             //Singleton: self explained.
 
             services.AddTransient<IPrincipal>(provider => provider.GetService<IHttpContextAccessor>().HttpContext.User);
+            services.AddTransient<ICultureService, CultureService>();
 
             services.AddScoped<SignInManager<ApplicationUser>, SignInManager<ApplicationUser>>();
             services.AddScoped<IDbLogService, DbLogService>();

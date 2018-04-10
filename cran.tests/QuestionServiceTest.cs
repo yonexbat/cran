@@ -29,7 +29,7 @@ namespace cran.tests
 
         private void InitContext(TestingContext context)
         {
-            context.AddPrinicpalmock();
+            context.AddPrincipalMock();
             context.AddInMemoryDb();
             context.AddMockLogService();
             context.DependencyMap[typeof(IBinaryService)] = context.GetService<BinaryService>();
@@ -131,6 +131,37 @@ namespace cran.tests
             //Assert
             Assert.True(question.Id != newId);
             Assert.True(newId > 0);
+
+        }
+
+        [Fact]
+        public async Task TestCopyQuestion()
+        {
+            //Prepare
+            TestingContext context = new TestingContext();
+            InitContext(context);
+            ApplicationDbContext dbContext = context.GetSimple<ApplicationDbContext>();
+            Question question = dbContext.Questions.First();            
+            context.AddPrincipalMock(question.User.UserId, Roles.User);
+
+            IQuestionService questionService = context.GetService<QuestionService>();
+
+            //Act
+            int newId = await questionService.CopyQuestionAsync(question.Id);
+
+            //Assert
+            Assert.True(question.Id != newId);
+            Assert.True(newId > 0);
+            QuestionDto newQuestion = await questionService.GetQuestionAsync(newId);
+            Assert.Equal(question.Options.Count, newQuestion.Options.Count);
+            for(int i=0; i<question.Options.Count; i++)
+            {
+                QuestionOption optionSource = question.Options[i];
+                QuestionOptionDto optionDestination = newQuestion.Options[i];
+
+                Assert.NotEqual(optionSource.Id, optionDestination.Id);
+                Assert.True(optionDestination.Id > 0);
+            }
 
         }
 

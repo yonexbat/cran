@@ -7,6 +7,7 @@ using cran.tests.Infra;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -20,7 +21,7 @@ namespace cran.tests
         {
             //Prepare
             TestingContext context = new TestingContext();
-            context.AddPrinicpalmock();
+            context.AddPrincipalMock();
             context.AddBinaryServiceMock();
             context.AddInMemoryDb();
             context.AddMockLogService();
@@ -49,7 +50,7 @@ namespace cran.tests
         {
             //Prepare
             TestingContext testingContext = new TestingContext();
-            testingContext.AddPrinicpalmock();
+            testingContext.AddPrincipalMock();
             testingContext.AddBinaryServiceMock();
             testingContext.AddInMemoryDb();
             testingContext.AddMockLogService();
@@ -88,6 +89,27 @@ namespace cran.tests
             {
                 TagDto dto = await tagService.GetTagAsync(firstTagId);
             });            
+        }
+
+        [Fact]
+        public async Task DeleteTagNoRights()
+        {
+            TestingContext testingContext = new TestingContext();
+            testingContext.AddPrincipalMock();
+            testingContext.AddBinaryServiceMock();
+            testingContext.AddInMemoryDb();
+            testingContext.AddMockLogService();
+            ITagService tagService = testingContext.GetService<TagService>();
+            ApplicationDbContext dbContext = testingContext.GetSimple<ApplicationDbContext>();
+
+            int firstTagId = dbContext.Tags.First().Id;
+
+            //Act and Assert
+            Exception ex = await Assert.ThrowsAsync<SecurityException>(async () =>
+            {
+                await tagService.DeleteTagAsync(firstTagId);
+            });
+            
         }
 
     }

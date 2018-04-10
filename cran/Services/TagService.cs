@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using cran.Data;
@@ -77,6 +78,11 @@ namespace cran.Services
        
         public async Task DeleteTagAsync(int id)
         {
+            if(!_currentPrincipal.IsInRole(Roles.Admin))
+            {
+                throw new SecurityException($"No rights to delete a tag");
+            }
+
             Tag tag = await _context.FindAsync<Tag>(id);
             
             //Tags question

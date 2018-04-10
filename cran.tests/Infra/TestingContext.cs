@@ -43,8 +43,6 @@ namespace cran.tests.Infra
 
        
 
-        
-
         public void AddInMemoryDb()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -54,7 +52,8 @@ namespace cran.tests.Infra
             IPrincipal principal = GetSimple<IPrincipal>();
 
             ApplicationDbContext context = new ApplicationDbContext(options, principal);
-            InitInMemoryDb(context);
+            InMemoryDbSetup setup = new InMemoryDbSetup();
+            setup.SetUpInMemoryDb(context);
 
             _dependencyMap[context.GetType()] = context;
         }
@@ -87,7 +86,7 @@ namespace cran.tests.Infra
             return context;
         }
 
-        public void AddPrinicpalmock()
+        public void AddPrincipalMock()
         {
             AddPrincipalMock("testuser", Roles.User);
         }
@@ -119,49 +118,22 @@ namespace cran.tests.Infra
             _dependencyMap[typeof(IDbLogService)] = log;
         }
 
-        protected virtual void InitInMemoryDb(ApplicationDbContext context)
+        public void AddGermanCultureServiceMock()
         {
-
-            context.Database.EnsureDeleted();
-
-            //Tags
-            IList<Tag> tags = new List<Tag>();
-            for (int i = 1; i <= 10; i++)
-            {
-                Tag tag = new Tag()
-                {
-                    Description = $"Description{i}",
-                    TagType = TagType.Standard,
-                };
-                context.Tags.Add(tag);
-                tags.Add(tag);
-            };
-            context.SaveChanges();
-
-            //Questions
-            for (int i = 1; i <= 10; i++)
-            {
-                CreateMockQuestion(context, i, tags);
-            }
-
-            //Courses
-            Course course = new Course()
-            {
-                Description = $"Description",
-                Title = $"Title",
-                NumQuestionsToAsk = 5,
-                Language = Language.De,
-            };
-            context.Courses.Add(course);
-            RelCourseTag relCourseTag = new RelCourseTag()
-            {
-                Course = course,
-                Tag = tags.First(),
-            };
-            context.RelCourseTags.Add(relCourseTag);
-            context.SaveChanges();
+            var mock = new Mock<ICultureService>(MockBehavior.Loose);
+            mock.Setup(x => x.GetCurrentLanguage()).Returns(Language.De);
+            ICultureService cultureService = mock.Object;
+            _dependencyMap[typeof(ICultureService)] = cultureService;
         }
 
+
+        public void AddEnglishCultureServiceMock()
+        {
+            var mock = new Mock<ICultureService>(MockBehavior.Loose);
+            mock.Setup(x => x.GetCurrentLanguage()).Returns(Language.En);
+            ICultureService cultureService = mock.Object;
+            _dependencyMap[typeof(ICultureService)] = cultureService;
+        }
 
         public T GetService<T>() where T : class
         {
@@ -179,74 +151,7 @@ namespace cran.tests.Infra
             return (T) _dependencyMap[typeParameterType];
         }
 
-        protected virtual void CreateMockQuestion(ApplicationDbContext context, int id, IList<Tag> tags)
-        {            
-
-            Question question = new Question()
-            {
-                Explanation = $"Explanation{id}",
-                Text = $"Text{id}",
-                User = new CranUser() { UserId = $"UserId{id}", },
-                Container = new Container() { },
-                Status = QuestionStatus.Released,
-                Language = Language.De,
-            };
-            context.Questions.Add(question);
-
-            //Options
-            for (int i = 1; i <= 4; i++)
-            {
-                QuestionOption option = new QuestionOption()
-                {
-                    IdQuestion = question.Id,
-                    Text = $"OptionText{i}",
-                    IsTrue = i % 2 == 0,
-                    Question = question,
-                };
-                question.Options.Add(option);
-                context.QuestionOptions.Add(option);
-            }
-
-            //Tags
-            for (int i = 1; i <= 4; i++)
-            {
-                RelQuestionTag relTag = new RelQuestionTag
-                {
-                    Question = question,
-                    Tag = tags[i - 1],
-                };
-                context.RelQuestionTags.Add(relTag);
-            }
-
-            //Binary
-            for (int i = 1; i <= 3; i++)
-            {
-                Binary binary = new Binary()
-                {
-                    ContentType = "image/png",
-                    FileName = $"Filename{i + id * 1000}",
-                    ContentDisposition = $"form-data; name=\"files\"; filename=\"Untitled.png\"",
-                    Length = 20618,
-                };
-                context.Binaries.Add(binary);
-
-                Image image = new Image()
-                {
-                    Binary = binary,
-                    Height = 300,
-                };
-                context.Images.Add(image);
-
-                RelQuestionImage relQuestionImage = new RelQuestionImage
-                {
-                    Question = question,
-                    Image = image,
-                };
-                context.RelQuestionImages.Add(relQuestionImage);
-            }
-
-            context.SaveChanges();
-        }
+      
 
     }
 }
