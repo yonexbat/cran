@@ -15,20 +15,17 @@ namespace cran.Services
     {
 
         private readonly ICommentsService _commentsService;
-        private readonly ITextService _tagService;
        
 
         public QuestionService(ApplicationDbContext context, 
             IDbLogService dbLogService, 
             IPrincipal principal,
-            ICommentsService commentsService,
-            ITextService tagService) :
+            ICommentsService commentsService) :
             base(context, dbLogService, principal)
         {
             _context = context;
             _currentPrincipal = principal;
             _commentsService = commentsService;
-            _tagService = tagService;
         }
 
 

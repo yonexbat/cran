@@ -31,6 +31,7 @@ namespace cran.tests
             context.AddBinaryServiceMock();
             context.AddInMemoryDb();
             context.AddMockLogService();
+            context.AddGermanCultureServiceMock();
             context.DependencyMap[typeof(ITextService)] = context.GetService<TextService>();
             context.DependencyMap[typeof(ICommentsService)] = context.GetService<CommentsService>();
             context.DependencyMap[typeof(IQuestionService)] = context.GetService<QuestionService>();           
