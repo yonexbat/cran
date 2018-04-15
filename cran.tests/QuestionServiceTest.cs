@@ -129,6 +129,15 @@ namespace cran.tests
             Assert.True(question.Id != newId);
             Assert.True(newId > 0);
 
+            await questionService.AcceptQuestionAsync(newId);
+
+            //Assert
+            QuestionDto oldDto = await questionService.GetQuestionAsync(question.Id);
+            QuestionDto newDto = await questionService.GetQuestionAsync(newId);
+            Assert.Contains(oldDto.Tags, x => x.Name == "Deprecated");
+            Assert.Equal(QuestionStatus.Released, (QuestionStatus) newDto.Status);
+            Assert.Equal(QuestionStatus.Obsolete, (QuestionStatus)oldDto.Status);
+
         }
 
         [Fact]
