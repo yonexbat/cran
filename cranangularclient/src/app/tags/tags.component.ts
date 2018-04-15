@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, Input, Output, EventEmitter, } from '@angular/core';
 
-import {Tag} from '../model/tag';
+import {Tag, TagType} from '../model/tag';
 import {LanguageInfo} from '../model/languageInfo';
 import {LanguageService} from '../language.service';
 
@@ -40,4 +40,16 @@ export class TagsComponent implements OnInit {
     this.onRemoveTagClick.emit(tag);
   }
 
+  private classNamesForTag(tag: Tag) {
+    let tagTypeClass = 'badge-warning';
+    switch (tag.idTagType) {
+      case TagType.Standard:
+        tagTypeClass = 'badge-info';
+        break;
+      case TagType.Warning:
+        tagTypeClass = 'badge-warning';
+        break;
+    }
+    return `badge ${tagTypeClass} crantag`;
+  }
 }

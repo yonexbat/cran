@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -16,15 +15,23 @@ namespace cran.tests
 {
     public class TagServiceTest
     {
+
+        private void SetupContext(TestingContext context)
+        {
+            context.AddPrincipalMock();
+            context.AddBinaryServiceMock();
+            context.AddInMemoryDb();
+            context.AddMockLogService();
+            context.AddCacheService();
+        }
+
         [Fact]
         public async Task AddTag()
         {
             //Prepare
             TestingContext context = new TestingContext();
-            context.AddPrincipalMock();
-            context.AddBinaryServiceMock();
-            context.AddInMemoryDb();
-            context.AddMockLogService();
+            SetupContext(context);
+            
 
             ITagService tagService = context.GetService<TagService>();
 
@@ -50,10 +57,7 @@ namespace cran.tests
         {
             //Prepare
             TestingContext testingContext = new TestingContext();
-            testingContext.AddPrincipalMock();
-            testingContext.AddBinaryServiceMock();
-            testingContext.AddInMemoryDb();
-            testingContext.AddMockLogService();
+            SetupContext(testingContext);
 
             ApplicationDbContext dbContext = testingContext.GetSimple<ApplicationDbContext>();
 
@@ -72,10 +76,9 @@ namespace cran.tests
         {
             //Prepare
             TestingContext testingContext = new TestingContext();
-            testingContext.AddAdminPrincipalMock();
-            testingContext.AddBinaryServiceMock();
-            testingContext.AddInMemoryDb();
-            testingContext.AddMockLogService();
+            SetupContext(testingContext);
+            testingContext.AddAdminPrincipalMock();      
+            
             ITagService tagService = testingContext.GetService<TagService>();
             ApplicationDbContext dbContext = testingContext.GetSimple<ApplicationDbContext>();
 
@@ -95,10 +98,8 @@ namespace cran.tests
         public async Task DeleteTagNoRights()
         {
             TestingContext testingContext = new TestingContext();
-            testingContext.AddPrincipalMock();
-            testingContext.AddBinaryServiceMock();
-            testingContext.AddInMemoryDb();
-            testingContext.AddMockLogService();
+            SetupContext(testingContext);
+
             ITagService tagService = testingContext.GetService<TagService>();
             ApplicationDbContext dbContext = testingContext.GetSimple<ApplicationDbContext>();
 
@@ -110,6 +111,30 @@ namespace cran.tests
                 await tagService.DeleteTagAsync(firstTagId);
             });
             
+        }
+
+        [Fact]
+        public async Task FindTagsAsync()
+        {
+            TestingContext testingContext = new TestingContext();
+            SetupContext(testingContext);
+            ITagService tagService = testingContext.GetService<TagService>();
+
+            IList<TagDto> result = await tagService.FindTagsAsync("e");
+
+            Assert.Equal(4, result.Count);
+            Assert.All(result, tagDto => Assert.True(tagDto.IdTagType == (int)TagType.Standard));
+        }
+
+        [Theory]
+        [InlineData(SpecialTag.Deprecated)]
+        public async Task GetSpecialTag(SpecialTag specialTag)
+        {
+            TestingContext testingContext = new TestingContext();
+            SetupContext(testingContext);
+            ITagService tagService = testingContext.GetService<TagService>();
+            TagDto tagDto = await tagService.GetSpecialTagAsync(specialTag);
+            Assert.NotNull(tagDto);
         }
 
     }

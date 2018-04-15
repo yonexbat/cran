@@ -15,16 +15,17 @@ namespace cran.Services
     {
 
         private readonly ICommentsService _commentsService;
+        private readonly ITagService _tagService;
        
 
         public QuestionService(ApplicationDbContext context, 
             IDbLogService dbLogService, 
             IPrincipal principal,
-            ICommentsService commentsService) :
+            ICommentsService commentsService,
+            ITagService tagService) :
             base(context, dbLogService, principal)
         {
-            _context = context;
-            _currentPrincipal = principal;
+            _tagService = tagService;
             _commentsService = commentsService;
         }
 
@@ -97,6 +98,13 @@ namespace cran.Services
                     IdTagType = (int) x.Tag.TagType,
                 }).ToListAsync();
 
+            //Calculated tags.
+            IList<TagDto> calculatedTags = await GetCalculatedTags(questionEntity);
+            foreach(var tag in calculatedTags)
+            {
+                questionDto.Tags.Add(tag);
+            }
+
             //Images
             questionDto.Images = await _context.RelQuestionImages
                 .Where(x => x.IdQuestion == id)
@@ -110,6 +118,19 @@ namespace cran.Services
                 }).ToListAsync();
 
             return questionDto;
+        }
+
+
+        private async Task<IList<TagDto>> GetCalculatedTags(Question questionEntity)
+        {
+            IList<TagDto> calculatedTags = new List<TagDto>();
+            //Deprecated Tag.
+            if(questionEntity.Status == QuestionStatus.Obsolete)
+            {
+                TagDto deprecatedTag = await _tagService.GetSpecialTagAsync(SpecialTag.Deprecated);
+                calculatedTags.Add(deprecatedTag);
+            }
+            return calculatedTags;
         }
 
      
@@ -285,6 +306,8 @@ namespace cran.Services
                 .OrderBy(x => x.Title)
                 .ThenBy(x => x.Id);
             PagedResultDto<QuestionListEntryDto> result = await ToPagedResult(query, page, MaterializeQuestionList);
+            
+
             return result;            
         }
 
@@ -367,10 +390,12 @@ namespace cran.Services
                     TagId = rel.Tag.Id,
                     QuestionId = rel.Question.Id,
                     TagName = rel.Tag.Name,
+                    TagType = rel.Tag.TagType,
                     TagShortDescDe = rel.Tag.ShortDescDe,
                     TagShortDescEn = rel.Tag.ShortDescEn,
                 })
                 .ToListAsync();
+            
 
             foreach (var relTag in relTags)
             {
@@ -379,11 +404,19 @@ namespace cran.Services
                 {
                     Id = relTag.TagId,
                     Name = relTag.TagName,
+                    IdTagType = (int) relTag.TagType,
                     ShortDescDe = relTag.TagShortDescDe,
                     ShortDescEn = relTag.TagShortDescEn,
                 });
-
             }
+
+            //Deprecated Tag.
+            TagDto deprecatedTag = await _tagService.GetSpecialTagAsync(SpecialTag.Deprecated);
+            foreach(QuestionListEntryDto questionListentry in result.Where(x => x.Status == (int) QuestionStatus.Obsolete))
+            {
+                questionListentry.Tags.Add(deprecatedTag);
+            }
+
             return result;
         }
 

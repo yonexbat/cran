@@ -118,12 +118,25 @@ namespace cran.tests.Infra
             _dependencyMap[typeof(IDbLogService)] = log;
         }
 
+        public void AddCacheService()
+        {
+            _dependencyMap[typeof(ICacheService)] = GetService<CacheService>();
+        }
+
         public void AddGermanCultureServiceMock()
         {
             var mock = new Mock<ICultureService>(MockBehavior.Loose);
             mock.Setup(x => x.GetCurrentLanguage()).Returns(Language.De);
             ICultureService cultureService = mock.Object;
             _dependencyMap[typeof(ICultureService)] = cultureService;
+        }
+
+        public void AddQuestionService()
+        {
+            _dependencyMap[typeof(ICacheService)] = GetService<CacheService>();
+            _dependencyMap[typeof(ITagService)] = GetService<TagService>();
+            _dependencyMap[typeof(ICommentsService)] = GetService<CommentsService>();
+            _dependencyMap[typeof(IQuestionService)] = GetService<QuestionService>();
         }
 
 

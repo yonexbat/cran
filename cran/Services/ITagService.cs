@@ -15,5 +15,6 @@ namespace cran.Services
         Task<PagedResultDto<TagDto>> SearchForTagsAsync(SearchTags parameters);
         Task<IList<TagDto>> GetTagsAsync(IList<int> ids);
         Task DeleteTagAsync(int id);
+        Task<TagDto> GetSpecialTagAsync(SpecialTag specialTag);
     }
 }

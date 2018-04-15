@@ -4,13 +4,9 @@ using cran.Model.Entities;
 using cran.Services;
 using cran.Services.Exceptions;
 using cran.tests.Infra;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security;
-using System.Security.Principal;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -33,9 +29,9 @@ namespace cran.tests
             context.AddInMemoryDb();
             context.AddMockLogService();
             context.AddGermanCultureServiceMock();
+            context.AddBinaryServiceMock();
+            context.AddQuestionService();
             context.DependencyMap[typeof(IBinaryService)] = context.GetService<BinaryService>();
-            context.DependencyMap[typeof(ITextService)] = context.GetService<TextService>();
-            context.DependencyMap[typeof(ICommentsService)] = context.GetService<CommentsService>();
         }
 
         [Fact]
@@ -171,6 +167,8 @@ namespace cran.tests
         {
             //Perpare
             TestingContext context = new TestingContext();
+            InitContext(context);
+            context.DependencyMap[typeof(IBinaryService)] = context.GetService<BinaryService>();
             IQuestionService questionService = InitQuestionService(context);
 
 

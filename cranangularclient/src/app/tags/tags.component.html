@@ -1,8 +1,8 @@
   <!-- List of tags -->
   <div  *ngIf="tagList">
     <div>
-      <span *ngFor="let tag of tagList" 
-            class="badge badge-info crantag"
+      <span *ngFor="let tag of tagList"            
+            [className]="classNamesForTag(tag)"                       
             [appTooltip] ="tooltip(tag)">
 
         {{tag.name}} 

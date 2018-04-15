@@ -15,16 +15,32 @@ namespace cran.tests.Infra
 
             //Tags
             IList<Tag> tags = new List<Tag>();
-            for (int i = 1; i <= 10; i++)
+            for (int i = 1; i <= 4; i++)
             {
                 Tag tag = new Tag()
                 {
+                    Name = $"Name{i}",
+                    ShortDescDe = $"ShortDescDe{i}",
+                    ShortDescEn = $"ShortDescEn{i}",
                     Description = $"Description{i}",
                     TagType = TagType.Standard,
                 };
                 context.Tags.Add(tag);
                 tags.Add(tag);
             };
+
+            //add a non standard Tag
+            Tag nonStandard = new Tag()
+            {
+                Name = $"Deprecated",
+                ShortDescDe = $"Veraltet",
+                ShortDescEn = $"Deprecated",
+                Description = $"Deprecated",
+                TagType = TagType.Warning,
+            };
+            context.Tags.Add(nonStandard);
+            tags.Add(nonStandard);
+
             context.SaveChanges();
 
             //Questions
@@ -80,15 +96,15 @@ namespace cran.tests.Infra
             }
 
             //Tags
-            for (int i = 1; i <= 4; i++)
+            foreach(Tag tag in tags.Where(x => x.TagType == TagType.Standard))
             {
                 RelQuestionTag relTag = new RelQuestionTag
                 {
                     Question = question,
-                    Tag = tags[i - 1],
+                    Tag = tag,
                 };
                 context.RelQuestionTags.Add(relTag);
-            }
+            }          
 
             //Binary
             for (int i = 1; i <= 3; i++)

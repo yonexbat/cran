@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace cran.Model.Entities
+namespace cran.Services
 {
-    public enum TagType
+    public enum SpecialTag
     {
-        Standard = 1,
-        Warning = 2,
-        Info = 3,
+        Deprecated,
     }
 }

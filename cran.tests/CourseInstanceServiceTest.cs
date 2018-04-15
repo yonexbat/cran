@@ -20,10 +20,8 @@ namespace cran.tests
             context.AddBinaryServiceMock();
             context.AddInMemoryDb();
             context.AddMockLogService();
-            context.AddGermanCultureServiceMock();            
-            context.DependencyMap[typeof(ITextService)] = context.GetService<TextService>();
-            context.DependencyMap[typeof(ICommentsService)] = context.GetService<CommentsService>();
-            context.DependencyMap[typeof(IQuestionService)] = context.GetService<QuestionService>();
+            context.AddGermanCultureServiceMock();
+            context.AddQuestionService();
             ICourseService courseService = context.GetService<CourseService>();
             context.DependencyMap[typeof(ICourseService)] = courseService;
 
@@ -88,9 +86,7 @@ namespace cran.tests
             context.AddInMemoryDb();
             context.AddMockLogService();
             context.AddGermanCultureServiceMock();
-            context.DependencyMap[typeof(ITextService)] = context.GetService<TextService>();
-            context.DependencyMap[typeof(ICommentsService)] = context.GetService<CommentsService>();
-            context.DependencyMap[typeof(IQuestionService)] = context.GetService<QuestionService>();
+            context.AddQuestionService();
             CourseService courseService = context.GetService<CourseService>();
             context.DependencyMap[typeof(ICourseService)] = courseService;
 

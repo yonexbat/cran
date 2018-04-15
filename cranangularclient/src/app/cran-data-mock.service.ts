@@ -100,6 +100,7 @@ export class CranDataServiceMock implements ICranDataService {
         name: 'name',
         shortDescDe: 'ShortDesc de',
         shortDescEn: 'ShortDesc en',
+        idTagType: 1,
       };
       return tag;
     });
@@ -161,7 +162,9 @@ export class CranDataServiceMock implements ICranDataService {
     const promiseResult = new Promise<Course>((resolve, reject) => {
       setTimeout(function() {
         const athing: Course = {id: id,  language: 'De', title: 'CouseTitle' , description: 'desc', numQuestionsToAsk: 5,
-          tags: [{id: 1, description: 'Desc', name: 'TagName', shortDescDe: 'short desc de', shortDescEn: 'short desc en', }] };
+          tags: [
+            {id: 1, description: 'Desc', name: 'TagName', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, }
+          ] };
         resolve(athing);
       }, 1000);
     });
@@ -195,6 +198,7 @@ export class CranDataServiceMock implements ICranDataService {
           name: 'tag1',
           shortDescDe: 'ShortDesc de',
           shortDescEn: 'ShortDesc en',
+          idTagType: 1,
         };
         resolve(tag);
       }, 1000);
@@ -222,11 +226,11 @@ export class CranDataServiceMock implements ICranDataService {
 
   searchForTags(parameters: SearchTags): Promise<PagedResult<Tag>> {
     const tags: Tag[] = [
-      {id: 1, description: 'Desc tag 1', name: 'Tag1', shortDescDe: 'ShortDesc de', shortDescEn: 'ShortDesc en', },
-      {id: 2, description: 'Desc tag 2', name: 'Tag2', shortDescDe: 'ShortDesc de', shortDescEn: 'ShortDesc en', },
-      {id: 3, description: 'Desc tag 3', name: 'Tag3', shortDescDe: 'ShortDesc de', shortDescEn: 'ShortDesc en', },
-      {id: 4, description: 'Desc tag 4', name: 'Tag4', shortDescDe: 'ShortDesc de', shortDescEn: 'ShortDesc en', },
-      {id: 5, description: 'Desc tag 5', name: 'Tag5', shortDescDe: 'ShortDesc de', shortDescEn: 'ShortDesc en', },
+      {id: 1, description: 'Desc tag 1', name: 'Tag1', shortDescDe: 'ShortDesc de', shortDescEn: 'ShortDesc en', idTagType: 1, },
+      {id: 2, description: 'Desc tag 2', name: 'Tag2', shortDescDe: 'ShortDesc de', shortDescEn: 'ShortDesc en', idTagType: 1, },
+      {id: 3, description: 'Desc tag 3', name: 'Tag3', shortDescDe: 'ShortDesc de', shortDescEn: 'ShortDesc en', idTagType: 1, },
+      {id: 4, description: 'Desc tag 4', name: 'Tag4', shortDescDe: 'ShortDesc de', shortDescEn: 'ShortDesc en', idTagType: 1, },
+      {id: 5, description: 'Desc tag 5', name: 'Tag5', shortDescDe: 'ShortDesc de', shortDescEn: 'ShortDesc en', idTagType: 1, },
     ];
 
     const pagedResult = new PagedResult<Tag>();
@@ -344,12 +348,12 @@ export class CranDataServiceMock implements ICranDataService {
 
     const myList: QuestionListEntry[]  = [
       {id: 1, title: `Frage ${parameters.page}`, status: 1,
-        tags : [{id : 23, description : '', name : 'MyTag', shortDescDe: 'short desc de', shortDescEn: 'short desc en', }]},
+        tags : [{id : 23, description : '', name : 'MyTag', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, }]},
       {id: 2, title: 'World', status: 1, tags : []},
       {id: 3, title: 'Frage 3',   status: 1, tags : []},
       {id: 4, title: 'Test mit einer Frage mit einem langen Titel',   status: 0, tags : []},
       {id: 4, title: 'zep',   status: 0,
-        tags : [{id : 18, description : '', name : 'Some Tag', shortDescDe: 'sd de', shortDescEn: 'sd en'}]},
+        tags : [{id : 18, description : '', name : 'Some Tag', shortDescDe: 'sd de', shortDescEn: 'sd en', idTagType: 1, }]},
     ];
 
     result.data = myList;
@@ -402,14 +406,14 @@ export class CranDataServiceMock implements ICranDataService {
 
     const questions: QuestionResult[] =  [
       {correct: true, idCourseInstanceQuestion: 8000, idQuestion: 800, title: 'some title 1',
-        tags: [{id: 2, description: '', name: 'Js',  shortDescDe: 'short desc de', shortDescEn: 'short desc en', },
-         {id: 2, description: '', name: 'Tag2', shortDescDe: 'short desc de', shortDescEn: 'short desc en', }]},
+        tags: [{id: 2, description: '', name: 'Js',  shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, },
+         {id: 2, description: '', name: 'Tag2', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, }]},
       {correct: false, idCourseInstanceQuestion: 8001, idQuestion: 801, title: 'some title 2',
-      tags: [{id: 2, description: '', name: 'Js', shortDescDe: 'short desc de', shortDescEn: 'short desc en', }]},
+      tags: [{id: 2, description: '', name: 'Js', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, }]},
       {correct: false, idCourseInstanceQuestion: 8002, idQuestion: 802, title: 'some title 3',
-      tags: [{id: 2, description: '', name: 'Js', shortDescDe: 'short desc de', shortDescEn: 'short desc en', }]},
+      tags: [{id: 2, description: '', name: 'Js', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, }]},
       {correct: true, idCourseInstanceQuestion: 8003, idQuestion: 803, title: 'some title 4',
-      tags: [{id: 2, description: '', name: 'Js', shortDescDe: 'short desc de', shortDescEn: 'short desc en', }]},
+      tags: [{id: 2, description: '', name: 'Js', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, }]},
     ];
 
     const result: Result = {
@@ -441,7 +445,7 @@ export class CranDataServiceMock implements ICranDataService {
   getMyQuestions(page: number): Promise<PagedResult<QuestionListEntry>> {
     const myList: QuestionListEntry[]  = [
       {id: 1, title: 'Hello', status: 1,
-        tags : [{id : 23, description : '', name : 'MyTag', shortDescDe: 'short desc de', shortDescEn: 'short desc en', }]},
+        tags : [{id : 23, description : '', name : 'MyTag', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, }]},
       {id: 2, title: 'World', status: 1, tags : []},
       {id: 3, title: 'Frage mit einem sehr langen Titel',   status: 1, tags : []},
       {id: 4, title: 'zep',   status: 0, tags : []},
@@ -541,6 +545,7 @@ export class CranDataServiceMock implements ICranDataService {
       description : 'Javascipt',
       shortDescDe: 'ShortDesc de',
       shortDescEn: 'ShortDesc en',
+      idTagType: 1,
     });
 
     tags.push({
@@ -549,6 +554,7 @@ export class CranDataServiceMock implements ICranDataService {
       description : 'Html',
       shortDescDe: 'ShortDesc de',
       shortDescEn: 'ShortDesc en',
+      idTagType: 1,
     });
 
      tags.push({
@@ -557,6 +563,7 @@ export class CranDataServiceMock implements ICranDataService {
       description : 'C SHarp',
       shortDescDe: 'ShortDesc de',
       shortDescEn: 'ShortDesc en',
+      idTagType: 1,
     });
 
     tags.push({
@@ -565,6 +572,7 @@ export class CranDataServiceMock implements ICranDataService {
       description : '',
       shortDescDe: 'ShortDesc de',
       shortDescEn: 'ShortDesc en',
+      idTagType: 1,
     });
 
     const promiseResult = new Promise<Tag[]>(function(resolve, reject){
@@ -592,23 +600,23 @@ export class CranDataServiceMock implements ICranDataService {
     const courseList: Course[] =  [
       {id: 1, language: 'De', description: 'Test Kurs bla', title: 'Kursus',
         numQuestionsToAsk: 3,
-        tags: [{id: 3, name: 'Js', description: 'desc',  shortDescDe: 'short desc de', shortDescEn: 'short desc en', },
-               {id: 5, name: 'Hello', description: 'desc',  shortDescDe: 'short desc de', shortDescEn: 'short desc en', }]},
+        tags: [{id: 3, name: 'Js', description: 'desc',  shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, },
+               {id: 5, name: 'Hello', description: 'desc',  shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, }]},
       {id: 1, language: 'De', numQuestionsToAsk: 3,
         description: 'Test Kurs bla', title: 'Kursus',
-          tags: [{id: 3, name: 'Js', description: 'desc', shortDescDe: 'short desc de', shortDescEn: 'short desc en', }]},
+          tags: [{id: 3, name: 'Js', description: 'desc', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, }]},
       {id: 1, language: 'De', numQuestionsToAsk: 3,
         description: 'Test Kurs bla', title: 'Kursus',
-          tags: [{id: 3, name: 'Js', description: 'desc', shortDescDe: 'short desc de', shortDescEn: 'short desc en', }]},
+          tags: [{id: 3, name: 'Js', description: 'desc', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, }]},
       {id: 1, language: 'De', numQuestionsToAsk: 3,
         description: 'Test Kurs bla', title: 'Kursus',
-          tags: [{id: 3, name: 'Js', description: 'desc', shortDescDe: 'short desc de', shortDescEn: 'short desc en', }]},
+          tags: [{id: 3, name: 'Js', description: 'desc', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, }]},
       {id: 1, language: 'De', numQuestionsToAsk: 3,
         description: 'Test Kurs bla', title: 'Kursus',
-          tags: [{id: 3, name: 'Js', description: 'desc', shortDescDe: 'short desc de', shortDescEn: 'short desc en', }]},
+          tags: [{id: 3, name: 'Js', description: 'desc', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, }]},
       {id: 1, language: 'De', numQuestionsToAsk: 3,
         description: 'GLOBI in den Ferien', title: 'Kursus',
-       tags: [{id: 3, name: 'Js', description: 'desc', shortDescDe: 'short desc de', shortDescEn: 'short desc en', }]},
+       tags: [{id: 3, name: 'Js', description: 'desc', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, }]},
     ];
 
     const courses: PagedResult<Course> = {
@@ -663,7 +671,7 @@ export class CranDataServiceMock implements ICranDataService {
         ];
 
         question.tags = [
-          {id: 34, description: 'helo cran', name: 'cran', shortDescDe: 'short desc de', shortDescEn: 'short desc en', },
+          {id: 34, description: 'helo cran', name: 'cran', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, },
         ];
 
         setTimeout(function() {

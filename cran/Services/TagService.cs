@@ -14,8 +14,12 @@ namespace cran.Services
 {
     public class TagService : CraniumService, ITagService
     {
-        public TagService(ApplicationDbContext context, IDbLogService dbLogService, IPrincipal principal) : base(context, dbLogService, principal)
+        private readonly ICacheService _cacheService;
+
+        public TagService(ApplicationDbContext context, IDbLogService dbLogService, IPrincipal principal,
+            ICacheService cacheService) : base(context, dbLogService, principal)
         {
+            _cacheService = cacheService;
         }
 
         public async Task<TagDto> GetTagAsync(int id)
@@ -55,7 +59,9 @@ namespace cran.Services
 
         public async Task<IList<TagDto>> FindTagsAsync(string searchTerm)
         {
-            IQueryable<Tag> tagQueryable = _context.Tags.Where(x => x.Name.Contains(searchTerm))
+            IQueryable<Tag> tagQueryable = _context.Tags
+                .Where(x => x.Name.Contains(searchTerm))
+                .Where(x => x.TagType == TagType.Standard)
                 .OrderBy(x => x.Name);
             IList<TagDto> result = await ToDto(tagQueryable);         
             return result;
@@ -116,11 +122,13 @@ namespace cran.Services
         private async Task<IList<TagDto>> ToDto(IQueryable<Tag> query)
         {
             return await query.Select(x => new TagDto {
-                Id = x.Id, Name = x.Name,
-                Description = x.Description,
-                ShortDescDe = x.ShortDescDe,
-                IdTagType = (int) x.TagType,
-                ShortDescEn = x.ShortDescEn})
+                    Id = x.Id,
+                    Name = x.Name,
+                    Description = x.Description,
+                    ShortDescDe = x.ShortDescDe,
+                    IdTagType = (int) x.TagType,
+                    ShortDescEn = x.ShortDescEn
+                })
                 .ToListAsync();
         }
 
@@ -135,6 +143,23 @@ namespace cran.Services
                 ShortDescEn = tag.ShortDescEn,
                 IdTagType = (int) tag.TagType,
             };
+        }
+
+        public async Task<TagDto> GetSpecialTagAsync(SpecialTag specialTag)
+        {
+            switch(specialTag)
+            {
+                case SpecialTag.Deprecated:
+                    return await _cacheService.GetEntryAsync("TagDeprecated", GetDeprecatedTag);
+                default:
+                    throw new CraniumException($"Special tag {specialTag} not supported");
+            }
+        }
+
+        private async Task<TagDto> GetDeprecatedTag()
+        {
+            Tag tag =  await _context.Tags.Where(x => x.Name == "Deprecated").SingleAsync();
+            return ToTagDto(tag);
         }
     }
 }

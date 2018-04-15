@@ -123,7 +123,7 @@ namespace cran
             services.AddScoped<ICourseInstanceService, CourseInstanceService>();
             services.AddScoped<ITextService, TextService>();
             services.AddScoped<IExportService, ExportService>();
-
+            services.AddSingleton<ICacheService, CacheService>();
             services.AddSingleton(_physicalProvider);
 
         }
