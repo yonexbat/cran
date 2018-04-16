@@ -69,6 +69,7 @@ namespace cran.Services
                 TagDto tagVm = new TagDto
                 {
                     Id = tag.Id,
+                    IdTagType = (int) tag.TagType,
                     Description = tag.Description,
                     Name = tag.Name,
                     ShortDescDe = tag.ShortDescDe,

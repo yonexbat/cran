@@ -157,7 +157,8 @@ namespace cran.Services
             relTagEntities = relTagEntities.GroupBy(x => x.IdTag).Select(x => x.First()).ToList();
             IDictionary<int, int> relIdByTagId = relTagEntities.ToDictionary(x => x.IdTag, x => x.Id);
             IList<RelQuestionTagDto> relQuestionTagDtos = new List<RelQuestionTagDto>();
-            IList<TagDto> tagDtos = questionDto.Tags.GroupBy(x => x.Id).Select(x => x.First()).ToList();
+            IList<TagDto> tagDtos = questionDto.Tags.Where(x => x.IdTagType == (int) TagType.Standard)
+                .GroupBy(x => x.Id).Select(x => x.First()).ToList();
 
             foreach (TagDto tagDto in tagDtos)
             {

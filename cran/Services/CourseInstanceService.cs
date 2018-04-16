@@ -198,6 +198,8 @@ namespace cran.Services
                     x.Tag.TagType,
                     x.Tag.Name,
                     x.Tag.Description,
+                    x.Tag.ShortDescDe,
+                    x.Tag.ShortDescEn,
 
                 }).ToListAsync();
             var tagLookups = tags.ToLookup(x => x.IdQuestion, x => x);
@@ -215,6 +217,8 @@ namespace cran.Services
                             IdTagType = (int) tag.TagType,
                             Description = tag.Description,
                             Name = tag.Name,
+                            ShortDescDe = tag.ShortDescDe,
+                            ShortDescEn = tag.ShortDescEn,
                         });
                     }
                 }
