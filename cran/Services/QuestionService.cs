@@ -87,7 +87,7 @@ namespace cran.Services
 
             //Tags
             questionDto.Tags = await _context.RelQuestionTags
-                .Where(x => x.IdQuestion == id)
+                .Where(x => x.IdQuestion == id)               
                 .Select(x => new TagDto
                 {
                     Id = x.Tag.Id,
@@ -494,6 +494,8 @@ namespace cran.Services
             {
                 option.Id = 0;
             }
+            questionDto.Tags = questionDto.Tags.Where(x => x.IdTagType == (int)TagType.Standard)
+                .ToList();
             questionDto.Id = 0;
             return questionDto;
         }

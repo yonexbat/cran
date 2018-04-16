@@ -195,8 +195,10 @@ namespace cran.Services
                 {
                     IdQuestion = x.Question.Id,
                     IdTag = x.Tag.Id,
+                    x.Tag.TagType,
                     x.Tag.Name,
                     x.Tag.Description,
+
                 }).ToListAsync();
             var tagLookups = tags.ToLookup(x => x.IdQuestion, x => x);
 
@@ -210,6 +212,7 @@ namespace cran.Services
                         questionDto.Tags.Add(new TagDto
                         {
                             Id = tag.IdTag,
+                            IdTagType = (int) tag.TagType,
                             Description = tag.Description,
                             Name = tag.Name,
                         });
