@@ -49,6 +49,7 @@ import { IconComponent } from './icon/icon.component';
 import { TooltipDirective } from './tooltip.directive';
 import { TextlistComponent } from './textlist/textlist.component';
 import { ManageTextComponent } from './manage-text/manage-text.component';
+import { VersionsComponent } from './versions/versions.component';
 
 function isDevelopment() {
   return window.location && window.location.port && window.location.port === '4200';
@@ -95,6 +96,7 @@ if (isDevelopment()) {
     TooltipDirective,
     TextlistComponent,
     ManageTextComponent,
+    VersionsComponent,
   ],
   imports: [
     BrowserModule,

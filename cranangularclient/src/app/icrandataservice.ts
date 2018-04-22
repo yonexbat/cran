@@ -22,6 +22,8 @@ import {UserInfo} from './model/userinfo';
 import {SearchTags} from './model/searchtags';
 import {SearchText} from './model/searchtext';
 import {Text} from './model/text';
+import {VersionInfo} from './model/versionInfo';
+import {VersionInfoParameters} from './model/versionInfoParameters';
 
 export interface ICranDataService {
   getCourses(page: number): Promise<PagedResult<Course>>;
@@ -63,4 +65,5 @@ export interface ICranDataService {
   updateText(text: Text): Promise<any>;
   getTexts(search: SearchText): Promise<PagedResult<Text>>;
   getTextDtoByKey(key: string): Promise<Text>;
+  getVersions(parameters: VersionInfoParameters): Promise<PagedResult<VersionInfo>>;
 }

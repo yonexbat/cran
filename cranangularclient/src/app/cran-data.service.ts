@@ -25,12 +25,20 @@ import {UserInfo} from './model/userinfo';
 import {SearchTags} from './model/searchtags';
 import {SearchText} from './model/searchtext';
 import {Text} from './model/text';
+import {VersionInfo} from './model/versionInfo';
+import {VersionInfoParameters} from './model/versionInfoParameters';
 
 @Injectable()
 export class CranDataService implements ICranDataService {
 
   constructor(private http: HttpClient) {
 
+  }
+
+  getVersions(parameters: VersionInfoParameters): Promise<PagedResult<VersionInfo>> {
+    return this.http.post<PagedResult<VersionInfo>>('/api/Data/GetVersions', parameters)
+    .toPromise()
+    .catch(this.handleError);
   }
 
   getTextDtoByKey(key: string): Promise<Text> {

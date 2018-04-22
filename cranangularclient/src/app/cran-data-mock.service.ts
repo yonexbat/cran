@@ -26,10 +26,30 @@ import {UserInfo} from './model/userinfo';
 import {SearchTags} from './model/searchtags';
 import {SearchText} from './model/searchtext';
 import {Text} from './model/text';
+import {VersionInfo} from './model/versionInfo';
+import {VersionInfoParameters} from './model/versionInfoParameters';
 
 
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
+
+  getVersions(parameters: VersionInfoParameters): Promise<PagedResult<VersionInfo>> {
+    const texts: VersionInfo[] = [];
+    for (let i = 0; i < 5; i++) {
+      texts.push({idQuestion: i, user: 'cran', version: i + 1, insertDate: new Date()});
+    }
+    const pagedResult = new PagedResult<VersionInfo>();
+    pagedResult.data = texts;
+    pagedResult.currentPage = parameters.page;
+    pagedResult.numpages = 4;
+    pagedResult.count = 20;
+    const promiseResult = new Promise<PagedResult<VersionInfo>>((resolve, reject) => {
+      setTimeout(function() {
+        resolve(pagedResult);
+      }, 1000);
+    });
+    return promiseResult;
+  }
 
   getTextDtoByKey(key: string): Promise<Text> {
     const text: Text = {
@@ -91,6 +111,7 @@ export class CranDataServiceMock implements ICranDataService {
     });
     return promiseResult;
   }
+
   getTags(ids: number[]): Promise<Tag[]> {
 
     const tags: Tag[]  = ids.map(id => {

@@ -1,5 +1,8 @@
 <div class="container" *ngIf="question">
 
+  <!-- Dialog that lists the versions of thiw questions -->
+  <app-versions #versions></app-versions>
+
   <!-- title and vote control -->
   <h6>
 
@@ -53,6 +56,14 @@
   </div>
 
   <div class="btn-group pull-right clearfix">   
+
+      <!-- Versionen -->
+      <button
+        type="button" 
+        class="btn btn-success"
+        (click)="showVersions()">
+        {{ls.label('versions')}}
+      </button>
 
       <!-- Neue Version erstellen -->
       <button 

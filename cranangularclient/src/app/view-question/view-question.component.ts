@@ -7,6 +7,7 @@ import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
 import {Question} from '../model/question';
 import {CommentsComponent} from '../comments/comments.component';
+import {VersionsComponent} from '../versions/versions.component';
 import {LanguageService} from '../language.service';
 import { ConfirmService } from '../confirm.service';
 
@@ -18,6 +19,7 @@ import { ConfirmService } from '../confirm.service';
 export class ViewQuestionComponent implements OnInit {
 
   @ViewChild('comments') comments: CommentsComponent;
+  @ViewChild('versions') versions: VersionsComponent;
 
   private question: Question;
 
@@ -94,6 +96,10 @@ export class ViewQuestionComponent implements OnInit {
         }
       }
     }
+  }
+
+  private async showVersions(): Promise<void> {
+    await this.versions.showDialog(this.question.id);
   }
 
   private async handleRouteChanged(id: number): Promise<void> {
