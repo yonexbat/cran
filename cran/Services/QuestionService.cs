@@ -97,13 +97,7 @@ namespace cran.Services
                     ShortDescEn = x.Tag.ShortDescEn,
                     IdTagType = (int) x.Tag.TagType,
                 }).ToListAsync();
-
-            //Calculated tags.
-            IList<TagDto> calculatedTags = await GetCalculatedTags(questionEntity);
-            foreach(var tag in calculatedTags)
-            {
-                questionDto.Tags.Add(tag);
-            }
+          
 
             //Images
             questionDto.Images = await _context.RelQuestionImages
@@ -119,21 +113,7 @@ namespace cran.Services
 
             return questionDto;
         }
-
-
-        private async Task<IList<TagDto>> GetCalculatedTags(Question questionEntity)
-        {
-            IList<TagDto> calculatedTags = new List<TagDto>();
-            //Deprecated Tag.
-            if(questionEntity.Status == QuestionStatus.Obsolete)
-            {
-                TagDto deprecatedTag = await _tagService.GetSpecialTagAsync(SpecialTag.Deprecated);
-                calculatedTags.Add(deprecatedTag);
-            }
-            return calculatedTags;
-        }
-
-     
+             
 
         public async Task UpdateQuestionAsync(QuestionDto questionDto)
         {
@@ -452,6 +432,13 @@ namespace cran.Services
             foreach(Question previousQuestion in previousQuestions)
             {
                 previousQuestion.Status = QuestionStatus.Obsolete;
+                TagDto deprecatedTag = await _tagService.GetSpecialTagAsync(SpecialTag.Deprecated);
+                RelQuestionTag relQuestionTag = new RelQuestionTag
+                {
+                    IdQuestion = previousQuestion.Id,
+                    IdTag = deprecatedTag.Id,
+                };
+                _context.RelQuestionTags.Add(relQuestionTag);
             }
             
             await _context.SaveChangesAsync();

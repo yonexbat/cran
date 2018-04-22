@@ -27,6 +27,7 @@ namespace cran.tests
         public async Task TestAddComment()
         {
             TestingContext testingContext = new TestingContext();
+            SetUpTestingContext(testingContext);
 
             ApplicationDbContext appDbContext = testingContext.GetSimple<ApplicationDbContext>();
             ICommentsService commentsService = testingContext.GetService<CommentsService>();
