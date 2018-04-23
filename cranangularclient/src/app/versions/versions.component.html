@@ -17,9 +17,9 @@
             <ng-template #listItem let-item="item">    
                 <div class="list-group-item" 
                     [ngClass]="{'questionstatus': true,
-                                'questionstatusok': item.status ==  1, 
-                                'questionstatusnok': item.status ==  0, 
-                                'questionstatussuperseded': item.status ==  2}">                                    
+                                'questionstatusok': isReleased(item), 
+                                'questionstatusnok': isCreated(item), 
+                                'questionstatussuperseded': isObsolete(item)}">                                    
                   <h6>                      
                       #{{item.idQuestion}}            
                       <span class="btn-group pull-right">                              

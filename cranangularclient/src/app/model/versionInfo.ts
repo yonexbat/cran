@@ -7,5 +7,5 @@ export class VersionInfo {
     public user: string;
     public insertDate: Date;
     public approvalDate: Date;
-    public questionStatus: QuestionStatus;
+    public status: QuestionStatus;
 }

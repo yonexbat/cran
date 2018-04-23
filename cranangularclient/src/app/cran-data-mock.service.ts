@@ -38,7 +38,7 @@ export class CranDataServiceMock implements ICranDataService {
     const texts: VersionInfo[] = [];
     for (let i = 0; i < 5; i++) {
       texts.push({idQuestion: i, user: 'cran', version: i + 1, insertDate: new Date(), approvalDate: new Date(),
-      questionStatus: QuestionStatus.Released});
+      status: QuestionStatus.Released});
     }
     const pagedResult = new PagedResult<VersionInfo>();
     pagedResult.data = texts;

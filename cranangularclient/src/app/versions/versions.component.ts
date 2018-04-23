@@ -11,6 +11,7 @@ import {ConfirmService} from '../confirm.service';
 import {VersionInfo} from '../model/versionInfo';
 import {VersionInfoParameters} from '../model/versionInfoParameters';
 import {PagedResult} from '../model/pagedresult';
+import {QuestionStatus} from '../model/questionstatus';
 
 declare var $: any;
 
@@ -62,5 +63,17 @@ export class VersionsComponent implements OnInit {
   private async goToVersion(idQuestion: number): Promise<void> {
     $('#versions').modal('hide');
     this.router.navigate(['/viewquestion', idQuestion]);
+  }
+
+  private isCreated(item: VersionInfo) {
+    return item.status === QuestionStatus.Created;
+  }
+
+  private isReleased(item: VersionInfo) {
+    return item.status === QuestionStatus.Released;
+  }
+
+  private isObsolete(item: VersionInfo) {
+    return item.status === QuestionStatus.Obsolete;
   }
 }
