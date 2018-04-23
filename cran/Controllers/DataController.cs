@@ -387,6 +387,12 @@ namespace cran.Controllers
             return Json(OkReturnString);
         }
 
+        [HttpPost("[action]")]
+        public async Task<PagedResultDto<VersionInfoDto>> GetVersions([FromBody]VersionInfoParametersDto versionInfoParameters)
+        {
+            return await _versionService.GetVersionsAsync(versionInfoParameters);            
+        }
+
         #endregion
     }
 }

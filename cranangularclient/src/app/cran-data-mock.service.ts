@@ -28,6 +28,7 @@ import {SearchText} from './model/searchtext';
 import {Text} from './model/text';
 import {VersionInfo} from './model/versionInfo';
 import {VersionInfoParameters} from './model/versionInfoParameters';
+import {QuestionStatus} from './model/questionstatus';
 
 
 @Injectable()
@@ -36,7 +37,8 @@ export class CranDataServiceMock implements ICranDataService {
   getVersions(parameters: VersionInfoParameters): Promise<PagedResult<VersionInfo>> {
     const texts: VersionInfo[] = [];
     for (let i = 0; i < 5; i++) {
-      texts.push({idQuestion: i, user: 'cran', version: i + 1, insertDate: new Date()});
+      texts.push({idQuestion: i, user: 'cran', version: i + 1, insertDate: new Date(), approvalDate: new Date(),
+      questionStatus: QuestionStatus.Released});
     }
     const pagedResult = new PagedResult<VersionInfo>();
     pagedResult.data = texts;

@@ -56,6 +56,40 @@ namespace cran.tests
             Assert.Contains(oldDto.Tags, x => x.Name == "Deprecated");
             Assert.Equal(QuestionStatus.Released, (QuestionStatus)newDto.Status);
             Assert.Equal(QuestionStatus.Obsolete, (QuestionStatus)oldDto.Status);
+            question = await dbContext.FindAsync<Question>(newId);
+            Assert.NotNull(question.ApprovalDate);
+
+        }
+
+        [Fact]
+        public async Task TestGetVersions()
+        {
+            //Prepare
+            TestingContext context = new TestingContext();
+            InitContext(context);
+            ApplicationDbContext dbContext = context.GetSimple<ApplicationDbContext>();
+            Question question = dbContext.Questions.First();
+            context.AddPrincipalMock(question.User.UserId, Roles.User);
+
+            IQuestionService questionService = context.GetService<QuestionService>();
+            context.DependencyMap[typeof(IQuestionService)] = questionService;
+            IVersionService versionService = context.GetService<VersionService>();
+
+            
+            int newId = await versionService.VersionQuestionAsync(question.Id);           
+            await versionService.AcceptQuestionAsync(newId);
+
+            VersionInfoParametersDto versionInfoParametersDto = new VersionInfoParametersDto()
+            {
+                Page = 0,
+                IdQuestion = newId,
+            };
+
+            //Act
+            PagedResultDto<VersionInfoDto> result = await versionService.GetVersionsAsync(versionInfoParametersDto);
+
+            //Assert
+            Assert.Equal(2, result.Count);
 
         }
 

@@ -102,6 +102,9 @@ export class LanguageService {
     'textDeRequired' :  {valueDe : 'Deutscher Text ist ein Mussfeld', valueEn : 'Text in German is required'},
     'textEnRequired' :  {valueDe : 'Englischer Text ist ein Mussfeld', valueEn : 'Text in English is required'},
     'export' :  {valueDe : 'Exportieren', valueEn : 'Export'},
+    'insertdate' :  {valueDe : 'Datum erstellt', valueEn : 'Date created'},
+    'approvaldate' :  {valueDe : 'Datum freigegeben', valueEn : 'Date approved'},
+    'insertuser' :  {valueDe : 'Ersteller', valueEn : 'Creator'},
   };
 
 

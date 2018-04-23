@@ -55,6 +55,7 @@ export class VersionsComponent implements OnInit {
       this.notificationService.emitDone();
     } catch (error) {
         this.notificationService.emitError(error);
+        $('#versions').modal('hide');
     }
   }
 

@@ -13,7 +13,8 @@ namespace cran.Model.Entities
         public virtual string Explanation { get; set; }
         public virtual int IdUser { get; set; }
         public virtual int IdContainer { get; set; }
-        public virtual int? IdQuestionCopySource { get; set; }       
+        public virtual int? IdQuestionCopySource { get; set; } 
+        public virtual DateTime? ApprovalDate { get; set; }
         public virtual QuestionStatus Status { get; set; }
         public virtual Language Language { get; set; }
 

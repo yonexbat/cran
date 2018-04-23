@@ -6,7 +6,7 @@
 
         <!-- header -->
         <div class="modal-header">
-          <h6 class="modal-title">Versionen</h6>
+          <h6 class="modal-title">{{ls.label('versions')}}</h6>
           <button type="button" class="close" data-dismiss="modal">&times;</button>          
         </div>
 
@@ -15,12 +15,13 @@
 
             <!-- Template for ListItem -->
             <ng-template #listItem let-item="item">    
-                <div class="list-group-item">                                    
-                  <h6>
-                      {{item.version}})
-                      {{item.insertDate | date:'dd.MM.yyyy HH:mm'}}
-                      {{item.user}}
-
+                <div class="list-group-item" 
+                    [ngClass]="{'questionstatus': true,
+                                'questionstatusok': item.status ==  1, 
+                                'questionstatusnok': item.status ==  0, 
+                                'questionstatussuperseded': item.status ==  2}">                                    
+                  <h6>                      
+                      #{{item.idQuestion}}            
                       <span class="btn-group pull-right">                              
                           <button class="btn btn-default" 
                                   type="button" 
@@ -29,7 +30,13 @@
                               <app-icon [icon]="'info'"></app-icon>
                           </button>
                       </span>           
-                  </h6>
+                  </h6>                  
+                    <p>
+                        {{ls.label('insertdate')}}: {{item.insertDate | date:'dd.MM.yyyy HH:mm'}}                              
+                        {{ls.label('approvaldate')}}:  {{item.approvalDate | date:'dd.MM.yyyy HH:mm'}}
+                        {{ls.label('insertuser')}}: {{item.user}}   
+
+                    </p>                    
                 </div>
             </ng-template> 
             

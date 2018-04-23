@@ -91,6 +91,7 @@ namespace cran.Services
                 new CraniumException($"Question #{id} is not in state created.");
             }
             question.Status = QuestionStatus.Released;
+            question.ApprovalDate = DateTime.Now;
 
             IList<Question> previousQuestions = await _context.Questions
                 .Where(x => x.IdContainer == question.IdContainer)
@@ -119,5 +120,29 @@ namespace cran.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task<PagedResultDto<VersionInfoDto>> GetVersionsAsync(VersionInfoParametersDto versionInfoParameters)
+        {
+            Question questionEntity  = await _context.FindAsync<Question>(versionInfoParameters.IdQuestion);
+
+            IQueryable<Question> query = _context.Questions.Where(x => x.Container.Id == questionEntity.IdContainer)
+                .OrderByDescending(x => x.Id);
+
+            return await ToPagedResult(query, versionInfoParameters.Page, MaterializeQuestionList);
+        }
+
+        private async Task<IList<VersionInfoDto>> MaterializeQuestionList(IQueryable<Question> query)
+        {
+            IList<VersionInfoDto> result = await query
+                .Select(x => new VersionInfoDto()
+                {
+                    IdQuestion = x.Id,
+                    User = x.User.UserId,
+                    InsertDate = x.InsertDate,
+                    Status = x.Status,
+                    ApprovalDate = x.ApprovalDate,
+                })
+                .ToListAsync();
+            return result;
+        }
     }
 }

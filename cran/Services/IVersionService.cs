@@ -1,4 +1,5 @@
-﻿using System;
+﻿using cran.Model.Dto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,5 +11,6 @@ namespace cran.Services
         Task AcceptQuestionAsync(int id);
         Task<int> VersionQuestionAsync(int id);
         Task<int> CopyQuestionAsync(int id);
+        Task<PagedResultDto<VersionInfoDto>> GetVersionsAsync(VersionInfoParametersDto versionInfoParameters);
     }
 }
