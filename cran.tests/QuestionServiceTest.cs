@@ -110,66 +110,7 @@ namespace cran.tests
             });
         }
 
-        [Fact]
-        public async Task TestVersionQuestion()
-        {
-            //Prepare
-            TestingContext context = new TestingContext();
-            InitContext(context);
-            ApplicationDbContext dbContext = context.GetSimple<ApplicationDbContext>();
-            Question question = dbContext.Questions.First();
-            context.AddPrincipalMock(question.User.UserId, Roles.User);
-
-            IQuestionService questionService = context.GetService<QuestionService>();
-
-            //Act
-            int newId = await questionService.VersionQuestionAsync(question.Id);
-
-            //Assert
-            Assert.True(question.Id != newId);
-            Assert.True(newId > 0);
-
-            await questionService.AcceptQuestionAsync(newId);
-
-            //Assert
-            QuestionDto oldDto = await questionService.GetQuestionAsync(question.Id);
-            QuestionDto newDto = await questionService.GetQuestionAsync(newId);
-            Assert.Contains(oldDto.Tags, x => x.Name == "Deprecated");
-            Assert.Equal(QuestionStatus.Released, (QuestionStatus) newDto.Status);
-            Assert.Equal(QuestionStatus.Obsolete, (QuestionStatus)oldDto.Status);
-
-        }
-
-        [Fact]
-        public async Task TestCopyQuestion()
-        {
-            //Prepare
-            TestingContext context = new TestingContext();
-            InitContext(context);
-            ApplicationDbContext dbContext = context.GetSimple<ApplicationDbContext>();
-            Question question = dbContext.Questions.First();            
-            context.AddPrincipalMock(question.User.UserId, Roles.User);
-
-            IQuestionService questionService = context.GetService<QuestionService>();
-
-            //Act
-            int newId = await questionService.CopyQuestionAsync(question.Id);
-
-            //Assert
-            Assert.True(question.Id != newId);
-            Assert.True(newId > 0);
-            QuestionDto newQuestion = await questionService.GetQuestionAsync(newId);
-            Assert.Equal(question.Options.Count, newQuestion.Options.Count);
-            for(int i=0; i<question.Options.Count; i++)
-            {
-                QuestionOption optionSource = question.Options[i];
-                QuestionOptionDto optionDestination = newQuestion.Options[i];
-
-                Assert.NotEqual(optionSource.Id, optionDestination.Id);
-                Assert.True(optionDestination.Id > 0);
-            }
-
-        }
+       
 
         [Fact]
         public async Task TestImage()

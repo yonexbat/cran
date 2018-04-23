@@ -29,8 +29,6 @@ namespace cran.Services
             _commentsService = commentsService;
         }
 
-
-
         public async Task<int> InsertQuestionAsync(QuestionDto questionDto)
         {
             await _dbLogService.LogMessageAsync("Adding question");
@@ -342,7 +340,7 @@ namespace cran.Services
             return result;
         }
 
-        private async Task CheckWriteAccessToQuestion(int idQuestion)
+        public async Task CheckWriteAccessToQuestion(int idQuestion)
         {
             //Security Check
             Question question = await _context.FindAsync<Question>(idQuestion);
@@ -393,100 +391,6 @@ namespace cran.Services
            
 
             return result;
-        }
-
-        public async Task<int> CopyQuestionAsync(int id)
-        {
-            QuestionDto questionDto = await CreateQuestionDtoCopy(id);
-            int newId = await InsertQuestionAsync(questionDto);
-            Question questionNew = await _context.FindAsync<Question>(newId);
-            questionNew.IdQuestionCopySource = id;
-            await SaveChangesAsync();
-            return newId;
-        }
-
-        public async Task AcceptQuestionAsync(int id)
-        {
-            //security check
-            await CheckWriteAccessToQuestion(id);
-
-            Question question = await _context.FindAsync<Question>(id);
-            if(question.Status != QuestionStatus.Created)
-            {
-                new CraniumException($"Question #{id} is not in state created.");
-            }
-            question.Status = QuestionStatus.Released;
-
-            IList<Question> previousQuestions = await _context.Questions
-                .Where(x => x.IdContainer == question.IdContainer)
-                .Where(x => x.Status == QuestionStatus.Released)
-                .Where(x => x.Id != id)
-                .Include(x => x.RelTags)
-                .ToListAsync();
-
-            TagDto deprecatedTag = await _tagService.GetSpecialTagAsync(SpecialTag.Deprecated);
-            Tag deprecatedTagEntity = await _context.FindAsync<Tag>(deprecatedTag.Id);
-
-            foreach (Question previousQuestion in previousQuestions)
-            {
-                previousQuestion.Status = QuestionStatus.Obsolete;
-                if (!previousQuestion.RelTags.Any(x => x.IdTag == deprecatedTag.Id))
-                {
-                    RelQuestionTag relQuestionTag = new RelQuestionTag
-                    {
-                        Question = previousQuestion,
-                        Tag = deprecatedTagEntity,                          
-                    };                   
-                    await _context.RelQuestionTags.AddAsync(relQuestionTag);                   
-                }               
-            }
-            
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task<int> VersionQuestionAsync(int id)
-        {
-            //security check
-            await CheckWriteAccessToQuestion(id);
-
-            Question questionSourceEntity = await _context.FindAsync<Question>(id);
-            if (questionSourceEntity.Status != QuestionStatus.Released)
-            {
-                new CraniumException($"Question #{id} is not in state released.");
-            }
-            QuestionDto questionDto = await CreateQuestionDtoCopy(questionSourceEntity.Id);
-
-            //Create new Question
-            Question newQuestion = new Question();
-            newQuestion.Container = questionSourceEntity.Container;
-            newQuestion.IdContainer = questionSourceEntity.IdContainer;
-            newQuestion.User = questionSourceEntity.User;
-            newQuestion.IdQuestionCopySource = id;
-            CopyData(questionDto, newQuestion);
-            
-            await _context.Questions.AddAsync(newQuestion);
-            await SaveChangesAsync();
-
-            //Copy all data                    
-            questionDto.Id = newQuestion.Id;
-            await UpdateQuestionAsync(questionDto);
-
-            return newQuestion.Id;
-        }
-
-        private async Task<QuestionDto> CreateQuestionDtoCopy(int id)
-        {
-            QuestionDto questionDto = await GetQuestionAsync(id);
-            questionDto.Status = (int)QuestionStatus.Created;
-            foreach (QuestionOptionDto option in questionDto.Options)
-            {
-                option.Id = 0;
-            }
-            questionDto.Tags = questionDto.Tags.Where(x => x.IdTagType == (int)TagType.Standard)
-                .ToList();
-            questionDto.Id = 0;
-            return questionDto;
-        }
-       
+        }       
     }
 }

@@ -116,6 +116,7 @@ namespace cran
             services.AddScoped<ISecurityService, SecurityService>();
             services.AddScoped<IBinaryService, BinaryService>();
             services.AddScoped<IQuestionService, QuestionService>();
+            services.AddScoped<IVersionService, VersionService>();
             services.AddScoped<ITagService, TagService>();
             services.AddScoped<ICourseService, CourseService>();
             services.AddScoped<ICommentsService, CommentsService>();

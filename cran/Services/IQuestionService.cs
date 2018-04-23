@@ -9,13 +9,11 @@ namespace cran.Services
         Task<int> InsertQuestionAsync(QuestionDto question);
         Task UpdateQuestionAsync(QuestionDto question);
         Task DeleteQuestionAsync(int idQuestion);
+        Task CheckWriteAccessToQuestion(int idQuestion);
         Task<PagedResultDto<QuestionListEntryDto>> GetMyQuestionsAsync(int page);
         Task<QuestionDto> GetQuestionAsync(int id);
         Task<PagedResultDto<QuestionListEntryDto>> SearchForQuestionsAsync(SearchQParametersDto parameters);
-        Task<ImageDto> AddImageAsync(ImageDto imageDto);
-        Task<int> CopyQuestionAsync(int id);
-        Task AcceptQuestionAsync(int id);
-        Task<int> VersionQuestionAsync(int id);        
+        Task<ImageDto> AddImageAsync(ImageDto imageDto);                    
     }
 
 }

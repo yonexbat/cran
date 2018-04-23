@@ -28,11 +28,13 @@ namespace cran.Controllers
         private readonly ICourseInstanceService _courseInstanceService;
         private readonly ITextService _textService;
         private readonly IExportService _exportService;
+        private readonly IVersionService _versionService;
         private const string OkReturnString = "Ok";
 
         public DataController(ISecurityService securityService,
             IBinaryService binaryService,
             IQuestionService questionService,
+            IVersionService versionService,
             ITagService tagService,
             ICourseService courseService,
             ICommentsService commentsService,
@@ -51,6 +53,7 @@ namespace cran.Controllers
             _courseInstanceService = courseInstanceService;
             _textService = textService;
             _exportService = exportService;
+            _versionService = versionService;
         }
 
         #region QuestionService
@@ -66,12 +69,6 @@ namespace cran.Controllers
         {
             await _questionService.DeleteQuestionAsync(id);
             return Json(OkReturnString);
-        }
-
-        [HttpPost("[action]")]
-        public async Task<int> CopyQuestion([FromBody] int id)
-        {
-            return await _questionService.CopyQuestionAsync(id);
         }
 
         [HttpGet("[action]/{id}")]
@@ -107,20 +104,7 @@ namespace cran.Controllers
         {
             return await _questionService.AddImageAsync(image);
         }
-
-        [HttpPost("[action]")]
-        public async Task<JsonResult> AcceptQuestion([FromBody]int id)
-        {
-            await _questionService.AcceptQuestionAsync(id);
-            return Json(OkReturnString);
-        }
-
-        [HttpPost("[action]")]
-        public async Task<int> VersionQuestion([FromBody]int id)
-        {
-            return await _questionService.VersionQuestionAsync(id);
-        }
-
+       
         #endregion
 
         #region TagService
@@ -381,6 +365,28 @@ namespace cran.Controllers
             Stream stream = await _exportService.Export();
             return File(stream, "application/zip", $"export_{DateTime.Now.ToString("yyyy_MM_dd_HH:mm")}.zip");
         }
+        #endregion
+
+        #region VersionService
+        [HttpPost("[action]")]
+        public async Task<int> CopyQuestion([FromBody] int id)
+        {
+            return await _versionService.CopyQuestionAsync(id);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<int> VersionQuestion([FromBody]int id)
+        {
+            return await _versionService.VersionQuestionAsync(id);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<JsonResult> AcceptQuestion([FromBody]int id)
+        {
+            await _versionService.AcceptQuestionAsync(id);
+            return Json(OkReturnString);
+        }
+
         #endregion
     }
 }
