@@ -133,7 +133,9 @@ namespace cran.tests.Infra
 
         public void AddQuestionService()
         {
-            _dependencyMap[typeof(ICacheService)] = GetService<CacheService>();
+            ICacheService cacheService = GetService<CacheService>();
+            cacheService.Clear();
+            _dependencyMap[typeof(ICacheService)] = cacheService;
             _dependencyMap[typeof(ITagService)] = GetService<TagService>();
             _dependencyMap[typeof(ICommentsService)] = GetService<CommentsService>();
             _dependencyMap[typeof(IQuestionService)] = GetService<QuestionService>();

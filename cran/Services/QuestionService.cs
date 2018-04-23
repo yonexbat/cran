@@ -390,13 +390,7 @@ namespace cran.Services
                     ShortDescEn = relTag.TagShortDescEn,
                 });
             }
-
-            //Deprecated Tag.
-            TagDto deprecatedTag = await _tagService.GetSpecialTagAsync(SpecialTag.Deprecated);
-            foreach(QuestionListEntryDto questionListentry in result.Where(x => x.Status == (int) QuestionStatus.Obsolete))
-            {
-                questionListentry.Tags.Add(deprecatedTag);
-            }
+           
 
             return result;
         }
@@ -427,18 +421,24 @@ namespace cran.Services
                 .Where(x => x.IdContainer == question.IdContainer)
                 .Where(x => x.Status == QuestionStatus.Released)
                 .Where(x => x.Id != id)
+                .Include(x => x.RelTags)
                 .ToListAsync();
 
-            foreach(Question previousQuestion in previousQuestions)
+            TagDto deprecatedTag = await _tagService.GetSpecialTagAsync(SpecialTag.Deprecated);
+            Tag deprecatedTagEntity = await _context.FindAsync<Tag>(deprecatedTag.Id);
+
+            foreach (Question previousQuestion in previousQuestions)
             {
                 previousQuestion.Status = QuestionStatus.Obsolete;
-                TagDto deprecatedTag = await _tagService.GetSpecialTagAsync(SpecialTag.Deprecated);
-                RelQuestionTag relQuestionTag = new RelQuestionTag
+                if (!previousQuestion.RelTags.Any(x => x.IdTag == deprecatedTag.Id))
                 {
-                    IdQuestion = previousQuestion.Id,
-                    IdTag = deprecatedTag.Id,
-                };
-                _context.RelQuestionTags.Add(relQuestionTag);
+                    RelQuestionTag relQuestionTag = new RelQuestionTag
+                    {
+                        Question = previousQuestion,
+                        Tag = deprecatedTagEntity,                          
+                    };                   
+                    await _context.RelQuestionTags.AddAsync(relQuestionTag);                   
+                }               
             }
             
             await _context.SaveChangesAsync();
@@ -464,7 +464,7 @@ namespace cran.Services
             newQuestion.IdQuestionCopySource = id;
             CopyData(questionDto, newQuestion);
             
-            _context.Questions.Add(newQuestion);
+            await _context.Questions.AddAsync(newQuestion);
             await SaveChangesAsync();
 
             //Copy all data                    

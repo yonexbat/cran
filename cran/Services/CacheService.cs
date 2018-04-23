@@ -11,7 +11,10 @@ namespace cran.Services
 
         private static IDictionary<string, object> _entries = new ConcurrentDictionary<string, object>();
 
-
+        public void Clear()
+        {
+            _entries.Clear();
+        }
 
         public async Task<T> GetEntryAsync<T>(string key, Func<Task<T>> func)
         {
