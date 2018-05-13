@@ -19,7 +19,7 @@
             <button class="btn btn-default" 
                     type="button" 
                     (click)="showQuestion(item)"
-                    title="{{ls.label('view')}}">               
+                    [appTooltip] = "'view'">               
                 <app-icon [icon]="'info'"></app-icon>
             </button>
         </span>
