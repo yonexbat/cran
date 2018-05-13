@@ -16,7 +16,7 @@ import {Text} from '../model/text';
 })
 export class ManageTextComponent implements OnInit {
 
-  private text: Text = new Text();
+  public text: Text = new Text();
   public actionInProgress = false;
   @ViewChild('statusMessage') statusMessage: StatusMessageComponent;
 
@@ -24,7 +24,7 @@ export class ManageTextComponent implements OnInit {
   private router: Router,
   private activeRoute: ActivatedRoute,
   private notificationService: NotificationService,
-  private ls: LanguageService) {
+  public ls: LanguageService) {
     this.activeRoute.paramMap.subscribe((params: ParamMap)  => {
       const id = params.get('id');
       this.handleRouteChanged(+id);
@@ -45,7 +45,7 @@ export class ManageTextComponent implements OnInit {
     this.actionInProgress = false;
   }
 
-  private async save(): Promise<void> {
+  public async save(): Promise<void> {
     this.actionInProgress = true;
 
       // save current question

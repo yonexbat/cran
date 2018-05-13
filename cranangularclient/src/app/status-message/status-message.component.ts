@@ -1,4 +1,5 @@
-import { Component, OnInit, trigger, state, animate, transition, style } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import {trigger, state, animate, transition, style} from '@angular/animations';
 import {LanguageService} from '../language.service';
 
 @Component({
@@ -17,7 +18,7 @@ import {LanguageService} from '../language.service';
 })
 export class StatusMessageComponent implements OnInit {
 
-  private messageVisible = false;
+  public messageVisible = false;
   private visibility = 'hidden';
   private message: string;
   private clazzes: string;

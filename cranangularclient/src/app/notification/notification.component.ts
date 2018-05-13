@@ -10,11 +10,11 @@ import {NotificationEvent, NotificationType} from '../model/notificationEvent';
 })
 export class NotificationComponent implements OnInit {
 
-  private message  = '';
-  private isError = false;
-  private isInfo = false;
-  private isWarn = false;
-  private isLoading = false;
+  public message  = '';
+  public isError = false;
+  public isInfo = false;
+  public isWarn = false;
+  public isLoading = false;
 
   constructor(private notificationService: NotificationService) { }
 
@@ -22,7 +22,7 @@ export class NotificationComponent implements OnInit {
     this.notificationService.on().subscribe((res: NotificationEvent) => this.notificationReceived(res));
   }
 
-  private close() {
+  public close() {
     this.isError = false;
     this.isInfo = false;
     this.isWarn = false;

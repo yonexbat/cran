@@ -17,7 +17,7 @@ import {ConfirmService} from '../confirm.service';
 })
 export class CommentsComponent implements OnInit {
 
-  private comments: PagedResult<Comment>;
+  public comments: PagedResult<Comment>;
   private comment: Comment;
 
 
@@ -25,7 +25,7 @@ export class CommentsComponent implements OnInit {
     private notificationService: NotificationService,
     private router: Router,
     private activeRoute: ActivatedRoute,
-    private ls: LanguageService,
+    public ls: LanguageService,
     private confirmService: ConfirmService) {
       this.comment = new Comment();
       this.comment.commentText = '';
@@ -69,7 +69,7 @@ export class CommentsComponent implements OnInit {
     }
   }
 
-  private async pageSelected(page: number): Promise<void> {
+  public async pageSelected(page: number): Promise<void> {
     this.getCommentsPage(page);
   }
 

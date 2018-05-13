@@ -1,12 +1,8 @@
 import { Component, OnInit, Input, Output, Inject, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable, Subject, of } from 'rxjs';
 
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/switchMap';
+
+import { switchMap, debounceTime, take, distinctUntilChanged, catchError } from 'rxjs/operators';
 
 
 import {Question} from '../model/question';
@@ -22,7 +18,7 @@ import {NotificationService} from '../notification.service';
 })
 export class TagFinderComponent implements OnInit {
 
-  private tags: Observable<Tag[]>;
+  public tags: Observable<Tag[]>;
   private searchTerms = new Subject<string>();
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
@@ -39,21 +35,19 @@ export class TagFinderComponent implements OnInit {
 
   @Output() public tagSelectionChanged = new EventEmitter<void>();
 
-  private searchText = '';
+  public searchText = '';
 
   ngOnInit() {
      this.tags = this.searchTerms
-      .debounceTime(300)        // wait 300ms after each keystroke before considering the term
-      .distinctUntilChanged()   // ignore if next search term is same as previous
-      .switchMap(term => term   // switch to new observable each time the term changes
-        // return the http search observable
-        ? this.cranDataService.findTags(term)
-        // or the observable of empty heroes if there was no search term
-        : Observable.of<Tag[]>([]))
-      .catch(error => {
-        this.notificationService.emitError(error);
-        return Observable.of<Tag[]>([]);
-      });
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap(term => term  ? this.cranDataService.findTags(term) : of<Tag[]>([])),
+        catchError(error => {
+          this.notificationService.emitError(error);
+          return of<Tag[]>([]);
+        })
+      );
   }
 
   public search(term: string) {

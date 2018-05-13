@@ -18,13 +18,13 @@ import {PagedResult} from '../model/pagedresult';
 })
 export class QuestionListComponent implements OnInit {
 
-  private pagedResult: PagedResult<QuestionListEntry> = new PagedResult<QuestionListEntry>();
+  public pagedResult: PagedResult<QuestionListEntry> = new PagedResult<QuestionListEntry>();
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
     private router: Router,
     private notificationService: NotificationService,
     private confirmService: ConfirmService,
-    private ls: LanguageService) { }
+    public ls: LanguageService) { }
 
   ngOnInit() {
     this.loadQuestions(0);
@@ -56,7 +56,7 @@ export class QuestionListComponent implements OnInit {
     }
   }
 
-  private pageSelected(pageNumber: number) {
+  public pageSelected(pageNumber: number) {
     this.loadQuestions(pageNumber);
   }
 }

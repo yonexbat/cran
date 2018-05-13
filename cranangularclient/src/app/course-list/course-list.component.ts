@@ -19,7 +19,7 @@ import {PagedResult} from '../model/pagedresult';
 })
 export class CourseListComponent implements OnInit {
 
-  private pagedResult: PagedResult<Course> = new PagedResult<Course>();
+  public pagedResult: PagedResult<Course> = new PagedResult<Course>();
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
     private router: Router,
@@ -41,7 +41,7 @@ export class CourseListComponent implements OnInit {
     }
   }
 
-  private pageSelected(pageNumber: number) {
+  public pageSelected(pageNumber: number) {
     this.getCourses(pageNumber);
   }
 

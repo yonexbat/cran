@@ -26,7 +26,7 @@ export class AskQuestionComponent implements OnInit {
   @ViewChild('comments') private commentsControl: CommentsComponent;
 
   private checkShown: boolean;
-  private questionToAsk: QuestionToAsk;
+  public questionToAsk: QuestionToAsk;
   private remainingQuestions: number[];
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,

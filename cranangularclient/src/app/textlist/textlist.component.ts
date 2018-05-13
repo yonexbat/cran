@@ -17,15 +17,15 @@ import {PagedResult} from '../model/pagedresult';
 })
 export class TextlistComponent implements OnInit {
 
-  private pagedResult: PagedResult<Text> = new PagedResult<Text>();
-  private search: SearchText = new SearchText();
+  public pagedResult: PagedResult<Text> = new PagedResult<Text>();
+  public search: SearchText = new SearchText();
   private lastParams: ParamMap;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
   private router: Router,
   private activeRoute: ActivatedRoute,
   private notificationService: NotificationService,
-  private ls: LanguageService) {
+  public ls: LanguageService) {
     this.activeRoute.queryParams.subscribe((params: ParamMap)  => {
       this.handleRouteChanged(params);
     });
@@ -52,7 +52,7 @@ export class TextlistComponent implements OnInit {
     }
   }
 
-  searchTexts(pageNumber: number) {
+  private searchTexts(pageNumber: number) {
     const navigationExtras: NavigationExtras = {
       queryParams: {
          pageNumber: pageNumber,

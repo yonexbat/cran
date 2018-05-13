@@ -17,7 +17,7 @@ export class ConfirmComponent implements OnInit {
   text = '';
   promiseResolver: any;
 
-  constructor(private ls: LanguageService,
+  constructor(public ls: LanguageService,
     private confirmService: ConfirmService) {
   }
 
@@ -31,11 +31,11 @@ export class ConfirmComponent implements OnInit {
     $('#confirmDialog').modal('show');
   }
 
-  private ok() {
+  public ok() {
     this.confirmService.ok();
   }
 
-  private nok() {
+  public nok() {
     this.confirmService.nok();
   }
 

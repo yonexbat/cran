@@ -18,12 +18,12 @@ import {PagedResult} from '../model/pagedresult';
 })
 export class CourseInstanceListComponent implements OnInit {
 
-  private pagedResult: PagedResult<CourseInstanceListEntry> = new PagedResult<CourseInstanceListEntry>();
+  public pagedResult: PagedResult<CourseInstanceListEntry> = new PagedResult<CourseInstanceListEntry>();
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
     private router: Router,
     private notificationService: NotificationService,
-    private ls: LanguageService,
+    public ls: LanguageService,
     private confirmService: ConfirmService,
     private datePipe: DatePipe) { }
 

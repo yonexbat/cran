@@ -17,15 +17,15 @@ import {ConfirmService} from '../confirm.service';
 })
 export class SearchQuestionsComponent implements OnInit {
 
-  private pagedResult: PagedResult<QuestionListEntry> = new PagedResult<QuestionListEntry>();
-  private search = new SearchQParameters();
+  public pagedResult: PagedResult<QuestionListEntry> = new PagedResult<QuestionListEntry>();
+  public search = new SearchQParameters();
   private lastParams: ParamMap;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
     private router: Router,
     private activeRoute: ActivatedRoute,
     private notificationService: NotificationService,
-    private ls: LanguageService,
+    public ls: LanguageService,
     private confirmService: ConfirmService) {
 
       this.activeRoute.queryParams.subscribe((params: ParamMap)  => {
@@ -111,7 +111,7 @@ export class SearchQuestionsComponent implements OnInit {
     this.searchQuestions(pageNumber);
   }
 
-  private executeSearch() {
+  public executeSearch() {
     this.searchQuestions(0);
   }
 

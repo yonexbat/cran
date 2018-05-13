@@ -22,7 +22,7 @@ export class ResultListComponent implements OnInit {
     private router: Router,
     private activeRoute: ActivatedRoute,
     private notificationService: NotificationService,
-    private ls: LanguageService) {
+    public ls: LanguageService) {
 
       this.activeRoute.paramMap.subscribe((params: ParamMap)  => {
         const id = params.get('id');
@@ -37,7 +37,7 @@ export class ResultListComponent implements OnInit {
     this.router.navigate(['/askquestion', result.idCourseInstanceQuestion]);
   }
 
-  private async startCourse(): Promise<void> {
+  public async startCourse(): Promise<void> {
     try {
       this.notificationService.emitLoading();
       const courseInstance = await this.cranDataService.startCourse(this.result.idCourse);

@@ -21,7 +21,7 @@ export class ViewQuestionComponent implements OnInit {
   @ViewChild('comments') comments: CommentsComponent;
   @ViewChild('versions') versions: VersionsComponent;
 
-  private question: Question;
+  public question: Question;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
     private router: Router,

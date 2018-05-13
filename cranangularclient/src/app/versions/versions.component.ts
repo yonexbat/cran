@@ -22,7 +22,7 @@ declare var $: any;
 })
 export class VersionsComponent implements OnInit {
 
-  private pagedResult: PagedResult<VersionInfo> = new PagedResult<VersionInfo>();
+  public pagedResult: PagedResult<VersionInfo> = new PagedResult<VersionInfo>();
   private idQuestion: number;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
@@ -30,7 +30,7 @@ export class VersionsComponent implements OnInit {
   private activeRoute: ActivatedRoute,
   private notificationService: NotificationService,
   private confirmService: ConfirmService,
-  private ls: LanguageService) { }
+  public ls: LanguageService) { }
 
   ngOnInit() {
   }
@@ -41,7 +41,7 @@ export class VersionsComponent implements OnInit {
     $('#versions').modal('show');
   }
 
-  private async pageSelected(page: number): Promise<void> {
+  public async pageSelected(page: number): Promise<void> {
     await this.getVersions(page);
   }
 

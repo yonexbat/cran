@@ -37,7 +37,7 @@ export class ManageQuestionComponent implements OnInit {
     private router: Router,
     private activeRoute: ActivatedRoute,
     private notificationService: NotificationService,
-    private ls: LanguageService,
+    public ls: LanguageService,
     private confirmService: ConfirmService) {
 
         this.activeRoute.paramMap.subscribe((params: ParamMap)  => {
@@ -61,7 +61,7 @@ export class ManageQuestionComponent implements OnInit {
   ngOnInit() {
   }
 
-  private async save(): Promise<void> {
+  public async save(): Promise<void> {
 
     this.actionInProgress = true;
 
@@ -107,7 +107,7 @@ export class ManageQuestionComponent implements OnInit {
     this.actionInProgress = false;
   }
 
-  private getSaveButtonText(): string  {
+  public getSaveButtonText(): string  {
     if (this.question.id > 0) {
       return this.ls.label('save');
     } else {
@@ -115,7 +115,7 @@ export class ManageQuestionComponent implements OnInit {
     }
   }
 
-  private getHeadingText(): string {
+  public getHeadingText(): string {
     if (this.question.id > 0) {
       return this.ls.label('editquestion', String(this.question.id ));
     } else {
@@ -127,12 +127,12 @@ export class ManageQuestionComponent implements OnInit {
     this.question.options.splice(index, 1);
   }
 
-  private addOpton() {
+  public addOption() {
     const option = new QuestionOption();
     this.question.options.push(option);
   }
 
-  private async showPreview() {
+  public async showPreview() {
     if (this.question.id > 0) {
       await this.save();
       this.router.navigate(['/viewquestion', this.question.id]);
@@ -141,7 +141,7 @@ export class ManageQuestionComponent implements OnInit {
     }
   }
 
-  private async addImages(images: Binary[]) {
+  public async addImages(images: Binary[]) {
     for ( let i = 0; i < images.length; i++) {
       const binary: Binary = images[i];
       const image = new Image();
@@ -157,11 +157,11 @@ export class ManageQuestionComponent implements OnInit {
     }
   }
 
-  private addImagesError(error: string) {
+  public addImagesError(error: string) {
     this.notificationService.emitError(error);
   }
 
-  private onRemoveImage(image: Image) {
+  public onRemoveImage(image: Image) {
     const index = this.question.images.indexOf(image);
     this.question.images.splice(index, 1);
   }

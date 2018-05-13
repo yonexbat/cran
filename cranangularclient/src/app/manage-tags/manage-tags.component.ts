@@ -18,15 +18,15 @@ import {ConfirmService} from '../confirm.service';
 })
 export class ManageTagsComponent implements OnInit {
 
-  private search: SearchTags = new SearchTags();
+  public search: SearchTags = new SearchTags();
   private lastParams: ParamMap;
-  private pagedResult: PagedResult<Tag> = new PagedResult<Tag>();
+  public pagedResult: PagedResult<Tag> = new PagedResult<Tag>();
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
     private router: Router,
     private activeRoute: ActivatedRoute,
     private notificationService: NotificationService,
-    private ls: LanguageService,
+    public ls: LanguageService,
     private confirmService: ConfirmService) {
     this.activeRoute.queryParams.subscribe((params: ParamMap)  => {
       this.handleRouteChanged(params);
@@ -64,7 +64,7 @@ export class ManageTagsComponent implements OnInit {
     this.router.navigate(['/managetags'], navigationExtras);
   }
 
-  private executeSearch() {
+  public executeSearch() {
     this.searchTags(0);
   }
 

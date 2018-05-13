@@ -1,6 +1,6 @@
 import { Injectable, InjectionToken  } from '@angular/core';
 import { Headers, Http, RequestOptionsArgs } from '@angular/http';
-import 'rxjs/add/operator/toPromise';
+
 
 import {Course} from './model/course';
 import {Question} from './model/question';

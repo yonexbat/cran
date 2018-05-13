@@ -28,7 +28,7 @@ export class ManageCourseComponent implements OnInit {
     private router: Router,
     private activeRoute: ActivatedRoute,
     private notificationService: NotificationService,
-    private ls: LanguageService) {
+    public ls: LanguageService) {
     this.activeRoute.paramMap.subscribe((params: ParamMap)  => {
       const id = params.get('id');
       this.handleRouteChanged(+id);
@@ -52,7 +52,7 @@ export class ManageCourseComponent implements OnInit {
     this.actionInProgress = false;
   }
 
-  private getSaveButtonText(): string  {
+  public getSaveButtonText(): string  {
     if (this.course.id > 0) {
       return this.ls.label('save');
     } else {
@@ -60,7 +60,7 @@ export class ManageCourseComponent implements OnInit {
     }
   }
 
-  private getHeadingText(): string {
+  public getHeadingText(): string {
     if (this.course.id > 0) {
       return this.ls.label('editcourse', String(this.course.id ));
     } else {
@@ -68,7 +68,7 @@ export class ManageCourseComponent implements OnInit {
     }
   }
 
-  private async save(): Promise<void> {
+  public async save(): Promise<void> {
     this.actionInProgress = true;
 
       // save current question

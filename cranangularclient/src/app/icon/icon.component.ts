@@ -16,7 +16,7 @@ export class IconComponent implements OnInit {
   ngOnInit() {
   }
 
-  private get internalIcon(): string {
+  public get internalIcon(): string {
     let internalIcon = 'fa-bug';
     switch (this.icon) {
       case 'edit':

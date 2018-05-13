@@ -36,7 +36,7 @@ export class QuestionListItemComponent implements OnInit {
   }
 
   @Input()
-  private item: QuestionListEntry;
+  public item: QuestionListEntry;
 
   @Output()
   onItemDeletedClick = new EventEmitter<QuestionListEntry>();
@@ -50,7 +50,7 @@ export class QuestionListItemComponent implements OnInit {
   constructor(private router: Router,
     private ls: LanguageService) { }
 
-  private itemDelete() {
+  public itemDelete() {
     this.onItemDeletedClick.emit(this.item);
   }
 

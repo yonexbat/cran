@@ -12,12 +12,12 @@ import {LanguageService} from '../language.service';
 })
 export class MenuComponent implements OnInit {
 
-  private isAdmin = false;
+  public isAdmin = false;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN)
     private cranDataService: ICranDataService,
     private notificationService: NotificationService,
-    private ls: LanguageService) { }
+    public ls: LanguageService) { }
 
   ngOnInit() {
     this.setRoles();

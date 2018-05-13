@@ -12,7 +12,7 @@ declare var $: any;
 })
 export class QuestionPreviewComponent implements OnInit {
 
-  constructor(private ls: LanguageService) { }
+  constructor(public ls: LanguageService) { }
 
   public question: Question;
 
