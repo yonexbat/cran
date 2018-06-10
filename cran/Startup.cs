@@ -84,7 +84,8 @@ namespace cran
             string connString = Configuration["ConnectionString"];
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connString));
+                options.UseSqlServer(connString)
+                .UseLazyLoadingProxies());
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()

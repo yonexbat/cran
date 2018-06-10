@@ -47,6 +47,7 @@ namespace cran.tests.Infra
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
               .UseInMemoryDatabase(databaseName: "CraniumInMemoryContext")
+              .UseLazyLoadingProxies()
               .Options;
 
             IPrincipal principal = GetSimple<IPrincipal>();
@@ -81,6 +82,7 @@ namespace cran.tests.Infra
             string connString = config["ConnectionString"];
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseSqlServer(connString)
+            .UseLazyLoadingProxies()
             .Options;
             ApplicationDbContext context = new ApplicationDbContext(options, principal);
             return context;

@@ -7,11 +7,11 @@ namespace cran.Model.Entities
 {
     public class CourseInstanceQuestionOption : CranEntity
     {
-        public int IdCourseInstanceQuestion { get; set; }
-        public int IdQuestionOption { get; set; }
-        public bool Correct { get; set; }
-        public bool Checked { get; set; }
-        public CourseInstanceQuestion CourseInstanceQuestion { get; set; }
-        public QuestionOption QuestionOption { get; set; }
+        public virtual int IdCourseInstanceQuestion { get; set; }
+        public virtual int IdQuestionOption { get; set; }
+        public virtual bool Correct { get; set; }
+        public virtual bool Checked { get; set; }
+        public virtual CourseInstanceQuestion CourseInstanceQuestion { get; set; }
+        public virtual QuestionOption QuestionOption { get; set; }
     }
 }
