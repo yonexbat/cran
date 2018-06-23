@@ -1,18 +1,18 @@
-import { Component, OnInit, Inject, ViewChild, } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap, } from '@angular/router';
+import {Component, OnInit, Inject, ViewChild, } from '@angular/core';
+import {Router, ActivatedRoute, ParamMap, } from '@angular/router';
 
-import { ICranDataService } from '../icrandataservice';
-import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
-import { LanguageService } from '../language.service';
-import { QuestionToAsk } from '../model/questiontoask';
-import { Question } from '../model/question';
-import { QuestionAnswer } from '../model/questionanswer';
-import { CourseInstance } from '../model/courseinstance';
-import { NotificationService } from '../notification.service';
-import { CommentsComponent } from '../comments/comments.component';
-import { ConfirmService } from '../confirm.service';
-import { QuestionType } from '../model/questiontype';
-import { QuestionOptionToAsk } from '../model/questionoptiontoask';
+import {ICranDataService} from '../icrandataservice';
+import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
+import {LanguageService} from '../language.service';
+import {QuestionToAsk} from '../model/questiontoask';
+import {Question} from '../model/question';
+import {QuestionAnswer} from '../model/questionanswer';
+import {CourseInstance} from '../model/courseinstance';
+import {NotificationService} from '../notification.service';
+import {CommentsComponent} from '../comments/comments.component';
+import {ConfirmService} from '../confirm.service';
+import {QuestionType} from '../model/questiontype';
+import {QuestionOptionToAsk} from '../model/questionoptiontoask';
 
 
 @Component({
@@ -27,7 +27,7 @@ export class AskQuestionComponent implements OnInit {
   private checkShown: boolean;
   public questionToAsk: QuestionToAsk;
   private remainingQuestions: number[];
-  public selectedOption: number;
+  public selectedOption: string;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
     private router: Router,
@@ -158,7 +158,7 @@ export class AskQuestionComponent implements OnInit {
       const firstChecked: QuestionOptionToAsk =  this.questionToAsk.options.find(x => x.isChecked);
       if (firstChecked != null) {
         const index: number = this.questionToAsk.options.indexOf(firstChecked);
-        this.selectedOption = index;
+        this.selectedOption = index.toString();
       }
     }
   }

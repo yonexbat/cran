@@ -84,8 +84,7 @@ namespace cran.Services
             {
                 QuestionDto dtoSource = (QuestionDto )dto;
                 Question entityDestination = (Question)entity;
-                entityDestination.Title = dtoSource.Title;
-                entityDestination.QuestionType = dtoSource.QuestonType;
+                entityDestination.Title = dtoSource.Title;                
                 entityDestination.Text = dtoSource.Text ?? string.Empty;
                 entityDestination.Explanation = dtoSource.Explanation;
                 entityDestination.Language = Enum.Parse<Language>(dtoSource.Language);

@@ -36,6 +36,7 @@ namespace cran.Services
             Container container = new Container();
             _context.Containers.Add(container);                        
             Question questionEntity = new Question();
+            questionEntity.QuestionType = QuestionType.MultipleChoice;
             CopyData(questionDto, questionEntity);
             questionEntity.User = await GetCranUserAsync();
             questionEntity.Container = container;
@@ -129,6 +130,10 @@ namespace cran.Services
             //Options
             IList<QuestionOption> questionOptionEntities = await _context.QuestionOptions.Where(x => x.IdQuestion == questionEntity.Id).ToListAsync();
             UpdateRelation(questionDto.Options, questionOptionEntities);
+
+            //QuestionType
+            questionEntity.QuestionType = questionDto.Options.Count(x => x.IsTrue) == 1 ?
+                QuestionType.SingleChoice : QuestionType.MultipleChoice;
 
             //Tags
             IList<RelQuestionTag> relTagEntities = await _context.RelQuestionTags

@@ -52,7 +52,7 @@ namespace cran.tests
             Assert.True(result3.NumQuestionsTotal > 0);
 
             QuestionToAskDto result4 = await courseInstanceService.GetQuestionToAskAsync(result.IdCourseInstanceQuestion);
-            Assert.Equal(QuestionType.MultipleChoice, result4.QuestonType);
+            Assert.Equal(QuestionType.MultipleChoice, result4.QuestionType);
 
             QuestionAnswerDto answer = new QuestionAnswerDto();
             answer.IdCourseInstanceQuestion = result.IdCourseInstanceQuestion;

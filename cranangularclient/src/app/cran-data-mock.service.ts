@@ -540,6 +540,9 @@ export class CranDataServiceMock implements ICranDataService {
         ota.isTrue = option.isTrue;
         questiontoask.options.push(ota);
       }
+      if (questiontoask.options.length > 0) {
+        questiontoask.options[0].isChecked = true;
+      }
       return questiontoask;
     });
   }
