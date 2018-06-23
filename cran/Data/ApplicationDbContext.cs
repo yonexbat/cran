@@ -307,6 +307,9 @@ namespace cran.Data
             typeBuilder.Property(q => q.Language)
             .HasColumnName("IdLanguage");
 
+            typeBuilder.Property(q => q.QuestionType)
+                .HasColumnName("IdQuestionType");
+
         }
 
         private void MapTag(EntityTypeBuilder<Tag> typeBuilder)

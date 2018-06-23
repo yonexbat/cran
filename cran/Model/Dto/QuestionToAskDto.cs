@@ -1,7 +1,5 @@
-﻿using System;
+﻿using cran.Model.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace cran.Model.Dto
 {
@@ -16,6 +14,7 @@ namespace cran.Model.Dto
         public bool CourseEnded { get; set; }
         public bool Answered { get; set; }
         public bool AnswerShown { get; set; }
+        public QuestionType QuestionType { get; set; }
 
 
         public IList<QuestionOptionToAskDto> Options = new List<QuestionOptionToAskDto>();

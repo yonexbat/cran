@@ -32,7 +32,7 @@ namespace cran.tests
             int courseId = courses.Data.Select(x => x.Id).First();
 
             //Act
-            var result = await courseInstanceService.StartCourseAsync(courseId);
+            CourseInstanceDto result = await courseInstanceService.StartCourseAsync(courseId);
             Assert.True(result.IdCourseInstance > 0);
             Assert.True(result.IdCourse == courseId);
             Assert.True(result.IdCourseInstanceQuestion > 0);
@@ -52,6 +52,7 @@ namespace cran.tests
             Assert.True(result3.NumQuestionsTotal > 0);
 
             QuestionToAskDto result4 = await courseInstanceService.GetQuestionToAskAsync(result.IdCourseInstanceQuestion);
+            Assert.Equal(QuestionType.MultipleChoice, result4.QuestonType);
 
             QuestionAnswerDto answer = new QuestionAnswerDto();
             answer.IdCourseInstanceQuestion = result.IdCourseInstanceQuestion;

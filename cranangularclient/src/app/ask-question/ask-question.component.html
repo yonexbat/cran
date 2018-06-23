@@ -56,14 +56,28 @@
              [class.crananswerwrong]="checkShown && !(option.isChecked == option.isTrue)">     
           
           <div class="form-group">
-            <label for="checkBox{{optionIndex}}">{{optionIndex+1}}</label>      
-            <input type="checkbox"
+            <label for="checkBox{{optionIndex}}">{{optionIndex+1}}</label> 
+            
+            <!-- Checkboxes for multiplechoice  -->
+            <input
+                *ngIf="isMultipleChoice"
+                type="checkbox"
                 class="checkbox"
                 [(ngModel)]="option.isChecked" 
                 id="checkBox{{optionIndex}}"
                 name="checkBox{{optionIndex}}"
                 #optionChecked="ngModel"
                 [disabled] = "checkShown">
+
+            <!-- Radiobuttons for single choice  -->
+            <input 
+                   *ngIf="isSingeleChoice"
+                   type="radio"
+                   name="radiobutton"
+                   value="{{optionIndex}}"
+                   [ngModel]="selectedOption"
+                   (change)="radioButtonChanged(optionIndex)"
+                   [disabled] = "checkShown" >          
             
             <app-icon [icon]="'ok'"  *ngIf="checkShown && option.isTrue"></app-icon>
             <app-icon [icon]="'nok'" *ngIf="checkShown && !option.isTrue"></app-icon>

@@ -56,6 +56,7 @@ namespace cran.Services
                     IdCourseInstance = x.CourseInstance.Id,
                     IdQuestion = x.Question.Id,
                     Text = x.Question.Text,
+                    QuestionType = x.Question.QuestionType,
                     CourseEnded = x.CourseInstance.EndedAt.HasValue,
                     NumCurrentQuestion = x.Number,
                     NumQuestions = x.CourseInstance.Course.NumQuestionsToAsk,
@@ -107,7 +108,7 @@ namespace cran.Services
                             {
                                 IdCourseInstanceQuestionOption = x.Id,
                                 Text = x.QuestionOption.Text,
-                                IsChecked = x.Checked,
+                                IsChecked = x.Checked,                                
                             }).ToListAsync();
 
 

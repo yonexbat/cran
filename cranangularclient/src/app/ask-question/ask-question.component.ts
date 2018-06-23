@@ -1,20 +1,19 @@
 import { Component, OnInit, Inject, ViewChild, } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap, } from '@angular/router';
 
-import {ICranDataService} from '../icrandataservice';
-import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
-import {LanguageService} from '../language.service';
-import {QuestionToAsk} from '../model/questiontoask';
-import {Question} from '../model/question';
-import {QuestionOption} from '../model/questionoption';
-import {StatusMessageComponent} from '../status-message/status-message.component';
-import {QuestionAnswer} from '../model/questionanswer';
-import {CourseInstance} from '../model/courseinstance';
-import {NotificationService} from '../notification.service';
-import {CommentsComponent} from '../comments/comments.component';
+import { ICranDataService } from '../icrandataservice';
+import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
+import { LanguageService } from '../language.service';
+import { QuestionToAsk } from '../model/questiontoask';
+import { Question } from '../model/question';
+import { QuestionAnswer } from '../model/questionanswer';
+import { CourseInstance } from '../model/courseinstance';
+import { NotificationService } from '../notification.service';
+import { CommentsComponent } from '../comments/comments.component';
 import { ConfirmService } from '../confirm.service';
-import { CourseInstanceListComponent } from '../course-instance-list/course-instance-list.component';
-import { QuestionSelectorInfo } from '../model/questionSelectorInfo';
+import { QuestionType } from '../model/questiontype';
+import { QuestionOptionToAsk } from '../model/questionoptiontoask';
+
 
 @Component({
   selector: 'app-ask-question',
@@ -28,6 +27,7 @@ export class AskQuestionComponent implements OnInit {
   private checkShown: boolean;
   public questionToAsk: QuestionToAsk;
   private remainingQuestions: number[];
+  public selectedOption: number;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
     private router: Router,
@@ -134,9 +134,10 @@ export class AskQuestionComponent implements OnInit {
       this.checkShown = false;
       this.notificationService.emitLoading();
       this.questionToAsk   = await this.cranDataServiceService.getQuestionToAsk(id);
-      let question: Question = null;
+      this.initRadioButtons();
+
       if (this.questionToAsk.courseEnded || this.questionToAsk.answerShown) {
-        question =  await this.cranDataServiceService.getQuestion(this.questionToAsk.idQuestion);
+        const question =  await this.cranDataServiceService.getQuestion(this.questionToAsk.idQuestion);
         await this.commentsControl.showComments(question.id);
         this.showSolution(question);
       } else {
@@ -150,6 +151,30 @@ export class AskQuestionComponent implements OnInit {
     } catch (error) {
       this.notificationService.emitError(error);
     }
+  }
+
+  private initRadioButtons() {
+    if (this.isSingeleChoice) {
+      const firstChecked: QuestionOptionToAsk =  this.questionToAsk.options.find(x => x.isChecked);
+      if (firstChecked != null) {
+        const index: number = this.questionToAsk.options.indexOf(firstChecked);
+        this.selectedOption = index;
+      }
+    }
+  }
+
+  public async radioButtonChanged(selectedIndex) {
+      for (let i = 0; i < this.questionToAsk.options.length; i++) {
+        this.questionToAsk.options[i].isChecked = selectedIndex === i;
+      }
+  }
+
+  get isMultipleChoice(): boolean {
+    return this.questionToAsk.questionType === QuestionType.MultipleChoice;
+  }
+
+  get isSingeleChoice(): boolean {
+    return this.questionToAsk.questionType === QuestionType.SingleChoice;
   }
 
 }

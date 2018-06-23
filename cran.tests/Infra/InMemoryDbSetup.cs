@@ -78,6 +78,7 @@ namespace cran.tests.Infra
                 Container = new Container() { },
                 Status = QuestionStatus.Released,
                 Language = Language.De,
+                QuestionType = QuestionType.MultipleChoice,
             };
             context.Questions.Add(question);
 

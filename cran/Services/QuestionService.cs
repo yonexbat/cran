@@ -61,6 +61,7 @@ namespace cran.Services
                 Id = questionEntity.Id,
                 Text = questionEntity.Text,
                 Title = questionEntity.Title,
+                QuestonType = questionEntity.QuestionType,
                 Explanation = questionEntity.Explanation,
                 Status = (int)questionEntity.Status,
                 Language = questionEntity.Language.ToString(),

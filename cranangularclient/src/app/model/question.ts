@@ -2,8 +2,8 @@ import {QuestionOption} from './questionoption';
 import {Tag} from './tag';
 import {Votes} from './votes';
 import {Image} from './image';
-import {LanguageInfo} from './languageInfo';
 import {QuestionStatus} from './questionstatus';
+import {QuestionType} from './questiontype';
 
 export class Question {
     public id: number;
@@ -17,4 +17,5 @@ export class Question {
     public tags: Tag[] = [];
     public images: Image[] = [];
     public votes: Votes;
+    public questionType: QuestionType.MultipleChoice;
 }

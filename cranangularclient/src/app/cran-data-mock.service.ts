@@ -29,6 +29,7 @@ import {Text} from './model/text';
 import {VersionInfo} from './model/versionInfo';
 import {VersionInfoParameters} from './model/versionInfoParameters';
 import {QuestionStatus} from './model/questionstatus';
+import {QuestionType} from './model/questiontype';
 
 
 @Injectable()
@@ -518,7 +519,9 @@ export class CranDataServiceMock implements ICranDataService {
         numCurrentQuestion: 3,
         question: undefined,
         answered: false,
-        answerShown: true,
+        answerShown: false,
+        questionType: QuestionType.SingleChoice,
+
         questionSelectors: [
           {answerShown: true, correct: true, number: 1, idCourseInstanceQuestion: 122},
           {answerShown: false, correct: null, number: 2, idCourseInstanceQuestion: 123},

@@ -39,6 +39,7 @@ namespace cran.tests
             question1.Status = QuestionStatus.Created;
             question1.User = await GetTestUserAsync(context);
             question1.Language = Language.De;
+            question1.QuestionType = QuestionType.SingleChoice;
             context.Questions.Add(question1);
                    
 
@@ -48,6 +49,7 @@ namespace cran.tests
             //Assert
             Question found = await context.FindAsync<Question>(question1.Id);
             Assert.NotNull(found);
+            Assert.Equal(QuestionType.SingleChoice, found.QuestionType);
 
             //Cleanup
             context.Remove(question1);

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using cran.Model.Entities;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace cran.Model.Dto
@@ -27,5 +28,7 @@ namespace cran.Model.Dto
         public IList<ImageDto> Images = new List<ImageDto>();
         
         public string Language { get;set; }
+
+        public QuestionType QuestonType { get; set; }
     }
 }
