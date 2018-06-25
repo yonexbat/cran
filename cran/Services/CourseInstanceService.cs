@@ -28,8 +28,12 @@ namespace cran.Services
 
         public async Task<CourseInstanceDto> StartCourseAsync(int courseId)
         {
+            
+
             Course courseEntity = await _context.FindAsync<Course>(courseId);
             CranUser cranUserEntity = await GetCranUserAsync();
+
+            await _dbLogService.LogMessageAsync($"Starting course {courseId}. Name: {courseEntity.Title}");
 
             CourseInstance courseInstanceEntity = new CourseInstance
             {
