@@ -9,31 +9,29 @@ namespace cran
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            CreateWebHostBuilder(args).Build().Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) 
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) 
         {
             IWebHostBuilder webHostBuilder = WebHost.CreateDefaultBuilder(args)
                .UseStartup<Startup>();
 
-            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-            var isDevelopment = environment == EnvironmentName.Development;
-
-            if (isDevelopment)
-            {
-                webHostBuilder.UseKestrel(options =>
-                {
-                    options.ConfigureEndpoints(5000);
-                });
-            }
-
-
-            IWebHost webHost = webHostBuilder.Build();
-
             
+           var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+           var isDevelopment = environment == EnvironmentName.Development;
 
-            return webHost;
+
+           if (isDevelopment)
+           {
+               webHostBuilder.UseKestrel(options =>
+               {
+                   options.ConfigureEndpoints(5000);
+               });
+           }
+
+            return webHostBuilder;
+           
         }
 
 

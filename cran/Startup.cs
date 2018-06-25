@@ -30,6 +30,7 @@ using cran.Middleware;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Rewrite;
 using System.Threading;
+using Microsoft.AspNetCore.Mvc;
 
 namespace cran
 {
@@ -61,7 +62,8 @@ namespace cran
             services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.AddMvc()               
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-                .AddDataAnnotationsLocalization();
+                .AddDataAnnotationsLocalization()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.Configure<RequestLocalizationOptions>(
                 opts =>
@@ -147,10 +149,14 @@ namespace cran
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+
+                //The HTTP Strict-Transport-Security response header (often abbreviated as HSTS)  
+                //lets a web site tell browsers that it should only be accessed using HTTPS, instead of using HTTP.
+                app.UseHsts();
             }
 
-            //Redirect to 
-            app.UseRewriter(new RewriteOptions().AddRedirectToHttps());
+            //Redirect to             
+            app.UseHttpsRedirection();
 
             //Static files
             app.UseStaticFiles();

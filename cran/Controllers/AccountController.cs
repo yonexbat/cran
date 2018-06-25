@@ -77,8 +77,10 @@ namespace cran.Controllers
 
         private async  Task<LoginViewModel> GetLoginVm()
         {
-            LoginViewModel vm = new LoginViewModel();
-            vm.ReturnUrl = Request.Query["ReturnUrl"];
+            LoginViewModel vm = new LoginViewModel
+            {
+                ReturnUrl = Request.Query["ReturnUrl"]
+            };
 
             //External Login Providers
             IEnumerable<AuthenticationScheme> providers = await _signInManager.GetExternalAuthenticationSchemesAsync();

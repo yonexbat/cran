@@ -18,9 +18,11 @@ namespace cran.Middleware
             options.Listen(address, port, listenOptions =>
             {
 
-                HttpsConnectionAdapterOptions httpOptions = new HttpsConnectionAdapterOptions();
-                httpOptions.ServerCertificate = GetHttpsCertificate();
-                httpOptions.ClientCertificateMode = ClientCertificateMode.NoCertificate;               
+                HttpsConnectionAdapterOptions httpOptions = new HttpsConnectionAdapterOptions
+                {
+                    ServerCertificate = GetHttpsCertificate(),
+                    ClientCertificateMode = ClientCertificateMode.NoCertificate
+                };
                 listenOptions.UseHttps(httpOptions);
             });
         }
