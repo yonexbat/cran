@@ -14,7 +14,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-[assembly: UserSecretsId("CRANSECRETS201707021036")]
 [assembly: CollectionBehavior(DisableTestParallelization = true)]
 
 namespace cran.tests.Infra
