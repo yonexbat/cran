@@ -1,7 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-/*
-  <app-icon [icon]="'edit'"></app-icon>
-*/
+
 @Component({
   selector: 'app-icon',
   templateUrl: './icon.component.html',

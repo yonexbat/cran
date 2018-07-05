@@ -9,6 +9,7 @@ describe('cran-angular-client App', () => {
 
   it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to app!');
+    const menu = page.getMenu();
+    expect(menu.then(x => x.length)).toBeGreaterThan(2);
   });
 });
