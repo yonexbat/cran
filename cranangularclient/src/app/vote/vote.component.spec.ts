@@ -18,6 +18,14 @@ describe('VoteComponent', () => {
   beforeEach(async(() => {
 
     const cranDataService = jasmine.createSpyObj('CranDataService', ['vote']);
+    const vote: Votes = {
+      idQuestion: 12,
+      downVotes: 1,
+      upVotes: 3,
+      myVote: 1,
+    };
+    cranDataService.vote.and.returnValue(Promise.resolve(vote));
+
     const notificationService = jasmine.createSpyObj('NotificationSercice', ['emitLoading', 'emitDone', 'emitError']);
 
     TestBed.configureTestingModule({
@@ -51,5 +59,17 @@ describe('VoteComponent', () => {
     const htmlElement: HTMLElement = debugElement.nativeElement;
     expect(htmlElement.innerText).toMatch(/2 4/i, '2 downvotes and 4 upvotes');
   });
+
+  it('upvote', async(() => {
+
+    component.upVote();
+
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      const debugElement: DebugElement = fixture.debugElement;
+      const htmlElement: HTMLElement = debugElement.nativeElement;
+      expect(htmlElement.innerText).toMatch(/1 3/i, '1 downvotes and 3 upvotes');
+    });
+  }));
 
 });

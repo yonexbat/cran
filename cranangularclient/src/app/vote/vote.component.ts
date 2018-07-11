@@ -20,7 +20,7 @@ export class VoteComponent implements OnInit {
   ngOnInit() {
   }
 
-  private async upVote(): Promise<void> {
+  public async upVote(): Promise<void> {
     if (this.votes.myVote === 1) {
       this.votes.myVote = 0;
     } else {
@@ -29,7 +29,7 @@ export class VoteComponent implements OnInit {
     this.vote();
   }
 
-  private async downVote(): Promise<void> {
+  public async downVote(): Promise<void> {
     if (this.votes.myVote === -1) {
       this.votes.myVote = 0;
     } else {
