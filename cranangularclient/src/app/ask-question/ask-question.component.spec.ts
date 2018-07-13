@@ -35,13 +35,6 @@ class StubIconComponent {
 class CommentsComponent {
 }
 
-/*
-StubVoteComponent
-@Component({selector: 'app-icon ', template: ''})
-class StubIconComponent {
-  @Input() public icon;
-}*/
-
 describe('AskQuestionComponent', () => {
   let component: AskQuestionComponent;
   let fixture: ComponentFixture<AskQuestionComponent>;
@@ -50,7 +43,6 @@ describe('AskQuestionComponent', () => {
     const cranDataService = jasmine.createSpyObj('CranDataService', ['vote']);
     const notificationService = jasmine.createSpyObj('NotificationService', ['emitLoading', 'emitDone', 'emitError']);
     const confirmationService = jasmine.createSpyObj('ConfirmService', ['some']);
-    const languageService = jasmine.createSpyObj('LanguageService', ['some']);
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, FormsModule],
@@ -58,10 +50,10 @@ describe('AskQuestionComponent', () => {
         StubTagsComponent, SafeHtmlPipe, StubAppImageListComponent,
         StubIconComponent, CommentsComponent],
       providers: [
+        LanguageService,
         { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },
         { provide: NotificationService, useValue: notificationService },
         { provide: ConfirmService, useValue: confirmationService },
-        { provide: LanguageService, useValue: languageService }
       ]
     })
     .compileComponents();

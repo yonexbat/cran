@@ -6,7 +6,7 @@ import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
 import {Votes} from '../model/votes';
 
-@Component({selector: 'app-icon ', template: ''})
+@Component({selector: 'app-icon', template: ''})
 class StubIconComponent {
   @Input() public icon;
 }
