@@ -7,7 +7,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
-import {SafeHtmlPipe} from '../save-html.pipe';
 import {ConfirmService} from '../confirm.service';
 import {LanguageService} from '../language.service';
 import {PagedResult} from '../model/pagedresult';
@@ -56,7 +55,6 @@ describe('CommentsComponent', () => {
   });
 
   it('should be created', () => {
-    /*
-    expect(component).toBeTruthy();*/
+    expect(component).toBeTruthy();
   });
 });
