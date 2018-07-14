@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConfirmComponent } from './confirm.component';
 import {ConfirmService} from '../confirm.service';
 import { LanguageService } from '../language.service';
+import { defer } from '../../../node_modules/@types/q';
 
 describe('ConfirmComponent', () => {
   let component: ConfirmComponent;
@@ -10,15 +11,12 @@ describe('ConfirmComponent', () => {
 
   beforeEach(async(() => {
 
-    const ls = new LanguageService();
-    const cs = new ConfirmService(ls);
-
     TestBed.configureTestingModule({
       imports: [],
       declarations: [ ConfirmComponent ],
       providers: [
-        {provide: LanguageService, useValue: ls},
-        {provide: ConfirmService, useValue: cs},
+        LanguageService,
+        ConfirmService,
       ],
     })
     .compileComponents();
@@ -33,4 +31,41 @@ describe('ConfirmComponent', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should show dialog', async(() => {
+    const confirmService = fixture.debugElement.injector.get(ConfirmService);
+    confirmService.confirm('show this', 'please show this message');
+    fixture.detectChanges();
+    const text = fixture.debugElement.nativeElement.textContent;
+    expect(text).toContain('show this', 'show this should be diplayed');
+  }));
+
+  it('press ok button', async(() => {
+    const confirmService = fixture.debugElement.injector.get(ConfirmService);
+    confirmService.confirm('show this', 'please show this message')
+      .then(() => {
+        expect(true).toBeTruthy('this method shall be called afer clicking ok button');
+      }).catch(() => {
+        expect(true).toBeFalsy('no fail expected');
+      });
+    fixture.detectChanges();
+    const okbutton = fixture.debugElement.nativeElement.querySelector('#confirmdialogokbutton');
+    okbutton.click();
+    fixture.detectChanges();
+  }));
+
+  it('press nok button', async(() => {
+    const confirmService = fixture.debugElement.injector.get(ConfirmService);
+    confirmService.confirm('show this', 'please show this message')
+      .then(() => {
+        expect(false).toBeTruthy('no then expected');
+      }).catch(() => {
+        expect(false).toBeFalsy('catch expected');
+      });
+    fixture.detectChanges();
+    const okbutton = fixture.debugElement.nativeElement.querySelector('#confirmdialognokbutton');
+    okbutton.click();
+    fixture.detectChanges();
+  }));
+
 });

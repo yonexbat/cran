@@ -7,7 +7,7 @@ import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
 import {ConfirmService} from '../confirm.service';
 import {LanguageService} from '../language.service';
-import {Tag} from '../model/tag';
+import {UserInfo} from '../model/userinfo';
 import {TooltipDirective} from '../tooltip.directive';
 
 
@@ -16,10 +16,17 @@ import { UserInfoComponent } from './user-info.component';
 describe('UserInfoComponent', () => {
   let component: UserInfoComponent;
   let fixture: ComponentFixture<UserInfoComponent>;
+  const userInfo: UserInfo = {
+    name: 'The beaty',
+    isAnonymous: false,
+  };
 
   beforeEach(async(() => {
 
-    const cranDataService = jasmine.createSpyObj('CranDataService', ['vote']);
+    const cranDataService = jasmine.createSpyObj('CranDataService', ['getUserInfo']);
+    cranDataService.getUserInfo.and.returnValue(Promise.resolve(userInfo));
+
+
     const notificationService = jasmine.createSpyObj('NotificationService', ['emitLoading', 'emitDone', 'emitError']);
     const confirmationService = jasmine.createSpyObj('ConfirmService', ['some']);
 
@@ -45,4 +52,23 @@ describe('UserInfoComponent', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should show username', async(async() => {
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const text = fixture.debugElement.nativeElement.querySelector('#spanuserinfoname').textContent;
+    expect(text).toContain(userInfo.name, 'username shall be displayed');
+  }));
+
+  it('shloud change language to English', async( async() => {
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const enButton = fixture.debugElement.nativeElement.querySelector('#userinfosetenbutton');
+    enButton.click();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(fixture.componentInstance.isEn).toBeTruthy('english expected');
+    const spanEnglish = fixture.debugElement.nativeElement.querySelector('.activeLanguage');
+    expect(spanEnglish.textContent).toContain('E', 'En should be bold');
+  }));
 });

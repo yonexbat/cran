@@ -1,16 +1,19 @@
 <span *ngIf="userInfo" class="navbar-brand">
  
-      <span  *ngIf="userInfo.isAnonymous === false">
+      <span  *ngIf="userInfo.isAnonymous === false"
+            id="spanuserinfoname">
             {{userInfo.name}}
       </span>
 
-      <span (click)= "setEn()" 
+      <span id="userinfosetenbutton"
+            (click)= "setEn()" 
             [class.activeLanguage]="isEn()"
             [appTooltip]="'english'">
             E
       </span>
 
-      <span (click)="setDe()"
+      <span id="userinfosetdebutton"
+            (click)="setDe()"
             [class.activeLanguage]="isDe()"
             [appTooltip]="'german'">
             D

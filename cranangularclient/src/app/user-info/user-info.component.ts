@@ -32,19 +32,19 @@ export class UserInfoComponent implements OnInit {
     }
   }
 
-  private setEn() {
+  public setEn() {
     this.ls.selectLanguage(LanguageInfo.En);
   }
 
-  private setDe() {
+  public setDe() {
     this.ls.selectLanguage(LanguageInfo.De);
   }
 
-  private isDe(): boolean {
+  public isDe(): boolean {
     return this.ls.getLanguage() === LanguageInfo.De;
   }
 
-  private isEn(): boolean {
+  public isEn(): boolean {
     return this.ls.getLanguage() === LanguageInfo.En;
   }
 
