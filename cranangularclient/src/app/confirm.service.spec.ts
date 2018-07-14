@@ -1,11 +1,11 @@
 import { TestBed, inject } from '@angular/core/testing';
-
 import { ConfirmService } from './confirm.service';
+import {LanguageService} from './language.service';
 
 describe('ConfirmService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ConfirmService]
+      providers: [LanguageService, ConfirmService]
     });
   });
 

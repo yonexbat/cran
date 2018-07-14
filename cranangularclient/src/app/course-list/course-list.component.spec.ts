@@ -1,8 +1,38 @@
 import { async, ComponentFixture, TestBed, inject, } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import { DebugElement, Component, Input, TemplateRef } from '@angular/core';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { CourseListComponent } from './course-list.component';
+import { TooltipDirective } from '../tooltip.directive';
+import {PagedResult} from '../model/pagedresult';
+import {Tag} from '../model/tag';
+import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
+import {NotificationService} from '../notification.service';
+import {LanguageService} from '../language.service';
+import {ConfirmService} from '../confirm.service';
+import {SafeHtmlPipe} from '../save-html.pipe';
+
+@Component({selector: 'app-icon', template: ''})
+class StubIconComponent {
+  @Input() public icon;
+}
+
+@Component({selector: 'app-tags', template: ''})
+class StubTagsComponent {
+  @Input() public tagList: Tag[] = [];
+  @Input() public isEditable = false;
+}
+
+@Component({selector: 'app-pager', template: ''})
+class StubPagerComponent {
+  @Input()
+  public itemTemplate: TemplateRef<any>;
+  @Input()
+  public pagedResult: PagedResult<any>;
+  @Input()
+  public nodatafoundmessage  = 'Keine Daten gefunden.';
+}
 
 describe('CourseListComponent', () => {
 
@@ -13,10 +43,21 @@ describe('CourseListComponent', () => {
 
 
   beforeEach(async(() => {
+
+    const cranDataService = jasmine.createSpyObj('CranDataService', ['vote']);
+    const notificationService = jasmine.createSpyObj('NotificationService', ['emitLoading', 'emitDone', 'emitError']);
+    const confirmationService = jasmine.createSpyObj('ConfirmService', ['some']);
+
     TestBed.configureTestingModule({
-      declarations: [ CourseListComponent ],
-      providers: [
-      ],
+      imports: [RouterTestingModule],
+      declarations: [ CourseListComponent, TooltipDirective,
+        StubIconComponent, StubTagsComponent, SafeHtmlPipe, StubPagerComponent],
+        providers: [
+          LanguageService,
+          { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },
+          { provide: NotificationService, useValue: notificationService },
+          { provide: ConfirmService, useValue: confirmationService },
+        ],
     })
     .compileComponents();
   }));
@@ -33,12 +74,5 @@ describe('CourseListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('It is listed', async(() => {
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-      const textContext = el.textContent;
-      expect(el.textContent).toContain('helo');
-    });
-  }));
 
 });
