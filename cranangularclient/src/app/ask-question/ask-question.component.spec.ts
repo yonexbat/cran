@@ -32,7 +32,7 @@ class StubIconComponent {
 }
 
 @Component({selector: 'app-comments', template: ''})
-class CommentsComponent {
+class StubCommentsComponent {
 }
 
 describe('AskQuestionComponent', () => {
@@ -48,7 +48,7 @@ describe('AskQuestionComponent', () => {
       imports: [RouterTestingModule, FormsModule],
       declarations: [ AskQuestionComponent,  StubVoteComponent,
         StubTagsComponent, SafeHtmlPipe, StubAppImageListComponent,
-        StubIconComponent, CommentsComponent],
+        StubIconComponent, StubCommentsComponent],
       providers: [
         LanguageService,
         { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },
