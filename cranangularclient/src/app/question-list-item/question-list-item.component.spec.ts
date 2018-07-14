@@ -13,6 +13,7 @@ import { QuestionListItemComponent } from './question-list-item.component';
 import {IconComponent} from '../icon/icon.component';
 import {Tag} from '../model/tag';
 import {TagsComponent} from '../tags/tags.component';
+import {QuestionListEntry} from '../model/questionlistentry';
 
 @Component({selector: 'app-tags', template: ''})
 class StubTagsComponent {
@@ -41,8 +42,15 @@ describe('QuestionListItemComponent', () => {
   }));
 
   beforeEach(() => {
+    const questionlistentry = new QuestionListEntry();
+    questionlistentry.id = 2;
+    questionlistentry.status = 1;
+    questionlistentry.tags = [{id: 2, description: 'Desc', idTagType: 1, name: 'Angular.io', shortDescDe: 'de', shortDescEn: 'en'}];
+
+
     fixture = TestBed.createComponent(QuestionListItemComponent);
     component = fixture.componentInstance;
+    component.item = questionlistentry;
     fixture.detectChanges();
   });
 
