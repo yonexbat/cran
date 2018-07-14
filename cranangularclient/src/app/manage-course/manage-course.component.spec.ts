@@ -8,7 +8,6 @@ import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
 import {ConfirmService} from '../confirm.service';
 import {LanguageService} from '../language.service';
-import {PagedResult} from '../model/pagedresult';
 import {Tag} from '../model/tag';
 
 @Component({selector: 'app-tag-finder', template: ''})
