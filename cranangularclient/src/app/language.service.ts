@@ -69,7 +69,7 @@ export class LanguageService {
     'deletequestion' : {valueDe : 'Frage löschen', valueEn : 'Delete question'},
     'deletequestionq' : {valueDe : 'Frage mit Id {0} löschen?', valueEn : 'Delete question with id {0}?'},
     'deletetag' : {valueDe : 'Tag löschen', valueEn : 'Delete tag'},
-    'deletetagq' : {valueDe : 'Tag {0} löschen?', valueEn : 'Delete tag {0}?'},   
+    'deletetagq' : {valueDe : 'Tag {0} löschen?', valueEn : 'Delete tag {0}?'},
     'copy' : {valueDe : 'Kopieren', valueEn : 'Copy'},
     'copyquestion' :  {valueDe : 'Frage kopieren', valueEn : 'Copy question'},
     'copyquestionq' :  {valueDe : 'Frage kopieren?', valueEn : 'Copy question?'},
