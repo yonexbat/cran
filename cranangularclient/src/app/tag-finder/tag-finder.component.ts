@@ -2,10 +2,9 @@ import { Component, OnInit, Input, Output, Inject, EventEmitter } from '@angular
 import { Observable, Subject, of } from 'rxjs';
 
 
-import { switchMap, debounceTime, take, distinctUntilChanged, catchError } from 'rxjs/operators';
+import { switchMap, debounceTime, distinctUntilChanged, catchError } from 'rxjs/operators';
 
 
-import {Question} from '../model/question';
 import {Tag} from '../model/tag';
 import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';

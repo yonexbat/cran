@@ -1,34 +1,41 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import { Component, Input, Output, EventEmitter, DebugElement, TemplateRef} from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
+import { cold, getTestScheduler } from 'jasmine-marbles';
 
 import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
 import {ConfirmService} from '../confirm.service';
 import {LanguageService} from '../language.service';
 import {Tag} from '../model/tag';
-import { TagFinderComponent } from './tag-finder.component';
+import {TagFinderComponent } from './tag-finder.component';
+import {TagsComponent} from '../tags/tags.component';
+import {TooltipDirective} from '../tooltip.directive';
+import {IconComponent} from '../icon/icon.component';
 
-@Component({selector: 'app-tags', template: ''})
-class StubTagsComponent {
-  @Input() public tagList: Tag[] = [];
-  @Input() public isEditable = false;
-}
 
 describe('TagFinderComponent', () => {
   let component: TagFinderComponent;
   let fixture: ComponentFixture<TagFinderComponent>;
+  let cranDataService;
 
   beforeEach(async(() => {
 
-    const cranDataService = jasmine.createSpyObj('CranDataService', ['vote']);
+    cranDataService = jasmine.createSpyObj('CranDataService', ['findTags']);
     const notificationService = jasmine.createSpyObj('NotificationService', ['emitLoading', 'emitDone', 'emitError']);
     const confirmationService = jasmine.createSpyObj('ConfirmService', ['some']);
 
+    const tagsFound: Tag[] = [
+      {id: 1, description: 'desc', name: 'angularcranium', idTagType: 2, shortDescDe: 'DescDe', shortDescEn: 'DescEn'},
+      {id: 2, description: 'desc', name: 'angularcranium', idTagType: 2, shortDescDe: 'DescDe', shortDescEn: 'DescEn'},
+    ];
+
+    cranDataService.findTags.and.returnValue(Promise.resolve(tagsFound));
+
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, FormsModule],
-      declarations: [ TagFinderComponent, StubTagsComponent ],
+      declarations: [ TagFinderComponent, TagsComponent, TooltipDirective, IconComponent ],
       providers: [
         LanguageService,
         { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },
@@ -45,7 +52,41 @@ describe('TagFinderComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should be created', () => {
+  it('should be created', async(() => {
     expect(component).toBeTruthy();
-  });
+  }));
+
+  it('Sould display selection', async( async() => {
+
+    const nameInput: HTMLInputElement = fixture.debugElement.nativeElement.querySelector('input');
+    nameInput.value = 'javascript';
+    nameInput.dispatchEvent(new Event('keyup'));
+
+    await fixture.whenStable();
+
+    fixture.detectChanges();
+
+    const listEl: HTMLElement = fixture.debugElement.nativeElement.querySelector('.crantagresultanchor');
+    const listAsText = listEl.textContent;
+
+    expect(listAsText).toContain('angularcranium', 'tags found shloud be displayed for selection');
+    expect(cranDataService.findTags).toHaveBeenCalled();
+  }));
+
+  it('Select Tag', async( async() => {
+
+    const nameInput: HTMLInputElement = fixture.debugElement.nativeElement.querySelector('input');
+    nameInput.value = 'javascript';
+    nameInput.dispatchEvent(new Event('keyup'));
+
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const firstCrantagresultEl: HTMLElement = fixture.debugElement.nativeElement.querySelector('.crantagresult');
+    firstCrantagresultEl.click();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(component.tagsArray.length).toBe(1, 'Tag shloud be added');
+  }));
+
 });

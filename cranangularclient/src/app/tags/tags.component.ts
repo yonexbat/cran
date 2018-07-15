@@ -19,7 +19,6 @@ export class TagsComponent implements OnInit {
   constructor(private ls: LanguageService) { }
 
   ngOnInit() {
-
   }
 
   private tooltip(tag: Tag): string {
