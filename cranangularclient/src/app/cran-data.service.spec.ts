@@ -45,8 +45,8 @@ describe('LanguageService', () => {
     const req = httpTestingController.expectOne('/api/Data/GetCourses/0');
     expect(req.request.method).toEqual('GET');
 
-      // Respond with the mock heroes
-      req.flush(restResult);
+    // Respond with the mock heroes
+    req.flush(restResult);
   }));
 
 });

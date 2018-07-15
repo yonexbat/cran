@@ -19,9 +19,9 @@ import {LanguageService} from '../language.service';
 export class StatusMessageComponent implements OnInit {
 
   public messageVisible = false;
-  private visibility = 'hidden';
-  private message: string;
-  private clazzes: string;
+  public visibility = 'hidden';
+  public message: string;
+  public clazzes: string;
 
 
   constructor(private ls: LanguageService) { }

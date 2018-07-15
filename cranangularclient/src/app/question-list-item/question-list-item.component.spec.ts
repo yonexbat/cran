@@ -1,60 +1,73 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import { Component, Input, Output, EventEmitter, DebugElement, TemplateRef} from '@angular/core';
+import { Component, Input, Output, EventEmitter, DebugElement, TemplateRef, ViewChild} from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
 import {ConfirmService} from '../confirm.service';
 import {LanguageService} from '../language.service';
-import {PagedResult} from '../model/pagedresult';
 import {TooltipDirective} from '../tooltip.directive';
 import { QuestionListItemComponent } from './question-list-item.component';
 import {IconComponent} from '../icon/icon.component';
-import {Tag} from '../model/tag';
 import {TagsComponent} from '../tags/tags.component';
 import {QuestionListEntry} from '../model/questionlistentry';
 
-@Component({selector: 'app-tags', template: ''})
-class StubTagsComponent {
-  @Input() public tagList: Tag[] = [];
-  @Input() public isEditable = false;
-  @Output() onRemoveTagClick = new EventEmitter<Tag>();
+
+// This compoment uses a host. we are testing the host.
+// tslint:disable-next-line:max-line-length
+@Component({selector: 'app-host', template: '<div><app-question-list-item #questionlistitem [item]="questionListEntry" (onItemDeletedClick)="deleteQuestion($event)"></app-question-list-item></div>'})
+class StubHostComponent {
+
+  @ViewChild('questionlistitem') public questionListItemComponent: QuestionListItemComponent;
+
+  public questionListEntry: QuestionListEntry = {
+    id: 2,
+    status: 1,
+    title: 'Hello Angular',
+    tags: [{id: 2, description: 'Desc', idTagType: 1, name: 'Angular.io', shortDescDe: 'de', shortDescEn: 'en'}],
+  };
 }
+
 describe('QuestionListItemComponent', () => {
-  let component: QuestionListItemComponent;
-  let fixture: ComponentFixture<QuestionListItemComponent>;
+  let component: StubHostComponent;
+  let fixture: ComponentFixture<StubHostComponent>;
 
   beforeEach(async(() => {
-    const cranDataService = jasmine.createSpyObj('CranDataService', ['vote']);
-    const notificationService = jasmine.createSpyObj('NotificationService', ['emitLoading', 'emitDone', 'emitError']);
-    const confirmationService = jasmine.createSpyObj('ConfirmService', ['some']);
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, FormsModule],
-      declarations: [ QuestionListItemComponent, TooltipDirective, IconComponent, StubTagsComponent ],
+      declarations: [ QuestionListItemComponent, TooltipDirective, IconComponent, TagsComponent, StubHostComponent ],
       providers: [
         LanguageService, NotificationService, ConfirmService,
-        { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },
       ],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    const questionlistentry = new QuestionListEntry();
-    questionlistentry.id = 2;
-    questionlistentry.status = 1;
-    questionlistentry.tags = [{id: 2, description: 'Desc', idTagType: 1, name: 'Angular.io', shortDescDe: 'de', shortDescEn: 'en'}];
-
-
-    fixture = TestBed.createComponent(QuestionListItemComponent);
+    fixture = TestBed.createComponent(StubHostComponent);
     component = fixture.componentInstance;
-    component.item = questionlistentry;
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should display question item', () => {
+    const textcontent = fixture.debugElement.nativeElement.textContent;
+    expect(textcontent).toContain('Hello Angular', 'Hello Angular displayed someshwere');
+    const hostEl = fixture.debugElement.nativeElement.querySelector('.questionstatusok');
+    expect(hostEl).toBeTruthy('class questionstatusok shloud be somewhere');
+    const hostElNok = fixture.debugElement.nativeElement.querySelector('.questionstatusnok');
+    expect(hostElNok).toBeFalsy('element class questionstatusnok shloud not exist');
+  });
+
+  it('shlould have nok class', () => {
+    component.questionListEntry.status = 0;
+    fixture.detectChanges();
+    const hostElNok = fixture.debugElement.nativeElement.querySelector('.questionstatusnok');
+    expect(hostElNok).toBeTruthy('class questionstatusnok shloud exist');
+  });
+
 });
