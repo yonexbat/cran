@@ -26,6 +26,7 @@
     "bootstrap": "^4.1.2",
     "core-js": "^2.5.7",
     "font-awesome": "^4.7.0",
+    "jasmine-marbles": "^0.3.1",
     "jquery": "^3.3.1",
     "popper.js": "^1.14.3",
     "rxjs": "^6.2.2",
