@@ -5,11 +5,8 @@ import { VoteComponent } from './vote.component';
 import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
 import {Votes} from '../model/votes';
+import {IconComponent} from '../icon/icon.component';
 
-@Component({selector: 'app-icon', template: ''})
-class StubIconComponent {
-  @Input() public icon;
-}
 
 describe('VoteComponent', () => {
   let component: VoteComponent;
@@ -29,7 +26,7 @@ describe('VoteComponent', () => {
     const notificationService = jasmine.createSpyObj('NotificationSercice', ['emitLoading', 'emitDone', 'emitError']);
 
     TestBed.configureTestingModule({
-      declarations: [ VoteComponent, StubIconComponent ],
+      declarations: [ VoteComponent, IconComponent ],
       providers: [
         { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },
         { provide: NotificationService, useValue: notificationService },
