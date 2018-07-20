@@ -115,6 +115,7 @@ namespace cran.tests
             Assert.True(newId > 0);
             QuestionDto newQuestion = await questionService.GetQuestionAsync(newId);
             Assert.Equal(question.Options.Count, newQuestion.Options.Count);
+            Assert.Equal(question.QuestionType, newQuestion.QuestonType);
             for (int i = 0; i < question.Options.Count; i++)
             {
                 QuestionOption optionSource = question.Options[i];
