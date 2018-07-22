@@ -36,7 +36,8 @@ namespace cran.Services
             Container container = new Container();
             _context.Containers.Add(container);                        
             Question questionEntity = new Question();
-            questionEntity.QuestionType = QuestionType.MultipleChoice;
+            questionDto.QuestonType = questionDto.QuestonType == QuestionType.Unknown ?
+                    QuestionType.MultipleChoice : questionDto.QuestonType;
             CopyData(questionDto, questionEntity);
             questionEntity.User = await GetCranUserAsync();
             questionEntity.Container = container;
