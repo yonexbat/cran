@@ -1,5 +1,4 @@
 import { Component, OnInit, Inject, ViewChild, } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap, } from '@angular/router';
 
 import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
@@ -23,8 +22,6 @@ export class CommentsComponent implements OnInit {
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
     private notificationService: NotificationService,
-    private router: Router,
-    private activeRoute: ActivatedRoute,
     public ls: LanguageService,
     private confirmService: ConfirmService) {
       this.comment = new Comment();
@@ -57,7 +54,7 @@ export class CommentsComponent implements OnInit {
     }
   }
 
-  private async addComment(): Promise<void> {
+  public async addComment(): Promise<void> {
     try {
       this.notificationService.emitLoading();
       await this.cranDataServiceService.addComment(this.comment);
@@ -73,7 +70,7 @@ export class CommentsComponent implements OnInit {
     this.getCommentsPage(page);
   }
 
-  private async deleteComment(comment: Comment): Promise<void> {
+  public async deleteComment(comment: Comment): Promise<void> {
     try {
       await this.confirmService.confirm(this.ls.label('deletecomment'), this.ls.label('deletecommentq'));
       this.notificationService.emitLoading();
