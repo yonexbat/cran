@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConfirmComponent } from './confirm.component';
 import {ConfirmService} from '../confirm.service';
 import { LanguageService } from '../language.service';
-import { defer } from '../../../node_modules/@types/q';
+import { defer } from 'q';
 
 describe('ConfirmComponent', () => {
   let component: ConfirmComponent;

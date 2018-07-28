@@ -1,60 +1,40 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, inject, tick } from '@angular/core/testing';
 import { Component, Input, DebugElement} from '@angular/core';
+import { Params, ActivatedRoute } from '@angular/router';
 
 import {FormsModule} from '@angular/forms';
 import { AskQuestionComponent } from './ask-question.component';
 import { RouterTestingModule } from '@angular/router/testing';
+import {TestingModule,
+  StubVoteComponent,
+  StubTagsComponent,
+  StubAppImageListComponent,
+  StubCommentsComponent,
+  } from '../testing/testing.module';
+import {StubActivatedRoute} from '../testing/stubactivatedroute';
 
-import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
-import {NotificationService} from '../notification.service';
 import {SafeHtmlPipe} from '../save-html.pipe';
-import {ConfirmService} from '../confirm.service';
-import {LanguageService} from '../language.service';
+import {IconComponent} from '../icon/icon.component';
+import { NotificationService } from '../notification.service';
 
-@Component({selector: 'app-vote', template: ''})
-class StubVoteComponent {
-  @Input() public votes;
-}
 
-@Component({selector: 'app-tags', template: ''})
-class StubTagsComponent {
-  @Input() public tagList;
-}
-
-@Component({selector: 'app-imagelist', template: ''})
-class StubAppImageListComponent {
-  @Input() public images;
-}
-
-@Component({selector: 'app-icon', template: ''})
-class StubIconComponent {
-  @Input() public icon;
-}
-
-@Component({selector: 'app-comments', template: ''})
-class StubCommentsComponent {
-}
 
 describe('AskQuestionComponent', () => {
   let component: AskQuestionComponent;
   let fixture: ComponentFixture<AskQuestionComponent>;
+  const initRoutePram: Params = { id: 1, };
+  const activeRoute = new StubActivatedRoute(initRoutePram);
 
   beforeEach(async(() => {
-    const cranDataService = jasmine.createSpyObj('CranDataService', ['vote']);
-    const notificationService = jasmine.createSpyObj('NotificationService', ['emitLoading', 'emitDone', 'emitError']);
-    const confirmationService = jasmine.createSpyObj('ConfirmService', ['some']);
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, FormsModule],
+      imports: [RouterTestingModule, FormsModule, TestingModule],
       declarations: [ AskQuestionComponent,  StubVoteComponent,
         StubTagsComponent, SafeHtmlPipe, StubAppImageListComponent,
-        StubIconComponent, StubCommentsComponent],
-      providers: [
-        LanguageService,
-        { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },
-        { provide: NotificationService, useValue: notificationService },
-        { provide: ConfirmService, useValue: confirmationService },
-      ]
+        StubCommentsComponent, IconComponent],
+        providers: [
+          {provide: ActivatedRoute, useValue: activeRoute}
+        ],
     })
     .compileComponents();
   }));
@@ -68,4 +48,24 @@ describe('AskQuestionComponent', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
+
+  it('show question', inject([NotificationService], async (notificationService: NotificationService) => {
+
+      await fixture.whenStable;
+
+      const spyEmitDone = spyOn(notificationService, 'emitDone');
+      const spyEmitError = spyOn(notificationService, 'emitError');
+
+      activeRoute.setParamMap({id: 2, });
+
+      await fixture.whenStable;
+
+      fixture.detectChanges();
+      expect(spyEmitError).toHaveBeenCalledTimes(0);
+      expect(spyEmitDone).toHaveBeenCalledTimes(1);
+
+      const nativeElement: HTMLElement = fixture.debugElement.nativeElement;
+      const text = nativeElement.textContent;
+      expect(text).toContain('how are you?');
+  }));
 });

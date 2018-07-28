@@ -24,7 +24,7 @@ export class AskQuestionComponent implements OnInit {
 
   @ViewChild('comments') private commentsControl: CommentsComponent;
 
-  private checkShown: boolean;
+  public checkShown: boolean;
   public questionToAsk: QuestionToAsk;
   private remainingQuestions: number[];
   public selectedOption: string;

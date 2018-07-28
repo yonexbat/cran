@@ -3,7 +3,7 @@ import { Component, Input, DebugElement, SecurityContext} from '@angular/core';
 
 
 import {SafeHtmlPipe} from './save-html.pipe';
-import { DomSanitizer } from '../../node_modules/@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({selector: 'app-test-host', template: '<span id="testspan">cranium</span>'})
 class StubTestHostComponent {
