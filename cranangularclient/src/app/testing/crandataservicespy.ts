@@ -103,4 +103,10 @@ export class CranDataServiceSpy {
             res(result);
         });
     }
+
+    public addComment(comment: Comment): Promise<number> {
+        return new Promise<number>((res, rej) => {
+            res(2);
+        });
+    }
 }
