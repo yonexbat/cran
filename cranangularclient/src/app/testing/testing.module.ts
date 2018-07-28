@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component, Input, DebugElement} from '@angular/core';
+import { Component, Input, TemplateRef} from '@angular/core';
 
 
 import { CranDataServiceSpy } from './crandataservicespy';
@@ -11,6 +10,7 @@ import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
 import {ConfirmService} from '../confirm.service';
 import {LanguageService} from '../language.service';
+import {PagedResult} from '../model/pagedresult';
 
 
 
@@ -48,4 +48,14 @@ export class StubCommentsComponent {
   public showComments(idQuestion: number): Promise<void> {
     return Promise.resolve();
   }
+}
+
+@Component({selector: 'app-pager', template: ''})
+export class StubPagerComponent {
+  @Input()
+  public itemTemplate: TemplateRef<any>;
+  @Input()
+  public pagedResult: PagedResult<any>;
+  @Input()
+  public nodatafoundmessage  = 'Keine Daten gefunden.';
 }
