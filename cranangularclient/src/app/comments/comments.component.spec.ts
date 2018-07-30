@@ -3,12 +3,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import { CommentsComponent } from './comments.component';
 import { RouterTestingModule } from '@angular/router/testing';
-import {TestingModule, StubPagerComponent} from '../testing/testing.module';
+import {TestingModule} from '../testing/testing.module';
 
 
 import {IconComponent} from '../icon/icon.component';
 import {PagerComponent} from '../pager/pager.component';
-import { CranDataService } from '../cran-data.service';
 import { ICranDataService } from '../icrandataservice';
 import {Comment} from '../model/comment';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';

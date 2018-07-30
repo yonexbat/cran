@@ -1,6 +1,6 @@
 import { TestBed,  fakeAsync, tick } from '@angular/core/testing';
 import {asyncData, asyncError} from './async';
-import { of, Observable, Subject } from 'rxjs';
+import { of, Observable, Subject, Subscriber, Subscription } from 'rxjs';
 import { cold, getTestScheduler } from 'jasmine-marbles';
 
 
@@ -144,5 +144,26 @@ describe('Marble test', () => {
     expect(numcalls).toBe(5);
     expect(numerrors).toBe(1);
     subsciption.unsubscribe();
+  });
+});
+
+describe('Observable tests', () => {
+  it('observable unsibscribe when resolved', () => {
+    const observable = new Observable<Number>((observer: Subscriber<Number>) => {
+      observer.next(1);
+      observer.next(2);
+      observer.next(3);
+      observer.complete();
+      return () => {};
+    });
+
+    let x = 0;
+    const subsciption: Subscription = observable.subscribe((thenumber: number) => {
+      x++;
+    });
+    const unsubscribeFn = subsciption.unsubscribe;
+    expect(unsubscribeFn).toBeDefined();
+    unsubscribeFn();
+
   });
 });
