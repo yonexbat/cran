@@ -12,6 +12,7 @@ import { CranDataService } from '../cran-data.service';
 import { ICranDataService } from '../icrandataservice';
 import {Comment} from '../model/comment';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
+import { ConfirmService } from '../confirm.service';
 
 describe('CommentsComponent', () => {
   let component: CommentsComponent;
@@ -81,7 +82,7 @@ describe('CommentsComponent', () => {
     const callInfo: jasmine.CallInfo = addCommentSpy.calls.first();
 
     // But in Jasmine. Tracked arguemtns are not cloned.
-    // component sets commentText to 7.
+    // component sets commentText to '' after posting.
     const expectedArgument = new Comment();
     expectedArgument.commentText = '';
     expectedArgument.idQuestion = 7;
@@ -89,6 +90,39 @@ describe('CommentsComponent', () => {
     expect(addCommentSpy).toHaveBeenCalledTimes(1);
     expect(addCommentSpy).toHaveBeenCalledWith(expectedArgument);
     expect(calledText).toBe('Test add my comment');
+  }));
+
+  it('shloud delete comment', async(async() => {
+    component.showComments(7);
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    // Prepare dataservice
+    const dataServiceSpy: ICranDataService = fixture.debugElement.injector.get(CRAN_SERVICE_TOKEN);
+    const deleteCommentFn = dataServiceSpy.deleteComment;
+    dataServiceSpy.addComment = spyOn(dataServiceSpy, 'deleteComment')
+      .and.callFake(deleteCommentFn);
+
+    // Prempare Confirmservice
+    const confirmServiceSpy: ConfirmService = fixture.debugElement.injector.get(ConfirmService);
+    const confirmfn = confirmServiceSpy.confirm;
+    confirmServiceSpy.confirm = spyOn(confirmServiceSpy, 'confirm')
+      .and.callFake(confirmfn);
+
+    await fixture.whenStable();
+
+    const elem: HTMLElement = fixture.debugElement.nativeElement;
+    const firstDeleteButton: HTMLElement = elem.querySelector('.deletecommentbtn');
+    firstDeleteButton.click();
+
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const deleteCommentSpy = dataServiceSpy.deleteComment as jasmine.Spy;
+    const confirmSpy = confirmServiceSpy.confirm as jasmine.Spy;
+
+    expect(deleteCommentSpy).toHaveBeenCalledTimes(1);
+    expect(confirmSpy).toHaveBeenCalled();
   }));
 
 });

@@ -109,4 +109,8 @@ export class CranDataServiceSpy {
             res(2);
         });
     }
+
+    deleteComment(id: number): Promise<any> {
+        return Promise.resolve();
+    }
 }
