@@ -51,9 +51,9 @@ export class StubPagerComponent {
   imports: [
     CommonModule
   ],
-  declarations: [StubVoteComponent, StubTagsComponent,
-    StubCommentsComponent, StubPagerComponent,
-    StubAppImageListComponent],
+  exports: [
+  ],
+  declarations: [ ],
   providers: [
     LanguageService,
     { provide: CRAN_SERVICE_TOKEN, useClass: CranDataServiceSpy },
@@ -62,3 +62,22 @@ export class StubPagerComponent {
   ],
 })
 export class TestingModule { }
+
+@NgModule({
+  exports: [
+    StubVoteComponent,
+    StubTagsComponent,
+    StubAppImageListComponent,
+    StubCommentsComponent,
+    StubPagerComponent,
+  ],
+  declarations: [
+    StubVoteComponent,
+    StubTagsComponent,
+    StubAppImageListComponent,
+    StubCommentsComponent,
+    StubPagerComponent,
+  ]
+})
+export class DummyStubModule { }
+

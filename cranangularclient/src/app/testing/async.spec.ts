@@ -149,21 +149,73 @@ describe('Marble test', () => {
 
 describe('Observable tests', () => {
   it('observable unsibscribe when resolved', () => {
+    let unsubscribeCalled = false;
     const observable = new Observable<Number>((observer: Subscriber<Number>) => {
       observer.next(1);
       observer.next(2);
       observer.next(3);
       observer.complete();
+      return () => {
+        unsubscribeCalled = true;
+      };
+    });
+
+    let x = 0;
+    let complete = false;
+    const subsciption: Subscription = observable.subscribe(
+      // next
+      (thenumber: number) => {
+        x++;
+      },
+
+      // error
+      (theerror) => {},
+
+      // complete
+      () => {
+        complete = true;
+      }
+    );
+    expect(x).toBe(3);
+    expect(complete).toBe(true);
+    expect(subsciption.closed).toBe(true);
+    const unsubscribeFn = subsciption.unsubscribe;
+    expect(unsubscribeFn).toBeDefined();
+    subsciption.unsubscribe();
+    expect(unsubscribeCalled).toBeTruthy();
+
+  });
+
+  it('observable unsibscribe when not resolved', () => {
+    const observable = new Observable<Number>((observer: Subscriber<Number>) => {
+      observer.next(1);
+      observer.next(2);
+      observer.next(3);
       return () => {};
     });
 
     let x = 0;
-    const subsciption: Subscription = observable.subscribe((thenumber: number) => {
-      x++;
-    });
+    let complete = false;
+    const subsciption: Subscription = observable.subscribe(
+      // next
+      (thenumber: number) => {
+        x++;
+      },
+
+      // error
+      (theerror) => {},
+
+      // complete
+      () => {
+        complete = true;
+      }
+    );
+    expect(x).toBe(3);
+    expect(complete).toBe(false, 'completed to be false' );
+    expect(subsciption.closed).toBe(false, 'subscription to be still open');
     const unsubscribeFn = subsciption.unsubscribe;
     expect(unsubscribeFn).toBeDefined();
-    unsubscribeFn();
+    subsciption.unsubscribe();
 
   });
 });
