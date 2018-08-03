@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, Input, Output, 
+import { Component, Input, Output,
     EventEmitter, TemplateRef} from '@angular/core';
 
 
@@ -14,7 +14,6 @@ import {LanguageService} from '../language.service';
 import {PagedResult} from '../model/pagedresult';
 import {Tag} from '../model/tag';
 import {Image} from '../model/image';
-import { FileUploadComponent } from '../file-upload/file-upload.component';
 
 
 

@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -11,7 +11,6 @@ import { AppComponent } from './app.component';
 import { NotificationService } from './notification.service';
 import { MenuComponent } from './menu/menu.component';
 import { CourseListComponent } from './course-list/course-list.component';
-import { ICranDataService } from './icrandataservice';
 import { CRAN_SERVICE_TOKEN } from './cran-data.servicetoken';
 import { CranDataService  } from './cran-data.service';
 import { CranDataServiceMock } from './cran-data-mock.service';

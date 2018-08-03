@@ -1,9 +1,7 @@
-import {QuestionOptionToAsk} from '../model/questionoptiontoask';
 import {QuestionToAsk} from '../model/questiontoask';
 import {QuestionType} from '../model/questiontype';
 import {LanguageInfo} from '../model/languageInfo';
 import {QuestionStatus} from '../model/questionstatus';
-import {Votes} from '../model/votes';
 import { Question } from '../model/question';
 import { GetComments } from '../model/getcomments';
 import {PagedResult} from '../model/pagedresult';
@@ -110,7 +108,11 @@ export class CranDataServiceSpy {
         });
     }
 
-    deleteComment(id: number): Promise<any> {
+    public deleteComment(id: number): Promise<any> {
         return Promise.resolve();
+    }
+
+    public insertQuestion(): Promise<number> {
+        return Promise.resolve(12);
     }
 }

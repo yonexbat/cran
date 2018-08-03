@@ -132,7 +132,7 @@
     <!-- Hinzufügen -->
     <div class="row form-group">
       <div class="col-md-1 col-md-offset-11">
-        <button 
+        <button                             
               type="button" 
               class="btn btn-default" 
               (click)="addOption()">
@@ -176,6 +176,7 @@
       <!-- Speichern -->
       <button 
           type="button" 
+          id="saveQuestionBtn"
           class="btn btn btn-success" 
           (click)="save()" 
           [disabled]="!questionForm.form.valid || actionInProgress">

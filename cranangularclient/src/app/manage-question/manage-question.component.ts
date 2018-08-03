@@ -3,7 +3,6 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 import {Question} from '../model/question';
 import {QuestionOption} from '../model/questionoption';
-import {LanguageInfo} from '../model/languageInfo';
 import {ICranDataService} from '../icrandataservice';
 import {ConfirmService} from '../confirm.service';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
@@ -13,6 +12,7 @@ import {NotificationService} from '../notification.service';
 import {LanguageService} from '../language.service';
 import {Binary} from '../model/binary';
 import {Image} from '../model/image';
+import { NgForm } from '../../../node_modules/@angular/forms';
 
 
 @Component({
@@ -31,6 +31,8 @@ export class ManageQuestionComponent implements OnInit {
   @ViewChild('statusMessage') statusMessage: StatusMessageComponent;
 
   @ViewChild('questionPreview') questionPreview: QuestionPreviewComponent;
+
+  @ViewChild('questionForm') questionForm: NgForm;
 
   constructor(
     @Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
