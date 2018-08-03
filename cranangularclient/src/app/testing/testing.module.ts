@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, Input, TemplateRef} from '@angular/core';
+import { Component, Input, Output, 
+    EventEmitter, TemplateRef} from '@angular/core';
 
 
 import { CranDataServiceSpy } from './crandataservicespy';
@@ -11,6 +12,9 @@ import {NotificationService} from '../notification.service';
 import {ConfirmService} from '../confirm.service';
 import {LanguageService} from '../language.service';
 import {PagedResult} from '../model/pagedresult';
+import {Tag} from '../model/tag';
+import {Image} from '../model/image';
+import { FileUploadComponent } from '../file-upload/file-upload.component';
 
 
 
@@ -26,8 +30,10 @@ export class StubTagsComponent {
 }
 
 @Component({selector: 'app-imagelist', template: ''})
-export class StubAppImageListComponent {
-  @Input() public images;
+export class StubImageListComponent {
+  @Input() public images: Image[] = [];
+  @Input() public imagesDeletable: boolean;
+  @Output() onDeleted = new EventEmitter<Image[]>();
 }
 
 @Component({selector: 'app-comments', template: ''})
@@ -35,6 +41,19 @@ export class StubCommentsComponent {
   public showComments(idQuestion: number): Promise<void> {
     return Promise.resolve();
   }
+}
+
+@Component({selector: 'app-rich-text-box', template: ''})
+export class StubRichTextBoxComponent {
+  @Input() elementId: string;
+  @Input() public required: boolean;
+  @Output() htmlString = new EventEmitter<string>();
+  @Input() public set content(content: string) {}
+}
+
+
+@Component({selector: 'app-file-upload', template: ''})
+export class StubFileUploadComponent {
 }
 
 @Component({selector: 'app-pager', template: ''})
@@ -46,6 +65,20 @@ export class StubPagerComponent {
   @Input()
   public nodatafoundmessage  = 'Keine Daten gefunden.';
 }
+
+@Component({selector: 'app-question-preview', template: ''})
+export class StubQuestionPreviewComponent {
+}
+
+@Component({selector: 'app-tag-finder', template: ''})
+export class StubTagFinderComponent {
+  @Input() public tagsArray: Tag[] = [];
+  @Input() public title = 'Tags';
+  @Output() public tagSelected = new EventEmitter<Tag>();
+  @Output() public tagRemoved = new EventEmitter<Tag>();
+  @Output() public tagSelectionChanged = new EventEmitter<void>();
+}
+
 
 @NgModule({
   imports: [
@@ -67,16 +100,24 @@ export class TestingModule { }
   exports: [
     StubVoteComponent,
     StubTagsComponent,
-    StubAppImageListComponent,
+    StubImageListComponent,
     StubCommentsComponent,
     StubPagerComponent,
+    StubFileUploadComponent,
+    StubRichTextBoxComponent,
+    StubQuestionPreviewComponent,
+    StubTagFinderComponent,
   ],
   declarations: [
     StubVoteComponent,
     StubTagsComponent,
-    StubAppImageListComponent,
+    StubImageListComponent,
     StubCommentsComponent,
     StubPagerComponent,
+    StubFileUploadComponent,
+    StubRichTextBoxComponent,
+    StubQuestionPreviewComponent,
+    StubTagFinderComponent,
   ]
 })
 export class DummyStubModule { }

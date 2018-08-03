@@ -8,7 +8,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import {TestingModule,
   StubVoteComponent,
   StubTagsComponent,
-  StubAppImageListComponent,
+  StubImageListComponent,
   StubCommentsComponent,
   } from '../testing/testing.module';
 import {StubActivatedRoute} from '../testing/stubactivatedroute';
@@ -30,7 +30,7 @@ describe('AskQuestionComponent', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, FormsModule, TestingModule],
       declarations: [ AskQuestionComponent,  StubVoteComponent,
-        StubTagsComponent, SafeHtmlPipe, StubAppImageListComponent,
+        StubTagsComponent, SafeHtmlPipe, StubImageListComponent,
         StubCommentsComponent, IconComponent],
         providers: [
           {provide: ActivatedRoute, useValue: activeRoute}

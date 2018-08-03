@@ -123,7 +123,7 @@ export class ManageQuestionComponent implements OnInit {
     }
   }
 
-  private removeOption(index: number) {
+  public removeOption(index: number) {
     this.question.options.splice(index, 1);
   }
 
