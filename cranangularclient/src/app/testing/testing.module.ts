@@ -14,19 +14,6 @@ import {PagedResult} from '../model/pagedresult';
 
 
 
-@NgModule({
-  imports: [
-    CommonModule
-  ],
-  declarations: [],
-  providers: [
-    LanguageService,
-    { provide: CRAN_SERVICE_TOKEN, useClass: CranDataServiceSpy },
-    { provide: NotificationService, useClass: NotificationServiceSpy},
-    { provide: ConfirmService, useClass: ConfirmServiceSpy},
-  ],
-})
-export class TestingModule { }
 
 @Component({selector: 'app-vote', template: ''})
 export class  StubVoteComponent {
@@ -59,3 +46,19 @@ export class StubPagerComponent {
   @Input()
   public nodatafoundmessage  = 'Keine Daten gefunden.';
 }
+
+@NgModule({
+  imports: [
+    CommonModule
+  ],
+  declarations: [StubVoteComponent, StubTagsComponent,
+    StubCommentsComponent, StubPagerComponent,
+    StubAppImageListComponent],
+  providers: [
+    LanguageService,
+    { provide: CRAN_SERVICE_TOKEN, useClass: CranDataServiceSpy },
+    { provide: NotificationService, useClass: NotificationServiceSpy},
+    { provide: ConfirmService, useClass: ConfirmServiceSpy},
+  ],
+})
+export class TestingModule { }
