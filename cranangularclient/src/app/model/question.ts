@@ -17,5 +17,5 @@ export class Question {
     public tags: Tag[] = [];
     public images: Image[] = [];
     public votes: Votes;
-    public questionType: QuestionType.MultipleChoice;
+    public questionType = QuestionType.MultipleChoice;
 }

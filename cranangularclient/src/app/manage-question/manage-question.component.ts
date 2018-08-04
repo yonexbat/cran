@@ -13,6 +13,7 @@ import {LanguageService} from '../language.service';
 import {Binary} from '../model/binary';
 import {Image} from '../model/image';
 import { NgForm } from '../../../node_modules/@angular/forms';
+import { QuestionType } from '../model/questiontype';
 
 
 @Component({
@@ -70,9 +71,9 @@ export class ManageQuestionComponent implements OnInit {
     // save current question
     try {
       this.notificationService.emitLoading();
+      this.question.questionType = this.getQuestionType();
       if (this.question && this.question.id > 0) {
-
-          const status = await this.cranDataService.updateQuestion(this.question);
+          await this.cranDataService.updateQuestion(this.question);
           this.actionInProgress = false;
           this.statusMessage.showSaveSuccess();
 
@@ -91,6 +92,14 @@ export class ManageQuestionComponent implements OnInit {
     }
   }
 
+  private getQuestionType(): QuestionType {
+    const numOptions = this.question.options.length;
+    const numCorrect = this.question.options.filter((x: QuestionOption) => x.isTrue).length;
+    if (numOptions > 1 && numCorrect === 1) {
+      return QuestionType.SingleChoice;
+    }
+    return QuestionType.MultipleChoice;
+  }
 
   private async handleRouteChanged(id: number): Promise<void> {
     if (id > 0) {
