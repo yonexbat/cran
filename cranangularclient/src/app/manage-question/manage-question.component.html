@@ -64,10 +64,17 @@
         <label for="questiontext">{{ls.label('text')}}</label>        
 
         <app-rich-text-box 
-          [elementId]="'questiontext'"
-          [content]="question.text"
-          [required]="true"
-          (htmlString)="question.text = $event"></app-rich-text-box>
+          #questiontext="ngModel"
+          name="questiontext"
+          [(ngModel)]="question.text"
+          [elementId]="'questiontext'"  
+          [required]="true"    
+          ></app-rich-text-box>
+
+        <div [hidden]="questiontext.valid || questiontext.pristine"
+          class="alert alert-danger">
+          {{ls.label('textrequired')}}
+        </div>
 
       </div>
     

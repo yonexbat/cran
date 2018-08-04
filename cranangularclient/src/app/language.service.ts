@@ -21,6 +21,7 @@ export class LanguageService {
     'logout' : {valueDe : 'Ausloggen', valueEn : 'Log out'},
     'title' : {valueDe : 'Titel', valueEn : 'Title'},
     'titelrequired' : {valueDe : 'Titel ist ein Mussfeld', valueEn : 'Title is required'},
+    'textrequired' :  {valueDe : 'Text ist ein Mussfeld', valueEn : 'Text is required'},
     'language' : {valueDe : 'Sprache', valueEn : 'Langauge'},
     'languagerequired' : {valueDe : 'Sprache ist ein Mussfeld', valueEn : 'Language is required'},
     'state' : {valueDe : 'Status', valueEn : 'State'},

@@ -5,23 +5,60 @@ import { Component,
   Input,
   Output,
   OnInit,
-  NgZone, } from '@angular/core';
+  NgZone,
+  forwardRef, } from '@angular/core';
+
+import {ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS,
+  Validator, AbstractControl, ValidationErrors} from '@angular/forms';
+
+import {htmlRequired} from './htmlrequired';
 
 @Component({
   selector: 'app-rich-text-box',
   templateUrl: './rich-text-box.component.html',
-  styleUrls: ['./rich-text-box.component.css']
+  styleUrls: ['./rich-text-box.component.css'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      multi: true,
+      useExisting: forwardRef(() => RichTextBoxComponent),
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting:  forwardRef(() => RichTextBoxComponent),
+      multi: true,
+    },
+  ],
 })
-export class RichTextBoxComponent implements OnInit, AfterViewInit, OnDestroy {
+export class RichTextBoxComponent implements OnInit, AfterViewInit,
+  OnDestroy, ControlValueAccessor, Validator {
+
+  private _content: string;
+  private editor: any;
+  private onChangelistener: any;
+  private validateFn: any;
 
   @Input() elementId: string;
-  private _content: string;
-
   @Input() public required: boolean;
   @Output() htmlString = new EventEmitter<string>();
-  private editor: any;
 
   constructor(private zone: NgZone) { }
+
+  writeValue(value: any): void {
+    this.content = value;
+  }
+
+  registerOnChange(onChangeListener: any): void {
+    this.onChangelistener = onChangeListener;
+  }
+
+  registerOnTouched(fn: any): void {
+    console.log('registerOnTouched');
+  }
+
+  setDisabledState?(isDisabled: boolean): void {
+    console.log('setDisabledState');
+  }
 
   @Input() public set content(content: string) {
     this._content = content;
@@ -35,10 +72,12 @@ export class RichTextBoxComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.validateFn = htmlRequired(this.required);
   }
 
   ngOnDestroy(): void {
     tinymce.remove(this.editor);
+    this.onChangelistener = null;
   }
 
   ngAfterViewInit(): void {
@@ -75,5 +114,12 @@ export class RichTextBoxComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private pushContentInZone(content: string) {
     this.htmlString.emit(content);
+    if (this.onChangelistener) {
+      this.onChangelistener(content);
+    }
+  }
+
+  public validate(c: AbstractControl): ValidationErrors {
+    return this.validateFn(c);
   }
 }

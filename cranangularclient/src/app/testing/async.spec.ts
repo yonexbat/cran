@@ -25,7 +25,7 @@ class CraniumService {
   }
 }
 
-describe('Marble test', () => {
+describe('Marble tests', () => {
 
   const serviceReturnValue = 'cranium';
   let craniumService;

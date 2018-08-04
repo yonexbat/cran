@@ -77,7 +77,6 @@ export class ManageQuestionComponent implements OnInit {
           this.statusMessage.showSaveSuccess();
 
       } else { // crate new question
-
         const questionId = await this.cranDataService.insertQuestion(this.question);
         this.actionInProgress = false;
         this.router.navigate(['/editquestion', questionId]);
