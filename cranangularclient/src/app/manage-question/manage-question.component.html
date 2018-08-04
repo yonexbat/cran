@@ -104,10 +104,16 @@
           <label for="optionText{{optionIndex}}">{{ls.label('option')}} {{optionIndex + 1}}</label>
 
           <app-rich-text-box 
-          [elementId]="'questionoption' + (optionIndex + 1)"
-          [content]="option.text"
-          [required]="true"
-          (htmlString)="option.text = $event"></app-rich-text-box>                          
+            #questionoption="ngModel"
+            name="questionoption{{optionIndex}}"
+            [elementId]="'questionoption' + (optionIndex + 1)"
+            [(ngModel)]="option.text"
+            [required]="true"></app-rich-text-box>  
+          
+          <div [hidden]="questionoption.valid || questionoption.pristine"
+            class="alert alert-danger">
+            {{ls.label('optionrequired')}}
+          </div>                        
           
         </div>  
 
@@ -136,13 +142,14 @@
 
     <hr/>
 
-    <!-- Hinzufügen -->
+    <!-- Option Hinzufügen -->
     <div class="row form-group">
       <div class="col-md-1 col-md-offset-11">
         <button                             
               type="button" 
               class="btn btn-default" 
-              (click)="addOption()">
+              (click)="addOption()"
+              [appTooltip] = "'add'">
             <app-icon [icon]="'add'" title="{{ls.label('addoption')}}"></app-icon>            
           </button>
       </div>
@@ -156,10 +163,16 @@
         <label for="explanation">{{ls.label('explanation')}}</label>
 
         <app-rich-text-box 
+        #explanation="ngModel"
         [elementId]="'richtextboxexplanation'"
-        [content]="question.explanation"
-        [required]="true"
-        (htmlString)="question.explanation = $event"></app-rich-text-box>
+        name="richtextboxexplanation"
+        [(ngModel)]="question.explanation"
+        [required]="true"></app-rich-text-box>
+
+        <div [hidden]="explanation.valid || explanation.pristine"
+            class="alert alert-danger">
+            {{ls.label('explanationrequired')}}
+        </div>     
 
       </div>
     

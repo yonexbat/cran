@@ -53,11 +53,9 @@ export class RichTextBoxComponent implements OnInit, AfterViewInit,
   }
 
   registerOnTouched(fn: any): void {
-    console.log('registerOnTouched');
   }
 
   setDisabledState?(isDisabled: boolean): void {
-    console.log('setDisabledState');
   }
 
   @Input() public set content(content: string) {

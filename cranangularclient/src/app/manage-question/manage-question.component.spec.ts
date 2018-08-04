@@ -123,4 +123,46 @@ describe('ManageQuestionComponent', () => {
 
   }));
 
+  it('should not add question, invalid input', async(async() => {
+
+    const cranDataServiceSpy: ICranDataService = fixture.debugElement.injector.get(CRAN_SERVICE_TOKEN);
+    let questionCapture: Question;
+    cranDataServiceSpy.insertQuestion = (question: Question) => {
+      questionCapture = new Question();
+      questionCapture.text = question.text;
+      questionCapture.title = question.title;
+      questionCapture.questionType = question.questionType;
+      return Promise.resolve(12);
+    };
+
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const nativeEl: HTMLElement = fixture.debugElement.nativeElement;
+
+    // title
+    const titleEl: HTMLInputElement = nativeEl.querySelector('#title');
+    titleEl.value = 'test';
+    titleEl.dispatchEvent(new Event('input'));
+
+    // langauge
+    const languageEl: HTMLSelectElement = nativeEl.querySelector('#language');
+    languageEl.selectedIndex = 1;
+    languageEl.dispatchEvent(new Event('change'));
+
+    // text
+    const textEl: HTMLInputElement = nativeEl.querySelector('#questiontext');
+    textEl.value = 'Hello question text';
+    textEl.dispatchEvent(new Event('input'));
+
+
+
+    // Click add button;
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(component.questionForm.valid).toBeFalsy('form should be not valid');
+    debugger;
+    expect(component.questionForm.form.controls['questiontext'].valid).toBeTruthy('text is valid');
+  }));
+
 });
