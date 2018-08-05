@@ -55,7 +55,6 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
       }
 
       // add antiforery cookie
-      debugger;
       const xsrftokenFromCookie = this.getCookie('XSRF-TOKEN');
       formData.append('__RequestVerificationToken', xsrftokenFromCookie);
 
@@ -85,7 +84,7 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
     const name = cname + '=';
     const decodedCookie = decodeURIComponent(document.cookie);
     const ca = decodedCookie.split(';');
-    for(let i = 0; i < ca.length; i++) {
+    for (let i = 0; i < ca.length; i++) {
         let c = ca[i];
         // tslint:disable-next-line:triple-equals
         while (c.charAt(0) == ' ') {
@@ -97,6 +96,5 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
         }
     }
     return '';
-}
-
+  }
 }
