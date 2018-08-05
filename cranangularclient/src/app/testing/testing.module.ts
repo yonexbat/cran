@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, Output,
     EventEmitter, TemplateRef, forwardRef, OnInit} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS,
-      Validator, AbstractControl, ValidationErrors} from '@angular/forms';
+      Validator, AbstractControl, ValidationErrors, FormsModule} from '@angular/forms';
 
 
 import { CranDataServiceSpy } from './crandataservicespy';
@@ -174,6 +174,9 @@ export class TestingModule { }
     StubRichTextBoxComponent,
     StubQuestionPreviewComponent,
     StubTagFinderComponent,
+  ],
+  imports: [
+    FormsModule,
   ]
 })
 export class DummyStubModule { }
