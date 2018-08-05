@@ -1,25 +1,14 @@
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using cran.Data;
-using cran.Model.Entities;
 using Microsoft.Extensions.FileProviders;
-using cran.Services;
-using System.Security.Principal;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Razor;
-using System.Globalization;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using cran.Middleware;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Rewrite;
-using System.Threading;
 using Microsoft.AspNetCore.Mvc;
 using cran.Infra;
 
