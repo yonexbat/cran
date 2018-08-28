@@ -29,6 +29,6 @@ namespace cran.Model.Dto
         
         public string Language { get;set; }
 
-        public QuestionType QuestonType { get; set; }
+        public QuestionType QuestionType { get; set; }
     }
 }

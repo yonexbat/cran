@@ -87,7 +87,7 @@ namespace cran.Services
                 entityDestination.Title = dtoSource.Title;                
                 entityDestination.Text = dtoSource.Text ?? string.Empty;
                 entityDestination.Explanation = dtoSource.Explanation;
-                entityDestination.QuestionType = dtoSource.QuestonType;
+                entityDestination.QuestionType = dtoSource.QuestionType;
                 entityDestination.Language = Enum.Parse<Language>(dtoSource.Language);
             }
             else if(dto is RelQuestionTagDto && entity is RelQuestionTag)
