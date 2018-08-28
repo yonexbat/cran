@@ -1,0 +1,17 @@
+﻿BEGIN TRANSACTION
+	UPDATE Q1
+		SET Q1.IdQuestionType = CASE WHEN SINGLE_CHOICE.Id IS NULL THEN 1 ELSE 2 END
+	FROM CranQuestion Q1
+	OUTER APPLY (
+
+			SELECT
+				Q2.Id
+			FROM dbo.CranQuestion Q2
+				INNER JOIN DBO.CranQuestionOption O2 ON O2.IdQuestion = Q2.Id AND O2.IsTrue = 1
+			WHERE
+				Q2.Id = Q1.Id
+			GROUP BY Q2.Id
+			HAVING COUNT(O2.Id) = 1
+
+		) SINGLE_CHOICE
+ROLLBACK TRANSACTION

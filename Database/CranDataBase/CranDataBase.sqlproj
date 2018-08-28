@@ -97,8 +97,8 @@
     <RefactorLog Include="CranDataBase.refactorlog" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Scripts\DeleteStuff.sql" />
     <None Include="Scripts\Merge.sql" />
     <None Include="CranDataBase.publish.xml" />
+    <None Include="Scripts\QuestionType.sql" />
   </ItemGroup>
 </Project>
