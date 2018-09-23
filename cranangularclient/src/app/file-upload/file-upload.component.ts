@@ -6,6 +6,7 @@ import { Component,
   EventEmitter, } from '@angular/core';
 
 import {Binary} from '../model/binary';
+import {CookieService} from '../cookie.service';
 
 @Component({
   selector: 'app-file-upload',
@@ -21,7 +22,7 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
   @Input() placeHolderText = 'Upload file...';
   @ViewChild('fileInputParent') fileInputParent: ElementRef;
 
-  constructor() { }
+  constructor(private cookieService: CookieService) { }
 
   ngOnInit() {
 
@@ -55,7 +56,7 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
       }
 
       // add antiforery cookie
-      const xsrftokenFromCookie = this.getCookie('XSRF-TOKEN');
+      const xsrftokenFromCookie = this.cookieService.getCookie('XSRF-TOKEN');
       formData.append('__RequestVerificationToken', xsrftokenFromCookie);
 
       const onUploaded = this.onUploaded;
@@ -78,23 +79,5 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
         onError.emit(error);
       });
     }
-  }
-
-  private getCookie(cname) {
-    const name = cname + '=';
-    const decodedCookie = decodeURIComponent(document.cookie);
-    const ca = decodedCookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        // tslint:disable-next-line:triple-equals
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        // tslint:disable-next-line:triple-equals
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return '';
   }
 }
