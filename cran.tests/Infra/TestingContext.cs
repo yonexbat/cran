@@ -3,12 +3,10 @@ using cran.Model.Entities;
 using cran.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.UserSecrets;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,7 +18,7 @@ namespace cran.tests.Infra
 {
     public class TestingContext
     {
-        IDictionary<Type, object> _dependencyMap = new Dictionary<Type, object>();
+        readonly IDictionary<Type, object> _dependencyMap = new Dictionary<Type, object>();
 
         
 
