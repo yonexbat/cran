@@ -1,6 +1,6 @@
 # CranAngularClient
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.2.4.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.2.4. 
 
 ## Development server
 
@@ -22,6 +22,12 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 Before running the tests make sure you are serving the app via `ng serve`.
+
+## Upgrading ##
+Upgrading: `ng update @angular/cli @angular/core`
+
+## Building client ##
+`npm run installclientprod`
 
 ## Further help
 

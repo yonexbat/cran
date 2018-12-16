@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Options;
@@ -17,7 +16,7 @@ namespace cran
     public class Startup
     {
 
-        private IFileProvider _physicalProvider;
+        private IFileProvider _physicalFileProvider;
 
         public Startup(IHostingEnvironment env)
         {
@@ -28,7 +27,7 @@ namespace cran
                 .AddEnvironmentVariables()
                 .AddUserSecrets<Startup>();
 
-            _physicalProvider = env.ContentRootFileProvider;
+            _physicalFileProvider = env.ContentRootFileProvider;
 
             Configuration = builder.Build();          
         }
@@ -38,12 +37,12 @@ namespace cran
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton(_physicalProvider);
+            services.AddSingleton(_physicalFileProvider);
 
             services.AddMvc()               
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                .SetCompatibilityVersion(CompatibilityVersion.Latest);
 
             services.AddCranLocalization();
             services.AddCranDbContext(Configuration);
@@ -56,15 +55,12 @@ namespace cran
             
         }
 
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, 
             IHostingEnvironment env, 
-            ILoggerFactory loggerFactory,
             IAntiforgery antiforgery)
-        {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
+        {            
             //Exception page
             if (env.IsDevelopment())
             {
