@@ -3,6 +3,8 @@ using Microsoft.AspNetCore;
 using cran.Middleware;
 using System;
 using Microsoft.Extensions.Logging;
+using Serilog.Extensions.Logging;
+using cran.Infra;
 
 namespace cran
 {
@@ -18,7 +20,6 @@ namespace cran
             IWebHostBuilder webHostBuilder = WebHost.CreateDefaultBuilder(args)
                .UseStartup<Startup>();
 
-
             string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             bool isDevelopment = environment == EnvironmentName.Development;
 
@@ -29,24 +30,10 @@ namespace cran
                     options.ConfigureEndpoints(5000);
                 });
             }
-
             
-            webHostBuilder.ConfigureLogging(ConfigureLogging);
-
+            webHostBuilder.ConfigureLogging(ConfigLogging.ConfigureLogging);
             return webHostBuilder;
-
-        }
-
-        public static void ConfigureLogging(WebHostBuilderContext hostingContext, ILoggingBuilder logging)
-        {
-            logging.ClearProviders();
-            logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-            logging.AddConsole();
-            logging.AddDebug();
-            logging.AddEventSourceLogger();
-        }
-
-
+        }     
 
     }
 }

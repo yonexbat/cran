@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.Mvc;
 using cran.Infra;
+using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace cran
 {
@@ -59,12 +61,14 @@ namespace cran
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, 
             IHostingEnvironment env, 
-            IAntiforgery antiforgery)
+            IAntiforgery antiforgery,
+            ILoggerFactory loggerFactory)
         {            
             //Exception page
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();               
+                app.UseDeveloperExceptionPage();
+                loggerFactory.AddFile("Logs/serilog-{Date}.txt");
             }
             else
             {
@@ -78,6 +82,8 @@ namespace cran
             //Redirect to  HTTPS
             app.UseRewriter(new RewriteOptions().AddRedirectToHttps());
 
+            //Add Seri Log
+            loggerFactory.AddSerilog();           
 
             //Static files
             app.UseStaticFiles();
@@ -93,7 +99,7 @@ namespace cran
             app.AddAntiforgery(antiforgery);
 
             //Routes
-            app.UseMvc(RouteConfig.ConfigureRoutes);
+            app.UseMvc(ConfigRouting.ConfigureRoutes);
 
         }
     }

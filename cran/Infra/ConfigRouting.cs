@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace cran.Infra
 {
-    public static class RouteConfig
+    public static class ConfigRouting
     {
         public static void ConfigureRoutes(IRouteBuilder rb)
         {
