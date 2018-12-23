@@ -105,7 +105,7 @@ export class AskQuestionComponent implements OnInit {
     this.router.navigate(['/resultlist', this.questionToAsk.idCourseInstance]);
   }
 
-  private async createNewVersion() {
+  public async createNewVersion() {
     // save current question
     try {
       await this.confirmService.confirm(this.ls.label('version'), this.ls.label('versionq'));
