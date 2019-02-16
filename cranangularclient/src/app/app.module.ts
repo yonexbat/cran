@@ -51,6 +51,7 @@ import { ManageTextComponent } from './manage-text/manage-text.component';
 import { VersionsComponent } from './versions/versions.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { NotificationSubscriptionComponent } from './notification-subscription/notification-subscription.component';
 
 function isDevelopment() {
   return window.location && window.location.port && window.location.port === '4200';
@@ -98,6 +99,7 @@ if (isDevelopment()) {
     TextlistComponent,
     ManageTextComponent,
     VersionsComponent,
+    NotificationSubscriptionComponent,
   ],
   imports: [
     BrowserModule,
