@@ -49,6 +49,8 @@ import { TooltipDirective } from './tooltip.directive';
 import { TextlistComponent } from './textlist/textlist.component';
 import { ManageTextComponent } from './manage-text/manage-text.component';
 import { VersionsComponent } from './versions/versions.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 function isDevelopment() {
   return window.location && window.location.port && window.location.port === '4200';
@@ -105,6 +107,7 @@ if (isDevelopment()) {
     FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [
     { provide: CRAN_SERVICE_TOKEN, useClass: cranDataService },
