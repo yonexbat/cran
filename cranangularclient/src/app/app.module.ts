@@ -109,7 +109,7 @@ if (isDevelopment()) {
     FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    ServiceWorkerModule.register('pwacranium.js', { enabled: environment.production }),
   ],
   providers: [
     { provide: CRAN_SERVICE_TOKEN, useClass: cranDataService },
