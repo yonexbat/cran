@@ -21,7 +21,8 @@
        <button 
            type="button" 
            class="btn btn btn-success" 
-           (click)="subscribeToPushNotifications()">
+           (click)="subscribeToPushNotifications()"
+           [disabled]="!notificationEnabled">
            subscribe
        </button> 
            

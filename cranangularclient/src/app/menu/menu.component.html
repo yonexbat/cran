@@ -111,6 +111,12 @@
                 <a class="dropdown-item" *ngIf="isAdmin" href="/api/Data/Export">
                   {{ls.label('export')}}
                 </a>  
+
+                <!-- Subscriptions -->
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" *ngIf="isAdmin" href="/subscribe">
+                  Subscribe
+                </a>  
                                
               </div>
           </li>

@@ -8,6 +8,8 @@ namespace cran.Services
 {
     public interface INotificationService
     {
-        Task AddPushNotificationSubscription(NotificationSubscriptionDto subscription);
+        Task AddPushNotificationSubscriptionAsync(NotificationSubscriptionDto subscription);
+
+        Task SendNotificationToUserAsync(int subId);
     }
 }

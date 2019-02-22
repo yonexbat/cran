@@ -404,9 +404,19 @@ namespace cran.Controllers
         [Authorize(Roles = Roles.Admin)]
         public async Task<JsonResult> AddPushRegistration([FromBody]NotificationSubscriptionDto dto)
         {
-            await _notificationService.AddPushNotificationSubscription(dto);
+            await _notificationService.AddPushNotificationSubscriptionAsync(dto);
             return Json(OkReturnString);
         }
+
+        [HttpGet("[action]")]
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<JsonResult> SendNotificationToUser()
+        {
+            await _notificationService.SendNotificationToUserAsync(2);
+            return Json(OkReturnString);
+        }
+
+
         #endregion
     }
 }

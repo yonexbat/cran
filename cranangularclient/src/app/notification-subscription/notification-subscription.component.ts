@@ -14,11 +14,14 @@ export class NotificationSubscriptionComponent implements OnInit {
 
   readonly  VAPID_PUBLIC_KEY = 'BBexMQInwvBFQtqWi9Px9FrhnzEmp0drOs4nkYGcopy_0TQjJ5jUKn7dBDTor_Ma5--Oq8rsseRl2m-dN9iyazU';
 
-  public subscriptionJSON = 'json v2';
+  public subscriptionJSON = '-';
+  public notificationEnabled = false;
+
 
   constructor(private swPush: SwPush, private notificationService: NotificationService,
     @Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService) {
     if (this.swPush.isEnabled) {
+      this.notificationEnabled = true;
       this.swPush.messages.subscribe(this.messageSub);
       this.swPush.notificationClicks.subscribe(this.notificationClicksSub);
       this.checkForSubscripton();
