@@ -137,6 +137,7 @@ namespace cran.Services
                 entityDestination.Auth = dtoSource.Keys?.Auth;
                 entityDestination.P256DiffHell = dtoSource.Keys?.P256dh;
                 entityDestination.ExpirationTime = dtoSource.ExpirationTime;
+                entityDestination.AsString = dtoSource.AsString;
             }
             else
             {

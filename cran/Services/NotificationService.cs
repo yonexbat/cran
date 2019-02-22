@@ -20,13 +20,15 @@ namespace cran.Services
 
         public async Task AddPushNotificationSubscription(NotificationSubscriptionDto subscriptionDto)
         {
-            await this._dbLogService.LogMessageAsync("adding subscription.");
-            NotificationSubscription entity = new NotificationSubscription();
-            CopyData(subscriptionDto, entity);
-            entity.User = await GetCranUserAsync();
-            await this._context.Notifications.AddAsync(entity);
-            await this._context.SaveChangesAsync();
-            
+            await this._dbLogService.LogMessageAsync($"adding subscription: {subscriptionDto.AsString}");
+            if (!_context.Notifications.Any(x => x.AsString == subscriptionDto.AsString))
+            {
+                NotificationSubscription entity = new NotificationSubscription();
+                CopyData(subscriptionDto, entity);
+                entity.User = await GetCranUserAsync();
+                await this._context.Notifications.AddAsync(entity);
+                await this._context.SaveChangesAsync();
+            }            
         }
     }
 }

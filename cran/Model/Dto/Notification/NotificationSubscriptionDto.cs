@@ -10,5 +10,7 @@ namespace cran.Model.Dto.Notification
         public string Endpoint { get; set; }
         public DateTime? ExpirationTime { get; set; }
         public Key Keys { get; set; } = new Key();
+        public int Id { get; set; }
+        public string AsString { get; set; }
     }
 }

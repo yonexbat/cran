@@ -1,4 +1,34 @@
-<p (click)="subscribeToPushNotifications()">
-  click to subscribe
-</p>
-<span>{{subscriptionJSON}}</span>
+<div class="container">
+  <h2>Subscribe to notifications</h2>  
+
+    <div class="row form-group">
+     
+    <!-- Notification -->
+    <div class="col-md-12">
+        <label>subscription</label>
+        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{subscriptionJSON}}">
+    </div>
+
+    </div>
+
+     <!-- Statusmessage -->
+     <app-status-message #statusMessage></app-status-message>
+
+     <!-- Buttons -->
+     <div class="btn-group pull-right" role="group">                  
+  
+       <!-- Speichern -->
+       <button 
+           type="button" 
+           class="btn btn btn-success" 
+           (click)="subscribeToPushNotifications()">
+           subscribe
+       </button> 
+           
+     </div>    
+
+</div>
+
+
+
+   
