@@ -4,9 +4,11 @@ using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using cran.Data;
+using cran.Model.Dto;
 using cran.Model.Dto.Notification;
 using cran.Model.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using WebPush;
 
 namespace cran.Services
@@ -14,10 +16,14 @@ namespace cran.Services
     public class NotificationService : CraniumService, INotificationService
     {
 
-        
+        private CranSettingsDto _settings;
 
-        public NotificationService(ApplicationDbContext context, IDbLogService dbLogService, IPrincipal principal) : base(context, dbLogService, principal)
+        public NotificationService(ApplicationDbContext context, 
+            IDbLogService dbLogService, 
+            IPrincipal principal,
+            IOptions<CranSettingsDto> settingsOption) : base(context, dbLogService, principal)
         {
+            this._settings = settingsOption.Value;
         }
 
         public async Task AddPushNotificationSubscriptionAsync(NotificationSubscriptionDto subscriptionDto)
@@ -51,8 +57,8 @@ namespace cran.Services
         private VapidDetails GetVapiData()
         {
             VapidDetails vapidDetails = new VapidDetails();
-            vapidDetails.PublicKey = "BBexMQInwvBFQtqWi9Px9FrhnzEmp0drOs4nkYGcopy_0TQjJ5jUKn7dBDTor_Ma5--Oq8rsseRl2m-dN9iyazU";
-            vapidDetails.PrivateKey = "TgPuP3hErzuIjTYg_bcYCkOa0GvfGNNUbeiuQpipX3o";
+            vapidDetails.PublicKey = this._settings.VapiPublicKey;
+            vapidDetails.PrivateKey = this._settings.VapiPrivateKey;
             vapidDetails.Subject = "mailto:public@cladue-glauser.ch";
             return vapidDetails;
         }

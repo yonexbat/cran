@@ -12,8 +12,8 @@ namespace cran.Infra
         public static void AddCranGoogleAuth(this IServiceCollection services, IConfigurationRoot configuration)
         {
 
-            string clientId = configuration["ClientId"];
-            string clientSecret = configuration["ClientSecret"];
+            string clientId = configuration["CranSettings:ClientId"];
+            string clientSecret = configuration["CranSettings:ClientSecret"];
 
             services.AddAuthentication()
                 .AddGoogle(options => {

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using cran.Infra;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using cran.Model.Dto;
 
 namespace cran
 {
@@ -50,6 +51,7 @@ namespace cran
             services.AddCranDbContext(Configuration);
             services.AddCranGoogleAuth(Configuration);
             services.AddCranServices();
+            services.Configure<CranSettingsDto>(Configuration.GetSection("CranSettings"));
 
             services.AddAntiforgery(options => {
                 options.HeaderName = "X-XSRF-TOKEN";               
