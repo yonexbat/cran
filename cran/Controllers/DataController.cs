@@ -401,7 +401,6 @@ namespace cran.Controllers
 
         #region NotificationService
         [HttpPost("[action]")]
-        [Authorize(Roles = Roles.Admin)]
         public async Task<JsonResult> AddPushRegistration([FromBody]NotificationSubscriptionDto dto)
         {
             await _notificationService.AddPushNotificationSubscriptionAsync(dto);
@@ -416,6 +415,12 @@ namespace cran.Controllers
             return Json(OkReturnString);
         }
 
+        [HttpGet("[action]/{page}")]
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<PagedResultDto<SubscriptionShortDto>> GetAllSubscriptions(int page)
+        {
+            return await _notificationService.GetAllSubscriptionsAsync(page);
+        }
 
         #endregion
     }

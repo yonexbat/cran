@@ -28,8 +28,9 @@ namespace cran.Services
 
         public async Task AddPushNotificationSubscriptionAsync(NotificationSubscriptionDto subscriptionDto)
         {
-            await this._dbLogService.LogMessageAsync($"adding subscription: {subscriptionDto.AsString}");
-            if (!_context.Notifications.Any(x => x.AsString == subscriptionDto.AsString))
+            await this._dbLogService.LogMessageAsync($"adding subscription: {subscriptionDto.Endpoint}");
+            if (!_context.Notifications.Any(x => x.Endpoint == subscriptionDto.Endpoint
+            && x.Auth == subscriptionDto.Keys.Auth))
             {
                 NotificationSubscription entity = new NotificationSubscription();
                 CopyData(subscriptionDto, entity);
@@ -59,7 +60,7 @@ namespace cran.Services
             VapidDetails vapidDetails = new VapidDetails();
             vapidDetails.PublicKey = this._settings.VapiPublicKey;
             vapidDetails.PrivateKey = this._settings.VapiPrivateKey;
-            vapidDetails.Subject = "mailto:public@cladue-glauser.ch";
+            vapidDetails.Subject = this._settings.VapiSubject;
             return vapidDetails;
         }
 
@@ -73,6 +74,24 @@ namespace cran.Services
             subscription.Auth = sub.Auth;
             subscription.Endpoint = sub.Endpoint;            
             return subscription;
+        }
+
+        public async Task<PagedResultDto<SubscriptionShortDto>> GetAllSubscriptionsAsync(int page)
+        {
+            IQueryable<NotificationSubscription> query = _context.Notifications;
+            PagedResultDto<SubscriptionShortDto> result = await ToPagedResult(query, page, MaterializeSubscriptionList);
+            return result;
+        }
+
+        private async Task<IList<SubscriptionShortDto>> MaterializeSubscriptionList(IQueryable<NotificationSubscription> query)
+        {
+            IList<SubscriptionShortDto> result = await query.Select(x => new SubscriptionShortDto
+            {
+                Id = x.Id,
+                Endpoint = x.Endpoint,
+                UserId = x.User.UserId,
+            }).ToListAsync();
+            return result;
         }
 
     }

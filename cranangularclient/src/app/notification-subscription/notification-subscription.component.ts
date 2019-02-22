@@ -45,7 +45,6 @@ export class NotificationSubscriptionComponent implements OnInit {
         serverPublicKey: this.VAPID_PUBLIC_KEY
       });
       this.subscriptionJSON = JSON.stringify(subscription);
-      subscription['asString'] = JSON.stringify(subscription);
       try {
         this.notificationService.emitLoading();
         this.cranDataService.addPushRegistration(subscription);

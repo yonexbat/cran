@@ -1,4 +1,5 @@
-﻿using cran.Model.Dto.Notification;
+﻿using cran.Model.Dto;
+using cran.Model.Dto.Notification;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,7 @@ namespace cran.Services
         Task AddPushNotificationSubscriptionAsync(NotificationSubscriptionDto subscription);
 
         Task SendNotificationToUserAsync(int subId);
+
+        Task<PagedResultDto<SubscriptionShortDto>> GetAllSubscriptionsAsync(int page);
     }
 }
