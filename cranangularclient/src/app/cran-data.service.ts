@@ -34,6 +34,12 @@ export class CranDataService implements ICranDataService {
 
   }
 
+  addPushRegistration(subscription: any): Promise<any> {
+    return this.http.post<Text>('/api/Data/AddPushRegistration', subscription)
+    .toPromise()
+    .catch(this.handleError);
+  }
+
   getVersions(parameters: VersionInfoParameters): Promise<PagedResult<VersionInfo>> {
     return this.http.post<PagedResult<VersionInfo>>('/api/Data/GetVersions', parameters)
     .toPromise()

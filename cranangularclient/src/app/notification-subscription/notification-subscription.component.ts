@@ -6,9 +6,11 @@
 
 
 */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { SwPush } from '@angular/service-worker';
 import { NotificationService } from '../notification.service';
+import { ICranDataService } from '../icrandataservice';
+import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
 
 @Component({
   selector: 'app-notification-subscription',
@@ -21,7 +23,8 @@ export class NotificationSubscriptionComponent implements OnInit {
 
   public subscriptionJSON = 'json v2';
 
-  constructor(private swPush: SwPush, private notificationService: NotificationService) {
+  constructor(private swPush: SwPush, private notificationService: NotificationService, 
+    @Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService) {
     this.swPush.messages.subscribe(this.messageSub);
     this.swPush.notificationClicks.subscribe(this.notificationClicksSub);
   }
@@ -36,6 +39,7 @@ export class NotificationSubscriptionComponent implements OnInit {
         serverPublicKey: this.VAPID_PUBLIC_KEY
       });
       this.subscriptionJSON = JSON.stringify(subscription);
+      this.cranDataService.addPushRegistration(subscription);
       console.log('subscription:' + subscription);
     } catch (error) {
       console.log('error');

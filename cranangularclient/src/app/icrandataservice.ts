@@ -66,4 +66,5 @@ export interface ICranDataService {
   getTexts(search: SearchText): Promise<PagedResult<Text>>;
   getTextDtoByKey(key: string): Promise<Text>;
   getVersions(parameters: VersionInfoParameters): Promise<PagedResult<VersionInfo>>;
+  addPushRegistration(subscription: any): Promise<any>;
 }

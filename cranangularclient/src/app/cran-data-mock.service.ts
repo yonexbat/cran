@@ -35,6 +35,15 @@ import {QuestionType} from './model/questiontype';
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
 
+  addPushRegistration(subscription: any): Promise<any> {
+    const promiseResult = new Promise<any>((resolve, reject) => {
+      setTimeout(function() {
+        resolve();
+      }, 1000);
+    });
+    return promiseResult;
+  }
+
   getVersions(parameters: VersionInfoParameters): Promise<PagedResult<VersionInfo>> {
     const texts: VersionInfo[] = [];
     for (let i = 0; i < 5; i++) {

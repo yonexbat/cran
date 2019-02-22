@@ -9,6 +9,7 @@ using cran.Model.Dto;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using System;
+using cran.Model.Dto.Notification;
 
 namespace cran.Controllers
 {
@@ -29,6 +30,7 @@ namespace cran.Controllers
         private readonly ITextService _textService;
         private readonly IExportService _exportService;
         private readonly IVersionService _versionService;
+        private readonly INotificationService _notificationService;
         private const string OkReturnString = "Ok";
 
         public DataController(ISecurityService securityService,
@@ -41,7 +43,8 @@ namespace cran.Controllers
             IUserProfileService userProfileService,
             ICourseInstanceService courseInstanceService,
             ITextService textService,
-            IExportService exportService)
+            IExportService exportService,
+            INotificationService notificationService)
         {
             _securityService = securityService;
             _binaryService = binaryService;
@@ -54,6 +57,7 @@ namespace cran.Controllers
             _textService = textService;
             _exportService = exportService;
             _versionService = versionService;
+            _notificationService = notificationService;
         }
 
         #region QuestionService
@@ -393,6 +397,16 @@ namespace cran.Controllers
             return await _versionService.GetVersionsAsync(versionInfoParameters);            
         }
 
+        #endregion
+
+        #region NotificationService
+        [HttpPost("[action]")]
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<JsonResult> AddPushRegistration([FromBody]NotificationSubscriptionDto dto)
+        {
+            await _notificationService.AddPushNotificationSubscription(dto);
+            return Json(OkReturnString);
+        }
         #endregion
     }
 }
