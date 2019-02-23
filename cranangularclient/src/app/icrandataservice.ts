@@ -1,10 +1,6 @@
-import { Injectable, InjectionToken  } from '@angular/core';
-
-
 import {Course} from './model/course';
 import {Question} from './model/question';
 import {Tag} from './model/tag';
-import {StartCourse} from './model/startcourse';
 import {CourseInstance} from './model/courseinstance';
 import {QuestionToAsk} from './model/questiontoask';
 import {QuestionAnswer} from './model/questionanswer';
@@ -24,6 +20,7 @@ import {Text} from './model/text';
 import {VersionInfo} from './model/versionInfo';
 import {VersionInfoParameters} from './model/versionInfoParameters';
 import {SubscriptionShort} from './model/subscriptionshort';
+import {Notification} from './model/notification';
 
 export interface ICranDataService {
   getCourses(page: number): Promise<PagedResult<Course>>;
@@ -68,4 +65,5 @@ export interface ICranDataService {
   getVersions(parameters: VersionInfoParameters): Promise<PagedResult<VersionInfo>>;
   addPushRegistration(subscription: any): Promise<any>;
   getAllSubscriptions(page: number): Promise<PagedResult<SubscriptionShort>>;
+  sendNotificationToUser(message: Notification): Promise<any>;
 }

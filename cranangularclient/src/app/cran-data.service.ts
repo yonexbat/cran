@@ -24,12 +24,19 @@ import {Text} from './model/text';
 import {VersionInfo} from './model/versionInfo';
 import {VersionInfoParameters} from './model/versionInfoParameters';
 import {SubscriptionShort} from './model/subscriptionshort';
+import {Notification} from './model/notification';
 
 @Injectable()
 export class CranDataService implements ICranDataService {
 
   constructor(private http: HttpClient) {
 
+  }
+
+  sendNotificationToUser(message: Notification): Promise<any> {
+    return this.http.post<Notification>('/api/Data/SendNotificationToUser', message)
+    .toPromise()
+    .catch(this.handleError);
   }
 
   getAllSubscriptions(page: number): Promise<PagedResult<SubscriptionShort>> {

@@ -31,10 +31,20 @@ import {VersionInfoParameters} from './model/versionInfoParameters';
 import {QuestionStatus} from './model/questionstatus';
 import {QuestionType} from './model/questiontype';
 import {SubscriptionShort} from './model/subscriptionshort';
+import {Notification} from './model/notification';
 
 
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
+
+  sendNotificationToUser(message: Notification): Promise<any> {
+    const promiseResult = new Promise<any>((resolve, reject) => {
+      setTimeout(function() {
+        resolve();
+      }, 1000);
+    });
+    return promiseResult;
+  }
 
   getAllSubscriptions(page: number): Promise<PagedResult<SubscriptionShort>> {
 
@@ -52,7 +62,9 @@ export class CranDataServiceMock implements ICranDataService {
     }
 
     const promiseResult = new Promise<PagedResult<SubscriptionShort>>((resolve, reject) => {
-      resolve(pagedResult);
+      setTimeout(function() {
+        resolve(pagedResult);
+      }, 1000);
     });
     return promiseResult;
   }

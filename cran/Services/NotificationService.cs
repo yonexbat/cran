@@ -38,21 +38,11 @@ namespace cran.Services
                 await this._context.Notifications.AddAsync(entity);
                 await this._context.SaveChangesAsync();
             }            
-        }
+        }        
 
-        public async Task SendNotificationToUserAsync(int subId)
+        private string GetMessage(string title, string body)
         {
-            WebPushClient client = new WebPushClient();
-            PushSubscription sub = await GetPushSubsciption();
-            VapidDetails vapiData = GetVapiData();
-            string message = GetMessage();
-
-            await client.SendNotificationAsync(sub, message, vapiData);
-        }
-
-        private string GetMessage()
-        {
-            return @"{""notification"": {""title"": ""Angular News"",""body"": ""Newsletter Available!""}}";
+            return $"{{\"notification\": {{\"title\": \"{title}\",\"body\": \"{body}\"}}}}";
         }
 
         private VapidDetails GetVapiData()
@@ -64,11 +54,9 @@ namespace cran.Services
             return vapidDetails;
         }
 
-        private async Task<PushSubscription> GetPushSubsciption()
+        private async Task<PushSubscription> GetPushSubsciption(int id)
         {
-            NotificationSubscription sub = await _context.Notifications
-                .OrderBy(x => x.Id)
-                .FirstOrDefaultAsync();
+            NotificationSubscription sub = await _context.FindAsync<NotificationSubscription>(id);
             PushSubscription subscription = new PushSubscription();
             subscription.P256DH = sub.P256DiffHell;
             subscription.Auth = sub.Auth;
@@ -94,5 +82,14 @@ namespace cran.Services
             return result;
         }
 
+        public async Task SendNotificationToUserAsync(NotificationDto notification)
+        {
+            WebPushClient client = new WebPushClient();
+            PushSubscription sub = await GetPushSubsciption(notification.SubscriptionId);
+            VapidDetails vapiData = GetVapiData();
+            string message = GetMessage(notification.Title, notification.Text);
+
+            await client.SendNotificationAsync(sub, message, vapiData);
+        }
     }
 }

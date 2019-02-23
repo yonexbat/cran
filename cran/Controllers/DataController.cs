@@ -407,11 +407,11 @@ namespace cran.Controllers
             return Json(OkReturnString);
         }
 
-        [HttpGet("[action]")]
+        [HttpPost("[action]")]
         [Authorize(Roles = Roles.Admin)]
-        public async Task<JsonResult> SendNotificationToUser()
+        public async Task<JsonResult> SendNotificationToUser([FromBody]NotificationDto dto)
         {
-            await _notificationService.SendNotificationToUserAsync(2);
+            await _notificationService.SendNotificationToUserAsync(dto);
             return Json(OkReturnString);
         }
 

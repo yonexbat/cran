@@ -6,6 +6,8 @@ import { NotificationService } from '../notification.service';
 import { ICranDataService } from '../icrandataservice';
 import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
 import { SubscriptionShort } from '../model/subscriptionshort';
+import { Notification } from '../model/notification';
+import { not } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-notification-subscription',
@@ -78,8 +80,24 @@ export class NotificationSubscriptionComponent implements OnInit {
     console.log(JSON.stringify(input));
   }
 
-  public sendNotification() {
-
+  public async sendNotification() {
+    try {
+      this.notificationService.emitLoading();
+      const notification = this.getNotificationObject();
+      await this.cranDataService.sendNotificationToUser(notification);
+      this.notificationService.emitDone();
+    } catch (error) {
+      this.notificationService.emitError(error);
+    }
   }
+
+  private getNotificationObject(): Notification {
+    const notification = new Notification();
+    notification.subscriptionId = this.selectedSubscription;
+    notification.text = this.text;
+    notification.title = this.title;
+    return notification;
+  }
+
 
 }

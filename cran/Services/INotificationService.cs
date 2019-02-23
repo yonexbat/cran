@@ -11,7 +11,7 @@ namespace cran.Services
     {
         Task AddPushNotificationSubscriptionAsync(NotificationSubscriptionDto subscription);
 
-        Task SendNotificationToUserAsync(int subId);
+        Task SendNotificationToUserAsync(NotificationDto notification);
 
         Task<PagedResultDto<SubscriptionShortDto>> GetAllSubscriptionsAsync(int page);
     }
