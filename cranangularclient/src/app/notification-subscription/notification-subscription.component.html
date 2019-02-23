@@ -2,12 +2,48 @@
   <h2>Subscribe to notifications</h2>  
 
     <div class="row form-group">
+
+      <!-- Dropdown with users  -->
+      <div class="col-md-12">
+        <label for="subs">User</label>
+
+        <select name="subs"
+          class="form-control"
+          id="subs"
+          #subs="ngModel"
+          [(ngModel)]="selectedSubscription">
+          <option *ngFor="let sub of users" value="{{sub.id}}">{{sub.userId}} {{sub.endpoint}}</option>
+        </select>
+      </div>
+
+      <!-- Titel -->
+      <div class="col-md-12">
+        <label>Titel</label>
+        <input 
+          name="title"
+          class="form-control"
+          id="title"
+          #titelText="ngModel"
+          [(ngModel)]="title">          
+      </div>
+
+      <!-- Text -->
+      <div class="col-md-12">
+          <label>Text</label>
+          <textarea
+            rows="4" 
+            name="text"
+            class="form-control"
+            id="text"
+            #textControl="ngModel"
+            [(ngModel)]="text"> </textarea>       
+        </div>
      
-    <!-- Notification -->
-    <div class="col-md-12">
-        <label>subscription</label>
-        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{subscriptionJSON}}">
-    </div>
+      <!-- Notification -->
+      <div class="col-md-12">
+          <label>Subscription</label>
+          <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{subscriptionJSON}}">
+      </div>
 
     </div>
 
@@ -17,13 +53,21 @@
      <!-- Buttons -->
      <div class="btn-group pull-right" role="group">                  
   
-       <!-- Speichern -->
+       <!-- Subscribe -->
        <button 
            type="button" 
            class="btn btn btn-success" 
            (click)="subscribeToPushNotifications()"
            [disabled]="!notificationEnabled">
-           subscribe
+           Subscribe
+       </button> 
+
+       <!-- Send notification -->
+       <button 
+           type="button" 
+           class="btn btn btn-success" 
+           (click)="sendNotification()">
+           Send Notification
        </button> 
            
      </div>    

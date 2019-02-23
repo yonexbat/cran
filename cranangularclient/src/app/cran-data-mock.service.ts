@@ -30,10 +30,32 @@ import {VersionInfo} from './model/versionInfo';
 import {VersionInfoParameters} from './model/versionInfoParameters';
 import {QuestionStatus} from './model/questionstatus';
 import {QuestionType} from './model/questiontype';
+import {SubscriptionShort} from './model/subscriptionshort';
 
 
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
+
+  getAllSubscriptions(page: number): Promise<PagedResult<SubscriptionShort>> {
+
+    const pagedResult = new PagedResult<SubscriptionShort>();
+    pagedResult.data = [];
+    pagedResult.currentPage = 0;
+    pagedResult.numpages = 4;
+
+    for (let i = 0; i < 10; i++) {
+      pagedResult.data.push({
+        id: i,
+        endpoint: `endpoint ${i}`,
+        userId: `userid${i}`,
+      });
+    }
+
+    const promiseResult = new Promise<PagedResult<SubscriptionShort>>((resolve, reject) => {
+      resolve(pagedResult);
+    });
+    return promiseResult;
+  }
 
   addPushRegistration(subscription: any): Promise<any> {
     const promiseResult = new Promise<any>((resolve, reject) => {

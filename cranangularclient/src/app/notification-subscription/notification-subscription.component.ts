@@ -1,9 +1,11 @@
 
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+
 import { SwPush } from '@angular/service-worker';
 import { NotificationService } from '../notification.service';
 import { ICranDataService } from '../icrandataservice';
 import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
+import { SubscriptionShort } from '../model/subscriptionshort';
 
 @Component({
   selector: 'app-notification-subscription',
@@ -16,6 +18,10 @@ export class NotificationSubscriptionComponent implements OnInit {
 
   public subscriptionJSON = '-';
   public notificationEnabled = false;
+  public selectedSubscription: number;
+  public users: SubscriptionShort[];
+  public title: string;
+  public text: string;
 
 
   constructor(private swPush: SwPush, private notificationService: NotificationService,
@@ -26,9 +32,15 @@ export class NotificationSubscriptionComponent implements OnInit {
       this.swPush.notificationClicks.subscribe(this.notificationClicksSub);
       this.checkForSubscripton();
     }
+    this.getUsers();
   }
 
   ngOnInit() {
+  }
+
+  private async getUsers() {
+    const subscriptions = await this.cranDataService.getAllSubscriptions(0);
+    this.users = subscriptions.data;
   }
 
   private async checkForSubscripton() {
@@ -64,6 +76,10 @@ export class NotificationSubscriptionComponent implements OnInit {
   public notificationClicksSub(input: any) {
     console.log('notificationClicksSub');
     console.log(JSON.stringify(input));
+  }
+
+  public sendNotification() {
+
   }
 
 }

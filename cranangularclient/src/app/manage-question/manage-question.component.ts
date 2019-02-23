@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject, ViewChild, } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { NgForm } from '@angular/forms';
 
 import {Question} from '../model/question';
 import {QuestionOption} from '../model/questionoption';
@@ -12,7 +13,6 @@ import {NotificationService} from '../notification.service';
 import {LanguageService} from '../language.service';
 import {Binary} from '../model/binary';
 import {Image} from '../model/image';
-import { NgForm } from '../../../node_modules/@angular/forms';
 import { QuestionType } from '../model/questiontype';
 
 
@@ -26,8 +26,6 @@ export class ManageQuestionComponent implements OnInit {
   public question: Question;
 
   public actionInProgress = false;
-
-  private language: string;
 
   @ViewChild('statusMessage') statusMessage: StatusMessageComponent;
 

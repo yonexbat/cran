@@ -13,6 +13,7 @@ namespace cran.Model.Entities
         public virtual string P256DiffHell { get; set; }
         public virtual string Auth { get; set; }
         public virtual string AsString { get; set; }
+        public virtual bool Active { get; set; } = true;
 
         public virtual CranUser User { get; set; }
     }

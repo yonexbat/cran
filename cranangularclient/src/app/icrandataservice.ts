@@ -10,7 +10,6 @@ import {QuestionToAsk} from './model/questiontoask';
 import {QuestionAnswer} from './model/questionanswer';
 import {QuestionListEntry} from './model/questionlistentry';
 import {Result} from './model/result';
-import {QuestionResult} from './model/questionresult';
 import {CourseInstanceListEntry} from './model/courseinstancelistentry';
 import {SearchQParameters} from './model/searchqparameters';
 import {PagedResult} from './model/pagedresult';
@@ -24,6 +23,7 @@ import {SearchText} from './model/searchtext';
 import {Text} from './model/text';
 import {VersionInfo} from './model/versionInfo';
 import {VersionInfoParameters} from './model/versionInfoParameters';
+import {SubscriptionShort} from './model/subscriptionshort';
 
 export interface ICranDataService {
   getCourses(page: number): Promise<PagedResult<Course>>;
@@ -67,4 +67,5 @@ export interface ICranDataService {
   getTextDtoByKey(key: string): Promise<Text>;
   getVersions(parameters: VersionInfoParameters): Promise<PagedResult<VersionInfo>>;
   addPushRegistration(subscription: any): Promise<any>;
+  getAllSubscriptions(page: number): Promise<PagedResult<SubscriptionShort>>;
 }
