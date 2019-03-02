@@ -52,6 +52,7 @@ import { VersionsComponent } from './versions/versions.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
+import { PushNotificationService } from './push-notification.service';
 
 function isDevelopment() {
   return window.location && window.location.port && window.location.port === '4200';
@@ -118,6 +119,7 @@ if (isDevelopment()) {
     LanguageService,
     ConfirmService,
     DatePipe,
+    PushNotificationService,
   ],
   bootstrap: [AppComponent]
 })
