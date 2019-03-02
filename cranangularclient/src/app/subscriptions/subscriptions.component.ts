@@ -7,13 +7,11 @@ import { ICranDataService } from '../icrandataservice';
 import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
 import { SubscriptionShort } from '../model/subscriptionshort';
 import { Notification } from '../model/notification';
-import { FormsModule } from '@angular/forms';
-import { not } from '@angular/compiler/src/output/output_ast';
 
 @Component({
-  selector: 'app-notification-subscription',
-  templateUrl: './notification-subscription.component.html',
-  styleUrls: ['./notification-subscription.component.css']
+  selector: 'app-subscriptions',
+  templateUrl: './subscriptions.component.html',
+  styleUrls: ['./subscriptions.component.css']
 })
 export class NotificationSubscriptionComponent implements OnInit {
 
