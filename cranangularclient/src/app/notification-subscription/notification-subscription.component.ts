@@ -7,6 +7,7 @@ import { ICranDataService } from '../icrandataservice';
 import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
 import { SubscriptionShort } from '../model/subscriptionshort';
 import { Notification } from '../model/notification';
+import { FormsModule } from '@angular/forms';
 import { not } from '@angular/compiler/src/output/output_ast';
 
 @Component({

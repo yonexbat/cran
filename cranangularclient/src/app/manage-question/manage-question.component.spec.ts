@@ -161,7 +161,6 @@ describe('ManageQuestionComponent', () => {
     fixture.detectChanges();
 
     expect(component.questionForm.valid).toBeFalsy('form should be not valid');
-    debugger;
     expect(component.questionForm.form.controls['questiontext'].valid).toBeTruthy('text is valid');
   }));
 
