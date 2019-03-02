@@ -13,7 +13,7 @@ import { Notification } from '../model/notification';
   templateUrl: './subscriptions.component.html',
   styleUrls: ['./subscriptions.component.css']
 })
-export class NotificationSubscriptionComponent implements OnInit {
+export class SubscriptionsComponent implements OnInit {
 
   readonly  VAPID_PUBLIC_KEY = 'BBexMQInwvBFQtqWi9Px9FrhnzEmp0drOs4nkYGcopy_0TQjJ5jUKn7dBDTor_Ma5--Oq8rsseRl2m-dN9iyazU';
 

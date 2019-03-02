@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { NotificationSubscriptionComponent } from './subscriptions.component';
+import { SubscriptionsComponent } from './subscriptions.component';
 import { RouterTestingModule } from '@angular/router/testing';
 
 
@@ -16,9 +16,9 @@ import {SubscriptionShort} from '../model/subscriptionshort';
 
 
 
-describe('NotificationSubscriptionComponent', () => {
-  let component: NotificationSubscriptionComponent;
-  let fixture: ComponentFixture<NotificationSubscriptionComponent>;
+describe('SubscriptionsComponent', () => {
+  let component: SubscriptionsComponent;
+  let fixture: ComponentFixture<SubscriptionsComponent>;
 
   beforeEach(async(() => {
 
@@ -47,7 +47,7 @@ describe('NotificationSubscriptionComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, FormsModule],
-      declarations: [ NotificationSubscriptionComponent, StatusMessageComponent, IconComponent ],
+      declarations: [ SubscriptionsComponent, StatusMessageComponent, IconComponent ],
       providers: [
         LanguageService,
         { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },
@@ -60,7 +60,7 @@ describe('NotificationSubscriptionComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NotificationSubscriptionComponent);
+    fixture = TestBed.createComponent(SubscriptionsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
