@@ -1,5 +1,7 @@
 <div class="container">
-  <h2>Subscribe to notifications</h2>  
+  <h2>Subscriptions</h2>  
+
+  
 
     <div class="row form-group">
 
@@ -37,13 +39,7 @@
             id="text"
             #textControl="ngModel"
             [(ngModel)]="text"> </textarea>       
-        </div>
-     
-      <!-- Notification -->
-      <div class="col-md-12">
-          <label>Subscription</label>
-          <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{subscriptionJSON}}">
-      </div>
+        </div>    
 
     </div>
 
@@ -52,15 +48,7 @@
 
      <!-- Buttons -->
      <div class="btn-group pull-right" role="group">                  
-  
-       <!-- Subscribe -->
-       <button 
-           type="button" 
-           class="btn btn btn-success" 
-           (click)="subscribeToPushNotifications()"
-           [disabled]="!notificationEnabled">
-           Subscribe
-       </button> 
+     
 
        <!-- Send notification -->
        <button 
