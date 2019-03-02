@@ -9,7 +9,6 @@ import {NotificationService} from '../notification.service';
 import {ConfirmService} from '../confirm.service';
 import {LanguageService} from '../language.service';
 import {PagedResult} from '../model/pagedresult';
-import {TooltipDirective} from '../tooltip.directive';
 import {IconComponent} from '../icon/icon.component';
 import {StatusMessageComponent} from '../status-message/status-message.component';
 import { SwPush } from '@angular/service-worker';
