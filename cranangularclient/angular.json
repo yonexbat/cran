@@ -18,7 +18,7 @@
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/assets",
-              "src/favicon.ico",
+              "src/favicon.png",
               "src/manifest.json",
               "src/pwacranium.js"
             ],
@@ -98,7 +98,7 @@
             ],
             "assets": [
               "src/assets",
-              "src/favicon.ico",
+              "src/favicon.png",
               "src/manifest.json"
             ]
           }
