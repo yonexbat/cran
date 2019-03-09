@@ -13,6 +13,7 @@ using cran.Infra;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using cran.Model.Dto;
+using cran.Filters;
 
 namespace cran
 {
@@ -42,7 +43,7 @@ namespace cran
         {
             services.AddSingleton(_physicalFileProvider);
 
-            services.AddMvc()               
+            services.AddMvc(options => options.Filters.Add(typeof(AuditFilter)))               
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization()
                 .SetCompatibilityVersion(CompatibilityVersion.Latest);
