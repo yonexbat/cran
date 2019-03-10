@@ -14,6 +14,7 @@ import { PushNotificationService } from '../push-notification.service';
 export class MenuComponent implements OnInit {
 
   public isAdmin = false;
+  public isSubscriptionVisible = false;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN)
     private cranDataService: ICranDataService,
@@ -23,6 +24,7 @@ export class MenuComponent implements OnInit {
 
   ngOnInit() {
     this.setRoles();
+    this.setSubscription(); // don't wait, beacuase promise will never be fullfilled.
   }
 
   private async setRoles() {
@@ -34,8 +36,14 @@ export class MenuComponent implements OnInit {
     }
   }
 
+  private async setSubscription() {
+    const sub: string =  await this.pushNotificationService.checkForSubscripton();
+    this.isSubscriptionVisible =  (sub === '');
+  }
+
   public async subscribeToPushNotifications()  {
-     this.pushNotificationService.subscribeToPushNotifications();
+     await this.pushNotificationService.subscribeToPushNotifications();
+     this.isSubscriptionVisible = false;
   }
 
 }

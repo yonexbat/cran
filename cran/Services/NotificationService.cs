@@ -30,7 +30,7 @@ namespace cran.Services
         {
             await this._dbLogService.LogMessageAsync($"adding subscription: {subscriptionDto.Endpoint}");
             if (!_context.Notifications.Any(x => x.Endpoint == subscriptionDto.Endpoint
-            && x.Auth == subscriptionDto.Keys.Auth))
+            && x.Auth == subscriptionDto.Keys.Auth && x.Active))
             {
                 NotificationSubscription entity = new NotificationSubscription();
                 CopyData(subscriptionDto, entity);
@@ -66,7 +66,7 @@ namespace cran.Services
 
         public async Task<PagedResultDto<SubscriptionShortDto>> GetAllSubscriptionsAsync(int page)
         {
-            IQueryable<NotificationSubscription> query = _context.Notifications;
+            IQueryable<NotificationSubscription> query = _context.Notifications.Where(x => x.Active);
             PagedResultDto<SubscriptionShortDto> result = await ToPagedResult(query, page, MaterializeSubscriptionList);
             return result;
         }
@@ -89,7 +89,24 @@ namespace cran.Services
             VapidDetails vapiData = GetVapiData();
             string message = GetMessage(notification.Title, notification.Text);
 
-            await client.SendNotificationAsync(sub, message, vapiData);
+            try
+            {
+                await client.SendNotificationAsync(sub, message, vapiData);
+            } 
+            catch(WebPushException exception)
+            {
+                if (exception.Message == "Subscription no longer valid") {
+                    await DeactivateSubscription(notification.SubscriptionId);
+                }
+                throw exception;
+            }
+        }
+        
+        private async Task DeactivateSubscription(int id)
+        {
+            NotificationSubscription entity =  await this._context.Notifications.FindAsync(id);
+            entity.Active = false;
+            _context.SaveChanges();
         }
     }
 }

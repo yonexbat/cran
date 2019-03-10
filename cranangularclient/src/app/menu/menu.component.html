@@ -2,9 +2,16 @@
 
     <span class="navbar-brand" href="#">
       Cranium
+      
       <!-- user info -->
       <app-user-info></app-user-info>
-      <app-icon [icon]="'notification'" (click)="subscribeToPushNotifications()"></app-icon>
+
+      <!-- Subscription icon -->
+      <app-icon [icon]="'notification'" 
+                (click)="subscribeToPushNotifications()"
+                *ngIf="isSubscriptionVisible">
+      </app-icon>
+
     </span>
   
     <!-- burger button -->
