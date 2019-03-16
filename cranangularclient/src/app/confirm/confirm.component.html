@@ -22,6 +22,7 @@
                 id="confirmdialognokbutton"
                 class="btn btn-default" 
                 (click)="nok()"
+                *ngIf="cancelButtonVisible"
                 data-dismiss="modal">{{ls.label('cancel')}}</button>
         
         <button type="button" 

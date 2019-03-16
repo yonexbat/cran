@@ -16,6 +16,7 @@ export class ConfirmComponent implements OnInit {
   title  = '';
   text = '';
   promiseResolver: any;
+  public cancelButtonVisible = true;
 
   constructor(public ls: LanguageService,
     private confirmService: ConfirmService) {
@@ -28,6 +29,7 @@ export class ConfirmComponent implements OnInit {
   private confirm(req: ConfirmRequest) {
     this.title = req.title;
     this.text = req.text;
+    this.cancelButtonVisible = req.showCacelButton;
     $('#confirmDialog').modal('show');
   }
 

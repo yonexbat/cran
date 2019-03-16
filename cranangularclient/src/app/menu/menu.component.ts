@@ -4,7 +4,7 @@ import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
 import {LanguageService} from '../language.service';
-import { PushNotificationService } from '../push-notification.service';
+import {PushNotificationService} from '../push-notification.service';
 
 @Component({
   selector: 'app-menu',
@@ -24,7 +24,7 @@ export class MenuComponent implements OnInit {
 
   ngOnInit() {
     this.setRoles();
-    this.setSubscription(); // don't wait, beacuase promise will never be fullfilled.
+    this.setSubscription(); // don't wait, beacuase promise may never be fullfilled.
   }
 
   private async setRoles() {
