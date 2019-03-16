@@ -48,11 +48,13 @@ namespace cran
                 .AddDataAnnotationsLocalization()
                 .SetCompatibilityVersion(CompatibilityVersion.Latest);
 
+            
             services.AddCranLocalization();
             services.AddCranDbContext(Configuration);
             services.AddCranGoogleAuth(Configuration);
             services.AddCranServices();
             services.Configure<CranSettingsDto>(Configuration.GetSection("CranSettings"));
+            services.AddRedirectForForbidden();
 
             services.AddAntiforgery(options => {
                 options.HeaderName = "X-XSRF-TOKEN";               
