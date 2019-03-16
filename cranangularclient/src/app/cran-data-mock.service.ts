@@ -30,10 +30,53 @@ import {VersionInfo} from './model/versionInfo';
 import {VersionInfoParameters} from './model/versionInfoParameters';
 import {QuestionStatus} from './model/questionstatus';
 import {QuestionType} from './model/questiontype';
+import {SubscriptionShort} from './model/subscriptionshort';
+import {Notification} from './model/notification';
 
 
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
+
+  sendNotificationToUser(message: Notification): Promise<any> {
+    const promiseResult = new Promise<any>((resolve, reject) => {
+      setTimeout(function() {
+        resolve();
+      }, 1000);
+    });
+    return promiseResult;
+  }
+
+  getAllSubscriptions(page: number): Promise<PagedResult<SubscriptionShort>> {
+
+    const pagedResult = new PagedResult<SubscriptionShort>();
+    pagedResult.data = [];
+    pagedResult.currentPage = 0;
+    pagedResult.numpages = 4;
+
+    for (let i = 0; i < 10; i++) {
+      pagedResult.data.push({
+        id: i,
+        endpoint: `endpoint ${i}`,
+        userId: `userid${i}`,
+      });
+    }
+
+    const promiseResult = new Promise<PagedResult<SubscriptionShort>>((resolve, reject) => {
+      setTimeout(function() {
+        resolve(pagedResult);
+      }, 1000);
+    });
+    return promiseResult;
+  }
+
+  addPushRegistration(subscription: any): Promise<any> {
+    const promiseResult = new Promise<any>((resolve, reject) => {
+      setTimeout(function() {
+        resolve();
+      }, 1000);
+    });
+    return promiseResult;
+  }
 
   getVersions(parameters: VersionInfoParameters): Promise<PagedResult<VersionInfo>> {
     const texts: VersionInfo[] = [];

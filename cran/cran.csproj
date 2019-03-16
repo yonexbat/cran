@@ -14,7 +14,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.2.0" />
-    <PackageReference Include="Serilog.Extensions.Logging.File" Version="1.1.0" />    
+    <PackageReference Include="Serilog.Extensions.Logging.File" Version="1.1.0" />
+    <PackageReference Include="WebPush" Version="1.0.11" />    
   </ItemGroup>
   <ItemGroup>
     <!-- Files not to show in IDE -->
@@ -27,6 +28,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="certificates\" />
+    <Folder Include="Logs\" />
     <Folder Include="wwwroot\jsclient\" />
   </ItemGroup>
   <ItemGroup>

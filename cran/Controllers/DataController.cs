@@ -9,6 +9,7 @@ using cran.Model.Dto;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using System;
+using cran.Model.Dto.Notification;
 
 namespace cran.Controllers
 {
@@ -29,6 +30,7 @@ namespace cran.Controllers
         private readonly ITextService _textService;
         private readonly IExportService _exportService;
         private readonly IVersionService _versionService;
+        private readonly INotificationService _notificationService;
         private const string OkReturnString = "Ok";
 
         public DataController(ISecurityService securityService,
@@ -41,7 +43,8 @@ namespace cran.Controllers
             IUserProfileService userProfileService,
             ICourseInstanceService courseInstanceService,
             ITextService textService,
-            IExportService exportService)
+            IExportService exportService,
+            INotificationService notificationService)
         {
             _securityService = securityService;
             _binaryService = binaryService;
@@ -54,6 +57,7 @@ namespace cran.Controllers
             _textService = textService;
             _exportService = exportService;
             _versionService = versionService;
+            _notificationService = notificationService;
         }
 
         #region QuestionService
@@ -391,6 +395,31 @@ namespace cran.Controllers
         public async Task<PagedResultDto<VersionInfoDto>> GetVersions([FromBody]VersionInfoParametersDto versionInfoParameters)
         {
             return await _versionService.GetVersionsAsync(versionInfoParameters);            
+        }
+
+        #endregion
+
+        #region NotificationService
+        [HttpPost("[action]")]
+        public async Task<JsonResult> AddPushRegistration([FromBody]NotificationSubscriptionDto dto)
+        {
+            await _notificationService.AddPushNotificationSubscriptionAsync(dto);
+            return Json(OkReturnString);
+        }
+
+        [HttpPost("[action]")]
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<JsonResult> SendNotificationToUser([FromBody]NotificationDto dto)
+        {
+            await _notificationService.SendNotificationToUserAsync(dto);
+            return Json(OkReturnString);
+        }
+
+        [HttpGet("[action]/{page}")]
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<PagedResultDto<SubscriptionShortDto>> GetAllSubscriptions(int page)
+        {
+            return await _notificationService.GetAllSubscriptionsAsync(page);
         }
 
         #endregion

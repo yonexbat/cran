@@ -1,6 +1,6 @@
 # CranAngularClient
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.2.4. 
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.2.4.
 
 ## Development server
 
@@ -32,3 +32,9 @@ Upgrading: `ng update @angular/cli @angular/core`
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## Playing with webpush ##
+web-push send-notification --endpoint=https://fcm.googleapis.com/fcm/send/e5kXWPqXaRI:APA91bGWa1Pd_Nxnj_nMhoK_kZaHhfyXAvGo3Ty1eI6SLsXG_eCiQ7pmNC-ymJ1k3gflJWLj0GZSx2JxuWHqHJdpqSMgGRPzMtuXGJVtn_2B4c198f-EuS6Z0qvU0_pixfD4q48DXz2O  --key=BLFquItY-oc5HtYhjLkeGmWNjmlMR8RO8wtK7XImvvroFUPnGPLxevu5yu16ADmh1uDNjZ_NPkONdCbRorGOt24 --auth=pZmugFrCbvTPHpgDCeyY8Q --payload="{'notification': {'title': 'Angular News','body': 'Newsletter Available!', 'vibrate': [100, 50, 100],  'data': {  'primaryKey': 1   },   'actions': [{'action': 'explore', 'title': 'Go to the site'  }]}}"  --vapid-subject=mailto:public@claude-glauser.ch --vapid-pubkey=BBexMQInwvBFQtqWi9Px9FrhnzEmp0drOs4nkYGcopy_0TQjJ5jUKn7dBDTor_Ma5--Oq8rsseRl2m-dN9iyazU --vapid-pvtkey=TgPuP3hErzuIjTYg_bcYCkOa0GvfGNNUbeiuQpipX3o
+
+## .net core secrets ##
+dotnet user-secrets list

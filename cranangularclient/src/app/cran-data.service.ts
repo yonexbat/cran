@@ -2,17 +2,14 @@ import { Injectable, InjectionToken  } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Course} from './model/course';
 import {Question} from './model/question';
-import {QuestionOption} from './model/questionoption';
 import {ICranDataService} from './icrandataservice';
 import {Tag} from './model/tag';
 import {StartCourse} from './model/startcourse';
 import {CourseInstance} from './model/courseinstance';
 import {QuestionToAsk} from './model/questiontoask';
-import {QuestionOptionToAsk} from './model/questionoptiontoask';
 import {QuestionAnswer} from './model/questionanswer';
 import {QuestionListEntry} from './model/questionlistentry';
 import {Result} from './model/result';
-import {QuestionResult} from './model/questionresult';
 import {CourseInstanceListEntry} from './model/courseinstancelistentry';
 import {SearchQParameters} from './model/searchqparameters';
 import {PagedResult} from './model/pagedresult';
@@ -26,12 +23,32 @@ import {SearchText} from './model/searchtext';
 import {Text} from './model/text';
 import {VersionInfo} from './model/versionInfo';
 import {VersionInfoParameters} from './model/versionInfoParameters';
+import {SubscriptionShort} from './model/subscriptionshort';
+import {Notification} from './model/notification';
 
 @Injectable()
 export class CranDataService implements ICranDataService {
 
   constructor(private http: HttpClient) {
 
+  }
+
+  sendNotificationToUser(message: Notification): Promise<any> {
+    return this.http.post<Notification>('/api/Data/SendNotificationToUser', message)
+    .toPromise()
+    .catch(this.handleError);
+  }
+
+  getAllSubscriptions(page: number): Promise<PagedResult<SubscriptionShort>> {
+     return this.http.get<PagedResult<SubscriptionShort>>('/api/Data/GetAllSubscriptions/' + page)
+     .toPromise()
+     .catch(this.handleError);
+  }
+
+  addPushRegistration(subscription: any): Promise<any> {
+    return this.http.post<Text>('/api/Data/AddPushRegistration', subscription)
+    .toPromise()
+    .catch(this.handleError);
   }
 
   getVersions(parameters: VersionInfoParameters): Promise<PagedResult<VersionInfo>> {

@@ -28,6 +28,14 @@ describe('ConfirmComponent', () => {
     fixture.detectChanges();
   });
 
+  afterEach(() => {
+    // remove all modal stuff
+    const list = document.querySelectorAll('.modal-backdrop');
+    list.forEach(elem => {
+      elem.remove();
+    });
+  });
+
   it('should be created', () => {
     expect(component).toBeTruthy();
   });

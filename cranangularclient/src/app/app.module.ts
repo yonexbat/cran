@@ -49,6 +49,10 @@ import { TooltipDirective } from './tooltip.directive';
 import { TextlistComponent } from './textlist/textlist.component';
 import { ManageTextComponent } from './manage-text/manage-text.component';
 import { VersionsComponent } from './versions/versions.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
+import { PushNotificationService } from './push-notification.service';
 
 function isDevelopment() {
   return window.location && window.location.port && window.location.port === '4200';
@@ -96,6 +100,7 @@ if (isDevelopment()) {
     TextlistComponent,
     ManageTextComponent,
     VersionsComponent,
+    SubscriptionsComponent,
   ],
   imports: [
     BrowserModule,
@@ -105,6 +110,7 @@ if (isDevelopment()) {
     FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    ServiceWorkerModule.register('pwacranium.js', { enabled: environment.production }),
   ],
   providers: [
     { provide: CRAN_SERVICE_TOKEN, useClass: cranDataService },
@@ -113,6 +119,7 @@ if (isDevelopment()) {
     LanguageService,
     ConfirmService,
     DatePipe,
+    PushNotificationService,
   ],
   bootstrap: [AppComponent]
 })

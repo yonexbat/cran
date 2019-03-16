@@ -18,7 +18,9 @@
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/assets",
-              "src/favicon.ico"
+              "src/favicon.png",
+              "src/manifest.json",
+              "src/pwacranium.js"
             ],
             "styles": [
               "node_modules/font-awesome/css/font-awesome.css",
@@ -51,7 +53,8 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
-              ]
+              ],
+              "serviceWorker": true
             }
           }
         },
@@ -95,7 +98,8 @@
             ],
             "assets": [
               "src/assets",
-              "src/favicon.ico"
+              "src/favicon.png",
+              "src/manifest.json"
             ]
           }
         },

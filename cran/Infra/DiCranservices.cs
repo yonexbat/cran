@@ -34,7 +34,9 @@ namespace cran.Infra
             services.AddScoped<ICourseInstanceService, CourseInstanceService>();
             services.AddScoped<ITextService, TextService>();
             services.AddScoped<IExportService, ExportService>();
-            services.AddSingleton<ICacheService, CacheService>();            
+            services.AddScoped<INotificationService, NotificationService>();
+            services.AddSingleton<ICacheService, CacheService>();   
+            
         }
     }
 }

@@ -15,7 +15,7 @@ namespace cran.Infra
     {
         public static void AddCranDbContext(this IServiceCollection services, IConfigurationRoot configuration)
         {
-            string connString = configuration["ConnectionString"];
+            string connString = configuration["CranSettings:ConnectionString"];
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connString)

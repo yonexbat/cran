@@ -18,6 +18,7 @@ import {ManageCourseComponent} from '../manage-course/manage-course.component';
 import {CourseStarterComponent} from '../course-starter/course-starter.component';
 import {TextlistComponent} from '../textlist/textlist.component';
 import {ManageTextComponent} from '../manage-text/manage-text.component';
+import { SubscriptionsComponent } from '../subscriptions/subscriptions.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent},
@@ -38,6 +39,7 @@ const routes: Routes = [
   { path: 'coursestarter/:id', component: CourseStarterComponent},
   { path: 'textlist', component: TextlistComponent},
   { path: 'managetext/:id', component: ManageTextComponent},
+  { path: 'subscriptions', component: SubscriptionsComponent}
 ];
 
 @NgModule({

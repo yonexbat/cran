@@ -54,7 +54,8 @@ describe('VoteComponent', () => {
   it('default vote', () => {
     const debugElement: DebugElement = fixture.debugElement;
     const htmlElement: HTMLElement = debugElement.nativeElement;
-    expect(htmlElement.innerText).toMatch(/2 4/i, '2 downvotes and 4 upvotes');
+    const innerText = htmlElement.innerText;
+    expect(innerText).toMatch(/\s*2\s*4\s*/i, '2 downvotes and 4 upvotes');
   });
 
   it('upvote', async(() => {
@@ -65,7 +66,8 @@ describe('VoteComponent', () => {
       fixture.detectChanges();
       const debugElement: DebugElement = fixture.debugElement;
       const htmlElement: HTMLElement = debugElement.nativeElement;
-      expect(htmlElement.innerText).toMatch(/1 3/i, '1 downvotes and 3 upvotes');
+      const innerText = htmlElement.innerText;
+      expect(innerText).toMatch(/1\s*3/i, '1 downvotes and 3 upvotes');
     });
   }));
 

@@ -1,16 +1,11 @@
-import { Injectable, InjectionToken  } from '@angular/core';
-
-
 import {Course} from './model/course';
 import {Question} from './model/question';
 import {Tag} from './model/tag';
-import {StartCourse} from './model/startcourse';
 import {CourseInstance} from './model/courseinstance';
 import {QuestionToAsk} from './model/questiontoask';
 import {QuestionAnswer} from './model/questionanswer';
 import {QuestionListEntry} from './model/questionlistentry';
 import {Result} from './model/result';
-import {QuestionResult} from './model/questionresult';
 import {CourseInstanceListEntry} from './model/courseinstancelistentry';
 import {SearchQParameters} from './model/searchqparameters';
 import {PagedResult} from './model/pagedresult';
@@ -24,6 +19,8 @@ import {SearchText} from './model/searchtext';
 import {Text} from './model/text';
 import {VersionInfo} from './model/versionInfo';
 import {VersionInfoParameters} from './model/versionInfoParameters';
+import {SubscriptionShort} from './model/subscriptionshort';
+import {Notification} from './model/notification';
 
 export interface ICranDataService {
   getCourses(page: number): Promise<PagedResult<Course>>;
@@ -66,4 +63,7 @@ export interface ICranDataService {
   getTexts(search: SearchText): Promise<PagedResult<Text>>;
   getTextDtoByKey(key: string): Promise<Text>;
   getVersions(parameters: VersionInfoParameters): Promise<PagedResult<VersionInfo>>;
+  addPushRegistration(subscription: any): Promise<any>;
+  getAllSubscriptions(page: number): Promise<PagedResult<SubscriptionShort>>;
+  sendNotificationToUser(message: Notification): Promise<any>;
 }

@@ -1,0 +1,67 @@
+<div class="container">
+  <h2>Subscriptions</h2>  
+
+  
+
+    <div class="row form-group">
+
+      <!-- Dropdown with users  -->
+      <div class="col-md-12">
+        <label for="subs">User</label>
+
+        <select name="subs"
+          class="form-control"
+          id="subs"
+          #subs="ngModel"
+          [(ngModel)]="selectedSubscription">
+          <option *ngFor="let sub of users" value="{{sub.id}}">{{sub.userId}} {{sub.endpoint}}</option>
+        </select>
+      </div>
+
+      <!-- Titel -->
+      <div class="col-md-12">
+        <label>Titel</label>
+        <input 
+          name="title"
+          class="form-control"
+          id="title"
+          #titelText="ngModel"
+          [(ngModel)]="title">          
+      </div>
+
+      <!-- Text -->
+      <div class="col-md-12">
+          <label>Text</label>
+          <textarea
+            rows="4" 
+            name="text"
+            class="form-control"
+            id="text"
+            #textControl="ngModel"
+            [(ngModel)]="text"> </textarea>       
+        </div>    
+
+    </div>
+
+     <!-- Statusmessage -->
+     <app-status-message #statusMessage></app-status-message>
+
+     <!-- Buttons -->
+     <div class="btn-group pull-right" role="group">                  
+     
+
+       <!-- Send notification -->
+       <button 
+           type="button" 
+           class="btn btn btn-success" 
+           (click)="sendNotification()">
+           Send Notification
+       </button> 
+           
+     </div>    
+
+</div>
+
+
+
+   

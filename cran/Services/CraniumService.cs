@@ -8,6 +8,7 @@ using System.Security.Principal;
 using cran.Model.Dto;
 using cran.Model;
 using Microsoft.EntityFrameworkCore;
+using cran.Model.Dto.Notification;
 
 namespace cran.Services
 {
@@ -127,6 +128,16 @@ namespace cran.Services
                 RelCourseTag entityDestination = (RelCourseTag)entity;
                 entityDestination.IdCourse = dtoSource.IdCourse;
                 entityDestination.IdTag = dtoSource.IdTag;
+            }
+            else if(dto is NotificationSubscriptionDto && entity is NotificationSubscription)
+            {
+                NotificationSubscriptionDto dtoSource = (NotificationSubscriptionDto)dto;
+                NotificationSubscription entityDestination = (NotificationSubscription)entity;
+                entityDestination.Endpoint = dtoSource.Endpoint;
+                entityDestination.Auth = dtoSource.Keys?.Auth;
+                entityDestination.P256DiffHell = dtoSource.Keys?.P256dh;
+                entityDestination.ExpirationTime = dtoSource.ExpirationTime;
+                entityDestination.AsString = dtoSource.AsString;
             }
             else
             {

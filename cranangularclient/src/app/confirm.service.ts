@@ -14,12 +14,21 @@ export class ConfirmService {
   }
 
   public confirm(title: string, text: string): Promise<any> {
+    return this.showDialog(title, text, true);
+  }
+
+  public inform(title: string, text: string): Promise<any> {
+    return this.showDialog(title, text, false);
+  }
+
+  private showDialog(title: string, text: string, showCancel: boolean): Promise<any> {
     const promise = new Promise<any>((resolve, reject) => {
       this.promiseResolver = {resolve: resolve, reject: reject};
     });
     const confirmRequest: ConfirmRequest = {
       text: text,
       title: title,
+      showCacelButton: showCancel,
     };
     this._subject.next(confirmRequest);
     return promise;

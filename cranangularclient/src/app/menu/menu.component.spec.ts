@@ -10,6 +10,8 @@ import {ConfirmService} from '../confirm.service';
 import {LanguageService} from '../language.service';
 import {PagedResult} from '../model/pagedresult';
 import { MenuComponent } from './menu.component';
+import {IconComponent} from '../icon/icon.component';
+import {PushNotificationService} from '../push-notification.service';
 
 @Component({selector: 'app-user-info', template: ''})
 class StubUserInfoComponent {
@@ -26,13 +28,15 @@ describe('MenuComponent', () => {
     const cranDataService = jasmine.createSpyObj('CranDataService', ['vote']);
     const notificationService = jasmine.createSpyObj('NotificationService', ['emitLoading', 'emitDone', 'emitError']);
     const confirmationService = jasmine.createSpyObj('ConfirmService', ['some']);
+    const pushNotificationService  =  jasmine.createSpyObj('PushNotificationService', ['checkForSubscripton']);
 
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, FormsModule],
-      declarations: [ MenuComponent, StubUserInfoComponent ],
+      declarations: [ MenuComponent, StubUserInfoComponent, IconComponent ],
       providers: [
         LanguageService,
+        { provide: PushNotificationService, useValue: pushNotificationService},
         { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },
         { provide: NotificationService, useValue: notificationService },
         { provide: ConfirmService, useValue: confirmationService },

@@ -4,6 +4,7 @@ import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
 import {LanguageService} from '../language.service';
+import {PushNotificationService} from '../push-notification.service';
 
 @Component({
   selector: 'app-menu',
@@ -13,14 +14,17 @@ import {LanguageService} from '../language.service';
 export class MenuComponent implements OnInit {
 
   public isAdmin = false;
+  public isSubscriptionVisible = false;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN)
     private cranDataService: ICranDataService,
     private notificationService: NotificationService,
-    public ls: LanguageService) { }
+    public ls: LanguageService,
+    private pushNotificationService: PushNotificationService) { }
 
   ngOnInit() {
     this.setRoles();
+    this.setSubscription(); // don't wait, beacuase promise may never be fullfilled.
   }
 
   private async setRoles() {
@@ -30,6 +34,16 @@ export class MenuComponent implements OnInit {
     } catch (error) {
       this.notificationService.emitError(error);
     }
+  }
+
+  private async setSubscription() {
+    const sub: string =  await this.pushNotificationService.checkForSubscripton();
+    this.isSubscriptionVisible =  (sub === '');
+  }
+
+  public async subscribeToPushNotifications()  {
+     await this.pushNotificationService.subscribeToPushNotifications();
+     this.isSubscriptionVisible = false;
   }
 
 }

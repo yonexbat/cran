@@ -50,6 +50,9 @@ export class IconComponent implements OnInit {
       case 'list':
         internalIcon = 'fa-list-ul';
         break;
+      case 'notification':
+        internalIcon = 'fa-envelope';
+        break;
     }
     return internalIcon;
   }

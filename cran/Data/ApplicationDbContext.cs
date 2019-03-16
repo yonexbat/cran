@@ -31,6 +31,7 @@ namespace cran.Data
         public DbSet<RelQuestionImage> RelQuestionImages { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Text> Texts { get; set; }
+        public DbSet<NotificationSubscription> Notifications { get; set; }
 
         protected IPrincipal _principal;
 
@@ -114,6 +115,15 @@ namespace cran.Data
             MapImage(builder.Entity<Image>());
             MapContainer(builder.Entity<Container>());
             MapText(builder.Entity<Text>());
+            MapNotificationSubscription(builder.Entity<NotificationSubscription>());
+        }
+
+        private void MapNotificationSubscription(EntityTypeBuilder<NotificationSubscription> typeBuilder)
+        {
+            typeBuilder.ToTable("CranNotificationSubscription")            
+            .HasOne(notification => notification.User)
+            .WithMany(user => user.Subscriptions)
+            .HasForeignKey(binary => binary.IdUser);
         }
 
         private void MapText(EntityTypeBuilder<Text> typeBuilder)

@@ -92,6 +92,7 @@
     <Build Include="dbo\Tables\CranText.sql" />
     <Build Include="dbo\Tables\CranTagType.sql" />
     <Build Include="dbo\Tables\CranQuestionType.sql" />
+    <Build Include="dbo\Tables\CranNotificationSubscription.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="CranDataBase.refactorlog" />
