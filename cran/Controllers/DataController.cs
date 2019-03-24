@@ -443,7 +443,7 @@ namespace cran.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<PagedResultDto<CourseDto>> GetFavoriteCourseAsync(int page)
+        public async Task<PagedResultDto<CourseDto>> GetFavoriteCourse(int page)
         {
             return await _favoriteService.GetFavoriteCourseAsync(page);
         }

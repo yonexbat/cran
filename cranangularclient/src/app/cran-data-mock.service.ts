@@ -32,10 +32,32 @@ import {QuestionStatus} from './model/questionstatus';
 import {QuestionType} from './model/questiontype';
 import {SubscriptionShort} from './model/subscriptionshort';
 import {Notification} from './model/notification';
+import {CourseToFavorites} from './model/coursetofavorites';
 
 
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
+
+  addCourseToFavorites(favorite: CourseToFavorites): Promise<any> {
+    const promiseResult = new Promise<any>((resolve, reject) => {
+      setTimeout(function() {
+        resolve();
+      }, 1000);
+    });
+    return promiseResult;
+  }
+  removeCoureFromFavorites(favorite: CourseToFavorites): Promise<any> {
+    const promiseResult = new Promise<any>((resolve, reject) => {
+      setTimeout(function() {
+        resolve();
+      }, 1000);
+    });
+    return promiseResult;
+  }
+
+  getFavoriteCourseAsync(page: number): Promise<PagedResult<Course>> {
+    return this.getCourses(page);
+  }
 
   sendNotificationToUser(message: Notification): Promise<any> {
     const promiseResult = new Promise<any>((resolve, reject) => {

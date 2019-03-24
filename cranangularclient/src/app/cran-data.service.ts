@@ -25,12 +25,31 @@ import {VersionInfo} from './model/versionInfo';
 import {VersionInfoParameters} from './model/versionInfoParameters';
 import {SubscriptionShort} from './model/subscriptionshort';
 import {Notification} from './model/notification';
+import {CourseToFavorites} from './model/coursetofavorites';
 
 @Injectable()
 export class CranDataService implements ICranDataService {
 
   constructor(private http: HttpClient) {
 
+  }
+
+  addCourseToFavorites(favorite: CourseToFavorites): Promise<any> {
+    return this.http.post<Notification>('/api/Data/AddCourseToFavorites', favorite)
+    .toPromise()
+    .catch(this.handleError);
+  }
+
+  removeCoureFromFavorites(favorite: CourseToFavorites): Promise<any> {
+    return this.http.post<Notification>('/api/Data/RemoveCoureFromFavorites', favorite)
+    .toPromise()
+    .catch(this.handleError);
+  }
+
+  getFavoriteCourseAsync(page: number): Promise<PagedResult<Course>> {
+    return this.http.get<PagedResult<Course>>('/api/Data/GetFavoriteCourse' + page)
+    .toPromise()
+    .catch(this.handleError);
   }
 
   sendNotificationToUser(message: Notification): Promise<any> {
