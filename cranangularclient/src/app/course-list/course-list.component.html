@@ -10,6 +10,8 @@
           {{item.title}} [{{ls.label('language')}}: {{item.language}}]
   
           <span class="btn-group pull-right">
+
+              <!-- edit button -->
               <button class="btn btn-default" 
                     type="button" 
                     (click)="editCourse(item)" 
@@ -17,6 +19,16 @@
                     [appTooltip] = "'edit'">
                   <app-icon [icon]="'edit'"></app-icon>    
               </button>
+
+              <!-- add or remove to favorite  -->
+              <button class="btn btn-default" 
+                    type="button"              
+                    (click)="addToFavorites(item)"                 
+                    [appTooltip] = "'edit'">
+                  <app-icon [icon]="'favoriteoff'"></app-icon>    
+              </button>              
+
+              <!-- play button -->
               <button class="btn btn-default" 
                       type="button" 
                       (click)="startCourse(item)"

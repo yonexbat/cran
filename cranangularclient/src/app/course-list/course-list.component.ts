@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject, ViewChild, } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { Router, } from '@angular/router';
-
 import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {Course} from '../model/course';
@@ -10,6 +9,7 @@ import {StatusMessageComponent} from '../status-message/status-message.component
 import {NotificationService} from '../notification.service';
 import {LanguageService} from '../language.service';
 import {PagedResult} from '../model/pagedresult';
+import {CourseToFavorites} from '../model/coursetofavorites';
 
 
 @Component({
@@ -21,7 +21,7 @@ export class CourseListComponent implements OnInit {
 
   public pagedResult: PagedResult<Course> = new PagedResult<Course>();
 
-  constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
+  constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
     private router: Router,
     private notificationService: NotificationService,
     private ls: LanguageService) { }
@@ -33,7 +33,7 @@ export class CourseListComponent implements OnInit {
   private async getCourses(page: number): Promise<void> {
     try {
       this.notificationService.emitLoading();
-      const result = await this.cranDataServiceService.getCourses(page);
+      const result = await this.cranDataService.getCourses(page);
       this.pagedResult = result;
       this.notificationService.emitDone();
     } catch (error) {
@@ -48,7 +48,7 @@ export class CourseListComponent implements OnInit {
   public async startCourse(course: Course): Promise<void> {
     try {
       this.notificationService.emitLoading();
-      const courseInstance = await this.cranDataServiceService.startCourse(course.id);
+      const courseInstance = await this.cranDataService.startCourse(course.id);
       if (courseInstance.numQuestionsAlreadyAsked < courseInstance.numQuestionsTotal) {
         this.router.navigate(['/askquestion', courseInstance.idCourseInstanceQuestion]);
       }
@@ -59,8 +59,19 @@ export class CourseListComponent implements OnInit {
   }
 
   public async editCourse(course: Course): Promise<void> {
-
     this.router.navigate(['/managecourse', course.id]);
+  }
+
+  public async addToFavorites(course: Course) {
+    try {
+      this.notificationService.emitLoading();
+      const courseToFavorites = new CourseToFavorites();
+      courseToFavorites.courseId = course.id;
+      await this.cranDataService.addCourseToFavorites(courseToFavorites);
+      this.notificationService.emitDone();
+    } catch (error) {
+      this.notificationService.emitError(error);
+    }
   }
 
 }

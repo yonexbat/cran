@@ -429,14 +429,14 @@ namespace cran.Controllers
 
         #region FavoriteService
         [HttpPost("[action]")]
-        public async Task<JsonResult> AddCourseToFavorites(CourseToFavoritesDto dto)
+        public async Task<JsonResult> AddCourseToFavorites([FromBody]CourseToFavoritesDto dto)
         {
             await _favoriteService.AddCourseToFavoritesAsync(dto);
             return Json(OkReturnString);
         }
 
         [HttpPost("[action]")]
-        public async Task<JsonResult> RemoveCoureFromFavorites(CourseToFavoritesDto dto)
+        public async Task<JsonResult> RemoveCoureFromFavorites([FromBody]CourseToFavoritesDto dto)
         {
             await _favoriteService.RemoveCoureFromFavoritesAsync(dto);
             return Json(OkReturnString);

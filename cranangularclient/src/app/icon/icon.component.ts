@@ -53,6 +53,12 @@ export class IconComponent implements OnInit {
       case 'notification':
         internalIcon = 'fa-envelope';
         break;
+      case 'favoriteon':
+        internalIcon = 'fa-star';
+        break;
+      case 'favoriteoff':
+        internalIcon = 'fa-star';
+        break;
     }
     return internalIcon;
   }

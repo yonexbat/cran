@@ -117,6 +117,7 @@ namespace cran.Data
             MapContainer(builder.Entity<Container>());
             MapText(builder.Entity<Text>());
             MapNotificationSubscription(builder.Entity<NotificationSubscription>());
+            MapRelUserCourseFavorite(builder.Entity<RelUserCourseFavorite>());
         }
 
         private void MapNotificationSubscription(EntityTypeBuilder<NotificationSubscription> typeBuilder)
