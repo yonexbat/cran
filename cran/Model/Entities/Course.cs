@@ -13,6 +13,7 @@ namespace cran.Model.Entities
         public virtual Language Language { get; set; }
 
         public virtual IList<RelCourseTag> RelTags { get; set; } = new List<RelCourseTag>();
+        public virtual IList<RelUserCourseFavorite> RelFavorites { get; set; } = new List<RelUserCourseFavorite>();
         public virtual IList<CourseInstance> CourseInstances { get; set; } = new List<CourseInstance>();
     }
 }
