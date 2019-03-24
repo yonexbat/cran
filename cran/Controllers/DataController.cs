@@ -31,6 +31,7 @@ namespace cran.Controllers
         private readonly IExportService _exportService;
         private readonly IVersionService _versionService;
         private readonly INotificationService _notificationService;
+        private readonly IFavoriteService _favoriteService;
         private const string OkReturnString = "Ok";
 
         public DataController(ISecurityService securityService,
@@ -44,7 +45,8 @@ namespace cran.Controllers
             ICourseInstanceService courseInstanceService,
             ITextService textService,
             IExportService exportService,
-            INotificationService notificationService)
+            INotificationService notificationService,
+            IFavoriteService favoriteService)
         {
             _securityService = securityService;
             _binaryService = binaryService;
@@ -58,6 +60,7 @@ namespace cran.Controllers
             _exportService = exportService;
             _versionService = versionService;
             _notificationService = notificationService;
+            _favoriteService = favoriteService;
         }
 
         #region QuestionService
@@ -422,6 +425,28 @@ namespace cran.Controllers
             return await _notificationService.GetAllSubscriptionsAsync(page);
         }
 
+        #endregion
+
+        #region FavoriteService
+        [HttpPost("[action]")]
+        public async Task<JsonResult> AddCourseToFavorites(CourseToFavoritesDto dto)
+        {
+            await _favoriteService.AddCourseToFavoritesAsync(dto);
+            return Json(OkReturnString);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<JsonResult> RemoveCoureFromFavorites(CourseToFavoritesDto dto)
+        {
+            await _favoriteService.RemoveCoureFromFavoritesAsync(dto);
+            return Json(OkReturnString);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<PagedResultDto<CourseDto>> GetFavoriteCourseAsync(int page)
+        {
+            return await _favoriteService.GetFavoriteCourseAsync(page);
+        }
         #endregion
     }
 }

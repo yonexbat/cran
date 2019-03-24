@@ -35,7 +35,8 @@ namespace cran.Infra
             services.AddScoped<ITextService, TextService>();
             services.AddScoped<IExportService, ExportService>();
             services.AddScoped<INotificationService, NotificationService>();
-            services.AddSingleton<ICacheService, CacheService>();   
+            services.AddScoped<IFavoriteService, FavoriteService>();
+            services.AddSingleton<ICacheService, CacheService>();               
             
         }
     }
