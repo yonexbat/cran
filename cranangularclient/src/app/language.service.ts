@@ -108,6 +108,8 @@ export class LanguageService {
     'insertdate' :  {valueDe : 'Datum erstellt', valueEn : 'Date created'},
     'approvaldate' :  {valueDe : 'Datum freigegeben', valueEn : 'Date approved'},
     'insertuser' :  {valueDe : 'Ersteller', valueEn : 'Creator'},
+    'addcoursetofavorites': {valueDe : 'Kurs zu den Favoriten hinzufügen', valueEn : 'add course to favorites'},
+    'removecoursefromfavorites': {valueDe : 'Kurs von den Favoriten entfernen', valueEn : 'remove course from favorites'},
   };
 
 
