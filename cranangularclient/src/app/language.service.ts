@@ -110,6 +110,8 @@ export class LanguageService {
     'insertuser' :  {valueDe : 'Ersteller', valueEn : 'Creator'},
     'addcoursetofavorites': {valueDe : 'Kurs zu den Favoriten hinzufügen', valueEn : 'add course to favorites'},
     'removecoursefromfavorites': {valueDe : 'Kurs von den Favoriten entfernen', valueEn : 'remove course from favorites'},
+    'removecoursefromfavoritesq': {valueDe : 'Kurs {0} von den Favoriten entfernen?', valueEn : 'remove course {0} from favorites?'},
+    'removecourseq': {valueDe : 'Kurs von Favoriten entfernen?', valueEn : 'remove course from favorites?'},
   };
 
 
