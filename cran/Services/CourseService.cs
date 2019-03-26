@@ -24,7 +24,7 @@ namespace cran.Services
                 .ThenInclude(x => x.Tag)
                 .SingleAsync();
 
-            CourseDto result = ToCourseDto(course);
+            CourseDto result = await ToCourseDto(course);
             return result;
         }
 
@@ -46,12 +46,12 @@ namespace cran.Services
                .Include(x => x.RelTags)
                .ThenInclude(x => x.Tag)
                .ToListAsync();
-            return ToDtoList(list, ToCourseDto);
+            return await ToDtoListAsync(list, ToCourseDto);
         }
 
      
 
-        private CourseDto ToCourseDto(Course course)
+        private async Task<CourseDto> ToCourseDto(Course course)
         {
             CourseDto courseVm = new CourseDto
             {
@@ -77,6 +77,9 @@ namespace cran.Services
                 };
                 courseVm.Tags.Add(tagVm);
             }
+
+            string userid = GetUserId();
+            courseVm.IsFavorite = await _context.RelUserCourseFavorites.AnyAsync(x => x.Course.Id == course.Id && x.User.UserId == userid);
 
             return courseVm;
         }

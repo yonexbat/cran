@@ -68,6 +68,7 @@ export class CourseListComponent implements OnInit {
       const courseToFavorites = new CourseToFavorites();
       courseToFavorites.courseId = course.id;
       await this.cranDataService.addCourseToFavorites(courseToFavorites);
+      await this.getCourses(this.pagedResult.currentPage);
       this.notificationService.emitDone();
     } catch (error) {
       this.notificationService.emitError(error);
@@ -87,6 +88,7 @@ export class CourseListComponent implements OnInit {
       const courseToFavorites = new CourseToFavorites();
       courseToFavorites.courseId = course.id;
       await this.cranDataService.removeCoureFromFavorites(courseToFavorites);
+      await this.getCourses(this.pagedResult.currentPage);
       this.notificationService.emitDone();
     } catch (error) {
       this.notificationService.emitError(error);

@@ -6,5 +6,6 @@ export class Course {
     public description: string;
     public numQuestionsToAsk: number;
     public language = '';
+    public isFavorite = false;
     public tags: Tag[] = [];
 }

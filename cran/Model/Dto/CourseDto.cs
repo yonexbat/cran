@@ -11,6 +11,7 @@ namespace cran.Model.Dto
         public bool IsEditable { get; set; }
         public int NumQuestionsToAsk { get; set; }
         public string Language { get; set; }
+        public bool IsFavorite { get; set; }
 
         public IList<TagDto> Tags = new List<TagDto>();        
 

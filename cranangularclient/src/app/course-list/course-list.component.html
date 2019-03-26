@@ -24,7 +24,8 @@
               <button class="btn btn-default" 
                     type="button"              
                     (click)="addToFavorites(item)"                 
-                    [appTooltip] = "'addcoursetofavorites'">
+                    [appTooltip] = "'addcoursetofavorites'"
+                    *ngIf="!item.isFavorite">
                   <app-icon [icon]="'favoriteoff'"></app-icon>    
               </button>     
               
@@ -32,7 +33,8 @@
               <button class="btn btn-default" 
                       type="button"              
                       (click)="removeFromFavorites(item)"                 
-                      [appTooltip] = "'removecoursefromfavorites'">
+                      [appTooltip] = "'removecoursefromfavorites'"
+                      *ngIf="item.isFavorite">
                     <app-icon [icon]="'favoriteon'"></app-icon>    
               </button>     
 
