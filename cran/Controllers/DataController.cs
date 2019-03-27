@@ -442,8 +442,8 @@ namespace cran.Controllers
             return Json(OkReturnString);
         }
 
-        [HttpPost("[action]")]
-        public async Task<PagedResultDto<CourseDto>> GetFavoriteCourse(int page)
+        [HttpGet("[action]/{page}")]
+        public async Task<PagedResultDto<CourseDto>> GetFavoriteCourses(int page)
         {
             return await _favoriteService.GetFavoriteCourseAsync(page);
         }

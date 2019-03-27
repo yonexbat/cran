@@ -36,9 +36,65 @@ namespace cran.Services
             }
         }
 
-        public Task<PagedResultDto<CourseDto>> GetFavoriteCourseAsync(int page)
+        public async Task<PagedResultDto<CourseDto>> GetFavoriteCourseAsync(int page)
         {
-            throw new NotImplementedException();
+            string userId = this.GetUserId();
+            IQueryable<Course> query = from x in _context.Courses
+                                       join relUser in _context.RelUserCourseFavorites on x.Id equals relUser.Course.Id
+                                       where
+                                           relUser.User.UserId == userId
+                                       select x;
+
+
+            query = query.OrderBy(x => x.Title).ThenBy(x => x.Id);
+            return await ToPagedResult(query, page, ToDto);
+        }
+
+        private async Task<IList<CourseDto>> ToDto(IQueryable<Course> query)
+        {
+            query = query.Include(x => x.RelTags)
+               .ThenInclude(x => x.Tag);
+
+            IList<Course> list = await query
+               .Include(x => x.RelTags)
+               .ThenInclude(x => x.Tag)
+               .ToListAsync();
+            return await ToDtoListAsync(list, ToCourseDto);
+        }
+
+
+
+        private async Task<CourseDto> ToCourseDto(Course course)
+        {
+            CourseDto courseVm = new CourseDto
+            {
+                Id = course.Id,
+                Title = course.Title,
+                Language = course.Language.ToString(),
+                Description = course.Description,
+                NumQuestionsToAsk = course.NumQuestionsToAsk,
+                IsEditable = _currentPrincipal.IsInRole(Roles.Admin),
+            };
+
+            foreach (RelCourseTag relTag in course.RelTags)
+            {
+                Tag tag = relTag.Tag;
+                TagDto tagVm = new TagDto
+                {
+                    Id = tag.Id,
+                    IdTagType = (int)tag.TagType,
+                    Description = tag.Description,
+                    Name = tag.Name,
+                    ShortDescDe = tag.ShortDescDe,
+                    ShortDescEn = tag.ShortDescEn,
+                };
+                courseVm.Tags.Add(tagVm);
+            }
+
+            string userid = GetUserId();
+            courseVm.IsFavorite = await _context.RelUserCourseFavorites.AnyAsync(x => x.Course.Id == course.Id && x.User.UserId == userid);
+
+            return courseVm;
         }
 
         public async Task RemoveCoureFromFavoritesAsync(CourseToFavoritesDto dto)

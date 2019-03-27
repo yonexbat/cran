@@ -22,7 +22,7 @@ export class CourseListComponent implements OnInit {
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
     private router: Router,
     private notificationService: NotificationService,
-    private ls: LanguageService,
+    public ls: LanguageService,
     private confirmSerice: ConfirmService) { }
 
   ngOnInit() {

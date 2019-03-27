@@ -47,7 +47,7 @@ export class CranDataService implements ICranDataService {
   }
 
   getFavoriteCourses(page: number): Promise<PagedResult<Course>> {
-    return this.http.get<PagedResult<Course>>('/api/Data/GetFavoriteCourse' + page)
+    return this.http.get<PagedResult<Course>>('/api/Data/GetFavoriteCourses/' + page)
     .toPromise()
     .catch(this.handleError);
   }
