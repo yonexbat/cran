@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using cran.Data;
+using cran.Mappers;
 using cran.Model.Dto;
 using cran.Model.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -59,41 +60,15 @@ namespace cran.Services
                .Include(x => x.RelTags)
                .ThenInclude(x => x.Tag)
                .ToListAsync();
-            return await ToDtoListAsync(list, ToCourseDto);
+            return ToDtoList(list, ToCourseDto);
         }
 
 
 
-        private async Task<CourseDto> ToCourseDto(Course course)
+        private CourseDto ToCourseDto(Course course)
         {
-            CourseDto courseVm = new CourseDto
-            {
-                Id = course.Id,
-                Title = course.Title,
-                Language = course.Language.ToString(),
-                Description = course.Description,
-                NumQuestionsToAsk = course.NumQuestionsToAsk,
-                IsEditable = _currentPrincipal.IsInRole(Roles.Admin),
-            };
-
-            foreach (RelCourseTag relTag in course.RelTags)
-            {
-                Tag tag = relTag.Tag;
-                TagDto tagVm = new TagDto
-                {
-                    Id = tag.Id,
-                    IdTagType = (int)tag.TagType,
-                    Description = tag.Description,
-                    Name = tag.Name,
-                    ShortDescDe = tag.ShortDescDe,
-                    ShortDescEn = tag.ShortDescEn,
-                };
-                courseVm.Tags.Add(tagVm);
-            }
-
-            string userid = GetUserId();
-            courseVm.IsFavorite = await _context.RelUserCourseFavorites.AnyAsync(x => x.Course.Id == course.Id && x.User.UserId == userid);
-
+            bool isEditable = _currentPrincipal.IsInRole(Roles.Admin);
+            CourseDto courseVm = course.Map(isEditable, true);                    
             return courseVm;
         }
 
