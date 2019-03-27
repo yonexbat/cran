@@ -55,7 +55,7 @@ export class CranDataServiceMock implements ICranDataService {
     return promiseResult;
   }
 
-  getFavoriteCourseAsync(page: number): Promise<PagedResult<Course>> {
+  getFavoriteCourses(page: number): Promise<PagedResult<Course>> {
     return this.getCourses(page);
   }
 

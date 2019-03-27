@@ -9,6 +9,7 @@ export class LanguageService {
   private map: { [key: string]: LabelTuple; } = {
     'home' : {valueDe : 'Home', valueEn : 'Home'},
     'courses' : {valueDe : 'Kurse', valueEn : 'Courses'},
+    'allcourses' : {valueDe : 'Alle Kurse', valueEn : 'All courses'},
     'myresults' : {valueDe : 'Meine Resultate', valueEn : 'My results'},
     'questions' : {valueDe : 'Fragen', valueEn : 'Questions'},
     'addquestion' : {valueDe : 'Frage hinzufügen', valueEn : 'Add question'},

@@ -69,5 +69,5 @@ export interface ICranDataService {
   sendNotificationToUser(message: Notification): Promise<any>;
   addCourseToFavorites(favorite: CourseToFavorites): Promise<any>;
   removeCoureFromFavorites(favorite: CourseToFavorites): Promise<any>;
-  getFavoriteCourseAsync(page: number):  Promise<PagedResult<Course>>;
+  getFavoriteCourses(page: number):  Promise<PagedResult<Course>>;
 }
