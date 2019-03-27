@@ -53,6 +53,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
 import { PushNotificationService } from './push-notification.service';
+import { CourseFavoriteListComponent } from './course-favorite-list/course-favorite-list.component';
 
 function isDevelopment() {
   return window.location && window.location.port && window.location.port === '4200';
@@ -101,6 +102,7 @@ if (isDevelopment()) {
     ManageTextComponent,
     VersionsComponent,
     SubscriptionsComponent,
+    CourseFavoriteListComponent,
   ],
   imports: [
     BrowserModule,

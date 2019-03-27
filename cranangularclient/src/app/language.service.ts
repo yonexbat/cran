@@ -112,6 +112,7 @@ export class LanguageService {
     'removecoursefromfavorites': {valueDe : 'Kurs von den Favoriten entfernen', valueEn : 'remove course from favorites'},
     'removecoursefromfavoritesq': {valueDe : 'Kurs {0} von den Favoriten entfernen?', valueEn : 'remove course {0} from favorites?'},
     'removecourseq': {valueDe : 'Kurs von Favoriten entfernen?', valueEn : 'remove course from favorites?'},
+    'favorites': {valueDe : 'Favoriten', valueEn : 'Favorites'},
   };
 
 
