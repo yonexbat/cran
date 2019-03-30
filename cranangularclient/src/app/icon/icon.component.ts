@@ -18,40 +18,40 @@ export class IconComponent implements OnInit {
     let internalIcon = 'fa-bug';
     switch (this.icon) {
       case 'edit':
-        internalIcon = 'fa fa-edit';
+        internalIcon = 'fas fa-edit';
         break;
       case 'start':
-        internalIcon = 'fa fa-play';
+        internalIcon = 'fas fa-play';
         break;
       case 'thumbs-down':
-        internalIcon = 'fa fa-thumbs-o-down';
+        internalIcon = 'fas fa-thumbs-up';
         break;
       case 'thumbs-up':
-        internalIcon = 'fa fa-thumbs-o-up';
+        internalIcon = 'fas fa-thumbs-down';
         break;
       case 'ok':
-        internalIcon = 'fa fa-check';
+        internalIcon = 'fas fa-check';
         break;
       case 'nok':
-        internalIcon = 'fa fa-remove';
+        internalIcon = 'fas fa-times';
         break;
       case 'remove':
-        internalIcon = 'fa fa-remove';
+        internalIcon = 'fas fa-times';
         break;
       case 'trash':
-        internalIcon = 'fa fa-trash-o';
+        internalIcon = 'fas fa-trash';
         break;
       case 'info':
-        internalIcon = 'fa fa-info';
+        internalIcon = 'fas fa-info';
         break;
       case 'add':
-        internalIcon = 'fa fa-plus';
+        internalIcon = 'fas fa-plus';
         break;
       case 'list':
-        internalIcon = 'fa fa-list-ul';
+        internalIcon = 'fas fa-list-ul';
         break;
       case 'notification':
-        internalIcon = 'fa fa-envelope';
+        internalIcon = 'fas fa-envelope';
         break;
       case 'favoriteon':
         internalIcon = 'fas fa-star';
