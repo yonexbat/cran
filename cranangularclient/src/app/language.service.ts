@@ -9,6 +9,7 @@ export class LanguageService {
   private map: { [key: string]: LabelTuple; } = {
     'home' : {valueDe : 'Home', valueEn : 'Home'},
     'courses' : {valueDe : 'Kurse', valueEn : 'Courses'},
+    'allcourses' : {valueDe : 'Alle Kurse', valueEn : 'All courses'},
     'myresults' : {valueDe : 'Meine Resultate', valueEn : 'My results'},
     'questions' : {valueDe : 'Fragen', valueEn : 'Questions'},
     'addquestion' : {valueDe : 'Frage hinzufügen', valueEn : 'Add question'},
@@ -108,6 +109,11 @@ export class LanguageService {
     'insertdate' :  {valueDe : 'Datum erstellt', valueEn : 'Date created'},
     'approvaldate' :  {valueDe : 'Datum freigegeben', valueEn : 'Date approved'},
     'insertuser' :  {valueDe : 'Ersteller', valueEn : 'Creator'},
+    'addcoursetofavorites': {valueDe : 'Kurs zu den Favoriten hinzufügen', valueEn : 'add course to favorites'},
+    'removecoursefromfavorites': {valueDe : 'Kurs von den Favoriten entfernen', valueEn : 'remove course from favorites'},
+    'removecoursefromfavoritesq': {valueDe : 'Kurs {0} von den Favoriten entfernen?', valueEn : 'remove course {0} from favorites?'},
+    'removecourseq': {valueDe : 'Kurs von Favoriten entfernen?', valueEn : 'remove course from favorites?'},
+    'favorites': {valueDe : 'Favoriten', valueEn : 'Favorites'},
   };
 
 

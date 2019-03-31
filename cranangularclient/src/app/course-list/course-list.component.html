@@ -1,5 +1,8 @@
 <div id="crancourses" class="container">
 
+  <!-- Title -->
+  <h2>{{ls.label('allcourses')}}</h2>
+
   <!-- Template for ListItem -->
   <ng-template #listItem let-item="item"> 
       <div class="list-group-item">
@@ -9,7 +12,9 @@
 
           {{item.title}} [{{ls.label('language')}}: {{item.language}}]
   
-          <span class="btn-group pull-right">
+          <span class="btn-group float-right">
+
+              <!-- edit button -->
               <button class="btn btn-default" 
                     type="button" 
                     (click)="editCourse(item)" 
@@ -17,6 +22,26 @@
                     [appTooltip] = "'edit'">
                   <app-icon [icon]="'edit'"></app-icon>    
               </button>
+
+              <!-- add course to favorites  -->
+              <button class="btn btn-default" 
+                    type="button"              
+                    (click)="addToFavorites(item)"                 
+                    [appTooltip] = "'addcoursetofavorites'"
+                    *ngIf="!item.isFavorite">
+                  <app-icon [icon]="'favoriteoff'"></app-icon>    
+              </button>     
+              
+              <!-- remove course from favorites  -->
+              <button class="btn btn-default" 
+                      type="button"              
+                      (click)="removeFromFavorites(item)"                 
+                      [appTooltip] = "'removecoursefromfavorites'"
+                      *ngIf="item.isFavorite">
+                    <app-icon [icon]="'favoriteon'"></app-icon>    
+              </button>     
+
+              <!-- play button -->
               <button class="btn btn-default" 
                       type="button" 
                       (click)="startCourse(item)"

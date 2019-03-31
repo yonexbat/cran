@@ -21,6 +21,7 @@ import {VersionInfo} from './model/versionInfo';
 import {VersionInfoParameters} from './model/versionInfoParameters';
 import {SubscriptionShort} from './model/subscriptionshort';
 import {Notification} from './model/notification';
+import {CourseToFavorites} from './model/coursetofavorites';
 
 export interface ICranDataService {
   getCourses(page: number): Promise<PagedResult<Course>>;
@@ -66,4 +67,7 @@ export interface ICranDataService {
   addPushRegistration(subscription: any): Promise<any>;
   getAllSubscriptions(page: number): Promise<PagedResult<SubscriptionShort>>;
   sendNotificationToUser(message: Notification): Promise<any>;
+  addCourseToFavorites(favorite: CourseToFavorites): Promise<any>;
+  removeCoureFromFavorites(favorite: CourseToFavorites): Promise<any>;
+  getFavoriteCourses(page: number):  Promise<PagedResult<Course>>;
 }

@@ -38,6 +38,18 @@ namespace cran.Services
             return result;
         }
 
+        protected async Task<IList<T>> ToDtoListAsync<T, Q>(IList<Q> input, Func<Q, Task<T>> func)
+        {
+            IList<T> result = new List<T>();
+            foreach (Q q in input)
+            {
+                T t =  await func(q);
+                result.Add(t);
+            }
+            return result;
+        }
+
+
 
         protected void UpdateRelation<Tdto, Tentity>(IList<Tdto> dtos, IList<Tentity> entities) 
             where Tdto: IDto 
