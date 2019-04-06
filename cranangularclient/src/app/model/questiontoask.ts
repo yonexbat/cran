@@ -1,6 +1,6 @@
 import {QuestionOptionToAsk} from './questionoptiontoask';
 import {Question} from './question';
-import {QuestionSelectorInfo} from './questionSelectorInfo';
+import {QuestionSelectorInfo} from './questionselectorinfo';
 import {QuestionType} from './questiontype';
 
 export class QuestionToAsk {
