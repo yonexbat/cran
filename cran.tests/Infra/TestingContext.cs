@@ -76,7 +76,7 @@ namespace cran.tests.Infra
 
         protected ApplicationDbContext CreateDbContext(IConfiguration config, IPrincipal principal)
         {
-            string connString = config["ConnectionString"];
+            string connString = config["CranSettings:ConnectionString"];
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseSqlServer(connString)
             .UseLazyLoadingProxies()

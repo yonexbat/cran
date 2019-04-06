@@ -18,12 +18,14 @@ import {ManageCourseComponent} from '../manage-course/manage-course.component';
 import {CourseStarterComponent} from '../course-starter/course-starter.component';
 import {TextlistComponent} from '../textlist/textlist.component';
 import {ManageTextComponent} from '../manage-text/manage-text.component';
-import { SubscriptionsComponent } from '../subscriptions/subscriptions.component';
+import {SubscriptionsComponent} from '../subscriptions/subscriptions.component';
+import {CourseFavoriteListComponent} from '../course-favorite-list/course-favorite-list.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent},
   { path: 'home', component:  HomeComponent},
   { path: 'list', component:  CourseListComponent},
+  { path: 'coursefavorites', component:  CourseFavoriteListComponent},
   { path: 'questionlist', component:  QuestionListComponent},
   { path: 'results', component: CourseInstanceListComponent},
   { path: 'addquestion', component:  ManageQuestionComponent},

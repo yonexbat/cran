@@ -20,6 +20,7 @@ namespace cran.Data
         public DbSet<QuestionOption> QuestionOptions { get; set; }
         public DbSet<RelQuestionTag> RelQuestionTags { get; set; }
         public DbSet<RelCourseTag> RelCourseTags { get; set; }
+        public DbSet<RelUserCourseFavorite> RelUserCourseFavorites { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<CranUser> CranUsers { get; set; }
         public DbSet<CourseInstance> CourseInstances { get; set; }
@@ -116,6 +117,7 @@ namespace cran.Data
             MapContainer(builder.Entity<Container>());
             MapText(builder.Entity<Text>());
             MapNotificationSubscription(builder.Entity<NotificationSubscription>());
+            MapRelUserCourseFavorite(builder.Entity<RelUserCourseFavorite>());
         }
 
         private void MapNotificationSubscription(EntityTypeBuilder<NotificationSubscription> typeBuilder)
@@ -181,6 +183,19 @@ namespace cran.Data
                 .WithOne(x => x.RelImage)
                 .HasForeignKey<RelQuestionImage>(x => x.IdImage);
                 
+        }
+
+        private void MapRelUserCourseFavorite(EntityTypeBuilder<RelUserCourseFavorite> typeBuilder)
+        {
+            typeBuilder.ToTable("CranUserCourseFavorite");
+
+            typeBuilder.HasOne(x => x.User)
+               .WithMany(c => c.RelFavorites)
+               .HasForeignKey(rel => rel.IdUser);
+
+            typeBuilder.HasOne(x => x.Course)
+                .WithMany(x => x.RelFavorites)
+                .HasForeignKey(x => x.IdCourse);
         }
 
         private void MapComment(EntityTypeBuilder<Comment> typeBuilder)

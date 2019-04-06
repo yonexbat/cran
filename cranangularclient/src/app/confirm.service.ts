@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Subject, Observable} from 'rxjs';
 import {ConfirmRequest} from './model/confirmrequest';
-import {LanguageService} from './language.service';
 
 @Injectable()
 export class ConfirmService {
@@ -9,7 +8,7 @@ export class ConfirmService {
   private _subject: Subject<ConfirmRequest>;
   private promiseResolver: any;
 
-  constructor(private ls: LanguageService) {
+  constructor() {
     this._subject = new Subject<ConfirmRequest>();
   }
 

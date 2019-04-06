@@ -32,10 +32,32 @@ import {QuestionStatus} from './model/questionstatus';
 import {QuestionType} from './model/questiontype';
 import {SubscriptionShort} from './model/subscriptionshort';
 import {Notification} from './model/notification';
+import {CourseToFavorites} from './model/coursetofavorites';
 
 
 @Injectable()
 export class CranDataServiceMock implements ICranDataService {
+
+  addCourseToFavorites(favorite: CourseToFavorites): Promise<any> {
+    const promiseResult = new Promise<any>((resolve, reject) => {
+      setTimeout(function() {
+        resolve();
+      }, 1000);
+    });
+    return promiseResult;
+  }
+  removeCoureFromFavorites(favorite: CourseToFavorites): Promise<any> {
+    const promiseResult = new Promise<any>((resolve, reject) => {
+      setTimeout(function() {
+        resolve();
+      }, 1000);
+    });
+    return promiseResult;
+  }
+
+  getFavoriteCourses(page: number): Promise<PagedResult<Course>> {
+    return this.getCourses(page);
+  }
 
   sendNotificationToUser(message: Notification): Promise<any> {
     const promiseResult = new Promise<any>((resolve, reject) => {
@@ -228,7 +250,12 @@ export class CranDataServiceMock implements ICranDataService {
   getCourse(id: number): Promise<Course> {
     const promiseResult = new Promise<Course>((resolve, reject) => {
       setTimeout(function() {
-        const athing: Course = {id: id,  language: 'De', title: 'CouseTitle' , description: 'desc', numQuestionsToAsk: 5,
+        const athing: Course = {
+            id: id,  language: 'De',
+            title: 'CouseTitle' ,
+            description: 'desc',
+            numQuestionsToAsk: 5,
+            isFavorite: false,
           tags: [
             {id: 1, description: 'Desc', name: 'TagName', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, }
           ] };
@@ -672,21 +699,27 @@ export class CranDataServiceMock implements ICranDataService {
     const courseList: Course[] =  [
       {id: 1, language: 'De', description: 'Test Kurs bla', title: 'Kursus',
         numQuestionsToAsk: 3,
+        isFavorite: true,
         tags: [{id: 3, name: 'Js', description: 'desc',  shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, },
                {id: 5, name: 'Hello', description: 'desc',  shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, }]},
       {id: 1, language: 'De', numQuestionsToAsk: 3,
         description: 'Test Kurs bla', title: 'Kursus',
+        isFavorite: false,
           tags: [{id: 3, name: 'Js', description: 'desc', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, }]},
       {id: 1, language: 'De', numQuestionsToAsk: 3,
+        isFavorite: true,
         description: 'Test Kurs bla', title: 'Kursus',
           tags: [{id: 3, name: 'Js', description: 'desc', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, }]},
       {id: 1, language: 'De', numQuestionsToAsk: 3,
         description: 'Test Kurs bla', title: 'Kursus',
+        isFavorite: true,
           tags: [{id: 3, name: 'Js', description: 'desc', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, }]},
       {id: 1, language: 'De', numQuestionsToAsk: 3,
         description: 'Test Kurs bla', title: 'Kursus',
+        isFavorite: true,
           tags: [{id: 3, name: 'Js', description: 'desc', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, }]},
       {id: 1, language: 'De', numQuestionsToAsk: 3,
+        isFavorite: true,
         description: 'GLOBI in den Ferien', title: 'Kursus',
        tags: [{id: 3, name: 'Js', description: 'desc', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, }]},
     ];

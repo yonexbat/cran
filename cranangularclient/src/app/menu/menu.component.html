@@ -34,20 +34,36 @@
               {{ls.label('home')}}
             </a>
           </li>
+          
 
-          <!-- Courses -->
-          <li  routerLinkActive="active"  class="nav-item">
-            <a [routerLink]="['/list']" class="nav-link">
-              {{ls.label('courses')}}
-            </a>
+          <!-- Kurse  -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" 
+                href="#" 
+                id="navbarQuestions" 
+                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ls.label('courses')}}
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                <!-- search courses-->
+                <a class="dropdown-item" [routerLink]="['/list']" routerLinkActive="active">
+                  {{ls.label('allcourses')}}
+                </a>
+
+                <!-- Favoriten -->
+                <a class="dropdown-item" [routerLink]="['/coursefavorites']" routerLinkActive="active">
+                  {{ls.label('favorites')}}
+                </a>
+
+                <!-- Meine Resultate -->
+                <a class="dropdown-item" [routerLink]="['/results']" routerLinkActive="active">
+                  {{ls.label('myresults')}}
+                </a>
+              
+              </div>
           </li>
-
-          <!-- Results -->
-          <li class="nav-item">
-            <a [routerLink]="['/results']" class="nav-link">
-              {{ls.label('myresults')}}
-            </a>
-          </li>          
+         
 
           <!-- Fragen -->
           <li class="nav-item dropdown">

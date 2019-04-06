@@ -35,7 +35,7 @@ describe('LanguageService', () => {
     restResult.count = 1;
     restResult.numpages = 1;
     restResult.currentPage = 0;
-    restResult.data = [{id: 1, description: '', language: 'D', numQuestionsToAsk: 5, tags: [], title: 'angular'}];
+    restResult.data = [{id: 1, description: '', language: 'D', numQuestionsToAsk: 5, isFavorite: false, tags: [], title: 'angular'}];
 
     service.getCourses(0).then((data) => {
         expect(data).toBeTruthy();
