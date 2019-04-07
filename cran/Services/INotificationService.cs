@@ -13,6 +13,8 @@ namespace cran.Services
 
         Task SendNotificationToUserAsync(NotificationDto notification);
 
+        Task SendNotificationAboutQuestionAsync(int questionId);
+
         Task<PagedResultDto<SubscriptionShortDto>> GetAllSubscriptionsAsync(int page);
     }
 }

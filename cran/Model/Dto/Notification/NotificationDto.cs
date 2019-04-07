@@ -9,6 +9,6 @@ namespace cran.Model.Dto.Notification
     {
         public int SubscriptionId { get; set; }
         public string Title { get; set; }
-        public string Text { get; set; }
+        public string Text { get; set; }        
     }
 }
