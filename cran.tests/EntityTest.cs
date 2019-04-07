@@ -22,7 +22,7 @@ namespace cran.tests
             //Prepare
             TestingContext testingContext = new TestingContext();
             testingContext.AddAdminPrincipalMock();
-            testingContext.AddMockLogService();
+            testingContext.AddLogServiceMock();
             testingContext.AddRealDb();
 
 
@@ -64,7 +64,7 @@ namespace cran.tests
             //Prepare
             TestingContext testingContext = new TestingContext();
             testingContext.AddAdminPrincipalMock();
-            testingContext.AddMockLogService();
+            testingContext.AddLogServiceMock();
             testingContext.AddRealDb();
 
 

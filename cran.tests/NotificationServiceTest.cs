@@ -148,7 +148,7 @@ namespace cran.tests
             INotificationService notificationService = testingContext.GetService<NotificationService>();  
             
             // Act
-            await notificationService.SendNotificationAboutQuestionAsync(first.Id);
+            await notificationService.SendNotificationAboutQuestionAsync(first.Id, "MessageAkzeptiert", "Some");
 
             //Assert
             webPushClientMock.Verify(x => x.SendNotificationAsync(It.IsAny<PushSubscription>(), 
@@ -160,8 +160,9 @@ namespace cran.tests
         {
             testingContext.AddPrincipalMock();
             testingContext.AddBinaryServiceMock();
-            testingContext.AddMockLogService();
+            testingContext.AddLogServiceMock();
             testingContext.AddCranAppSettings();
+            testingContext.AddInfoTextServiceMock();
             testingContext.AddInMemoryDb();   
 
             Mock<IWebPushClient> webPushClientMock =  new Mock<IWebPushClient>(MockBehavior.Loose);

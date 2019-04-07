@@ -20,14 +20,18 @@ namespace cran.Services
         private CranSettingsDto _settings;
         private IWebPushClient _webPushClient;
 
+        private ITextService _textService;
+
         public NotificationService(ApplicationDbContext context, 
             IDbLogService dbLogService, 
             IPrincipal principal,
             IOptions<CranSettingsDto> settingsOption,
-            IWebPushClient webPushClient) : base(context, dbLogService, principal)
+            IWebPushClient webPushClient,
+            ITextService textService) : base(context, dbLogService, principal)
         {
             this._settings = settingsOption.Value;
             this._webPushClient = webPushClient;
+            this._textService = textService;
         }
 
         public async Task AddPushNotificationSubscriptionAsync(NotificationSubscriptionDto subscriptionDto)
@@ -44,27 +48,27 @@ namespace cran.Services
             }            
         }        
 
-        private string GetMessage(string title, string body, int? questionId)
+        private string GetMessage(NotificationDto notificationDto)
         {                            
             JObject message = new JObject();
             JObject notification = new JObject();
             message["notification"] = notification;
-            notification["title"] = title;
-            notification["body"] = body;
+            notification["title"] = notificationDto.Title;
+            notification["body"] = notificationDto.Text;
 
             
-            if(questionId.HasValue)
+            if(!string.IsNullOrEmpty(notificationDto.ActionUrl))
             {
                 JArray actions = new JArray();
                 notification["actions"] = actions;
                 JObject actionObj = new JObject();
-                actionObj["action"] = "gotoquestion";
-                actionObj["title"] = "Öffnen";
+                actionObj["action"] = notificationDto.Action;
+                actionObj["title"] = notificationDto.Title;
                 actions.Add(actionObj);
 
                 JObject data = new JObject();
                 notification["data"] = data;
-                data["questionid"] = questionId.Value;
+                data["url"] = notificationDto.ActionUrl;
             }
             
             return message.ToString();
@@ -109,14 +113,9 @@ namespace cran.Services
 
         public async Task SendNotificationToUserAsync(NotificationDto notification)
         {            
-            await SendNotificationToUserAsync(notification, null);
-        }
-
-         public async Task SendNotificationToUserAsync(NotificationDto notification, int? questionId)
-        {            
             PushSubscription sub = await GetPushSubsciption(notification.SubscriptionId);
             VapidDetails vapiData = GetVapiData();
-            string message = GetMessage(notification.Title, notification.Text, questionId);
+            string message = GetMessage(notification);
 
             try
             {
@@ -138,19 +137,20 @@ namespace cran.Services
             _context.SaveChanges();
         }
 
-        public async Task SendNotificationAboutQuestionAsync(int questionId)
+        public async Task SendNotificationAboutQuestionAsync(int questionId, string title, string text)
         {
             IList<int> subscriptionIds = await GetPushSubscriptions(questionId);
             foreach(int id in subscriptionIds){
                 NotificationDto dto = new NotificationDto()
                 {
                     SubscriptionId = id,
-                    Text = "Update to question",
-                    Title = "Update to question",
-
+                    Text = text,
+                    Title = title,
+                    Action = "optionquestion",
+                    ActionTitle = "Anzeigen",
                 };
                 try {
-                    await SendNotificationToUserAsync(dto, questionId);
+                    await SendNotificationToUserAsync(dto);
                 }   
                 catch(WebPushException)  
                 {

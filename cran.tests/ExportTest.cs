@@ -30,7 +30,7 @@ namespace cran.tests
             context.AddAdminPrincipalMock();
             context.AddBinaryServiceMock();
             context.AddInMemoryDb();
-            context.AddMockLogService();
+            context.AddLogServiceMock();
             context.AddGermanCultureServiceMock();
             context.AddQuestionService();      
 

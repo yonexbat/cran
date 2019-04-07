@@ -58,6 +58,14 @@ namespace cran.tests.Infra
             _dependencyMap[context.GetType()] = context;
         }
 
+        public void AddInfoTextServiceMock()
+        {
+            var infoMock = new Mock<ITextService>(MockBehavior.Loose);
+            infoMock.Setup(x => x.GetTextAsync(It.IsAny<string>(), It.IsAny<string[]>()))
+                    .Returns((string key, string[] paramsarray) => Task.FromResult<string>(key));
+            _dependencyMap[typeof(ITextService)] = infoMock.Object;
+        }
+
         public void AddCranAppSettings()
         {
            IOptions<CranSettingsDto> settings =  Microsoft.Extensions.Options.Options.Create(new CranSettingsDto()
@@ -122,7 +130,7 @@ namespace cran.tests.Infra
             _dependencyMap[typeof(IPrincipal)] = principal;
         }
 
-        public void AddMockLogService()
+        public void AddLogServiceMock()
         {
             IDbLogService log = new Mock<IDbLogService>(MockBehavior.Loose).Object;
             _dependencyMap[typeof(IDbLogService)] = log;

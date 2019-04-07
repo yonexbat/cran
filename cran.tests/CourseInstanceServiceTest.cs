@@ -19,7 +19,7 @@ namespace cran.tests
             context.AddPrincipalMock();
             context.AddBinaryServiceMock();
             context.AddInMemoryDb();
-            context.AddMockLogService();
+            context.AddLogServiceMock();
             context.AddGermanCultureServiceMock();
             context.AddQuestionService();
             ICourseService courseService = context.GetService<CourseService>();
@@ -85,7 +85,7 @@ namespace cran.tests
             context.AddPrincipalMock();
             context.AddBinaryServiceMock();
             context.AddInMemoryDb();
-            context.AddMockLogService();
+            context.AddLogServiceMock();
             context.AddGermanCultureServiceMock();
             context.AddQuestionService();
             CourseService courseService = context.GetService<CourseService>();

@@ -20,9 +20,10 @@ namespace cran.tests
         {
             testingContext.AddPrincipalMock();
             testingContext.AddInMemoryDb();
-            testingContext.AddMockLogService();
+            testingContext.AddLogServiceMock();
             testingContext.AddGermanCultureServiceMock();
             testingContext.AddBinaryServiceMock();
+            testingContext.AddInfoTextServiceMock();
             testingContext.AddCacheService();
             testingContext.DependencyMap[typeof(ICommentsService)] = testingContext.GetService<CommentsService>();
             testingContext.DependencyMap[typeof(ITagService)] = testingContext.GetService<TagService>();
@@ -30,7 +31,7 @@ namespace cran.tests
              
              
             Mock<INotificationService> notificationMock =  new Mock<INotificationService>(MockBehavior.Loose);
-            notificationMock.Setup(x => x.SendNotificationAboutQuestionAsync(It.IsAny<int>()))
+            notificationMock.Setup(x => x.SendNotificationAboutQuestionAsync(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(Task.CompletedTask);
             
             testingContext.DependencyMap[typeof(INotificationService)] = notificationMock.Object;
@@ -52,7 +53,7 @@ namespace cran.tests
             testingContext.DependencyMap[typeof(IQuestionService)] = questionService;
 
              Mock<INotificationService> notificationMock =  new Mock<INotificationService>(MockBehavior.Loose);
-            notificationMock.Setup(x => x.SendNotificationAboutQuestionAsync(It.IsAny<int>()))
+            notificationMock.Setup(x => x.SendNotificationAboutQuestionAsync(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(Task.CompletedTask);
             testingContext.DependencyMap[typeof(INotificationService)] = notificationMock.Object;
 
@@ -75,7 +76,7 @@ namespace cran.tests
             Assert.Equal(QuestionStatus.Obsolete, (QuestionStatus)oldDto.Status);
             question = await dbContext.FindAsync<Question>(newId);
             Assert.NotNull(question.ApprovalDate);
-            notificationMock.Verify(x => x.SendNotificationAboutQuestionAsync(It.IsAny<int>()), Times.Once());
+            notificationMock.Verify(x => x.SendNotificationAboutQuestionAsync(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once());
 
         }
 
