@@ -131,8 +131,8 @@ namespace cran.Services
         private async Task SendNotification(int id, string title, string text)
         {
             Question question = await _context.FindAsync<Question>(id);
-            title = await _textService.GetTextAsync("title", question.Title);
-            text = await _textService.GetTextAsync("text", question.Title);
+            title = await _textService.GetTextAsync(title, question.Title);
+            text = await _textService.GetTextAsync(text, question.Title);
             await _notificationService.SendNotificationAboutQuestionAsync(id, title, text);
         }
 
