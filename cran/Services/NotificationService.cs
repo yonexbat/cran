@@ -17,13 +17,16 @@ namespace cran.Services
     {
 
         private CranSettingsDto _settings;
+        private IWebPushClient _webPushClient;
 
         public NotificationService(ApplicationDbContext context, 
             IDbLogService dbLogService, 
             IPrincipal principal,
-            IOptions<CranSettingsDto> settingsOption) : base(context, dbLogService, principal)
+            IOptions<CranSettingsDto> settingsOption,
+            IWebPushClient webPushClient) : base(context, dbLogService, principal)
         {
             this._settings = settingsOption.Value;
+            this._webPushClient = webPushClient;
         }
 
         public async Task AddPushNotificationSubscriptionAsync(NotificationSubscriptionDto subscriptionDto)
@@ -83,15 +86,14 @@ namespace cran.Services
         }
 
         public async Task SendNotificationToUserAsync(NotificationDto notification)
-        {
-            WebPushClient client = new WebPushClient();
+        {            
             PushSubscription sub = await GetPushSubsciption(notification.SubscriptionId);
             VapidDetails vapiData = GetVapiData();
             string message = GetMessage(notification.Title, notification.Text);
 
             try
             {
-                await client.SendNotificationAsync(sub, message, vapiData);
+                await _webPushClient.SendNotificationAsync(sub, message, vapiData);
             } 
             catch(WebPushException exception)
             {
