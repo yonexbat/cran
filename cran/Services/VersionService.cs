@@ -16,14 +16,18 @@ namespace cran.Services
         private IQuestionService _questionService;
         private ITagService _tagService;
 
+        private INotificationService _notificationService;
+
         public VersionService(ApplicationDbContext context,
             IDbLogService dbLogService,
             IPrincipal principal,
             IQuestionService questionService,
-            ITagService tagService) : base(context, dbLogService, principal)
+            ITagService tagService,
+            INotificationService notificationService) : base(context, dbLogService, principal)
         {
             _questionService = questionService;
             _tagService = tagService;
+            _notificationService = notificationService;
         }
 
         public async Task<int> CopyQuestionAsync(int id)
@@ -118,6 +122,7 @@ namespace cran.Services
             }
 
             await _context.SaveChangesAsync();
+            await _notificationService.SendNotificationAboutQuestionAsync(id);
         }
 
         public async Task<PagedResultDto<VersionInfoDto>> GetVersionsAsync(VersionInfoParametersDto versionInfoParameters)

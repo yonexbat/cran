@@ -3,6 +3,7 @@ using cran.Model.Dto;
 using cran.Model.Entities;
 using cran.Services;
 using cran.tests.Infra;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,31 +16,47 @@ namespace cran.tests
     public class VersionServiceTest
     {
 
-        private void InitContext(TestingContext context)
+        private void SetUpTestingContext(TestingContext testingContext)
         {
-            context.AddPrincipalMock();
-            context.AddInMemoryDb();
-            context.AddMockLogService();
-            context.AddGermanCultureServiceMock();
-            context.AddBinaryServiceMock();
-            context.AddCacheService();
-            context.DependencyMap[typeof(ICommentsService)] = context.GetService<CommentsService>();
-            context.DependencyMap[typeof(ITagService)] = context.GetService<TagService>();
+            testingContext.AddPrincipalMock();
+            testingContext.AddInMemoryDb();
+            testingContext.AddMockLogService();
+            testingContext.AddGermanCultureServiceMock();
+            testingContext.AddBinaryServiceMock();
+            testingContext.AddCacheService();
+            testingContext.DependencyMap[typeof(ICommentsService)] = testingContext.GetService<CommentsService>();
+            testingContext.DependencyMap[typeof(ITagService)] = testingContext.GetService<TagService>();
+
+             
+             
+            Mock<INotificationService> notificationMock =  new Mock<INotificationService>(MockBehavior.Loose);
+            notificationMock.Setup(x => x.SendNotificationAboutQuestionAsync(It.IsAny<int>()))
+                .Returns(Task.CompletedTask);
+            
+            testingContext.DependencyMap[typeof(INotificationService)] = notificationMock.Object;
         }
+
+       
 
         [Fact]
         public async Task TestVersionQuestion()
         {
             //Prepare
-            TestingContext context = new TestingContext();
-            InitContext(context);
-            ApplicationDbContext dbContext = context.GetSimple<ApplicationDbContext>();
+            TestingContext testingContext = new TestingContext();
+            SetUpTestingContext(testingContext);
+            ApplicationDbContext dbContext = testingContext.GetSimple<ApplicationDbContext>();
             Question question = dbContext.Questions.First();
-            context.AddPrincipalMock(question.User.UserId, Roles.User);           
+            testingContext.AddPrincipalMock(question.User.UserId, Roles.User);           
 
-            IQuestionService questionService = context.GetService<QuestionService>();
-            context.DependencyMap[typeof(IQuestionService)] = questionService;
-            IVersionService versionService = context.GetService<VersionService>();
+            IQuestionService questionService = testingContext.GetService<QuestionService>();
+            testingContext.DependencyMap[typeof(IQuestionService)] = questionService;
+
+             Mock<INotificationService> notificationMock =  new Mock<INotificationService>(MockBehavior.Loose);
+            notificationMock.Setup(x => x.SendNotificationAboutQuestionAsync(It.IsAny<int>()))
+                .Returns(Task.CompletedTask);
+            testingContext.DependencyMap[typeof(INotificationService)] = notificationMock.Object;
+
+            IVersionService versionService = testingContext.GetService<VersionService>();
 
             //Act
             int newId = await versionService.VersionQuestionAsync(question.Id);
@@ -58,6 +75,7 @@ namespace cran.tests
             Assert.Equal(QuestionStatus.Obsolete, (QuestionStatus)oldDto.Status);
             question = await dbContext.FindAsync<Question>(newId);
             Assert.NotNull(question.ApprovalDate);
+            notificationMock.Verify(x => x.SendNotificationAboutQuestionAsync(It.IsAny<int>()), Times.Once());
 
         }
 
@@ -66,7 +84,7 @@ namespace cran.tests
         {
             //Prepare
             TestingContext context = new TestingContext();
-            InitContext(context);
+            SetUpTestingContext(context);
             ApplicationDbContext dbContext = context.GetSimple<ApplicationDbContext>();
             Question question = dbContext.Questions.First();
             context.AddPrincipalMock(question.User.UserId, Roles.User);
@@ -98,7 +116,7 @@ namespace cran.tests
         {
             //Prepare
             TestingContext context = new TestingContext();
-            InitContext(context);
+            SetUpTestingContext(context);
             ApplicationDbContext dbContext = context.GetSimple<ApplicationDbContext>();
             Question question = dbContext.Questions.First();
             context.AddPrincipalMock(question.User.UserId, Roles.User);
