@@ -148,6 +148,7 @@ namespace cran.Services
                     Title = title,
                     Action = "optionquestion",
                     ActionTitle = "Anzeigen",
+                    ActionUrl = GetQuestionUrl(questionId),
                 };
                 try {
                     await SendNotificationToUserAsync(dto);
@@ -157,6 +158,11 @@ namespace cran.Services
                     //That is ok, we want to continue
                 }           
             }
+        }
+
+        private string GetQuestionUrl(int id)
+        {
+            return $"{_settings.RootUrl}/jsclient/viewquestion/{id}";
         }
 
         private async Task<IList<int>> GetPushSubscriptions(int questionId)

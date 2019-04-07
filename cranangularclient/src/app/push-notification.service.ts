@@ -18,12 +18,7 @@ export class PushNotificationService {
     private ls: LanguageService) {
 
       swPush.notificationClicks.subscribe(arg => {
-        console.log(
-          'Action: ' + arg.action,
-          'Notification data: ' + arg.notification.data,
-          'Notification data.url: ' + arg.notification.data.url,
-          'Notification data.body: ' + arg.notification.body,
-        );
+        console.log('PushNotificationService, notificationClicks');
       });
 
   }

@@ -4,19 +4,14 @@ var basePath = 'https://cranium.azurewebsites.net/';
 
 function getUrl(action, data) {
     let result = basePath;
-    if(action && data) {
-        
-        switch(action)
-        {
-            case "gotoquestion":
-                result = result + "jsclient/viewquestion/" + data.questionid;
-        }
+    if(data && data.url) {        
+        return data.url;
     }
     return result;
 }
 
 self.addEventListener('notificationclick', (event) => {
-    console.log('[Service Worker] Notification click Received. event', event);
+    console.log('[Service Worker] Notification click received. event', event);
     var url = getUrl(event.action, event.notification.data);
     event.notification.close();
     event.waitUntil(clients.openWindow(url));

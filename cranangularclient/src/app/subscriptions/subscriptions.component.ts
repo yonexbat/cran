@@ -24,6 +24,9 @@ export class SubscriptionsComponent implements OnInit {
   public users: SubscriptionShort[];
   public title: string;
   public text: string;
+  public action: string;
+  public actionTitle: string;
+  public actionUrl: string;
 
 
   constructor(private swPush: SwPush, private notificationService: NotificationService,
@@ -60,6 +63,9 @@ export class SubscriptionsComponent implements OnInit {
     notification.subscriptionId = this.selectedSubscription;
     notification.text = this.text;
     notification.title = this.title;
+    notification.action = this.action;
+    notification.actionTitle = this.actionTitle;
+    notification.actionUrl = this.actionUrl;
     return notification;
   }
 
