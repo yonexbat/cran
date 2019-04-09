@@ -167,12 +167,17 @@ namespace cran.Services
 
         private async Task<IList<int>> GetPushSubscriptions(int questionId)
         {
-          
-            Question question = await _context.FindAsync<Question>(questionId);
-            int userId = question.User.Id;
-            
-            return await _context.Notifications.Where(x => x.User.Id == userId && x.Active)
-                .Select(x => x.Id).ToListAsync();
+
+            var userIds = _context.Questions
+                 .Where(x => x.Container.Questions.Any(y => y.Id == questionId))
+                 .Select(x => x.User.Id)
+                 .Distinct();
+
+            return await _context.Notifications
+                .Where(x => userIds.Any(y => y == x.User.Id))
+                .Where(x => x.Active)
+                .Select(x => x.Id)
+                .ToListAsync();
         }
     }
 }
