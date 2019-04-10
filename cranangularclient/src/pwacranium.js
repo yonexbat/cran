@@ -2,9 +2,9 @@ importScripts('./ngsw-worker.js');
 
 var basePath = 'https://cranium.azurewebsites.net/';
 
-function getUrl(action, data) {
+function getUrl(data) {
     let result = basePath;
-    if(data && data.url) {        
+    if(data.url) {        
         return data.url;
     }
     return result;
@@ -12,7 +12,11 @@ function getUrl(action, data) {
 
 self.addEventListener('notificationclick', (event) => {
     console.log('[Service Worker] Notification click received. event', event);
-    var url = getUrl(event.action, event.notification.data);
-    event.notification.close();
+    var data = {};
+    if(event.notification && event.notification.data)
+    {
+        data =  event.notification.data;
+    }
+    var url = getUrl(data);    
     event.waitUntil(clients.openWindow(url));
 });
