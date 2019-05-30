@@ -29,7 +29,7 @@ namespace cran.tests
 
             TestingContext context = new TestingContext();
             context.AddAdminPrincipalMock();
-            context.AddMockLogService();
+            context.AddLogServiceMock();
             context.AddRealDb();
 
             IBinaryService service = context.GetService<BinaryService>();

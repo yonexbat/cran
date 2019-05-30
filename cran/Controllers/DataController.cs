@@ -321,6 +321,8 @@ namespace cran.Controllers
         #region SecurityService
 
         [HttpGet("[action]")]
+        [AllowAnonymous]
+
         public IList<string> GetRolesOfUser()
         {
             return _securityService.GetRolesOfUser();

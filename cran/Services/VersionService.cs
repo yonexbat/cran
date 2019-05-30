@@ -15,15 +15,21 @@ namespace cran.Services
     {
         private IQuestionService _questionService;
         private ITagService _tagService;
+        private INotificationService _notificationService;
+        private ITextService _textService;
 
         public VersionService(ApplicationDbContext context,
             IDbLogService dbLogService,
             IPrincipal principal,
             IQuestionService questionService,
-            ITagService tagService) : base(context, dbLogService, principal)
+            ITagService tagService,
+            INotificationService notificationService,
+            ITextService textService) : base(context, dbLogService, principal)
         {
             _questionService = questionService;
             _tagService = tagService;
+            _notificationService = notificationService;
+            _textService = textService;
         }
 
         public async Task<int> CopyQuestionAsync(int id)
@@ -118,7 +124,18 @@ namespace cran.Services
             }
 
             await _context.SaveChangesAsync();
+            await SendNotification(id, "QuestionAcceptTitle", "QuestionAcceptText");
+            
         }
+
+        private async Task SendNotification(int id, string title, string text)
+        {
+            Question question = await _context.FindAsync<Question>(id);
+            title = await _textService.GetTextAsync(title, question.Title);
+            text = await _textService.GetTextAsync(text, question.Title);
+            await _notificationService.SendNotificationAboutQuestionAsync(id, title, text);
+        }
+
 
         public async Task<PagedResultDto<VersionInfoDto>> GetVersionsAsync(VersionInfoParametersDto versionInfoParameters)
         {

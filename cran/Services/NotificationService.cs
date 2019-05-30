@@ -9,6 +9,7 @@ using cran.Model.Dto.Notification;
 using cran.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Linq;
 using WebPush;
 
 namespace cran.Services
@@ -17,13 +18,20 @@ namespace cran.Services
     {
 
         private CranSettingsDto _settings;
+        private IWebPushClient _webPushClient;
+
+        private ITextService _textService;
 
         public NotificationService(ApplicationDbContext context, 
             IDbLogService dbLogService, 
             IPrincipal principal,
-            IOptions<CranSettingsDto> settingsOption) : base(context, dbLogService, principal)
+            IOptions<CranSettingsDto> settingsOption,
+            IWebPushClient webPushClient,
+            ITextService textService) : base(context, dbLogService, principal)
         {
             this._settings = settingsOption.Value;
+            this._webPushClient = webPushClient;
+            this._textService = textService;
         }
 
         public async Task AddPushNotificationSubscriptionAsync(NotificationSubscriptionDto subscriptionDto)
@@ -40,9 +48,30 @@ namespace cran.Services
             }            
         }        
 
-        private string GetMessage(string title, string body)
-        {
-            return $"{{\"notification\": {{\"title\": \"{title}\",\"body\": \"{body}\"}}}}";
+        private string GetMessage(NotificationDto notificationDto)
+        {                            
+            JObject message = new JObject();
+            JObject notification = new JObject();
+            message["notification"] = notification;
+            notification["title"] = notificationDto.Title;
+            notification["body"] = notificationDto.Text;
+
+            
+            if(!string.IsNullOrEmpty(notificationDto.ActionUrl))
+            {
+                JArray actions = new JArray();
+                notification["actions"] = actions;
+                JObject actionObj = new JObject();
+                actionObj["action"] = notificationDto.Action;
+                actionObj["title"] = notificationDto.Title;
+                actions.Add(actionObj);
+
+                JObject data = new JObject();
+                notification["data"] = data;
+                data["url"] = notificationDto.ActionUrl;
+            }
+            
+            return message.ToString();
         }
 
         private VapidDetails GetVapiData()
@@ -83,15 +112,14 @@ namespace cran.Services
         }
 
         public async Task SendNotificationToUserAsync(NotificationDto notification)
-        {
-            WebPushClient client = new WebPushClient();
+        {            
             PushSubscription sub = await GetPushSubsciption(notification.SubscriptionId);
             VapidDetails vapiData = GetVapiData();
-            string message = GetMessage(notification.Title, notification.Text);
+            string message = GetMessage(notification);
 
             try
             {
-                await client.SendNotificationAsync(sub, message, vapiData);
+                await _webPushClient.SendNotificationAsync(sub, message, vapiData);
             } 
             catch(WebPushException exception)
             {
@@ -107,6 +135,49 @@ namespace cran.Services
             NotificationSubscription entity =  await this._context.Notifications.FindAsync(id);
             entity.Active = false;
             _context.SaveChanges();
+        }
+
+        public async Task SendNotificationAboutQuestionAsync(int questionId, string title, string text)
+        {
+            IList<int> subscriptionIds = await GetPushSubscriptions(questionId);
+            foreach(int id in subscriptionIds){
+                NotificationDto dto = new NotificationDto()
+                {
+                    SubscriptionId = id,
+                    Text = text,
+                    Title = title,
+                    Action = "optionquestion",
+                    ActionTitle = "Anzeigen",
+                    ActionUrl = GetQuestionUrl(questionId),
+                };
+                try {
+                    await SendNotificationToUserAsync(dto);
+                }   
+                catch(WebPushException)  
+                {
+                    //That is ok, we want to continue
+                }           
+            }
+        }
+
+        private string GetQuestionUrl(int id)
+        {
+            return $"{_settings.RootUrl}/jsclient/viewquestion/{id}";
+        }
+
+        private async Task<IList<int>> GetPushSubscriptions(int questionId)
+        {
+
+            var userIds = _context.Questions
+                 .Where(x => x.Container.Questions.Any(y => y.Id == questionId))
+                 .Select(x => x.User.Id)
+                 .Distinct();
+
+            return await _context.Notifications
+                .Where(x => userIds.Any(y => y == x.User.Id))
+                .Where(x => x.Active)
+                .Select(x => x.Id)
+                .ToListAsync();
         }
     }
 }
