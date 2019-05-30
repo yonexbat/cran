@@ -22,7 +22,7 @@ export class ManageCourseComponent implements OnInit {
   public actionInProgress = false;
   public buttonText: string;
 
-  @ViewChild('statusMessage') statusMessage: StatusMessageComponent;
+  @ViewChild('statusMessage', { static: true }) statusMessage: StatusMessageComponent;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
     private router: Router,

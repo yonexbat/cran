@@ -18,7 +18,7 @@ export class ManageTextComponent implements OnInit {
 
   public text: Text = new Text();
   public actionInProgress = false;
-  @ViewChild('statusMessage') statusMessage: StatusMessageComponent;
+  @ViewChild('statusMessage', { static: true }) statusMessage: StatusMessageComponent;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
   private router: Router,

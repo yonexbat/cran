@@ -18,7 +18,7 @@ import {QuestionListEntry} from '../model/questionlistentry';
 @Component({selector: 'app-host', template: '<div><app-question-list-item #questionlistitem [item]="questionListEntry" (onItemDeletedClick)="deleteQuestion($event)"></app-question-list-item></div>'})
 class StubHostComponent {
 
-  @ViewChild('questionlistitem') public questionListItemComponent: QuestionListItemComponent;
+  @ViewChild('questionlistitem', { static: true }) public questionListItemComponent: QuestionListItemComponent;
 
   public questionListEntry: QuestionListEntry = {
     id: 2,

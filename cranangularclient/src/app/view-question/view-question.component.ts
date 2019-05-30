@@ -18,8 +18,8 @@ import { ConfirmService } from '../confirm.service';
 })
 export class ViewQuestionComponent implements OnInit {
 
-  @ViewChild('comments') comments: CommentsComponent;
-  @ViewChild('versions') versions: VersionsComponent;
+  @ViewChild('comments', { static: true }) comments: CommentsComponent;
+  @ViewChild('versions', { static: false }) versions: VersionsComponent;
 
   public question: Question;
 

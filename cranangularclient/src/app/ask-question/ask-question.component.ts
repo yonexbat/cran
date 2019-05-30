@@ -22,7 +22,7 @@ import {QuestionOptionToAsk} from '../model/questionoptiontoask';
 })
 export class AskQuestionComponent implements OnInit {
 
-  @ViewChild('comments') private commentsControl: CommentsComponent;
+  @ViewChild('comments', { static: true }) private commentsControl: CommentsComponent;
 
   public checkShown: boolean;
   public questionToAsk: QuestionToAsk;
