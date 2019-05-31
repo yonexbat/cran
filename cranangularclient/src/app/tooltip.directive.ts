@@ -20,6 +20,12 @@ export class TooltipDirective implements OnInit, OnDestroy {
   @HostListener('mouseenter')
   public onMouseEnter(): void {
     const nativeElement = this.elementRef.nativeElement;
+    $(nativeElement).tooltip({
+      sanitize: false,
+      sanitizeFn: function() {
+        return true;
+      }
+    });
     $(nativeElement).tooltip('show');
   }
 
