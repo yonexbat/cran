@@ -1,6 +1,5 @@
 import { Component, OnInit, Inject, ViewChild, } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap, } from '@angular/router';
-import { HttpModule, } from '@angular/http';
 
 import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
