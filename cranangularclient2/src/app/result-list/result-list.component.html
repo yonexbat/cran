@@ -1,0 +1,45 @@
+<div class="container">
+  <h6>{{result.courseTitle}} ({{result.startedAt | date:'dd.MM.yyyy HH:mm'}} - {{result.endedAt | date:'dd.MM.yyyy HH:mm'}})</h6>
+  <div class="list-group">
+
+    <div  *ngFor="let item of result.questions" 
+          class="list-group-item questionstatus"
+          [ngClass]="{'questionstatusok': item.correct === true, 'questionstatusnok': item.correct === false }">
+
+      
+      <h6>
+        <span>
+            <app-icon [icon]="'ok'" *ngIf="item.correct"></app-icon>
+            <app-icon [icon]="'nok'" *ngIf="!item.correct"></app-icon> 
+            {{item.title}}    
+        </span>
+        
+
+        <span class="btn-group float-right">
+            <button class="btn btn-default" 
+                    type="button" 
+                    (click)="showQuestion(item)"
+                    [appTooltip] = "'view'">               
+                <app-icon [icon]="'info'"></app-icon>
+            </button>
+        </span>
+
+      </h6> 
+      <app-tags [tagList]="item.tags"></app-tags>        
+    </div>
+
+  </div>
+
+  <!-- Buttons -->
+  <div class="btn-group float-right buttonsafterlist" role="group" aria-label="Basic example">                  
+
+    <!-- Speichern -->
+    <button 
+        type="button" 
+        class="btn btn btn-success"
+        (click)="startCourse()">
+       {{ls.label('startcourse')}}
+    </button> 
+    
+  </div>    
+</div> 

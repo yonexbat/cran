@@ -1,0 +1,38 @@
+<div id="confirmDialog" class="modal fade" role="dialog">
+
+  <div class="modal-dialog">
+    
+    <div class="modal-content">
+      
+      <!-- Header -->
+      <div class="modal-header">
+        <h6 class="modal-title">{{title}}</h6>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>        
+      </div>
+
+      <!-- Body  -->
+      <div class="modal-body">
+        <p>{{text}}</p>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+
+        <button type="button" 
+                id="confirmdialognokbutton"
+                class="btn btn-default" 
+                (click)="nok()"
+                *ngIf="cancelButtonVisible"
+                data-dismiss="modal">{{ls.label('cancel')}}</button>
+        
+        <button type="button" 
+                id="confirmdialogokbutton"
+                class="btn btn-default" 
+                (click)="ok()"
+                data-dismiss="modal">{{ls.label('ok')}}</button>
+
+      </div>
+    </div>
+
+  </div>
+</div>

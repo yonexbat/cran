@@ -1,0 +1,17 @@
+.crananswercorrect {
+    background: #e6f9e5;
+}
+
+.crananswerwrong {
+    background: #f9e5e5;
+}
+
+.currentquestion {
+    font-weight: bold;    
+}
+
+form::after {
+    content: "";
+    display: table;
+    clear: both;
+}

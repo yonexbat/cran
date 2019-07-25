@@ -1,0 +1,163 @@
+<div class="container" *ngIf="questionToAsk">
+
+  <!-- Question selector  -->
+  <div>
+    <a *ngFor="let selector of questionToAsk?.questionSelectors; let selectorIndex=index"
+        [routerLink]="['/askquestion', selector.idCourseInstanceQuestion]"
+        [class.crananswercorrect]="selector.correct===true"
+        [class.crananswerwrong]="selector.correct===false"
+        [class.currentquestion]="selector.number === questionToAsk.numCurrentQuestion">
+      {{selectorIndex+1}}
+    </a>
+    <span *ngFor="let selector of remainingQuestions">
+      {{selector}}
+    </span>
+  </div>
+
+  <form #questionForm="ngForm">
+
+    <h6>
+      {{ls.label('questionofnum', questionToAsk.numCurrentQuestion, questionToAsk.numQuestions)}}
+    </h6>
+
+    <!-- Titel -->
+    <p *ngIf="checkShown && questionToAsk.question">
+      <b>#{{questionToAsk.question.id}} {{questionToAsk.question.title}}</b>
+      <span><app-vote [votes]="questionToAsk.question.votes"></app-vote></span>
+    </p>
+
+    <!-- tags -->
+    <div *ngIf="checkShown && questionToAsk.question" style="margin-bottom: 30px;">
+        <app-tags [tagList]="questionToAsk.question.tags"></app-tags>
+    </div>
+
+    <!-- question text -->
+    <div class="row">
+      <div class="col-md-12">       
+        <div [innerHtml] = "questionToAsk?.text | safeHtml"></div>
+      </div>
+    </div>
+
+    <!-- images -->
+    <div class="row">
+      <div class="col-md-12">
+          <app-imagelist [images]="questionToAsk?.images"></app-imagelist>
+      </div>
+    </div>
+
+    <div>
+
+      <!-- iterate over options  -->
+      <div *ngFor="let option of questionToAsk?.options; let optionIndex=index">
+        
+        <hr/>      
+
+        <div [class.crananswercorrect]="checkShown && (option.isChecked == option.isTrue)"
+             [class.crananswerwrong]="checkShown && !(option.isChecked == option.isTrue)">     
+          
+          <div class="form-group">
+            <label for="checkBox{{optionIndex}}">{{optionIndex+1}}</label> 
+            
+            <!-- Checkboxes for multiplechoice  -->
+            <input
+                *ngIf="isMultipleChoice"
+                type="checkbox"
+                class="checkbox"
+                [(ngModel)]="option.isChecked" 
+                id="checkBox{{optionIndex}}"
+                name="checkBox{{optionIndex}}"
+                #optionChecked="ngModel"
+                [disabled] = "checkShown">
+
+            <!-- Radiobuttons for single choice  -->
+            <input 
+                   *ngIf="isSingeleChoice"
+                   type="radio"
+                   name="radiobutton"
+                   value="{{optionIndex}}"
+                   [ngModel]="selectedOption"
+                   (change)="radioButtonChanged(optionIndex)"
+                   [disabled] = "checkShown" >          
+            
+            <app-icon [icon]="'ok'"  *ngIf="checkShown && option.isTrue"></app-icon>
+            <app-icon [icon]="'nok'" *ngIf="checkShown && !option.isTrue"></app-icon>
+          </div>
+
+          <!-- Option text -->                    
+          <span [innerHtml] = "option?.text | safeHtml"></span>
+        </div>     
+
+      </div>
+    </div>
+
+    <!-- question explanation -->
+    <div *ngIf="checkShown">
+      <hr/>                  
+      <div [innerHtml] = "questionToAsk?.question?.explanation | safeHtml"></div>       
+    </div>
+
+    <hr/>
+
+    <div class="btn-group float-right">
+
+      <!-- prüfen -->
+      <button 
+          *ngIf="!checkShown && !(questionToAsk?.courseEnded)"
+          type="button" 
+          class="btn btn btn-success"
+          (click)="getSolution()">
+        {{ls.label('check')}}
+      </button>
+
+      <!-- neue version erstellen -->
+      <button 
+        *ngIf="questionToAsk?.courseEnded && questionToAsk?.question?.isEditable"
+        type="button" 
+        class="btn btn btn-success"
+        (click)="createNewVersion()">
+        {{ls.label('version')}}
+      </button>      
+
+      <!-- Zurück -->
+      <button 
+        *ngIf="questionToAsk?.courseEnded"
+        type="button" 
+        class="btn btn btn-success"
+        (click)="goToResult()">
+        {{ls.label('back')}}
+      </button>  
+      
+      <!-- Speichern  -->
+      <button 
+        *ngIf="!(questionToAsk?.courseEnded) && !(questionToAsk?.answerShown)"
+        type="button" 
+        class="btn btn btn-success"
+        (click)="saveAnswer()">
+        {{ls.label('save')}}
+      </button>  
+      
+      <!-- nächste Frage oder Kurs beenden -->    
+      <button 
+          *ngIf="!(questionToAsk?.courseEnded)"
+          type="button" 
+          class="btn btn btn-success"
+          (click)="nextQuestion()">   
+
+        <!-- Nächste Frage -->
+        <span *ngIf="(questionToAsk?.questionSelectors.length < questionToAsk?.numQuestions)">
+          {{ls.label('nextquestion')}}
+        </span>
+
+        <!-- Kurs beenden -->
+        <span *ngIf="(questionToAsk?.questionSelectors.length >= questionToAsk?.numQuestions)">
+            {{ls.label('endcourse')}}
+        </span>
+
+      </button>
+    </div>
+  </form>
+</div>
+
+ <!-- Kommentare -->
+ <app-comments #comments></app-comments>
+ 

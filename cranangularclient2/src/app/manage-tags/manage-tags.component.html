@@ -1,0 +1,73 @@
+<div class="container">
+  <form  #searchForm="ngForm">
+      <div class="row form-group">
+
+           <!-- Tag-Name -->
+           <div class="col-md-4">
+              
+            <label for="title">{{ls.label('tagname')}}</label>
+  
+            <input  type="text" class="form-control" 
+                    id="title"
+                    [(ngModel)]="search.name"
+                    (keyup.enter)="executeSearch()" 
+                    name="title"
+                    #title="ngModel"> 
+
+          </div>
+      </div>
+
+     
+      <!-- Buttons -->
+      <div class="btn-group float-right" role="group" aria-label="Search Tag">
+        <button 
+          type="button" 
+          class="btn btn btn-success" 
+          (click)="searchTags(0)">
+          {{ls.label('search')}}
+        </button>                
+      </div>
+
+
+  </form>
+
+    <!-- Template for ListItem -->
+    <ng-template #listItem let-item="item">      
+        <div  class="list-group-item questionstatus"
+              [ngClass]="{'questionstatusok' : item.status === 1, 'questionstatusnok' :item.status === 0 }">
+          <h6>                  
+            #{{item.id}}
+    
+            {{item.name}}
+    
+            <span class="btn-group float-right">
+    
+              <!-- Löschen -->
+              <button class="btn btn-default" type="button" (click)="deleteTag(item)"
+                [appTooltip] = "'delete'">
+                <app-icon [icon]="'trash'"></app-icon>                
+              </button>
+
+              <!-- Anzeigen -->
+              <button class="btn btn-default" type="button" (click)="listQuestions(item)"
+                [appTooltip] = "'listquestions'">
+                <app-icon [icon]="'list'"></app-icon>                
+              </button>
+              
+              <!-- Edit -->
+              <button class="btn btn-default" type="button" (click)="goToTag(item)"
+                [appTooltip] = "'edit'">
+                <app-icon [icon]="'edit'"></app-icon>  
+              </button>
+    
+            </span>
+          
+          </h6>           
+        </div>      
+    </ng-template> 
+      
+      <app-pager [itemTemplate]="listItem"
+                 [pagedResult]="pagedResult"
+                 (onSelectedPageChanged)="pageSelected($event)">            
+      </app-pager>
+</div>

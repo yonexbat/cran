@@ -1,0 +1,21 @@
+.crantagresult {
+  border-bottom: 1px solid gray;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
+  width:195px;
+  padding: 5px;
+  background-color:  #ccffdd;
+  cursor: pointer;
+
+}
+
+.crantagresult:hover {
+  color: #eee;
+  background-color: #607D8B;
+}
+
+.crantagresultanchor
+{
+  position: absolute;
+  z-index: 1;
+}
