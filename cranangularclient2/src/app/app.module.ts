@@ -1,12 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { AppRoutingModule } from './app-routing/app-routing.module';
-import { AppComponent } from './app.component';
 import { DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { AppComponent } from './app.component';
 import { NotificationService } from './notification.service';
 import { MenuComponent } from './menu/menu.component';
 import { CourseListComponent } from './course-list/course-list.component';
@@ -14,6 +14,7 @@ import { CRAN_SERVICE_TOKEN } from './cran-data.servicetoken';
 import { CranDataService  } from './cran-data.service';
 import { CranDataServiceMock } from './cran-data-mock.service';
 import { LanguageService } from './language.service';
+import { AppRoutingModule } from './app-routing/app-routing.module';
 import { HomeComponent } from './home/home.component';
 import { ManageQuestionComponent } from './manage-question/manage-question.component';
 import { TagFinderComponent } from './tag-finder/tag-finder.component';
@@ -66,43 +67,41 @@ if (isDevelopment()) {
   declarations: [
     AppComponent,
     MenuComponent,
-    PagerComponent,
     CourseListComponent,
     HomeComponent,
-    TagsComponent,
-    StatusMessageComponent,
-    SafeHtmlPipe,
-    VoteComponent,
-    FileUploadComponent,
-    NotificationComponent,
-    TooltipDirective,
-    IconComponent,
-    ConfirmComponent,
+    ManageQuestionComponent,
     TagFinderComponent,
-    CommentsComponent,
-    SubscriptionsComponent,
-    RichTextBoxComponent,
-    ImagelistComponent,
-    UserInfoComponent,
-    TextlistComponent,
-    ManageTextComponent,
-    ManageTagsComponent,
-    ManageTagComponent,
-    ResultListComponent,
-    VersionsComponent,
-    CourseFavoriteListComponent,
-    ViewQuestionComponent,
-    VersionsComponent,
+    StatusMessageComponent,
+    AskQuestionComponent,
     QuestionListComponent,
-    CourseStarterComponent,
-    SearchQuestionsComponent,
-    CourseInstanceListComponent,
+    ResultListComponent,
+    RichTextBoxComponent,
+    SafeHtmlPipe,
     QuestionPreviewComponent,
     CourseInstanceListComponent,
+    PagerComponent,
+    SearchQuestionsComponent,
+    NotificationComponent,
+    TagsComponent,
+    ViewQuestionComponent,
+    CommentsComponent,
+    VoteComponent,
+    FileUploadComponent,
+    ImagelistComponent,
+    UserInfoComponent,
+    ManageTagsComponent,
+    ManageTagComponent,
     ManageCourseComponent,
+    ConfirmComponent,
     QuestionListItemComponent,
-    ManageQuestionComponent,
-    AskQuestionComponent,
+    CourseStarterComponent,
+    IconComponent,
+    TooltipDirective,
+    TextlistComponent,
+    ManageTextComponent,
+    VersionsComponent,
+    SubscriptionsComponent,
+    CourseFavoriteListComponent,
   ],
   imports: [
     BrowserModule,
