@@ -9,7 +9,9 @@ import { NotificationService } from './notification.service';
 
 describe('PushNotificationService', () => {
 
-  const swPush  =  jasmine.createSpyObj('SwPush', ['some']);
+  const swPush  =  jasmine.createSpyObj('SwPush', ['subscribe']);
+  swPush.notificationClicks = {};
+  swPush.notificationClicks.subscribe = () => {};
   const cranDataService = jasmine.createSpyObj('CranDataService', ['vote']);
   const notificationService = jasmine.createSpyObj('NotificationService', ['some']);
 
