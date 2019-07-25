@@ -23,8 +23,10 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "src/favicon.png",
+              "src/assets",
+              "src/manifest.json",
+              "src/pwacranium.js"
             ],
             "styles": [
               "node_modules/@fortawesome/fontawesome-free/css/all.css",
