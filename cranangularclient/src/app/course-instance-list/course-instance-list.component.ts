@@ -1,5 +1,4 @@
 import { Component, OnInit, Inject,  } from '@angular/core';
-import { HttpModule } from '@angular/http';
 import { Router, } from '@angular/router';
 import { DatePipe,  } from '@angular/common';
 

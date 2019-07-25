@@ -1,5 +1,4 @@
 import { Injectable, InjectionToken  } from '@angular/core';
-import { Headers, Http, RequestOptionsArgs } from '@angular/http';
 
 
 import {Course} from './model/course';
@@ -691,7 +690,7 @@ export class CranDataServiceMock implements ICranDataService {
       });
   }
 
-  constructor(private http: Http) {
+  constructor() {
 
   }
 

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { parseCookieValue } from '@angular/common/src/cookie';
 
 @Injectable({
   providedIn: 'root'

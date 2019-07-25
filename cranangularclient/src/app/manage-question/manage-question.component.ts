@@ -27,11 +27,11 @@ export class ManageQuestionComponent implements OnInit {
 
   public actionInProgress = false;
 
-  @ViewChild('statusMessage') statusMessage: StatusMessageComponent;
+  @ViewChild('statusMessage', { static: true }) statusMessage: StatusMessageComponent;
 
-  @ViewChild('questionPreview') questionPreview: QuestionPreviewComponent;
+  @ViewChild('questionPreview', { static: true }) questionPreview: QuestionPreviewComponent;
 
-  @ViewChild('questionForm') questionForm: NgForm;
+  @ViewChild('questionForm', { static: true }) questionForm: NgForm;
 
   constructor(
     @Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,

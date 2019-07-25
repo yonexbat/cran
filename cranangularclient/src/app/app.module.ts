@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -107,7 +106,6 @@ if (isDevelopment()) {
   imports: [
     BrowserModule,
     RouterModule,
-    HttpModule,
     HttpClientModule,
     FormsModule,
     AppRoutingModule,
@@ -116,7 +114,6 @@ if (isDevelopment()) {
   ],
   providers: [
     { provide: CRAN_SERVICE_TOKEN, useClass: cranDataService },
-    HttpModule,
     NotificationService,
     LanguageService,
     ConfirmService,

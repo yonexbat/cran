@@ -1,6 +1,5 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterModule, Routes } from '@angular/router';
-import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';

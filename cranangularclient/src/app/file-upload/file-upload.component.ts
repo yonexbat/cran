@@ -20,7 +20,7 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
   @Output() onUploaded = new EventEmitter<File[]>();
 
   @Input() placeHolderText = 'Upload file...';
-  @ViewChild('fileInputParent') fileInputParent: ElementRef;
+  @ViewChild('fileInputParent', { static: true }) fileInputParent: ElementRef;
 
   constructor(private cookieService: CookieService) { }
 

@@ -1,6 +1,5 @@
 import { Component, OnInit, Inject, ViewChild, } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap, } from '@angular/router';
-import { HttpModule, } from '@angular/http';
 
 import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
@@ -18,8 +17,8 @@ import { ConfirmService } from '../confirm.service';
 })
 export class ViewQuestionComponent implements OnInit {
 
-  @ViewChild('comments') comments: CommentsComponent;
-  @ViewChild('versions') versions: VersionsComponent;
+  @ViewChild('comments', { static: true }) comments: CommentsComponent;
+  @ViewChild('versions', { static: false }) versions: VersionsComponent;
 
   public question: Question;
 
