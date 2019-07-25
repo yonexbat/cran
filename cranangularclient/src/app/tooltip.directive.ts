@@ -1,5 +1,5 @@
 import { Directive, ElementRef, AfterViewInit, OnInit, OnDestroy,
-     Input, HostListener, Renderer } from '@angular/core';
+     Input, HostListener, Renderer2 } from '@angular/core';
 
 import {LanguageService} from './language.service';
 
@@ -14,7 +14,7 @@ export class TooltipDirective implements OnInit, OnDestroy {
   public appTooltip: string;
 
   constructor(private elementRef: ElementRef,
-      private renderer: Renderer,
+      private renderer: Renderer2,
       private ls: LanguageService) { }
 
   @HostListener('mouseenter')
@@ -37,7 +37,7 @@ export class TooltipDirective implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const tooltipText = this.ls.label(this.appTooltip);
-    this.renderer.setElementAttribute(this.elementRef.nativeElement, 'title', tooltipText);
+    this.renderer.setAttribute(this.elementRef.nativeElement, 'title', tooltipText);    
   }
 
   ngOnDestroy(): void {
