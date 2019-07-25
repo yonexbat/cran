@@ -16,7 +16,14 @@ export class PushNotificationService {
     @Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
     private notificationService: NotificationService,
     private ls: LanguageService) {
+
+      swPush.notificationClicks.subscribe(arg => {
+        console.log('PushNotificationService, notificationClicks');
+      });
+
   }
+
+
 
   public async checkForSubscripton(): Promise<string> {
     console.log('checking for subscription');

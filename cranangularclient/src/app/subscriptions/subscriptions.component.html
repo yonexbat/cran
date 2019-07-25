@@ -39,7 +39,40 @@
             id="text"
             #textControl="ngModel"
             [(ngModel)]="text"> </textarea>       
-        </div>    
+       </div>    
+
+      <!-- Action -->
+      <div class="col-md-12">
+        <label>Action</label>
+        <input
+          name="action"
+          class="form-control"
+          id="action"
+          #actionControl="ngModel"
+          [(ngModel)]="action">      
+      </div>     
+      
+      <!-- Actiontitle -->
+      <div class="col-md-12">
+        <label>Actiontitle</label>
+        <input
+          name="actiontitle"
+          class="form-control"
+          id="actiontitle"
+          #actionTitleControl="ngModel"
+          [(ngModel)]="actionTitle">
+      </div>  
+
+      <!-- ActionUrl -->
+      <div class="col-md-12">
+        <label>ActionUrl</label>
+        <input
+          name="actionurl"
+          class="form-control"
+          id="actionurl"
+          #actionurlControl="ngModel"
+          [(ngModel)]="actionUrl">     
+      </div>        
 
     </div>
 

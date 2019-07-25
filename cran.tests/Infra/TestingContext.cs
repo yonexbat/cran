@@ -1,5 +1,6 @@
 ﻿using cran.Data;
 using cran.Model.Entities;
+using cran.Model.Dto;
 using cran.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +12,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using Microsoft.Extensions.Options;
 
 [assembly: CollectionBehavior(DisableTestParallelization = true)]
 
@@ -54,6 +56,23 @@ namespace cran.tests.Infra
             setup.SetUpInMemoryDb(context);
 
             _dependencyMap[context.GetType()] = context;
+        }
+
+        public void AddInfoTextServiceMock()
+        {
+            var infoMock = new Mock<ITextService>(MockBehavior.Loose);
+            infoMock.Setup(x => x.GetTextAsync(It.IsAny<string>(), It.IsAny<string[]>()))
+                    .Returns((string key, string[] paramsarray) => Task.FromResult<string>(key));
+            _dependencyMap[typeof(ITextService)] = infoMock.Object;
+        }
+
+        public void AddCranAppSettings()
+        {
+           IOptions<CranSettingsDto> settings =  Microsoft.Extensions.Options.Options.Create(new CranSettingsDto()
+           {
+
+           });
+           _dependencyMap[typeof(IOptions<CranSettingsDto>)] = settings;
         }
 
         public void AddRealDb()
@@ -111,7 +130,7 @@ namespace cran.tests.Infra
             _dependencyMap[typeof(IPrincipal)] = principal;
         }
 
-        public void AddMockLogService()
+        public void AddLogServiceMock()
         {
             IDbLogService log = new Mock<IDbLogService>(MockBehavior.Loose).Object;
             _dependencyMap[typeof(IDbLogService)] = log;
