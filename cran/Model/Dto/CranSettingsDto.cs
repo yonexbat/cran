@@ -18,5 +18,7 @@ namespace cran.Model.Dto
 
         public string DevelopmentCertStorePw { get; set; }
         public string DevelopmentCertStorePath { get; set; }
+
+        public string RootUrl { get; set; }
     }
 }

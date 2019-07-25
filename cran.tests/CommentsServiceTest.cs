@@ -19,7 +19,7 @@ namespace cran.tests
         {
             testingContext.AddPrincipalMock();
             testingContext.AddBinaryServiceMock();
-            testingContext.AddMockLogService();
+            testingContext.AddLogServiceMock();
             testingContext.AddInMemoryDb();
         }
 

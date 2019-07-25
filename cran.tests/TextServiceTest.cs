@@ -19,7 +19,7 @@ namespace cran.tests
             TestingContext testingContext = new TestingContext();
             testingContext.AddAdminPrincipalMock();
             testingContext.AddInMemoryDb();
-            testingContext.AddMockLogService();
+            testingContext.AddLogServiceMock();
             testingContext.AddGermanCultureServiceMock();
             
             ApplicationDbContext dbContext = testingContext.GetSimple<ApplicationDbContext>();
@@ -47,7 +47,7 @@ namespace cran.tests
             TestingContext testingContext = new TestingContext();
             testingContext.AddAdminPrincipalMock();
             testingContext.AddInMemoryDb();
-            testingContext.AddMockLogService();
+            testingContext.AddLogServiceMock();
             testingContext.AddEnglishCultureServiceMock();
 
             ApplicationDbContext dbContext = testingContext.GetSimple<ApplicationDbContext>();
@@ -75,7 +75,7 @@ namespace cran.tests
             TestingContext testingContext = new TestingContext();
             testingContext.AddAdminPrincipalMock();
             testingContext.AddInMemoryDb();
-            testingContext.AddMockLogService();
+            testingContext.AddLogServiceMock();
             testingContext.AddEnglishCultureServiceMock();
 
             ApplicationDbContext dbContext = testingContext.GetSimple<ApplicationDbContext>();

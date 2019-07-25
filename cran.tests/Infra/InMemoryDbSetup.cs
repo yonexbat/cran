@@ -64,6 +64,15 @@ namespace cran.tests.Infra
                 Tag = tags.First(),
             };
             context.RelCourseTags.Add(relCourseTag);
+
+            //User
+            CranUser cranUser = new CranUser()
+            {
+                IsAnonymous = false,
+                UserId = "testuser",                  
+            };
+            context.CranUsers.Add(cranUser);
+
             context.SaveChanges();
         }
 
