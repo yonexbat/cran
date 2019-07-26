@@ -21,7 +21,7 @@ export class TagFinderComponent implements OnInit {
   private searchTerms = new Subject<string>();
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
-    private notificationService: NotificationService) { }
+              private notificationService: NotificationService) { }
 
 
   @Input() public tagsArray: Tag[] = [];
