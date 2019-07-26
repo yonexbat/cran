@@ -1,5 +1,0 @@
-.list-group-item:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
