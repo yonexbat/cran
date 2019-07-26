@@ -56,8 +56,11 @@ describe('CommentsComponent', () => {
     const dataServiceSpy: ICranDataService = fixture.debugElement.injector.get(CRAN_SERVICE_TOKEN);
     let calledText: string;
     dataServiceSpy.addComment = spyOn(dataServiceSpy, 'addComment')
-                                    .and.callFake((comment: Comment) => {
+                                    .and.callFake((comment: Comment): Promise<number> => {
                                       calledText = comment.commentText;
+                                      return new Promise((res, reject) => {
+                                        res(2);
+                                      });
                                     });
 
     await fixture.whenStable();
@@ -78,7 +81,7 @@ describe('CommentsComponent', () => {
     fixture.detectChanges();
 
     const addCommentSpy = dataServiceSpy.addComment as jasmine.Spy;
-    const callInfo: jasmine.CallInfo = addCommentSpy.calls.first();
+    const callInfo = addCommentSpy.calls.first();
 
     // But in Jasmine. Tracked arguemtns are not cloned.
     // component sets commentText to '' after posting.
