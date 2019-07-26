@@ -1,18 +1,17 @@
 import { Component, OnInit, TemplateRef, Input, EventEmitter, Output } from '@angular/core';
-
 import {PagedResult} from '../../model/pagedresult';
 import {LanguageService} from '../../language.service';
 
-const numpages = 5;
-
 @Component({
-  selector: 'app-pager',
-  templateUrl: './pager.component.html',
-  styleUrls: ['./pager.component.scss']
+  selector: 'app-itempager',
+  templateUrl: './itempager.component.html',
+  styleUrls: ['./itempager.component.scss']
 })
-export class PagerComponent implements OnInit {
+export class ItempagerComponent implements OnInit {
 
   constructor(private ls: LanguageService) { }
+
+  public numpages = 5;
 
   @Input()
   public itemTemplate: TemplateRef<any>;
@@ -49,12 +48,12 @@ export class PagerComponent implements OnInit {
   }
 
   private firstPageCurrentPages(): number {
-    return Math.floor(this.pagedResult.currentPage / numpages) * numpages;
+    return Math.floor(this.pagedResult.currentPage / this.numpages) * this.numpages;
   }
 
   private lastPageCurrentPages(): number {
     const firstpage = this.firstPageCurrentPages();
-    let lastpage = firstpage + numpages;
+    let lastpage = firstpage + this.numpages;
     if (lastpage > this.pagedResult.numpages) {
       lastpage = this.pagedResult.numpages;
     }
@@ -73,17 +72,18 @@ export class PagerComponent implements OnInit {
 
   private previousPagesFirstPage(): number {
     const firstpage = this.firstPageCurrentPages();
-    return firstpage - numpages;
+    return firstpage - this.numpages;
   }
 
   private nextPagesFirstPage(): number {
     const firstpage = this.firstPageCurrentPages();
-    return firstpage + numpages;
+    return firstpage + this.numpages;
   }
 
 
   public pageClicked(pageNumber: number) {
     this.onSelectedPageChanged.emit(pageNumber);
   }
+
 
 }

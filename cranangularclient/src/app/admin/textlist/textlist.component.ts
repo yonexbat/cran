@@ -38,7 +38,6 @@ export class TextlistComponent implements OnInit {
 
     this.lastParams = params;
     this.search.page = +params['pageNumber'];
-
     if (isNaN(this.search.page)) {
       this.search.page = 0;
     }
