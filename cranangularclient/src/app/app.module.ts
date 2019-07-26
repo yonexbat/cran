@@ -120,6 +120,9 @@ if (isDevelopment()) {
     DatePipe,
     PushNotificationService,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  exports: [
+    PagerComponent,
+  ],
 })
 export class AppModule { }

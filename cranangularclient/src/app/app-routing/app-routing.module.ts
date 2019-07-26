@@ -41,7 +41,8 @@ const routes: Routes = [
   { path: 'coursestarter/:id', component: CourseStarterComponent},
   { path: 'textlist', component: TextlistComponent},
   { path: 'managetext/:id', component: ManageTextComponent},
-  { path: 'subscriptions', component: SubscriptionsComponent}
+  { path: 'subscriptions', component: SubscriptionsComponent},
+  { path: 'admin', loadChildren: () => import('../admin/admin.module').then(mod => mod.AdminModule)},
 ];
 
 @NgModule({

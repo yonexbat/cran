@@ -21,10 +21,10 @@ export class ManageTextComponent implements OnInit {
   @ViewChild('statusMessage', { static: true }) statusMessage: StatusMessageComponent;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
-  private router: Router,
-  private activeRoute: ActivatedRoute,
-  private notificationService: NotificationService,
-  public ls: LanguageService) {
+              private router: Router,
+              private activeRoute: ActivatedRoute,
+              private notificationService: NotificationService,
+              public ls: LanguageService) {
     this.activeRoute.paramMap.subscribe((params: ParamMap)  => {
       const id = params.get('id');
       this.handleRouteChanged(+id);
@@ -49,7 +49,7 @@ export class ManageTextComponent implements OnInit {
     this.actionInProgress = true;
 
       // save current question
-      try {
+    try {
         this.notificationService.emitLoading();
         if (this.text && this.text.id > 0) {
           await this.cranDataService.updateText(this.text);
