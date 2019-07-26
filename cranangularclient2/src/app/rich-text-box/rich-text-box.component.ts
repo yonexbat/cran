@@ -13,6 +13,8 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS,
 
 import {htmlRequired} from './htmlrequired';
 
+declare const tinymce: any;
+
 @Component({
   selector: 'app-rich-text-box',
   templateUrl: './rich-text-box.component.html',
@@ -37,6 +39,7 @@ export class RichTextBoxComponent implements OnInit, AfterViewInit,
   private editor: any;
   private onChangelistener: any;
   private validateFn: any;
+  
 
   @Input() elementId: string;
   @Input() public required: boolean;
@@ -74,14 +77,15 @@ export class RichTextBoxComponent implements OnInit, AfterViewInit,
   }
 
   ngOnDestroy(): void {
-    // tinymce.remove(this.editor);
+    tinymce.remove(this.editor);
     this.onChangelistener = null;
   }
 
   ngAfterViewInit(): void {
     const id = '#' + this.elementId;
-/*
-     tinymce.init({
+    debugger;
+
+    tinymce.init({
       selector: id,
       plugins: ['link', 'paste', 'table'],
       skin_url: '/assets/skins/lightgray',
@@ -96,7 +100,7 @@ export class RichTextBoxComponent implements OnInit, AfterViewInit,
           }
         });
       },
-    });*/
+    });
   }
 
   private showContent() {
