@@ -16,8 +16,6 @@ import {ManageTagsComponent} from '../manage-tags/manage-tags.component';
 import {ManageTagComponent} from '../manage-tag/manage-tag.component';
 import {ManageCourseComponent} from '../manage-course/manage-course.component';
 import {CourseStarterComponent} from '../course-starter/course-starter.component';
-import {TextlistComponent} from '../textlist/textlist.component';
-import {ManageTextComponent} from '../manage-text/manage-text.component';
 import {SubscriptionsComponent} from '../subscriptions/subscriptions.component';
 import {CourseFavoriteListComponent} from '../course-favorite-list/course-favorite-list.component';
 
@@ -39,8 +37,6 @@ const routes: Routes = [
   { path: 'managetag/:id', component: ManageTagComponent},
   { path: 'managecourse/:id', component: ManageCourseComponent},
   { path: 'coursestarter/:id', component: CourseStarterComponent},
-  { path: 'textlist', component: TextlistComponent},
-  { path: 'managetext/:id', component: ManageTextComponent},
   { path: 'subscriptions', component: SubscriptionsComponent},
   { path: 'admin', loadChildren: () => import('../admin/admin.module').then(mod => mod.AdminModule)},
 ];

@@ -6,7 +6,6 @@ import {SearchText} from '../../model/searchtext';
 import {ICranDataService} from '../../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../../cran-data.servicetoken';
 import {NotificationService} from '../../notification.service';
-import {StatusMessageComponent} from '../../status-message/status-message.component';
 import {LanguageService} from '../../language.service';
 import {PagedResult} from '../../model/pagedresult';
 
@@ -51,22 +50,22 @@ export class TextlistComponent implements OnInit {
     }
   }
 
-  private searchTexts(pageNumber: number) {
+  private gotoPage(pageNumber: number) {
     const navigationExtras: NavigationExtras = {
       queryParams: {
          pageNumber,
-      }
+      },
     };
 
-    this.router.navigate(['/textlist'], navigationExtras);
+    this.router.navigate(['/admin/textlist'], navigationExtras);
   }
 
   public pageSelected(pageNumber: number) {
-    this.searchTexts(pageNumber);
+    this.gotoPage(pageNumber);
   }
 
   private goToText(text: Text) {
-    this.router.navigate(['/managetext', text.id]);
+    this.router.navigate(['/admin/managetext', text.id]);
   }
 
 }

@@ -45,8 +45,6 @@ import { QuestionListItemComponent } from './question-list-item/question-list-it
 import { CourseStarterComponent } from './course-starter/course-starter.component';
 import { IconComponent } from './icon/icon.component';
 import { TooltipDirective } from './tooltip.directive';
-import { TextlistComponent } from './textlist/textlist.component';
-import { ManageTextComponent } from './manage-text/manage-text.component';
 import { VersionsComponent } from './versions/versions.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
@@ -97,8 +95,6 @@ if (isDevelopment()) {
     CourseStarterComponent,
     IconComponent,
     TooltipDirective,
-    TextlistComponent,
-    ManageTextComponent,
     VersionsComponent,
     SubscriptionsComponent,
     CourseFavoriteListComponent,
