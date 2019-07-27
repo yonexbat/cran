@@ -9,7 +9,7 @@ import {ConfirmService} from '../../confirm.service';
 import {LanguageService} from '../../language.service';
 import {PagedResult} from '../../model/pagedresult';
 import { ManageTextComponent } from './manage-text.component';
-import {StatusMessageComponent} from '../../status-message/status-message.component';
+import {UicompsModule} from '../../uicomps/uicomps.module';
 
 
 describe('ManageTextComponent', () => {
@@ -22,8 +22,8 @@ describe('ManageTextComponent', () => {
     const confirmationService = jasmine.createSpyObj('ConfirmService', ['some']);
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, FormsModule],
-      declarations: [ ManageTextComponent, StatusMessageComponent ],
+      imports: [RouterTestingModule, FormsModule, UicompsModule],
+      declarations: [ ManageTextComponent],
       providers: [
         LanguageService,
         { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },
