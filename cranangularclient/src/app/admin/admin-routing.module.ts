@@ -6,7 +6,7 @@ import { TextlistComponent } from './textlist/textlist.component';
 
 const routes: Routes = [
   { path: 'textlist', component: TextlistComponent},
-  {path: 'managetext/:id', component: ManageTextComponent},
+  { path: 'managetext/:id', component: ManageTextComponent},
 ];
 
 @NgModule({

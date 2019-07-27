@@ -4,6 +4,7 @@ import { TestcompComponent } from './testcomp/testcomp.component';
 import { ItempagerComponent } from './itempager/itempager.component';
 import { TooltipDirective } from './tooltip.directive';
 import { IconComponent} from './icon/icon.component';
+import { StatusmessageComponent } from './statusmessage/statusmessage.component';
 
 
 
@@ -13,6 +14,7 @@ import { IconComponent} from './icon/icon.component';
     ItempagerComponent,
     TooltipDirective,
     IconComponent,
+    StatusmessageComponent,
   ],
   imports: [
     CommonModule
@@ -22,6 +24,7 @@ import { IconComponent} from './icon/icon.component';
     ItempagerComponent,
     TooltipDirective,
     IconComponent,
+    StatusmessageComponent,
   ]
 })
 export class UicompsModule { }
