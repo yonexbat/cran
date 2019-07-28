@@ -10,7 +10,7 @@ import {ConfirmService} from '../confirm.service';
 import {LanguageService} from '../language.service';
 import {Tag} from '../model/tag';
 import { ViewQuestionComponent } from './view-question.component';
-import {SafeHtmlPipe} from '../save-html.pipe';
+import {SafeHtmlPipe} from '../uicomps/safe-html.pipe';
 import {ImagelistComponent} from '../imagelist/imagelist.component';
 
 
@@ -55,7 +55,7 @@ describe('ViewQuestionComponent', () => {
         ViewQuestionComponent,
         StubVersionsComponent,
         StubVoteComponent,
-        StubTagsComponent, SafeHtmlPipe,
+        StubTagsComponent,
         ImagelistComponent,
         StubCommentsComponent,
       ],

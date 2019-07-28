@@ -5,6 +5,7 @@ import { TooltipDirective } from './tooltip.directive';
 import { IconComponent} from './icon/icon.component';
 import { StatusmessageComponent } from './statusmessage/statusmessage.component';
 import { RichTextBoxComponent } from './rich-text-box/rich-text-box.component';
+import { SafeHtmlPipe } from './safe-html.pipe';
 
 
 
@@ -15,6 +16,7 @@ import { RichTextBoxComponent } from './rich-text-box/rich-text-box.component';
     IconComponent,
     StatusmessageComponent,
     RichTextBoxComponent,
+    SafeHtmlPipe,
   ],
   imports: [
     CommonModule
@@ -25,6 +27,7 @@ import { RichTextBoxComponent } from './rich-text-box/rich-text-box.component';
     IconComponent,
     StatusmessageComponent,
     RichTextBoxComponent,
+    SafeHtmlPipe,
   ]
 })
 export class UicompsModule { }

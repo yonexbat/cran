@@ -9,7 +9,7 @@ import {NotificationService} from '../notification.service';
 import {ConfirmService} from '../confirm.service';
 import {LanguageService} from '../language.service';
 import {PagedResult} from '../model/pagedresult';
-import {SafeHtmlPipe} from '../save-html.pipe';
+import {SafeHtmlPipe} from '../uicomps/save-html.pipe';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;

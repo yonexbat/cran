@@ -22,7 +22,6 @@ import { TagFinderComponent } from './tag-finder/tag-finder.component';
 import { AskQuestionComponent } from './ask-question/ask-question.component';
 import { QuestionListComponent } from './question-list/question-list.component';
 import { ResultListComponent } from './result-list/result-list.component';
-import { SafeHtmlPipe } from './save-html.pipe';
 import { QuestionPreviewComponent } from './question-preview/question-preview.component';
 import { CourseInstanceListComponent } from './course-instance-list/course-instance-list.component';
 import { SearchQuestionsComponent } from './search-questions/search-questions.component';
@@ -66,7 +65,6 @@ if (isDevelopment()) {
     AskQuestionComponent,
     QuestionListComponent,
     ResultListComponent,
-    SafeHtmlPipe,
     QuestionPreviewComponent,
     CourseInstanceListComponent,
     SearchQuestionsComponent,

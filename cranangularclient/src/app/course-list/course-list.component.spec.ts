@@ -11,7 +11,7 @@ import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
 import {LanguageService} from '../language.service';
 import {ConfirmService} from '../confirm.service';
-import {SafeHtmlPipe} from '../save-html.pipe';
+import {SafeHtmlPipe} from '../uicomps/save-html.pipe';
 
 
 @Component({selector: 'app-tags', template: ''})

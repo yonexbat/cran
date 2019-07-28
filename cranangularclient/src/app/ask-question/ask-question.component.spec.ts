@@ -14,7 +14,7 @@ import {TestingModule,
   } from '../testing/testing.module';
 import {StubActivatedRoute} from '../testing/stubactivatedroute';
 
-import {SafeHtmlPipe} from '../save-html.pipe';
+import {SafeHtmlPipe} from '../uicomps/save-html.pipe';
 import { NotificationService } from '../notification.service';
 
 
