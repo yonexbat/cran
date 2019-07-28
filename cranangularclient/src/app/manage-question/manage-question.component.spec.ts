@@ -11,9 +11,6 @@ import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {ICranDataService} from '../icrandataservice';
 import {Question} from '../model/question';
 import { QuestionType } from '../model/questiontype';
-import { IconComponent } from '../uicomps/icon/icon.component';
-import {TooltipDirective} from '../uicomps/tooltip.directive';
-import {StatusmessageComponent} from '../uicomps/statusmessage/statusmessage.component';
 import { RichTextBoxComponent } from '../uicomps/rich-text-box/rich-text-box.component';
 
 
@@ -33,6 +30,7 @@ describe('ManageQuestionComponent', () => {
         ),
         FormsModule,
         TestingModule,
+        UicompsModule,
       ],
       declarations: [
         ManageQuestionComponent,
@@ -41,12 +39,15 @@ describe('ManageQuestionComponent', () => {
         StubFileUploadComponent,
         StubImageListComponent,
         StubRichTextBoxComponent,
-        TooltipDirective,
-        IconComponent,
-        StatusmessageComponent,
       ],
       providers: [  ],
     })
+    .overrideModule(UicompsModule, {
+      remove: {
+              declarations: [RichTextBoxComponent],
+              exports: [RichTextBoxComponent]
+          },
+     })
     .compileComponents();
   }));
 
@@ -60,7 +61,7 @@ describe('ManageQuestionComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should add question', async(async() => {
+  it('should add question', async(async () => {
 
     const cranDataServiceSpy: ICranDataService = fixture.debugElement.injector.get(CRAN_SERVICE_TOKEN);
     let questionCapture: Question;
@@ -133,7 +134,7 @@ describe('ManageQuestionComponent', () => {
 
   }));
 
-  it('should not add question, invalid input', async(async() => {
+  it('should not add question, invalid input', async(async () => {
 
     const cranDataServiceSpy: ICranDataService = fixture.debugElement.injector.get(CRAN_SERVICE_TOKEN);
     let questionCapture: Question;
