@@ -4,7 +4,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import {ICranDataService} from '../../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../../cran-data.servicetoken';
 import {NotificationService} from '../../notification.service';
-import {StatusMessageComponent} from '../../status-message/status-message.component';
+import {StatusmessageComponent} from '../../uicomps/statusmessage/statusmessage.component';
 import {LanguageService} from '../../language.service';
 import {Text} from '../../model/text';
 
@@ -18,7 +18,7 @@ export class ManageTextComponent implements OnInit {
 
   public text: Text = new Text();
   public actionInProgress = false;
-  @ViewChild('statusMessage', { static: true }) statusMessage: StatusMessageComponent;
+  @ViewChild('statusMessage', { static: true }) statusMessage: StatusmessageComponent;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
               private router: Router,

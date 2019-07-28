@@ -5,7 +5,7 @@ import {Tag} from '../model/tag';
 import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
-import {StatusMessageComponent} from '../status-message/status-message.component';
+import {StatusmessageComponent} from '../uicomps/statusmessage/statusmessage.component';
 import {LanguageService} from '../language.service';
 
 
@@ -21,13 +21,13 @@ export class ManageTagComponent implements OnInit {
   public actionInProgress = false;
   public buttonText: string;
 
-  @ViewChild('statusMessage', { static: true }) statusMessage: StatusMessageComponent;
+  @ViewChild('statusMessage', { static: true }) statusMessage: StatusmessageComponent;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
-  private router: Router,
-  private activeRoute: ActivatedRoute,
-  private notificationService: NotificationService,
-  public ls: LanguageService) {
+              private router: Router,
+              private activeRoute: ActivatedRoute,
+              private notificationService: NotificationService,
+              public ls: LanguageService) {
     this.activeRoute.paramMap.subscribe((params: ParamMap)  => {
       const id = params.get('id');
       this.handleRouteChanged(+id);
@@ -75,7 +75,7 @@ export class ManageTagComponent implements OnInit {
     this.actionInProgress = true;
 
       // save current question
-      try {
+    try {
         this.notificationService.emitLoading();
         if (this.tag && this.tag.id > 0) {
           await this.cranDataService.updateTag(this.tag);

@@ -7,7 +7,7 @@ import {QuestionOption} from '../model/questionoption';
 import {ICranDataService} from '../icrandataservice';
 import {ConfirmService} from '../confirm.service';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
-import {StatusMessageComponent} from '../status-message/status-message.component';
+import {StatusmessageComponent} from '../uicomps/statusmessage/statusmessage.component';
 import {QuestionPreviewComponent} from '../question-preview/question-preview.component';
 import {NotificationService} from '../notification.service';
 import {LanguageService} from '../language.service';
@@ -27,7 +27,7 @@ export class ManageQuestionComponent implements OnInit {
 
   public actionInProgress = false;
 
-  @ViewChild('statusMessage', { static: true }) statusMessage: StatusMessageComponent;
+  @ViewChild('statusMessage', { static: true }) statusMessage: StatusmessageComponent;
 
   @ViewChild('questionPreview', { static: true }) questionPreview: QuestionPreviewComponent;
 
@@ -150,8 +150,7 @@ export class ManageQuestionComponent implements OnInit {
   }
 
   public async addImages(images: Binary[]) {
-    for ( let i = 0; i < images.length; i++) {
-      const binary: Binary = images[i];
+    for (const binary of images) {
       const image = new Image();
       image.idBinary = binary.id;
       image.width = 100;

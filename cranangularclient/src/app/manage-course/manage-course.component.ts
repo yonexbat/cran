@@ -7,7 +7,7 @@ import {ICranDataService} from '../icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
 import {LanguageService} from '../language.service';
-import {StatusMessageComponent} from '../status-message/status-message.component';
+import {StatusmessageComponent} from '../uicomps/statusmessage/statusmessage.component';
 
 
 @Component({
@@ -22,13 +22,13 @@ export class ManageCourseComponent implements OnInit {
   public actionInProgress = false;
   public buttonText: string;
 
-  @ViewChild('statusMessage', { static: true }) statusMessage: StatusMessageComponent;
+  @ViewChild('statusMessage', { static: true }) statusMessage: StatusmessageComponent;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
-    private router: Router,
-    private activeRoute: ActivatedRoute,
-    private notificationService: NotificationService,
-    public ls: LanguageService) {
+              private router: Router,
+              private activeRoute: ActivatedRoute,
+              private notificationService: NotificationService,
+              public ls: LanguageService) {
     this.activeRoute.paramMap.subscribe((params: ParamMap)  => {
       const id = params.get('id');
       this.handleRouteChanged(+id);
@@ -72,7 +72,7 @@ export class ManageCourseComponent implements OnInit {
     this.actionInProgress = true;
 
       // save current question
-      try {
+    try {
         this.notificationService.emitLoading();
         if (this.course && this.course.id > 0) {
           await this.cranDataService.updateCourse(this.course);

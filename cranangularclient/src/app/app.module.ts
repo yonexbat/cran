@@ -19,7 +19,6 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
 import { HomeComponent } from './home/home.component';
 import { ManageQuestionComponent } from './manage-question/manage-question.component';
 import { TagFinderComponent } from './tag-finder/tag-finder.component';
-import { StatusMessageComponent } from './status-message/status-message.component';
 import { AskQuestionComponent } from './ask-question/ask-question.component';
 import { QuestionListComponent } from './question-list/question-list.component';
 import { ResultListComponent } from './result-list/result-list.component';
@@ -68,7 +67,6 @@ if (isDevelopment()) {
     HomeComponent,
     ManageQuestionComponent,
     TagFinderComponent,
-    StatusMessageComponent,
     AskQuestionComponent,
     QuestionListComponent,
     ResultListComponent,
