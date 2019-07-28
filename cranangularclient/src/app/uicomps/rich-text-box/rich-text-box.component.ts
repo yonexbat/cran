@@ -8,12 +8,15 @@ import { Component,
   ViewChild,
   NgZone,
   forwardRef,
-  ElementRef, } from '@angular/core';
+  ElementRef,
+  Renderer2 } from '@angular/core';
 
 import {ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS,
   Validator, AbstractControl, ValidationErrors} from '@angular/forms';
 
 import {htmlRequired} from './htmlrequired';
+
+import {generateGuid} from '../guidgenerator';
 
 declare const tinymce: any;
 
@@ -48,8 +51,8 @@ export class RichTextBoxComponent implements OnInit, AfterViewInit,
   @Output() htmlString = new EventEmitter<string>();
   @ViewChild('richtextboxcontainer', {static: true}) container: ElementRef;
 
-  constructor(private zone: NgZone) {
-    this.elementId = this.generateGuid();
+  constructor(private zone: NgZone, private renderer: Renderer2) {
+    this.elementId = generateGuid();
   }
 
   writeValue(value: any): void {
@@ -81,12 +84,13 @@ export class RichTextBoxComponent implements OnInit, AfterViewInit,
     this.validateFn = htmlRequired(this.required);
     const nativeContainer = this.container.nativeElement;
     while (nativeContainer.firstChild) {
-      nativeContainer.removeChild(nativeContainer.firstChild);
+      this.renderer.removeChild(nativeContainer, nativeContainer.firstChild);
     }
-    const textarea = document.createElement('textarea');
-    textarea.setAttribute('id', this.elementId);
-    textarea.setAttribute('required', 'true');
-    nativeContainer.append(textarea);
+
+    const textarea = this.renderer.createElement('textarea');
+    this.renderer.setAttribute(textarea, 'id', this.elementId);
+    this.renderer.setAttribute(textarea, 'required', 'true');
+    this.renderer.appendChild(nativeContainer, textarea);
   }
 
   ngOnDestroy(): void {
@@ -131,18 +135,6 @@ export class RichTextBoxComponent implements OnInit, AfterViewInit,
     if (this.onChangelistener) {
       this.onChangelistener(content);
     }
-  }
-
-  private generateGuid() {
-    let d = new Date().getTime();
-    if (typeof performance !== 'undefined' && typeof performance.now === 'function'){
-        d += performance.now(); 
-    }
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        let r = (d + Math.random() * 16) % 16 | 0;
-        d = Math.floor(d / 16);
-        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    });
   }
 
   public validate(c: AbstractControl): ValidationErrors {
