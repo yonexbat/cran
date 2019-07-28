@@ -104,13 +104,13 @@ describe('ManageQuestionComponent', () => {
     checkBox2.dispatchEvent(new Event('change'));
 
     // Text, option 1
-    const textOption1El: HTMLInputElement = nativeEl.querySelector('#questionoption1 > input');
+    const textOption1El: HTMLInputElement = nativeEl.querySelector('#questionoption0 > input');
     textOption1El.value = 'Text option 1';
     textOption1El.dispatchEvent(new Event('input'));
 
 
     // Text, option 2
-    const textOption2El: HTMLInputElement = nativeEl.querySelector('#questionoption2 > input');
+    const textOption2El: HTMLInputElement = nativeEl.querySelector('#questionoption1 > input');
     textOption2El.value = 'Text option 2';
     textOption2El.dispatchEvent(new Event('input'));
 
