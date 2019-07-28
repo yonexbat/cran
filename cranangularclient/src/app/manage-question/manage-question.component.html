@@ -1,10 +1,10 @@
-<div class="container">
-
+<div class="container" *ngIf="this.question != null">
+  
   <app-question-preview #questionPreview></app-question-preview>
 
   <h2>{{getHeadingText()}}</h2>
 
-  <form  #questionForm="ngForm">
+  <form #questionForm="ngForm">
 
    
     <div class="row form-group">
@@ -66,10 +66,9 @@
         <app-rich-text-box 
           #questiontext="ngModel"
           name="questiontext"
-          [(ngModel)]="question.text"
-          [elementId]="'questiontext'"  
+          [(ngModel)]="question.text" 
           [required]="true"    
-          ></app-rich-text-box>
+          id="questiontext"></app-rich-text-box>
 
         <div [hidden]="questiontext.valid || questiontext.pristine"
           class="alert alert-danger">
@@ -105,8 +104,8 @@
 
           <app-rich-text-box 
             #questionoption="ngModel"
-            name="questionoption{{optionIndex}}"
-            [elementId]="'questionoption' + (optionIndex + 1)"
+            name="questionoption{{optionIndex+1}}"          
+            id="questionoption{{optionIndex+1}}"   
             [(ngModel)]="option.text"
             [required]="true"></app-rich-text-box>  
           
@@ -164,8 +163,8 @@
 
         <app-rich-text-box 
         #explanation="ngModel"
-        [elementId]="'richtextboxexplanation'"
         name="richtextboxexplanation"
+        id="richtextboxexplanation"
         [(ngModel)]="question.explanation"
         [required]="true"></app-rich-text-box>
 

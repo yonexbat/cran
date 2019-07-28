@@ -14,7 +14,6 @@ import {LanguageService} from '../../language.service';
 
 @Component({selector: 'app-rich-text-box', template: ''})
 class StubRichTextBoxComponent {
-  @Input() elementId: string;
   @Input() public required: boolean;
   @Output() htmlString = new EventEmitter<string>();
   @Input() public set content(content: string) {}

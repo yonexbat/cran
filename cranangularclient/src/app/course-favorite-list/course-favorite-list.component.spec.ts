@@ -11,7 +11,7 @@ import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
 import {LanguageService} from '../language.service';
 import {ConfirmService} from '../confirm.service';
-import {SafeHtmlPipe} from '../uicomps/save-html.pipe';
+
 
 import { CourseFavoriteListComponent } from './course-favorite-list.component';
 import { TagsComponent } from '../tags/tags.component';
@@ -39,7 +39,7 @@ describe('CourseFavoriteListComponent', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, UicompsModule],
       declarations: [ CourseFavoriteListComponent,
-        SafeHtmlPipe, StubPagerComponent, TagsComponent ],
+        StubPagerComponent, TagsComponent ],
       providers: [
           LanguageService,
           { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },

@@ -20,13 +20,6 @@ class StubTagFinderComponent {
   @Output() public tagSelectionChanged = new EventEmitter<void>();
 }
 
-@Component({selector: 'app-rich-text-box', template: ''})
-class StubRichTextBoxComponent {
-  @Input() elementId: string;
-  @Input() public required: boolean;
-  @Output() htmlString = new EventEmitter<string>();
-  @Input() public set content(content: string) {}
-}
 
 
 @Component({selector: 'app-status-message', template: ''})

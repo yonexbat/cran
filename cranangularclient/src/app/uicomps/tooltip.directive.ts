@@ -14,15 +14,15 @@ export class TooltipDirective implements OnInit, OnDestroy {
   public appTooltip: string;
 
   constructor(private elementRef: ElementRef,
-      private renderer: Renderer2,
-      private ls: LanguageService) { }
+              private renderer: Renderer2,
+              private ls: LanguageService) { }
 
   @HostListener('mouseenter')
   public onMouseEnter(): void {
     const nativeElement = this.elementRef.nativeElement;
     $(nativeElement).tooltip({
       sanitize: false,
-      sanitizeFn: function() {
+      sanitizeFn() {
         return true;
       }
     });
@@ -37,7 +37,7 @@ export class TooltipDirective implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const tooltipText = this.ls.label(this.appTooltip);
-    this.renderer.setAttribute(this.elementRef.nativeElement, 'title', tooltipText);    
+    this.renderer.setAttribute(this.elementRef.nativeElement, 'title', tooltipText);
   }
 
   ngOnDestroy(): void {

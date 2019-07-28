@@ -5,8 +5,10 @@ import { Component,
   Input,
   Output,
   OnInit,
+  ViewChild,
   NgZone,
-  forwardRef, } from '@angular/core';
+  forwardRef,
+  ElementRef, } from '@angular/core';
 
 import {ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS,
   Validator, AbstractControl, ValidationErrors} from '@angular/forms';
@@ -40,13 +42,15 @@ export class RichTextBoxComponent implements OnInit, AfterViewInit,
   private editor: any;
   private onChangelistener: any;
   private validateFn: any;
+  private elementId: string;
 
-
-  @Input() elementId: string;
   @Input() public required: boolean;
   @Output() htmlString = new EventEmitter<string>();
+  @ViewChild('richtextboxcontainer', {static: true}) container: ElementRef;
 
-  constructor(private zone: NgZone) { }
+  constructor(private zone: NgZone) {
+    this.elementId = this.generateGuid();
+  }
 
   writeValue(value: any): void {
     this.content = value;
@@ -75,6 +79,14 @@ export class RichTextBoxComponent implements OnInit, AfterViewInit,
 
   ngOnInit() {
     this.validateFn = htmlRequired(this.required);
+    const nativeContainer = this.container.nativeElement;
+    while (nativeContainer.firstChild) {
+      nativeContainer.removeChild(nativeContainer.firstChild);
+    }
+    const textarea = document.createElement('textarea');
+    textarea.setAttribute('id', this.elementId);
+    textarea.setAttribute('required', 'true');
+    nativeContainer.append(textarea);
   }
 
   ngOnDestroy(): void {
@@ -86,21 +98,21 @@ export class RichTextBoxComponent implements OnInit, AfterViewInit,
     const id = '#' + this.elementId;
 
     tinymce.init({
-      selector: id,
-      plugins: ['link', 'paste', 'table'],
-      skin_url: '/assets/skins/lightgray',
-      paste_as_text: true,
-      setup: editor => {
-        this.editor = editor;
-        editor.on('keyup', () => this.pushContent());
-        editor.on('change', () => this.pushContent());
-        editor.on('init', () => {
-          if (this.content) {
-             this.showContent();
-          }
+          selector: id,
+          plugins: ['link', 'paste', 'table'],
+          skin_url: '/assets/skins/lightgray',
+          paste_as_text: true,
+          setup: editor => {
+            this.editor = editor;
+            editor.on('keyup', () => this.pushContent());
+            editor.on('change', () => this.pushContent());
+            editor.on('init', () => {
+              if (this.content) {
+                this.showContent();
+              }
+            });
+          },
         });
-      },
-    });
   }
 
   private showContent() {
@@ -119,6 +131,18 @@ export class RichTextBoxComponent implements OnInit, AfterViewInit,
     if (this.onChangelistener) {
       this.onChangelistener(content);
     }
+  }
+
+  private generateGuid() {
+    let d = new Date().getTime();
+    if (typeof performance !== 'undefined' && typeof performance.now === 'function'){
+        d += performance.now(); 
+    }
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        let r = (d + Math.random() * 16) % 16 | 0;
+        d = Math.floor(d / 16);
+        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
   }
 
   public validate(c: AbstractControl): ValidationErrors {

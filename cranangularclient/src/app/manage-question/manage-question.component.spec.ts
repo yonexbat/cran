@@ -12,6 +12,7 @@ import {ICranDataService} from '../icrandataservice';
 import {Question} from '../model/question';
 import { QuestionType } from '../model/questiontype';
 import { RichTextBoxComponent } from '../uicomps/rich-text-box/rich-text-box.component';
+import { identifierModuleUrl } from '@angular/compiler';
 
 
 
@@ -62,6 +63,7 @@ describe('ManageQuestionComponent', () => {
 
   it('should add question', async(async () => {
 
+
     const cranDataServiceSpy: ICranDataService = fixture.debugElement.injector.get(CRAN_SERVICE_TOKEN);
     let questionCapture: Question;
     cranDataServiceSpy.insertQuestion = (question: Question) => {
@@ -87,7 +89,7 @@ describe('ManageQuestionComponent', () => {
     languageEl.dispatchEvent(new Event('change'));
 
     // text
-    const textEl: HTMLInputElement = nativeEl.querySelector('#questiontext');
+    const textEl: HTMLInputElement = nativeEl.querySelector('#questiontext > input');
     textEl.value = 'Hello question text';
     textEl.dispatchEvent(new Event('input'));
 
@@ -102,18 +104,18 @@ describe('ManageQuestionComponent', () => {
     checkBox2.dispatchEvent(new Event('change'));
 
     // Text, option 1
-    const textOption1El: HTMLInputElement = nativeEl.querySelector('#questionoption1');
+    const textOption1El: HTMLInputElement = nativeEl.querySelector('#questionoption1 > input');
     textOption1El.value = 'Text option 1';
     textOption1El.dispatchEvent(new Event('input'));
 
 
     // Text, option 2
-    const textOption2El: HTMLInputElement = nativeEl.querySelector('#questionoption2');
+    const textOption2El: HTMLInputElement = nativeEl.querySelector('#questionoption2 > input');
     textOption2El.value = 'Text option 2';
     textOption2El.dispatchEvent(new Event('input'));
 
     // Explanation
-    const textExplanationEl: HTMLInputElement = nativeEl.querySelector('#richtextboxexplanation');
+    const textExplanationEl: HTMLInputElement = nativeEl.querySelector('#richtextboxexplanation > input');
     textExplanationEl.value = 'explanation';
     textExplanationEl.dispatchEvent(new Event('input'));
 
@@ -160,7 +162,7 @@ describe('ManageQuestionComponent', () => {
     languageEl.dispatchEvent(new Event('change'));
 
     // text
-    const textEl: HTMLInputElement = nativeEl.querySelector('#questiontext');
+    const textEl: HTMLInputElement = nativeEl.querySelector('#questiontext > input');
     textEl.value = 'Hello question text';
     textEl.dispatchEvent(new Event('input'));
 
@@ -175,3 +177,7 @@ describe('ManageQuestionComponent', () => {
   }));
 
 });
+
+function setRichTextBoxText(id, value){
+
+}

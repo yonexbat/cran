@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import { Component, Input, DebugElement, TemplateRef} from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
+import { UicompsModule } from '../uicomps/uicomps.module';
 
 import { HomeComponent } from './home.component';
 import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
@@ -9,7 +10,6 @@ import {NotificationService} from '../notification.service';
 import {ConfirmService} from '../confirm.service';
 import {LanguageService} from '../language.service';
 import {PagedResult} from '../model/pagedresult';
-import {SafeHtmlPipe} from '../uicomps/save-html.pipe';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -21,8 +21,8 @@ describe('HomeComponent', () => {
     const confirmationService = jasmine.createSpyObj('ConfirmService', ['some']);
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [ HomeComponent, SafeHtmlPipe ],
+      imports: [RouterTestingModule, UicompsModule],
+      declarations: [ HomeComponent, ],
       providers: [
         LanguageService,
         { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },

@@ -9,7 +9,6 @@ import {NotificationService} from '../notification.service';
 import {ConfirmService} from '../confirm.service';
 import {LanguageService} from '../language.service';
 import { QuestionPreviewComponent } from './question-preview.component';
-import {SafeHtmlPipe} from '../uicomps/save-html.pipe';
 
 
 @Component({selector: 'app-imagelist', template: ''})
@@ -29,8 +28,7 @@ describe('QuestionPreviewComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, FormsModule, UicompsModule],
-      declarations: [ QuestionPreviewComponent, StubAppImageListComponent,
-        SafeHtmlPipe ],
+      declarations: [ QuestionPreviewComponent, StubAppImageListComponent, ],
       providers: [
         LanguageService,
         { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },

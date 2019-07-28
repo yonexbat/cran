@@ -11,7 +11,6 @@ import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
 import {LanguageService} from '../language.service';
 import {ConfirmService} from '../confirm.service';
-import {SafeHtmlPipe} from '../uicomps/save-html.pipe';
 
 
 @Component({selector: 'app-tags', template: ''})
@@ -37,7 +36,7 @@ describe('CourseListComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, UicompsModule],
-      declarations: [ CourseListComponent, StubTagsComponent, SafeHtmlPipe],
+      declarations: [ CourseListComponent, StubTagsComponent],
         providers: [
           LanguageService,
           { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },

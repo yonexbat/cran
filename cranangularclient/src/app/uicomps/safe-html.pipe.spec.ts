@@ -1,9 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Input, DebugElement, SecurityContext} from '@angular/core';
 
-
-import {SafeHtmlPipe} from './save-html.pipe';
 import { DomSanitizer } from '@angular/platform-browser';
+import {SafeHtmlPipe} from './safe-html.pipe';
 
 @Component({selector: 'app-test-host', template: '<span id="testspan">cranium</span>'})
 class StubTestHostComponent {

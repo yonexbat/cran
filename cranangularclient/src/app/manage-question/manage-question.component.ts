@@ -31,7 +31,7 @@ export class ManageQuestionComponent implements OnInit {
 
   @ViewChild('questionPreview', { static: true }) questionPreview: QuestionPreviewComponent;
 
-  @ViewChild('questionForm', { static: true }) questionForm: NgForm;
+  @ViewChild('questionForm', { static: false }) questionForm: NgForm;
 
   constructor(
     @Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
@@ -44,18 +44,6 @@ export class ManageQuestionComponent implements OnInit {
         this.activeRoute.paramMap.subscribe((params: ParamMap)  => {
           const id = params.get('id');
           this.handleRouteChanged(+id);
-        });
-
-        // Create two question-options (in case creating a new question)
-        this.question = new Question();
-
-        this.question.options.push({
-          isTrue: false,
-          text: '',
-        });
-        this.question.options.push({
-          isTrue: false,
-          text: '',
         });
   }
 
@@ -111,8 +99,23 @@ export class ManageQuestionComponent implements OnInit {
       } catch (error) {
         this.notificationService.emitError(error);
       }
+    } else {
+      this.initNewQuestion();
     }
     this.actionInProgress = false;
+  }
+
+  private initNewQuestion() {
+    this.question = new Question();
+
+    this.question.options.push({
+      isTrue: false,
+      text: '',
+    });
+    this.question.options.push({
+      isTrue: false,
+      text: '',
+    });
   }
 
   public getSaveButtonText(): string  {
@@ -124,7 +127,7 @@ export class ManageQuestionComponent implements OnInit {
   }
 
   public getHeadingText(): string {
-    if (this.question.id > 0) {
+    if (this.question != null && this.question.id > 0) {
       return this.ls.label('editquestion', String(this.question.id ));
     } else {
       return this.ls.label('addquestion');

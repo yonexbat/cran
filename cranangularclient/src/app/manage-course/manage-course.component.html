@@ -88,7 +88,6 @@
             <label for="questiontext"> {{ls.label('description')}}</label>        
 
             <app-rich-text-box 
-              [elementId]="'description'"
               [content]="course.description"
               [required]="true"
               (htmlString)="course.description = $event"></app-rich-text-box>

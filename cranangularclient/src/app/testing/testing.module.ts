@@ -47,7 +47,7 @@ export class StubCommentsComponent {
 
 @Component({
   selector: 'app-rich-text-box',
-  template: '<input id="{{elementId}}" required={{required}} [(ngModel)]="content">',
+  template: '<input required={{required}} [(ngModel)]="content">',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -68,7 +68,6 @@ export class StubRichTextBoxComponent implements ControlValueAccessor,
   private onChangelistener: any;
   private validateFn: any;
 
-  @Input() elementId: string;
   @Input() public required: boolean;
   @Output() htmlString = new EventEmitter<string>();
 

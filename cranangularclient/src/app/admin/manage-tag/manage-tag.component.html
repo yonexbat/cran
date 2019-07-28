@@ -69,7 +69,6 @@
             <label for="description">{{ls.label('description')}}</label>        
 
             <app-rich-text-box 
-              [elementId]="'description'"
               [content]="tag.description"
               [required]="true"
               (htmlString)="tag.description = $event"></app-rich-text-box>

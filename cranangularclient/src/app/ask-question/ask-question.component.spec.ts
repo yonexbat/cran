@@ -14,7 +14,6 @@ import {TestingModule,
   } from '../testing/testing.module';
 import {StubActivatedRoute} from '../testing/stubactivatedroute';
 
-import {SafeHtmlPipe} from '../uicomps/save-html.pipe';
 import { NotificationService } from '../notification.service';
 
 
@@ -30,8 +29,9 @@ describe('AskQuestionComponent', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, FormsModule, TestingModule, UicompsModule],
       declarations: [ AskQuestionComponent,  StubVoteComponent,
-        StubTagsComponent, SafeHtmlPipe,
-        StubCommentsComponent, StubImageListComponent],
+        StubTagsComponent,
+        StubCommentsComponent,
+        StubImageListComponent],
         providers: [
           {provide: ActivatedRoute, useValue: activeRoute}
         ],
