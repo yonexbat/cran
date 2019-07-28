@@ -5,11 +5,11 @@ import {ConfirmRequest} from './model/confirmrequest';
 @Injectable()
 export class ConfirmService {
 
-  private _subject: Subject<ConfirmRequest>;
+  private subject: Subject<ConfirmRequest>;
   private promiseResolver: any;
 
   constructor() {
-    this._subject = new Subject<ConfirmRequest>();
+    this.subject = new Subject<ConfirmRequest>();
   }
 
   public confirm(title: string, text: string): Promise<any> {
@@ -22,14 +22,14 @@ export class ConfirmService {
 
   private showDialog(title: string, text: string, showCancel: boolean): Promise<any> {
     const promise = new Promise<any>((resolve, reject) => {
-      this.promiseResolver = {resolve: resolve, reject: reject};
+      this.promiseResolver = {resolve, reject};
     });
     const confirmRequest: ConfirmRequest = {
-      text: text,
-      title: title,
+      text,
+      title,
       showCacelButton: showCancel,
     };
-    this._subject.next(confirmRequest);
+    this.subject.next(confirmRequest);
     return promise;
   }
 
@@ -41,7 +41,7 @@ export class ConfirmService {
     this.promiseResolver.reject('cancel');
   }
 
-  public on():  Observable<ConfirmRequest> {
-    return this._subject.asObservable();
+  public on(): Observable<ConfirmRequest> {
+    return this.subject.asObservable();
   }
 }

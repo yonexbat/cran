@@ -30,11 +30,11 @@
     </ng-template> 
 
     <!-- Pager -->
-    <app-pager 
+    <app-itempager 
             [itemTemplate]="listItem"
             [pagedResult]="pagedResult"
             [nodatafoundmessage]="ls.label('nocoursesdone')"
             (onSelectedPageChanged)="pageSelected($event)">            
-    </app-pager>
+    </app-itempager>
    
 </div>

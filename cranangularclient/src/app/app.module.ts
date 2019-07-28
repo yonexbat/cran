@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {UicompsModule } from './uicomps/uicomps.module';
 
 import { AppComponent } from './app.component';
 import { NotificationService } from './notification.service';
@@ -26,7 +27,6 @@ import { RichTextBoxComponent } from './rich-text-box/rich-text-box.component';
 import { SafeHtmlPipe } from './save-html.pipe';
 import { QuestionPreviewComponent } from './question-preview/question-preview.component';
 import { CourseInstanceListComponent } from './course-instance-list/course-instance-list.component';
-import { PagerComponent } from './pager/pager.component';
 import { SearchQuestionsComponent } from './search-questions/search-questions.component';
 import { NotificationComponent } from './notification/notification.component';
 import { TagsComponent } from './tags/tags.component';
@@ -43,14 +43,13 @@ import { ConfirmComponent } from './confirm/confirm.component';
 import { ConfirmService } from './confirm.service';
 import { QuestionListItemComponent } from './question-list-item/question-list-item.component';
 import { CourseStarterComponent } from './course-starter/course-starter.component';
-import { IconComponent } from './icon/icon.component';
-import { TooltipDirective } from './tooltip.directive';
 import { VersionsComponent } from './versions/versions.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
 import { PushNotificationService } from './push-notification.service';
 import { CourseFavoriteListComponent } from './course-favorite-list/course-favorite-list.component';
+
 
 function isDevelopment() {
   return window.location && window.location.port && window.location.port === '4200';
@@ -77,7 +76,6 @@ if (isDevelopment()) {
     SafeHtmlPipe,
     QuestionPreviewComponent,
     CourseInstanceListComponent,
-    PagerComponent,
     SearchQuestionsComponent,
     NotificationComponent,
     TagsComponent,
@@ -93,8 +91,6 @@ if (isDevelopment()) {
     ConfirmComponent,
     QuestionListItemComponent,
     CourseStarterComponent,
-    IconComponent,
-    TooltipDirective,
     VersionsComponent,
     SubscriptionsComponent,
     CourseFavoriteListComponent,
@@ -107,6 +103,7 @@ if (isDevelopment()) {
     AppRoutingModule,
     BrowserAnimationsModule,
     ServiceWorkerModule.register('pwacranium.js', { enabled: environment.production }),
+    UicompsModule,
   ],
   providers: [
     { provide: CRAN_SERVICE_TOKEN, useClass: cranDataService },
@@ -118,7 +115,6 @@ if (isDevelopment()) {
   ],
   bootstrap: [AppComponent],
   exports: [
-    PagerComponent,
   ],
 })
 export class AppModule { }
