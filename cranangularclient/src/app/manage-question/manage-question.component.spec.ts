@@ -11,6 +11,10 @@ import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {ICranDataService} from '../icrandataservice';
 import {Question} from '../model/question';
 import { QuestionType } from '../model/questiontype';
+import { IconComponent } from '../uicomps/icon/icon.component';
+import {TooltipDirective} from '../uicomps/tooltip.directive';
+import {StatusmessageComponent} from '../uicomps/statusmessage/statusmessage.component';
+import { RichTextBoxComponent } from '../uicomps/rich-text-box/rich-text-box.component';
 
 
 
@@ -28,9 +32,19 @@ describe('ManageQuestionComponent', () => {
           ]
         ),
         FormsModule,
-        TestingModule, UicompsModule],
-      declarations: [ ManageQuestionComponent, StubQuestionPreviewComponent,
-        StubTagFinderComponent, StubFileUploadComponent, StubImageListComponent, StubRichTextBoxComponent],
+        TestingModule,
+      ],
+      declarations: [
+        ManageQuestionComponent,
+        StubQuestionPreviewComponent,
+        StubTagFinderComponent,
+        StubFileUploadComponent,
+        StubImageListComponent,
+        StubRichTextBoxComponent,
+        TooltipDirective,
+        IconComponent,
+        StatusmessageComponent,
+      ],
       providers: [  ],
     })
     .compileComponents();
