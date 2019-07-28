@@ -44,7 +44,6 @@ describe('ManageQuestionComponent', () => {
     })
     .overrideModule(UicompsModule, {
       remove: {
-              declarations: [RichTextBoxComponent],
               exports: [RichTextBoxComponent]
           },
      })
