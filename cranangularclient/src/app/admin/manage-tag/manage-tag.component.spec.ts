@@ -5,11 +5,11 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 
 import { ManageTagComponent } from './manage-tag.component';
-import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
-import {NotificationService} from '../notification.service';
-import {ConfirmService} from '../confirm.service';
-import {LanguageService} from '../language.service';
-import {Tag} from '../model/tag';
+import { CRAN_SERVICE_TOKEN } from '../../cran-data.servicetoken';
+import {NotificationService} from '../../notification.service';
+import {ConfirmService} from '../../confirm.service';
+import {LanguageService} from '../../language.service';
+import {Tag} from '../../model/tag';
 import { RichTextBoxComponent } from '../rich-text-box/rich-text-box.component';
 import {StatusMessageComponent} from '../status-message/status-message.component';
 

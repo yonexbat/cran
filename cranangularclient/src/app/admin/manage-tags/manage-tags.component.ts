@@ -2,14 +2,14 @@ import { Component, OnInit, Inject } from '@angular/core';
 
 import { Router, ActivatedRoute,  ParamMap, Params, NavigationExtras} from '@angular/router';
 
-import {SearchTags} from '../model/searchtags';
-import {ICranDataService} from '../icrandataservice';
-import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
-import {NotificationService} from '../notification.service';
-import {PagedResult} from '../model/pagedresult';
-import {Tag} from '../model/tag';
-import {LanguageService} from '../language.service';
-import {ConfirmService} from '../confirm.service';
+import {SearchTags} from '../../model/searchtags';
+import {ICranDataService} from '../../icrandataservice';
+import {CRAN_SERVICE_TOKEN} from '../../cran-data.servicetoken';
+import {NotificationService} from '../../notification.service';
+import {PagedResult} from '../../model/pagedresult';
+import {Tag} from '../../model/tag';
+import {LanguageService} from '../../language.service';
+import {ConfirmService} from '../../confirm.service';
 
 @Component({
   selector: 'app-manage-tags',
@@ -23,11 +23,11 @@ export class ManageTagsComponent implements OnInit {
   public pagedResult: PagedResult<Tag> = new PagedResult<Tag>();
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
-    private router: Router,
-    private activeRoute: ActivatedRoute,
-    private notificationService: NotificationService,
-    public ls: LanguageService,
-    private confirmService: ConfirmService) {
+              private router: Router,
+              private activeRoute: ActivatedRoute,
+              private notificationService: NotificationService,
+              public ls: LanguageService,
+              private confirmService: ConfirmService) {
     this.activeRoute.queryParams.subscribe((params: ParamMap)  => {
       this.handleRouteChanged(params);
     });
@@ -57,11 +57,11 @@ export class ManageTagsComponent implements OnInit {
   searchTags(pageNumber: number) {
     const navigationExtras: NavigationExtras = {
       queryParams: {
-         pageNumber: pageNumber,
+         pageNumber,
          name: this.search.name,
       }
     };
-    this.router.navigate(['/managetags'], navigationExtras);
+    this.router.navigate(['/admin/managetags'], navigationExtras);
   }
 
   public executeSearch() {
@@ -73,7 +73,7 @@ export class ManageTagsComponent implements OnInit {
   }
 
   private goToTag(tag: Tag) {
-    this.router.navigate(['/managetag', tag.id]);
+    this.router.navigate(['/admin/managetag', tag.id]);
   }
 
   private async listQuestions(tag: Tag): Promise<any> {

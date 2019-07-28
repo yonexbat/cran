@@ -1,12 +1,12 @@
 import { Component, OnInit, Inject, ViewChild, } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
-import {Tag} from '../model/tag';
-import {ICranDataService} from '../icrandataservice';
-import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
-import {NotificationService} from '../notification.service';
-import {StatusmessageComponent} from '../uicomps/statusmessage/statusmessage.component';
-import {LanguageService} from '../language.service';
+import {Tag} from '../../model/tag';
+import {ICranDataService} from '../../icrandataservice';
+import {CRAN_SERVICE_TOKEN} from '../../cran-data.servicetoken';
+import {NotificationService} from '../../notification.service';
+import {StatusmessageComponent} from '../../uicomps/statusmessage/statusmessage.component';
+import {LanguageService} from '../../language.service';
 
 
 @Component({

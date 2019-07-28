@@ -34,8 +34,6 @@ import { VoteComponent } from './vote/vote.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { ImagelistComponent } from './imagelist/imagelist.component';
 import { UserInfoComponent } from './user-info/user-info.component';
-import { ManageTagsComponent } from './manage-tags/manage-tags.component';
-import { ManageTagComponent } from './manage-tag/manage-tag.component';
 import { ManageCourseComponent } from './manage-course/manage-course.component';
 import { ConfirmComponent } from './confirm/confirm.component';
 import { ConfirmService } from './confirm.service';
@@ -81,8 +79,6 @@ if (isDevelopment()) {
     FileUploadComponent,
     ImagelistComponent,
     UserInfoComponent,
-    ManageTagsComponent,
-    ManageTagComponent,
     ManageCourseComponent,
     ConfirmComponent,
     QuestionListItemComponent,

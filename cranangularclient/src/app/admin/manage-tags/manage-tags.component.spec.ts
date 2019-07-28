@@ -4,13 +4,13 @@ import { Component, Input, Output, DebugElement, TemplateRef, EventEmitter} from
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { ManageTagsComponent } from './manage-tags.component';
-import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
-import {NotificationService} from '../notification.service';
-import {ConfirmService} from '../confirm.service';
-import {LanguageService} from '../language.service';
-import {PagedResult} from '../model/pagedresult';
-import {Tag} from '../model/tag';
-import {Image} from '../model/image';
+import { CRAN_SERVICE_TOKEN } from '../../cran-data.servicetoken';
+import {NotificationService} from '../../notification.service';
+import {ConfirmService} from '../../confirm.service';
+import {LanguageService} from '../../language.service';
+import {PagedResult} from '../../model/pagedresult';
+import {Tag} from '../../model/tag';
+import {Image} from '../../model/image';
 import {TooltipDirective} from '../tooltip.directive';
 import {IconComponent} from '../icon/icon.component';
 import {StatusMessageComponent} from '../status-message/status-message.component';

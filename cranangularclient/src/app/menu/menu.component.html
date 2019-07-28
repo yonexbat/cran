@@ -106,13 +106,13 @@
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 
                 <!-- Tags -->
-                <a class="dropdown-item" [routerLink]="['/managetags']"
+                <a class="dropdown-item" [routerLink]="['/admin/managetags']"
                     routerLinkActive="active" *ngIf="isAdmin">
                   {{ls.label('tags')}}
                 </a>
 
                 <!--Add tag -->
-                <a class="dropdown-item" [routerLink]="['/managetag/0']"
+                <a class="dropdown-item" [routerLink]="['/admin/managetag/0']"
                     routerLinkActive="active" *ngIf="isAdmin">
                   {{ls.label('addtag')}}
                 </a>
