@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed, inject, tick } from '@angular/core/testing';
 import { Component, Input, DebugElement} from '@angular/core';
 import { Params, ActivatedRoute } from '@angular/router';
+import { UicompsModule } from '../uicomps/uicomps.module';
 
 import {FormsModule} from '@angular/forms';
 import { AskQuestionComponent } from './ask-question.component';
@@ -14,7 +15,6 @@ import {TestingModule,
 import {StubActivatedRoute} from '../testing/stubactivatedroute';
 
 import {SafeHtmlPipe} from '../save-html.pipe';
-import {IconComponent} from '../icon/icon.component';
 import { NotificationService } from '../notification.service';
 
 
@@ -28,10 +28,10 @@ describe('AskQuestionComponent', () => {
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, FormsModule, TestingModule],
+      imports: [RouterTestingModule, FormsModule, TestingModule, UicompsModule],
       declarations: [ AskQuestionComponent,  StubVoteComponent,
-        StubTagsComponent, SafeHtmlPipe, StubImageListComponent,
-        StubCommentsComponent, IconComponent],
+        StubTagsComponent, SafeHtmlPipe,
+        StubCommentsComponent, StubImageListComponent],
         providers: [
           {provide: ActivatedRoute, useValue: activeRoute}
         ],

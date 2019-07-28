@@ -2,19 +2,15 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Input, DebugElement, Directive, TemplateRef} from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DatePipe } from '@angular/common';
+import { UicompsModule } from '../uicomps/uicomps.module';
 
 import { CourseInstanceListComponent } from './course-instance-list.component';
-import { TooltipDirective } from '../tooltip.directive';
 import {PagedResult} from '../model/pagedresult';
 import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
 import {LanguageService} from '../language.service';
 import {ConfirmService} from '../confirm.service';
 
-@Component({selector: 'app-icon', template: ''})
-class StubIconComponent {
-  @Input() public icon;
-}
 
 @Component({selector: 'app-pager', template: ''})
 class StubPagerComponent {
@@ -34,8 +30,8 @@ describe('CourseInstanceListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [TooltipDirective, CourseInstanceListComponent, StubIconComponent,
+      imports: [RouterTestingModule, UicompsModule],
+      declarations: [CourseInstanceListComponent,
         StubPagerComponent],
       providers: [
         LanguageService, ConfirmService, DatePipe,

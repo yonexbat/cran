@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import { Component, Input, Output, EventEmitter, DebugElement, TemplateRef} from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
+import { UicompsModule } from '../uicomps/uicomps.module';
 
 import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
@@ -9,7 +10,6 @@ import {ConfirmService} from '../confirm.service';
 import {LanguageService} from '../language.service';
 import { QuestionPreviewComponent } from './question-preview.component';
 import {SafeHtmlPipe} from '../save-html.pipe';
-import {IconComponent} from '../icon/icon.component';
 
 
 @Component({selector: 'app-imagelist', template: ''})
@@ -28,9 +28,9 @@ describe('QuestionPreviewComponent', () => {
     const confirmationService = jasmine.createSpyObj('ConfirmService', ['some']);
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, FormsModule],
+      imports: [RouterTestingModule, FormsModule, UicompsModule],
       declarations: [ QuestionPreviewComponent, StubAppImageListComponent,
-        SafeHtmlPipe, IconComponent ],
+        SafeHtmlPipe ],
       providers: [
         LanguageService,
         { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },

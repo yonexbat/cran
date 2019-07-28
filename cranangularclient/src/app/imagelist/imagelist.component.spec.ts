@@ -3,22 +3,16 @@ import { By } from '@angular/platform-browser';
 import { DebugElement, Component, Input, TemplateRef } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import {FormsModule} from '@angular/forms';
+import { UicompsModule } from '../uicomps/uicomps.module';
 
 
 import { ImagelistComponent } from './imagelist.component';
-import { TooltipDirective } from '../tooltip.directive';
-import {PagedResult} from '../model/pagedresult';
-import {Tag} from '../model/tag';
 import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
 import {LanguageService} from '../language.service';
 import {ConfirmService} from '../confirm.service';
-import {SafeHtmlPipe} from '../save-html.pipe';
 
-@Component({selector: 'app-icon', template: ''})
-class StubIconComponent {
-  @Input() public icon;
-}
+
 
 describe('ImagelistComponent', () => {
   let component: ImagelistComponent;
@@ -31,8 +25,8 @@ describe('ImagelistComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, FormsModule],
-      declarations: [ ImagelistComponent,  StubIconComponent],
+      imports: [RouterTestingModule, FormsModule, UicompsModule],
+      declarations: [ ImagelistComponent],
       providers: [
         LanguageService,
         { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },

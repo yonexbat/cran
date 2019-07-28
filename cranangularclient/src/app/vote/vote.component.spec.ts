@@ -5,7 +5,7 @@ import { VoteComponent } from './vote.component';
 import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
 import {Votes} from '../model/votes';
-import {IconComponent} from '../icon/icon.component';
+import {IconComponent} from '../uicomps/icon/icon.component';
 
 
 describe('VoteComponent', () => {

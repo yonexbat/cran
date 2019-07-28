@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import { Component, Input, Output, DebugElement, TemplateRef, EventEmitter} from '@angular/core';
+import { UicompsModule } from '../../uicomps/uicomps.module';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { ManageTagsComponent } from './manage-tags.component';
@@ -9,11 +10,7 @@ import {NotificationService} from '../../notification.service';
 import {ConfirmService} from '../../confirm.service';
 import {LanguageService} from '../../language.service';
 import {PagedResult} from '../../model/pagedresult';
-import {Tag} from '../../model/tag';
-import {Image} from '../../model/image';
-import {TooltipDirective} from '../tooltip.directive';
-import {IconComponent} from '../icon/icon.component';
-import {StatusMessageComponent} from '../status-message/status-message.component';
+
 
 @Component({selector: 'app-pager', template: ''})
 class StubPagerComponent {
@@ -36,9 +33,8 @@ describe('ManageTagsComponent', () => {
     const confirmationService = jasmine.createSpyObj('ConfirmService', ['some']);
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, FormsModule],
-      declarations: [ ManageTagsComponent, TooltipDirective,
-        IconComponent, StubPagerComponent ],
+      imports: [RouterTestingModule, FormsModule, UicompsModule],
+      declarations: [ ManageTagsComponent, StubPagerComponent ],
       providers: [
         LanguageService,
         { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },

@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { SubscriptionsComponent } from './subscriptions.component';
 import { RouterTestingModule } from '@angular/router/testing';
+import { UicompsModule } from '../../uicomps/uicomps.module';
 
 
 import { CRAN_SERVICE_TOKEN } from '../../cran-data.servicetoken';
@@ -9,10 +10,9 @@ import {NotificationService} from '../../notification.service';
 import {ConfirmService} from '../../confirm.service';
 import {LanguageService} from '../../language.service';
 import {PagedResult} from '../../model/pagedresult';
-import {IconComponent} from '../icon/icon.component';
-import {StatusMessageComponent} from '../status-message/status-message.component';
 import { SwPush } from '@angular/service-worker';
 import {SubscriptionShort} from '../../model/subscriptionshort';
+
 
 
 
@@ -46,8 +46,8 @@ describe('SubscriptionsComponent', () => {
     const swPush = jasmine.createSpyObj('SwPush', ['messages']);
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, FormsModule],
-      declarations: [ SubscriptionsComponent, StatusMessageComponent, IconComponent ],
+      imports: [RouterTestingModule, FormsModule, UicompsModule],
+      declarations: [ SubscriptionsComponent],
       providers: [
         LanguageService,
         { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },

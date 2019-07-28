@@ -2,13 +2,12 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import { Component, Input, Output, EventEmitter, DebugElement, TemplateRef, ViewChild} from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
+import { UicompsModule } from '../uicomps/uicomps.module';
 
 import {NotificationService} from '../notification.service';
 import {ConfirmService} from '../confirm.service';
 import {LanguageService} from '../language.service';
-import {TooltipDirective} from '../tooltip.directive';
 import { QuestionListItemComponent } from './question-list-item.component';
-import {IconComponent} from '../icon/icon.component';
 import {TagsComponent} from '../tags/tags.component';
 import {QuestionListEntry} from '../model/questionlistentry';
 
@@ -35,8 +34,8 @@ describe('QuestionListItemComponent', () => {
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, FormsModule],
-      declarations: [ QuestionListItemComponent, TooltipDirective, IconComponent, TagsComponent, StubHostComponent ],
+      imports: [RouterTestingModule, FormsModule, UicompsModule],
+      declarations: [ QuestionListItemComponent, TagsComponent, StubHostComponent ],
       providers: [
         LanguageService, NotificationService, ConfirmService,
       ],

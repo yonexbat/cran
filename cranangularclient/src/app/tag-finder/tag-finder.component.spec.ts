@@ -3,6 +3,7 @@ import {FormsModule} from '@angular/forms';
 import { Component, Input, Output, EventEmitter, DebugElement, TemplateRef} from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { cold, getTestScheduler } from 'jasmine-marbles';
+import { UicompsModule } from '../uicomps/uicomps.module';
 
 import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
@@ -11,8 +12,7 @@ import {LanguageService} from '../language.service';
 import {Tag} from '../model/tag';
 import {TagFinderComponent } from './tag-finder.component';
 import {TagsComponent} from '../tags/tags.component';
-import {TooltipDirective} from '../tooltip.directive';
-import {IconComponent} from '../icon/icon.component';
+
 
 
 describe('TagFinderComponent', () => {
@@ -34,8 +34,8 @@ describe('TagFinderComponent', () => {
     cranDataService.findTags.and.returnValue(Promise.resolve(tagsFound));
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, FormsModule],
-      declarations: [ TagFinderComponent, TagsComponent, TooltipDirective, IconComponent ],
+      imports: [RouterTestingModule, FormsModule, UicompsModule],
+      declarations: [ TagFinderComponent, TagsComponent],
       providers: [
         LanguageService,
         { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },

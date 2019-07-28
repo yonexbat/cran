@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import { Component, Input, Output, EventEmitter, DebugElement, TemplateRef} from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
+import { UicompsModule } from '../uicomps/uicomps.module';
 
 import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
@@ -51,7 +52,7 @@ describe('SearchQuestionsComponent', () => {
     const confirmationService = jasmine.createSpyObj('ConfirmService', ['some']);
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, FormsModule],
+      imports: [RouterTestingModule, FormsModule, UicompsModule],
       declarations: [ SearchQuestionsComponent, StubTagFinderComponent,
         StubQuestionListItemComponent, StubPagerComponent ],
       providers: [

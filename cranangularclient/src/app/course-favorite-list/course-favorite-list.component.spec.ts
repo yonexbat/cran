@@ -3,8 +3,8 @@ import { async, ComponentFixture, TestBed, inject, } from '@angular/core/testing
 import { By } from '@angular/platform-browser';
 import { DebugElement, Component, Input, TemplateRef } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
+import { UicompsModule } from '../uicomps/uicomps.module';
 
-import { TooltipDirective } from '../tooltip.directive';
 import {PagedResult} from '../model/pagedresult';
 import {Tag} from '../model/tag';
 import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
@@ -15,7 +15,7 @@ import {SafeHtmlPipe} from '../save-html.pipe';
 
 import { CourseFavoriteListComponent } from './course-favorite-list.component';
 import { TagsComponent } from '../tags/tags.component';
-import { IconComponent } from '../icon/icon.component';
+
 
 
 
@@ -37,9 +37,9 @@ describe('CourseFavoriteListComponent', () => {
     const confirmationService = jasmine.createSpyObj('ConfirmService', ['some']);
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [ CourseFavoriteListComponent, TooltipDirective,
-        IconComponent, SafeHtmlPipe, StubPagerComponent, TagsComponent ],
+      imports: [RouterTestingModule, UicompsModule],
+      declarations: [ CourseFavoriteListComponent,
+        SafeHtmlPipe, StubPagerComponent, TagsComponent ],
       providers: [
           LanguageService,
           { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },

@@ -3,14 +3,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import { Component, Input, DebugElement, TemplateRef} from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
+import { UicompsModule } from '../uicomps/uicomps.module';
 
 import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
 import {ConfirmService} from '../confirm.service';
 import {LanguageService} from '../language.service';
-import {PagedResult} from '../model/pagedresult';
 import { MenuComponent } from './menu.component';
-import {IconComponent} from '../icon/icon.component';
 import {PushNotificationService} from '../push-notification.service';
 
 @Component({selector: 'app-user-info', template: ''})
@@ -32,8 +31,8 @@ describe('MenuComponent', () => {
 
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, FormsModule],
-      declarations: [ MenuComponent, StubUserInfoComponent, IconComponent ],
+      imports: [RouterTestingModule, FormsModule, UicompsModule],
+      declarations: [ MenuComponent, StubUserInfoComponent ],
       providers: [
         LanguageService,
         { provide: PushNotificationService, useValue: pushNotificationService},

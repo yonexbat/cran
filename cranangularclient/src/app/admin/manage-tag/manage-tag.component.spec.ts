@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import { Component, Input, Output, EventEmitter, DebugElement, TemplateRef} from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
+import { UicompsModule } from '../../uicomps/uicomps.module';
 
 
 import { ManageTagComponent } from './manage-tag.component';
@@ -9,9 +10,7 @@ import { CRAN_SERVICE_TOKEN } from '../../cran-data.servicetoken';
 import {NotificationService} from '../../notification.service';
 import {ConfirmService} from '../../confirm.service';
 import {LanguageService} from '../../language.service';
-import {Tag} from '../../model/tag';
-import { RichTextBoxComponent } from '../rich-text-box/rich-text-box.component';
-import {StatusMessageComponent} from '../status-message/status-message.component';
+
 
 @Component({selector: 'app-rich-text-box', template: ''})
 class StubRichTextBoxComponent {
@@ -33,8 +32,8 @@ describe('ManageTagComponent', () => {
     const confirmationService = jasmine.createSpyObj('ConfirmService', ['some']);
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, FormsModule],
-      declarations: [ ManageTagComponent, RichTextBoxComponent, StatusMessageComponent ],
+      imports: [RouterTestingModule, FormsModule, UicompsModule],
+      declarations: [ ManageTagComponent],
       providers: [
         LanguageService,
         { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },

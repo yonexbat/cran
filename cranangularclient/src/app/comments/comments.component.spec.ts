@@ -4,10 +4,8 @@ import {FormsModule} from '@angular/forms';
 import { CommentsComponent } from './comments.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import {TestingModule} from '../testing/testing.module';
+import { UicompsModule } from '../uicomps/uicomps.module';
 
-
-import {IconComponent} from '../icon/icon.component';
-import {PagerComponent} from '../pager/pager.component';
 import { ICranDataService } from '../icrandataservice';
 import {Comment} from '../model/comment';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
@@ -20,8 +18,8 @@ describe('CommentsComponent', () => {
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, FormsModule, TestingModule],
-      declarations: [ CommentsComponent, IconComponent, PagerComponent ],
+      imports: [RouterTestingModule, FormsModule, TestingModule, UicompsModule],
+      declarations: [ CommentsComponent, ],
       providers: [
       ],
     })

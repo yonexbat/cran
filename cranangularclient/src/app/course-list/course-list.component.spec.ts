@@ -2,9 +2,9 @@ import { async, ComponentFixture, TestBed, inject, } from '@angular/core/testing
 import { By } from '@angular/platform-browser';
 import { DebugElement, Component, Input, TemplateRef } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
+import { UicompsModule } from '../uicomps/uicomps.module';
 
 import { CourseListComponent } from './course-list.component';
-import { TooltipDirective } from '../tooltip.directive';
 import {PagedResult} from '../model/pagedresult';
 import {Tag} from '../model/tag';
 import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
@@ -13,10 +13,6 @@ import {LanguageService} from '../language.service';
 import {ConfirmService} from '../confirm.service';
 import {SafeHtmlPipe} from '../save-html.pipe';
 
-@Component({selector: 'app-icon', template: ''})
-class StubIconComponent {
-  @Input() public icon;
-}
 
 @Component({selector: 'app-tags', template: ''})
 class StubTagsComponent {
@@ -24,15 +20,6 @@ class StubTagsComponent {
   @Input() public isEditable = false;
 }
 
-@Component({selector: 'app-pager', template: ''})
-class StubPagerComponent {
-  @Input()
-  public itemTemplate: TemplateRef<any>;
-  @Input()
-  public pagedResult: PagedResult<any>;
-  @Input()
-  public nodatafoundmessage  = 'Keine Daten gefunden.';
-}
 
 describe('CourseListComponent', () => {
 
@@ -49,9 +36,8 @@ describe('CourseListComponent', () => {
     const confirmationService = jasmine.createSpyObj('ConfirmService', ['some']);
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [ CourseListComponent, TooltipDirective,
-        StubIconComponent, StubTagsComponent, SafeHtmlPipe, StubPagerComponent],
+      imports: [RouterTestingModule, UicompsModule],
+      declarations: [ CourseListComponent, StubTagsComponent, SafeHtmlPipe],
         providers: [
           LanguageService,
           { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },

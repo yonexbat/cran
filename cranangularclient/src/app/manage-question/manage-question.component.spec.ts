@@ -1,14 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
+import { UicompsModule } from '../uicomps/uicomps.module';
 
 import { ManageQuestionComponent } from './manage-question.component';
-import {TooltipDirective} from '../tooltip.directive';
-import {IconComponent} from '../icon/icon.component';
-import {StatusMessageComponent} from '../status-message/status-message.component';
-import {TestingModule, StubRichTextBoxComponent,
+import {TestingModule,
   StubImageListComponent, StubTagFinderComponent,
-  StubQuestionPreviewComponent, StubFileUploadComponent} from '../testing/testing.module';
+  StubQuestionPreviewComponent, StubFileUploadComponent, StubRichTextBoxComponent} from '../testing/testing.module';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {ICranDataService} from '../icrandataservice';
 import {Question} from '../model/question';
@@ -30,11 +28,9 @@ describe('ManageQuestionComponent', () => {
           ]
         ),
         FormsModule,
-        TestingModule],
+        TestingModule, UicompsModule],
       declarations: [ ManageQuestionComponent, StubQuestionPreviewComponent,
-        StubTagFinderComponent, StubRichTextBoxComponent, StubImageListComponent,
-        StubFileUploadComponent, TooltipDirective, IconComponent,
-      StatusMessageComponent],
+        StubTagFinderComponent, StubFileUploadComponent, StubImageListComponent, StubRichTextBoxComponent],
       providers: [  ],
     })
     .compileComponents();

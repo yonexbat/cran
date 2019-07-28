@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import { Component, Input, Output, DebugElement, TemplateRef, EventEmitter} from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
+import { UicompsModule } from '../uicomps/uicomps.module';
 
 import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
@@ -9,7 +10,6 @@ import {ConfirmService} from '../confirm.service';
 import {LanguageService} from '../language.service';
 import {QuestionListEntry} from '../model/questionlistentry';
 import { QuestionListComponent } from './question-list.component';
-import {TooltipDirective} from '../tooltip.directive';
 import {PagedResult} from '../model/pagedresult';
 
 
@@ -39,8 +39,8 @@ describe('QuestionListComponent', () => {
     const confirmationService = jasmine.createSpyObj('ConfirmService', ['some']);
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, FormsModule],
-      declarations: [ QuestionListComponent, TooltipDirective,
+      imports: [RouterTestingModule, FormsModule, UicompsModule],
+      declarations: [ QuestionListComponent,
         StubQuestionListItemComponent, StubPagerComponent ],
       providers: [
         LanguageService,
