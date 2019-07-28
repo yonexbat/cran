@@ -16,7 +16,7 @@ import {LanguageService} from '../language.service';
 import {PagedResult} from '../model/pagedresult';
 import {Tag} from '../model/tag';
 import {Image} from '../model/image';
-import {htmlRequired} from '../rich-text-box/htmlrequired';
+import {htmlRequired} from '../uicomps/rich-text-box/htmlrequired';
 
 
 

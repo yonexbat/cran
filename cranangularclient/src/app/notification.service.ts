@@ -8,10 +8,10 @@ import {NotificationEvent, NotificationType} from './model/notificationEvent';
 export class NotificationService {
 
 
-  private _subject: Subject<NotificationEvent>;
+  private subject: Subject<NotificationEvent>;
 
   constructor() {
-    this._subject = new Subject<NotificationEvent>();
+    this.subject = new Subject<NotificationEvent>();
   }
 
   public emitError(message: string): void {
@@ -19,10 +19,10 @@ export class NotificationService {
       return;
     }
     const event: NotificationEvent = {
-      message: message,
+      message,
       type: NotificationType.Error,
     };
-    this._subject.next(event);
+    this.subject.next(event);
   }
 
   public emitLoading(): void {
@@ -30,7 +30,7 @@ export class NotificationService {
       message: '',
       type: NotificationType.Loading,
     };
-    this._subject.next(event);
+    this.subject.next(event);
   }
 
   public emitDone(): void {
@@ -38,10 +38,10 @@ export class NotificationService {
       message: '',
       type: NotificationType.Done,
     };
-    this._subject.next(event);
+    this.subject.next(event);
   }
 
-  public on():  Observable<NotificationEvent> {
-    return this._subject.asObservable();
+  public on(): Observable<NotificationEvent> {
+    return this.subject.asObservable();
   }
 }

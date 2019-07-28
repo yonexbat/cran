@@ -35,11 +35,12 @@ declare const tinymce: any;
 export class RichTextBoxComponent implements OnInit, AfterViewInit,
   OnDestroy, ControlValueAccessor, Validator {
 
+
   private _content: string;
   private editor: any;
   private onChangelistener: any;
   private validateFn: any;
-  
+
 
   @Input() elementId: string;
   @Input() public required: boolean;
@@ -68,7 +69,7 @@ export class RichTextBoxComponent implements OnInit, AfterViewInit,
     }
   }
 
-  public get content(): string{
+  public get content(): string {
     return this._content;
   }
 
@@ -83,7 +84,6 @@ export class RichTextBoxComponent implements OnInit, AfterViewInit,
 
   ngAfterViewInit(): void {
     const id = '#' + this.elementId;
-    debugger;
 
     tinymce.init({
       selector: id,
