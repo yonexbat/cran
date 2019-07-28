@@ -2,12 +2,12 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { SwPush } from '@angular/service-worker';
 
-import { NotificationService } from '../notification.service';
-import { LanguageService } from '../language.service';
-import { ICranDataService } from '../icrandataservice';
-import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
-import { SubscriptionShort } from '../model/subscriptionshort';
-import { Notification } from '../model/notification';
+import { NotificationService } from '../../notification.service';
+import { LanguageService } from '../../language.service';
+import { ICranDataService } from '../../icrandataservice';
+import { CRAN_SERVICE_TOKEN } from '../../cran-data.servicetoken';
+import { SubscriptionShort } from '../../model/subscriptionshort';
+import { Notification } from '../../model/notification';
 
 @Component({
   selector: 'app-subscriptions',
@@ -30,8 +30,8 @@ export class SubscriptionsComponent implements OnInit {
 
 
   constructor(private swPush: SwPush, private notificationService: NotificationService,
-    @Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
-      private ls: LanguageService) {
+              @Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
+              private ls: LanguageService) {
     if (this.swPush.isEnabled) {
       this.notificationEnabled = true;
     }

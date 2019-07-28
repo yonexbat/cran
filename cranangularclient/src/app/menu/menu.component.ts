@@ -18,9 +18,9 @@ export class MenuComponent implements OnInit {
 
   constructor(@Inject(CRAN_SERVICE_TOKEN)
     private cranDataService: ICranDataService,
-    private notificationService: NotificationService,
-    public ls: LanguageService,
-    private pushNotificationService: PushNotificationService) { }
+              private notificationService: NotificationService,
+              public ls: LanguageService,
+              private pushNotificationService: PushNotificationService) { }
 
   ngOnInit() {
     this.setRoles();

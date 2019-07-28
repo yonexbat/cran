@@ -14,7 +14,6 @@ import {ViewQuestionComponent} from '../view-question/view-question.component';
 import {FileUploadComponent} from '../file-upload/file-upload.component';
 import {ManageCourseComponent} from '../manage-course/manage-course.component';
 import {CourseStarterComponent} from '../course-starter/course-starter.component';
-import {SubscriptionsComponent} from '../subscriptions/subscriptions.component';
 import {CourseFavoriteListComponent} from '../course-favorite-list/course-favorite-list.component';
 
 const routes: Routes = [
@@ -32,8 +31,7 @@ const routes: Routes = [
   { path: 'viewquestion/:id', component: ViewQuestionComponent},
   { path: 'fileupload', component: FileUploadComponent}, 
   { path: 'managecourse/:id', component: ManageCourseComponent},
-  { path: 'coursestarter/:id', component: CourseStarterComponent},
-  { path: 'subscriptions', component: SubscriptionsComponent},
+  { path: 'coursestarter/:id', component: CourseStarterComponent}, 
   { path: 'admin', loadChildren: () => import('../admin/admin.module').then(mod => mod.AdminModule)},
 ];
 

@@ -42,7 +42,6 @@ import { CourseStarterComponent } from './course-starter/course-starter.componen
 import { VersionsComponent } from './versions/versions.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
 import { PushNotificationService } from './push-notification.service';
 import { CourseFavoriteListComponent } from './course-favorite-list/course-favorite-list.component';
 
@@ -84,7 +83,6 @@ if (isDevelopment()) {
     QuestionListItemComponent,
     CourseStarterComponent,
     VersionsComponent,
-    SubscriptionsComponent,
     CourseFavoriteListComponent,
   ],
   imports: [
