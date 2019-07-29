@@ -41,4 +41,60 @@ describe('StatusMessageComponent', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should show successmessage', async(async () => {
+
+    component.showError('test error message');
+
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const nativeEl: HTMLElement = fixture.debugElement.nativeElement;
+    const text = nativeEl.innerText;
+    expect(text).toBe('test error message');
+
+    const alert = nativeEl.querySelector('.alert-danger');
+    expect(alert).toBeTruthy();
+
+    component.done();
+
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(nativeEl.childElementCount).toBe(0);
+
+  }));
+
+  it('should show errormessage', async(async () => {
+
+    component.showSaveSuccess();
+
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const nativeEl: HTMLElement = fixture.debugElement.nativeElement;
+    const text = nativeEl.innerText;
+    expect(text.length).toBeGreaterThan(0);
+
+    const info = nativeEl.querySelector('.alert-success');
+    expect(info).toBeTruthy();
+
+    component.done();
+
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(nativeEl.childElementCount).toBe(0);
+
+  }));
+
+  it('should be invisible when there is no message to be shown', async(async () => {
+
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const nativeEl: HTMLElement = fixture.debugElement.nativeElement;
+    expect(nativeEl.childElementCount).toBe(0);
+
+  }));
+
+
 });

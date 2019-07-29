@@ -10,12 +10,9 @@ import { Component,
   forwardRef,
   ElementRef,
   Renderer2 } from '@angular/core';
-
 import {ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS,
   Validator, AbstractControl, ValidationErrors} from '@angular/forms';
-
 import {htmlRequired} from './htmlrequired';
-
 import {generateGuid} from '../guidgenerator';
 
 declare const tinymce: any;
