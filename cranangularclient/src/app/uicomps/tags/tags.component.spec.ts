@@ -10,6 +10,7 @@ import {LanguageService} from '../../language.service';
 import { TagsComponent } from './tags.component';
 import {TooltipDirective} from '../tooltip.directive';
 import {IconComponent} from '../icon/icon.component';
+import { Tag } from 'src/app/model/tag';
 
 
 describe('TagsComponent', () => {
@@ -43,4 +44,46 @@ describe('TagsComponent', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
+
+  it('tag should be shown', async(async () => {
+    component.isEditable = false;
+    component.tagList.push(createTag(2, 'test1'));
+    component.tagList.push(createTag(2, 'test2'));
+    component.tagList.push(createTag(2, 'test3'));
+
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const nativeEl: HTMLElement = fixture.debugElement.nativeElement;
+    const deleteIcons = nativeEl.querySelectorAll('app-icon');
+    expect(deleteIcons.length).toBe(0);
+
+    const spans = nativeEl.querySelectorAll('span');
+    expect(spans.length).toBe(3);
+
+  }));
+
+  it('tag should be deletable', async(async () => {
+    component.isEditable = true;
+    component.tagList.push(createTag(2, 'test1'));
+    component.tagList.push(createTag(2, 'test2'));
+    component.tagList.push(createTag(2, 'test3'));
+
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const nativeEl: HTMLElement = fixture.debugElement.nativeElement;
+    const deleteIcons = nativeEl.querySelectorAll('app-icon');
+    expect(deleteIcons.length).toBe(3);
+
+  }));
 });
+
+function createTag(id, name): Tag {
+  const tag = new Tag();
+  tag.id = id;
+  tag.name = name;
+  tag.shortDescDe = `${name} Desc`;
+  tag.idTagType = 1;
+  return tag;
+};
