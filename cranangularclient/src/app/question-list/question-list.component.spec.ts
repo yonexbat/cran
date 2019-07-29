@@ -10,7 +10,6 @@ import {ConfirmService} from '../confirm.service';
 import {LanguageService} from '../language.service';
 import {QuestionListEntry} from '../model/questionlistentry';
 import { QuestionListComponent } from './question-list.component';
-import {PagedResult} from '../model/pagedresult';
 
 
 
@@ -22,12 +21,6 @@ class StubQuestionListItemComponent {
   @Output()  onItemEditclick = new EventEmitter<QuestionListEntry>();
 }
 
-@Component({selector: 'app-pager', template: ''})
-class StubPagerComponent {
-  @Input() public itemTemplate: TemplateRef<any>;
-  @Input() public pagedResult: PagedResult<any>;
-  @Input() public nodatafoundmessage  = 'Keine Daten gefunden.';
-}
 
 describe('QuestionListComponent', () => {
   let component: QuestionListComponent;
@@ -41,7 +34,7 @@ describe('QuestionListComponent', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, FormsModule, UicompsModule],
       declarations: [ QuestionListComponent,
-        StubQuestionListItemComponent, StubPagerComponent ],
+        StubQuestionListItemComponent, ],
       providers: [
         LanguageService,
         { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },

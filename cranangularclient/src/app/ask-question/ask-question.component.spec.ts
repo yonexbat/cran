@@ -8,7 +8,6 @@ import { AskQuestionComponent } from './ask-question.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import {TestingModule,
   StubVoteComponent,
-  StubTagsComponent,
   StubImageListComponent,
   StubCommentsComponent,
   } from '../testing/testing.module';
@@ -28,8 +27,9 @@ describe('AskQuestionComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, FormsModule, TestingModule, UicompsModule],
-      declarations: [ AskQuestionComponent,  StubVoteComponent,
-        StubTagsComponent,
+      declarations: [
+        AskQuestionComponent,
+        StubVoteComponent,
         StubCommentsComponent,
         StubImageListComponent],
         providers: [

@@ -11,12 +11,6 @@ import {LanguageService} from '../language.service';
 import {Tag} from '../model/tag';
 import { ResultListComponent } from './result-list.component';
 
-@Component({selector: 'app-tags', template: ''})
-class StubTagsComponent {
-  @Input() public tagList: Tag[] = [];
-  @Input() public isEditable = false;
-}
-
 describe('ResultListComponent', () => {
   let component: ResultListComponent;
   let fixture: ComponentFixture<ResultListComponent>;
@@ -29,7 +23,7 @@ describe('ResultListComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, FormsModule, UicompsModule],
-      declarations: [ ResultListComponent,  StubTagsComponent ],
+      declarations: [ ResultListComponent, ],
       providers: [
         LanguageService,
         { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },

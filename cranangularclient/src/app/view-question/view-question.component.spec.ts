@@ -24,12 +24,6 @@ class StubVoteComponent {
   @Input() public votes;
 }
 
-@Component({selector: 'app-tags', template: ''})
-class StubTagsComponent {
-  @Input() public tagList: Tag[] = [];
-  @Input() public isEditable = false;
-}
-
 
 @Component({selector: 'app-comments', template: ''})
 class StubCommentsComponent {
@@ -55,7 +49,6 @@ describe('ViewQuestionComponent', () => {
         ViewQuestionComponent,
         StubVersionsComponent,
         StubVoteComponent,
-        StubTagsComponent,
         ImagelistComponent,
         StubCommentsComponent,
       ],

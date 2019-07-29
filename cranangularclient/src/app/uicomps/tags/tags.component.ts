@@ -1,8 +1,8 @@
 import { Component, OnInit, Inject, Input, Output, EventEmitter, } from '@angular/core';
 
-import {Tag, TagType} from '../model/tag';
-import {LanguageInfo} from '../model/languageInfo';
-import {LanguageService} from '../language.service';
+import {Tag, TagType} from '../../model/tag';
+import {LanguageInfo} from '../../model/languageInfo';
+import {LanguageService} from '../../language.service';
 
 @Component({
   selector: 'app-tags',

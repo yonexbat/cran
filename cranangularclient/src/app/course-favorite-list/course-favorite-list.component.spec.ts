@@ -14,7 +14,6 @@ import {ConfirmService} from '../confirm.service';
 
 
 import { CourseFavoriteListComponent } from './course-favorite-list.component';
-import { TagsComponent } from '../tags/tags.component';
 
 
 
@@ -39,7 +38,7 @@ describe('CourseFavoriteListComponent', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, UicompsModule],
       declarations: [ CourseFavoriteListComponent,
-        StubPagerComponent, TagsComponent ],
+        StubPagerComponent,],
       providers: [
           LanguageService,
           { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },

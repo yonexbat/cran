@@ -6,6 +6,7 @@ import { IconComponent} from './icon/icon.component';
 import { StatusmessageComponent } from './statusmessage/statusmessage.component';
 import { RichTextBoxComponent } from './rich-text-box/rich-text-box.component';
 import { SafeHtmlPipe } from './safe-html.pipe';
+import { TagsComponent } from './tags/tags.component';
 
 
 
@@ -17,6 +18,7 @@ import { SafeHtmlPipe } from './safe-html.pipe';
     StatusmessageComponent,
     RichTextBoxComponent,
     SafeHtmlPipe,
+    TagsComponent,
   ],
   imports: [
     CommonModule
@@ -28,6 +30,7 @@ import { SafeHtmlPipe } from './safe-html.pipe';
     StatusmessageComponent,
     RichTextBoxComponent,
     SafeHtmlPipe,
+    TagsComponent,
   ]
 })
 export class UicompsModule { }

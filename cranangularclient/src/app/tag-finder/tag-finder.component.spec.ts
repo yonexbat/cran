@@ -11,7 +11,6 @@ import {ConfirmService} from '../confirm.service';
 import {LanguageService} from '../language.service';
 import {Tag} from '../model/tag';
 import {TagFinderComponent } from './tag-finder.component';
-import {TagsComponent} from '../tags/tags.component';
 
 
 
@@ -35,7 +34,7 @@ describe('TagFinderComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, FormsModule, UicompsModule],
-      declarations: [ TagFinderComponent, TagsComponent],
+      declarations: [ TagFinderComponent],
       providers: [
         LanguageService,
         { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },

@@ -8,7 +8,6 @@ import {NotificationService} from '../notification.service';
 import {ConfirmService} from '../confirm.service';
 import {LanguageService} from '../language.service';
 import { QuestionListItemComponent } from './question-list-item.component';
-import {TagsComponent} from '../tags/tags.component';
 import {QuestionListEntry} from '../model/questionlistentry';
 
 
@@ -35,7 +34,7 @@ describe('QuestionListItemComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, FormsModule, UicompsModule],
-      declarations: [ QuestionListItemComponent, TagsComponent, StubHostComponent ],
+      declarations: [ QuestionListItemComponent, StubHostComponent ],
       providers: [
         LanguageService, NotificationService, ConfirmService,
       ],

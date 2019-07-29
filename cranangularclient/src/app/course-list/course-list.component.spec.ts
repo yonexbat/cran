@@ -13,13 +13,6 @@ import {LanguageService} from '../language.service';
 import {ConfirmService} from '../confirm.service';
 
 
-@Component({selector: 'app-tags', template: ''})
-class StubTagsComponent {
-  @Input() public tagList: Tag[] = [];
-  @Input() public isEditable = false;
-}
-
-
 describe('CourseListComponent', () => {
 
   let component: CourseListComponent;
@@ -36,7 +29,7 @@ describe('CourseListComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, UicompsModule],
-      declarations: [ CourseListComponent, StubTagsComponent],
+      declarations: [ CourseListComponent],
         providers: [
           LanguageService,
           { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },
