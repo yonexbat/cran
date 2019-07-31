@@ -168,7 +168,6 @@ export class ManageQuestionComponent implements OnInit {
   }
 
   public addImagesError(error: string) {
-    debugger;
     this.notificationService.emitError(error);
   }
 

@@ -34,7 +34,7 @@ export class NotificationComponent implements OnInit {
     if (typeof this.message === 'string') {
       this.message = event.message;
     } else if (event.message) {
-      this.message = JSON.stringify(event.message);
+      this.message = event.message.toString();
     } else {
       this.message = 'Unbekannter Fehler';
     }

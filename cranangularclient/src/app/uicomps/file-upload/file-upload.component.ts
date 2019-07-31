@@ -41,8 +41,7 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
     this.renderer.setAttribute(newFileInput, 'multiple', 'true');
     this.renderer.setAttribute(newFileInput, 'name', 'fileInput');
     const uploadfiles = this.uploadFiles.bind(this);
-    //this.renderer.listen(newFileInput, 'onchange', uploadfiles);
-    newFileInput.onchange = uploadfiles;
+    this.renderer.listen(newFileInput, 'change', uploadfiles);
 
     const fileInputParentNative = this.fileInputParent.nativeElement;
     const childElements = fileInputParentNative.childNodes;
@@ -81,10 +80,9 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
         return response.json();
       }).then(files => {
         onUploaded.emit(files);
-        addFileInput();
       }).catch((error) => {
-        debugger;
         onError.emit(error);
+        addFileInput();
       });
     }
   }
