@@ -19,7 +19,7 @@ export class ConfirmComponent implements OnInit {
   public cancelButtonVisible = true;
 
   constructor(public ls: LanguageService,
-    private confirmService: ConfirmService) {
+              private confirmService: ConfirmService) {
   }
 
   ngOnInit() {

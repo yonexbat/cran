@@ -6,7 +6,7 @@ import { UicompsModule } from '../uicomps/uicomps.module';
 import { ManageQuestionComponent } from './manage-question.component';
 import {TestingModule,
   StubImageListComponent, StubTagFinderComponent,
-  StubQuestionPreviewComponent, StubFileUploadComponent, StubRichTextBoxComponent} from '../testing/testing.module';
+  StubQuestionPreviewComponent, StubRichTextBoxComponent} from '../testing/testing.module';
 import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
 import {ICranDataService} from '../icrandataservice';
 import {Question} from '../model/question';
@@ -37,7 +37,6 @@ describe('ManageQuestionComponent', () => {
         ManageQuestionComponent,
         StubQuestionPreviewComponent,
         StubTagFinderComponent,
-        StubFileUploadComponent,
         StubImageListComponent,
         StubRichTextBoxComponent,
       ],

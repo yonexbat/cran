@@ -27,9 +27,9 @@ export class ManageQuestionComponent implements OnInit {
 
   public actionInProgress = false;
 
-  @ViewChild('statusMessage', { static: true }) statusMessage: StatusmessageComponent;
+  @ViewChild('statusMessage', { static: false }) statusMessage: StatusmessageComponent;
 
-  @ViewChild('questionPreview', { static: true }) questionPreview: QuestionPreviewComponent;
+  @ViewChild('questionPreview', { static: false }) questionPreview: QuestionPreviewComponent;
 
   @ViewChild('questionForm', { static: false }) questionForm: NgForm;
 
@@ -168,6 +168,7 @@ export class ManageQuestionComponent implements OnInit {
   }
 
   public addImagesError(error: string) {
+    debugger;
     this.notificationService.emitError(error);
   }
 

@@ -21,5 +21,6 @@ describe('FileUploadComponent', () => {
 
   it('should be created', () => {
     expect(component).toBeTruthy();
+    debugger;
   });
 });

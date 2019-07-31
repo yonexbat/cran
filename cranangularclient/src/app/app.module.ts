@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {UicompsModule } from './uicomps/uicomps.module';
+import { UicompsModule } from './uicomps/uicomps.module';
 
 import { AppComponent } from './app.component';
 import { NotificationService } from './notification.service';
@@ -29,7 +29,6 @@ import { NotificationComponent } from './notification/notification.component';
 import { ViewQuestionComponent } from './view-question/view-question.component';
 import { CommentsComponent } from './comments/comments.component';
 import { VoteComponent } from './vote/vote.component';
-import { FileUploadComponent } from './file-upload/file-upload.component';
 import { ImagelistComponent } from './imagelist/imagelist.component';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { ManageCourseComponent } from './manage-course/manage-course.component';
@@ -71,7 +70,6 @@ if (isDevelopment()) {
     ViewQuestionComponent,
     CommentsComponent,
     VoteComponent,
-    FileUploadComponent,
     ImagelistComponent,
     UserInfoComponent,
     ManageCourseComponent,

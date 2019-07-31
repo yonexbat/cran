@@ -3,10 +3,11 @@ import { Component,
   AfterViewInit,
   ViewChild, ElementRef,
   Output, Input,
-  EventEmitter, } from '@angular/core';
+  EventEmitter,
+  Renderer2} from '@angular/core';
 
-import {Binary} from '../model/binary';
-import {CookieService} from '../cookie.service';
+import {Binary} from '../../model/binary';
+import {CookieService} from '../../cookie.service';
 
 @Component({
   selector: 'app-file-upload',
@@ -22,7 +23,7 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
   @Input() placeHolderText = 'Upload file...';
   @ViewChild('fileInputParent', { static: true }) fileInputParent: ElementRef;
 
-  constructor(private cookieService: CookieService) { }
+  constructor(private cookieService: CookieService, private renderer: Renderer2) { }
 
   ngOnInit() {
 
@@ -34,15 +35,21 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
 
 
   private addFileInput() {
-    const fileInputParentNative = this.fileInputParent.nativeElement;
-    const oldFileInput = fileInputParentNative.querySelector('input');
-    const newFileInput = document.createElement('input');
-    newFileInput.type = 'file';
-    newFileInput.multiple = true;
-    newFileInput.name = 'fileInput';
+
+    const newFileInput = this.renderer.createElement('input');
+    this.renderer.setAttribute(newFileInput, 'type', 'file');
+    this.renderer.setAttribute(newFileInput, 'multiple', 'true');
+    this.renderer.setAttribute(newFileInput, 'name', 'fileInput');
     const uploadfiles = this.uploadFiles.bind(this);
+    //this.renderer.listen(newFileInput, 'onchange', uploadfiles);
     newFileInput.onchange = uploadfiles;
-    oldFileInput.parentNode.replaceChild(newFileInput, oldFileInput);
+
+    const fileInputParentNative = this.fileInputParent.nativeElement;
+    const childElements = fileInputParentNative.childNodes;
+    for (const child of childElements) {
+      this.renderer.removeChild(fileInputParentNative, child);
+    }
+    this.renderer.appendChild(fileInputParentNative, newFileInput);
   }
 
   private uploadFiles() {
@@ -51,8 +58,8 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
     const fileInput = fileInputParentNative.querySelector('input');
     if (fileInput.files && fileInput.files.length > 0) {
       const formData = new FormData();
-      for (let i = 0; i < fileInput.files.length; i++) {
-        formData.append('files', fileInput.files[i]);
+      for (const file of fileInput.files) {
+        formData.append('files', file);
       }
 
       // add antiforery cookie
@@ -76,6 +83,7 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
         onUploaded.emit(files);
         addFileInput();
       }).catch((error) => {
+        debugger;
         onError.emit(error);
       });
     }

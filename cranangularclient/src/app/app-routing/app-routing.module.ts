@@ -11,7 +11,7 @@ import {ResultListComponent} from '../result-list/result-list.component';
 import {CourseInstanceListComponent} from '../course-instance-list/course-instance-list.component';
 import {SearchQuestionsComponent} from '../search-questions/search-questions.component';
 import {ViewQuestionComponent} from '../view-question/view-question.component';
-import {FileUploadComponent} from '../file-upload/file-upload.component';
+import {FileUploadComponent} from '../uicomps/file-upload/file-upload.component';
 import {ManageCourseComponent} from '../manage-course/manage-course.component';
 import {CourseStarterComponent} from '../course-starter/course-starter.component';
 import {CourseFavoriteListComponent} from '../course-favorite-list/course-favorite-list.component';
