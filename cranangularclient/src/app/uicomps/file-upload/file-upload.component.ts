@@ -18,7 +18,7 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
 
   @Output() onUploadStarted = new EventEmitter<void>();
   @Output() onError = new EventEmitter<string>();
-  @Output() onUploaded = new EventEmitter<File[]>();
+  @Output() onUploaded = new EventEmitter<Binary[]>();
 
   @Input() placeHolderText = 'Upload file...';
   @ViewChild('fileInputParent', { static: true }) fileInputParent: ElementRef;
@@ -52,38 +52,48 @@ export class FileUploadComponent implements OnInit, AfterViewInit {
   }
 
   private uploadFiles() {
-    this.onUploadStarted.emit();
     const fileInputParentNative = this.fileInputParent.nativeElement;
-    const fileInput = fileInputParentNative.querySelector('input');
-    if (fileInput.files && fileInput.files.length > 0) {
-      const formData = new FormData();
-      for (const file of fileInput.files) {
-        formData.append('files', file);
+    const fileInput = fileInputParentNative.querySelector('input[type=\'file\']');
+    const fileListe = fileInput.files;
+    if (fileListe && fileListe.length > 0) {
+      this.uploadFileList(fileListe, fetch);
+    }
+  }
+
+  // done this way for testability It is not possible to manipulate input[file] in javascript.
+  public async uploadFileList(files: File[], fetcher: (RequestInfo, init?: RequestInit) => Promise<Response>): Promise<any> {
+
+    this.onUploadStarted.emit();
+
+    const formData = new FormData();
+    for (const file of files) {
+      formData.append('files', file);
+    }
+
+    // add antiforery cookie
+    const xsrftokenFromCookie = this.cookieService.getCookie('XSRF-TOKEN');
+    formData.append('__RequestVerificationToken', xsrftokenFromCookie);
+
+    const onUploaded = this.onUploaded;
+    const onError = this.onError;
+    const addFileInput = this.addFileInput.bind(this);
+    const fetchdata: RequestInit = {
+      credentials: 'include',
+      method: 'POST',
+      body: formData,
+    };
+    try {
+      const response = await fetcher('/api/Data/UploadFiles', fetchdata);
+      if (response.status !== 200) {
+        const error = `An error occured. Status: ${response.status}`;
+        throw new Error(error);
       }
-
-      // add antiforery cookie
-      const xsrftokenFromCookie = this.cookieService.getCookie('XSRF-TOKEN');
-      formData.append('__RequestVerificationToken', xsrftokenFromCookie);
-
-      const onUploaded = this.onUploaded;
-      const onError = this.onError;
-      const addFileInput = this.addFileInput.bind(this);
-      fetch('/api/Data/UploadFiles', {
-        credentials: 'include',
-        method: 'POST',
-        body: formData,
-      }).then((response: any) => {
-        if (response.status !== 200) {
-          const error = `An error occured. Status: ${response.status}`;
-          throw new Error(error);
-        }
-        return response.json();
-      }).then(files => {
-        onUploaded.emit(files);
-      }).catch((error) => {
-        onError.emit(error);
-        addFileInput();
-      });
+      const json = await response.json();
+      onUploaded.emit(json);
+    } catch (error) {
+      onError.emit(error);
+    } finally {
+      addFileInput();
     }
   }
 }

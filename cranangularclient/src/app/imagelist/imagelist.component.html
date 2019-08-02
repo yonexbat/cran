@@ -2,7 +2,7 @@
 <div *ngFor="let image of images; let imageIndex=index">
 
   <div>
-    <img src="/api/Data/GetFile/{{image.idBinary}}" style="width: 100%;" [ngStyle]="{ 'width': image.width + '%' }">
+    <img src="/api/Data/GetFile/{{image.idBinary}}" [ngStyle]="{ 'width': image.width + '%' }">
   </div>
 
   <div class="row"  *ngIf="imagesDeletable">
