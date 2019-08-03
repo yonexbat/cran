@@ -8,7 +8,6 @@ import { AskQuestionComponent } from './ask-question.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import {TestingModule,
   StubVoteComponent,
-  StubImageListComponent,
   StubCommentsComponent,
   } from '../testing/testing.module';
 import {StubActivatedRoute} from '../testing/stubactivatedroute';
@@ -30,8 +29,7 @@ describe('AskQuestionComponent', () => {
       declarations: [
         AskQuestionComponent,
         StubVoteComponent,
-        StubCommentsComponent,
-        StubImageListComponent],
+        StubCommentsComponent],
         providers: [
           {provide: ActivatedRoute, useValue: activeRoute}
         ],

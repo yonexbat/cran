@@ -11,7 +11,6 @@ import {LanguageService} from '../language.service';
 import {Tag} from '../model/tag';
 import { ViewQuestionComponent } from './view-question.component';
 import {SafeHtmlPipe} from '../uicomps/safe-html.pipe';
-import {ImagelistComponent} from '../imagelist/imagelist.component';
 
 
 @Component({selector: 'app-versions', template: ''})
@@ -49,7 +48,6 @@ describe('ViewQuestionComponent', () => {
         ViewQuestionComponent,
         StubVersionsComponent,
         StubVoteComponent,
-        ImagelistComponent,
         StubCommentsComponent,
       ],
       providers: [

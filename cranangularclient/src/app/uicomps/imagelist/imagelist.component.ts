@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, } from '@angular/core';
-import {LanguageService} from '../language.service';
-import {Image} from '../model/image';
+import {LanguageService} from '../../language.service';
+import {Image} from '../../model/image';
 
 @Component({
   selector: 'app-imagelist',

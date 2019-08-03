@@ -11,10 +11,6 @@ import {LanguageService} from '../language.service';
 import { QuestionPreviewComponent } from './question-preview.component';
 
 
-@Component({selector: 'app-imagelist', template: ''})
-class StubAppImageListComponent {
-  @Input() public images;
-}
 
 describe('QuestionPreviewComponent', () => {
   let component: QuestionPreviewComponent;
@@ -28,7 +24,7 @@ describe('QuestionPreviewComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, FormsModule, UicompsModule],
-      declarations: [ QuestionPreviewComponent, StubAppImageListComponent, ],
+      declarations: [ QuestionPreviewComponent, ],
       providers: [
         LanguageService,
         { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },

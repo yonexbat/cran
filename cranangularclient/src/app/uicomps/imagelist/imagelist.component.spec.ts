@@ -3,15 +3,14 @@ import { By } from '@angular/platform-browser';
 import { DebugElement, Component, Input, TemplateRef } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import {FormsModule} from '@angular/forms';
-import { UicompsModule } from '../uicomps/uicomps.module';
 
 
 import { ImagelistComponent } from './imagelist.component';
-import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
-import {NotificationService} from '../notification.service';
-import {LanguageService} from '../language.service';
-import {ConfirmService} from '../confirm.service';
-
+import { CRAN_SERVICE_TOKEN } from '../../cran-data.servicetoken';
+import { NotificationService } from '../../notification.service';
+import { LanguageService } from '../../language.service';
+import { ConfirmService } from '../../confirm.service';
+import { IconComponent } from '../icon/icon.component';
 
 
 describe('ImagelistComponent', () => {
@@ -25,8 +24,8 @@ describe('ImagelistComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, FormsModule, UicompsModule],
-      declarations: [ ImagelistComponent],
+      imports: [RouterTestingModule, FormsModule,],
+      declarations: [ ImagelistComponent, IconComponent, ],
       providers: [
         LanguageService,
         { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },

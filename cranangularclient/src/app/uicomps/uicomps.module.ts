@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ItempagerComponent } from './itempager/itempager.component';
 import { TooltipDirective } from './tooltip.directive';
@@ -8,6 +9,8 @@ import { RichTextBoxComponent } from './rich-text-box/rich-text-box.component';
 import { SafeHtmlPipe } from './safe-html.pipe';
 import { TagsComponent } from './tags/tags.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
+import { ImagelistComponent } from './imagelist/imagelist.component';
+
 
 
 
@@ -21,9 +24,11 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
     SafeHtmlPipe,
     TagsComponent,
     FileUploadComponent,
+    ImagelistComponent,
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule,
   ],
   exports: [
     ItempagerComponent,
@@ -34,6 +39,7 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
     SafeHtmlPipe,
     TagsComponent,
     FileUploadComponent,
+    ImagelistComponent,
   ]
 })
 export class UicompsModule { }

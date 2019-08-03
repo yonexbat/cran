@@ -29,7 +29,6 @@ import { NotificationComponent } from './notification/notification.component';
 import { ViewQuestionComponent } from './view-question/view-question.component';
 import { CommentsComponent } from './comments/comments.component';
 import { VoteComponent } from './vote/vote.component';
-import { ImagelistComponent } from './imagelist/imagelist.component';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { ManageCourseComponent } from './manage-course/manage-course.component';
 import { ConfirmComponent } from './confirm/confirm.component';
@@ -70,7 +69,6 @@ if (isDevelopment()) {
     ViewQuestionComponent,
     CommentsComponent,
     VoteComponent,
-    ImagelistComponent,
     UserInfoComponent,
     ManageCourseComponent,
     ConfirmComponent,
