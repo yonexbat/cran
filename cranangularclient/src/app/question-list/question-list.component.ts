@@ -20,10 +20,10 @@ export class QuestionListComponent implements OnInit {
   public pagedResult: PagedResult<QuestionListEntry> = new PagedResult<QuestionListEntry>();
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
-    private router: Router,
-    private notificationService: NotificationService,
-    private confirmService: ConfirmService,
-    public ls: LanguageService) { }
+              private router: Router,
+              private notificationService: NotificationService,
+              private confirmService: ConfirmService,
+              public ls: LanguageService) { }
 
   ngOnInit() {
     this.loadQuestions(0);
