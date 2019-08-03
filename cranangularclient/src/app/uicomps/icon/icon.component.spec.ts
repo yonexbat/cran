@@ -22,4 +22,18 @@ describe('IconComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should show edit icon', async(async () => {
+    const nativeEl: HTMLElement = fixture.debugElement.nativeElement;
+    const ibug = nativeEl.querySelector('i.fa-bug');
+    expect(ibug).toBeTruthy();
+
+    component.icon = 'edit';
+
+    fixture.detectChanges();
+
+    const iedit = nativeEl.querySelector('i.fa-edit');
+    expect(iedit).toBeTruthy();
+  }));
+
 });

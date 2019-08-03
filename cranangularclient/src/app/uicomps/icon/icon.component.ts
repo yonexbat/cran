@@ -15,7 +15,7 @@ export class IconComponent implements OnInit {
   }
 
   public get internalIcon(): string {
-    let internalIcon = 'fa-bug';
+    let internalIcon = 'fas fa-bug';
     switch (this.icon) {
       case 'edit':
         internalIcon = 'fas fa-edit';
