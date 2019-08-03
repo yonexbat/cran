@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FileUploadComponent } from './file-upload.component';
+import {Binary} from '../../model/binary';
 
 describe('FileUploadComponent', () => {
   let component: FileUploadComponent;
@@ -27,12 +28,22 @@ describe('FileUploadComponent', () => {
   });
 
   it('should add file', async(async () => {
+
+    // mock fetch.
     const fetcher: (RequestInfo, init?: RequestInit) => Promise<Response> = (requestInfo, init) => {
       const response = new Response();
+      response.json = () => new Promise<any>((resolve, reject) => {
+        const data: FormData = init.body as FormData;
+        const formFiles = data.getAll('files') as File[];
+        const binary = new Binary();
+        binary.name = formFiles[0].name;
+        resolve([binary]);
+      });
       return new Promise((resolve, reject) => {
         resolve(response);
       });
     };
+
     const files: File[] = [];
     files.push(new File([], 'file1'));
     let uploadstarted = 0;
