@@ -5,10 +5,10 @@ import { Observable, Subject, of } from 'rxjs';
 import { switchMap, debounceTime, distinctUntilChanged, catchError } from 'rxjs/operators';
 
 
-import {Tag} from '../model/tag';
-import {ICranDataService} from '../icrandataservice';
-import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
-import {NotificationService} from '../notification.service';
+import {Tag} from '../../model/tag';
+import {ICranDataService} from '../../icrandataservice';
+import {CRAN_SERVICE_TOKEN} from '../../cran-data.servicetoken';
+import {NotificationService} from '../../notification.service';
 
 @Component({
   selector: 'app-tag-finder',

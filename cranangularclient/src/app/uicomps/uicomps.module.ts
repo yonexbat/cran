@@ -12,6 +12,7 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
 import { ImagelistComponent } from './imagelist/imagelist.component';
 import { ConfirmComponent } from './confirm/confirm.component';
 import { NotificationComponent } from './notification/notification.component';
+import { TagFinderComponent } from './tag-finder/tag-finder.component';
 
 
 
@@ -29,6 +30,7 @@ import { NotificationComponent } from './notification/notification.component';
     ImagelistComponent,
     ConfirmComponent,
     NotificationComponent,
+    TagFinderComponent,
   ],
   imports: [
     CommonModule,
@@ -46,6 +48,7 @@ import { NotificationComponent } from './notification/notification.component';
     ImagelistComponent,
     ConfirmComponent,
     NotificationComponent,
+    TagFinderComponent,
   ]
 })
 export class UicompsModule { }

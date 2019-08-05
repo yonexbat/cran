@@ -9,22 +9,6 @@ import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
 import {NotificationService} from '../notification.service';
 import {ConfirmService} from '../confirm.service';
 import {LanguageService} from '../language.service';
-import {Tag} from '../model/tag';
-
-@Component({selector: 'app-tag-finder', template: ''})
-class StubTagFinderComponent {
-  @Input() public tagsArray: Tag[] = [];
-  @Input() public title = 'Tags';
-  @Output() public tagSelected = new EventEmitter<Tag>();
-  @Output() public tagRemoved = new EventEmitter<Tag>();
-  @Output() public tagSelectionChanged = new EventEmitter<void>();
-}
-
-
-
-@Component({selector: 'app-status-message', template: ''})
-class StubStatusMessageComponent {
-}
 
 
 
@@ -40,7 +24,7 @@ describe('ManageCourseComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, FormsModule, UicompsModule],
-      declarations: [ ManageCourseComponent, StubTagFinderComponent, StubStatusMessageComponent ],
+      declarations: [ ManageCourseComponent, ],
       providers: [
         LanguageService,
         { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },

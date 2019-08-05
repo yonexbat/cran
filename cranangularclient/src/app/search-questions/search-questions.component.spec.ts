@@ -14,14 +14,6 @@ import {PagedResult} from '../model/pagedresult';
 
 import { SearchQuestionsComponent } from './search-questions.component';
 
-@Component({selector: 'app-tag-finder', template: ''})
-class StubTagFinderComponent {
-  @Input() public tagsArray: Tag[] = [];
-  @Input() public title = 'Tags';
-  @Output() public tagSelected = new EventEmitter<Tag>();
-  @Output() public tagRemoved = new EventEmitter<Tag>();
-  @Output() public tagSelectionChanged = new EventEmitter<void>();
-}
 
 @Component({selector: 'app-question-list-item', template: ''})
 class StubQuestionListItemComponent {
@@ -53,7 +45,7 @@ describe('SearchQuestionsComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, FormsModule, UicompsModule],
-      declarations: [ SearchQuestionsComponent, StubTagFinderComponent,
+      declarations: [ SearchQuestionsComponent,
         StubQuestionListItemComponent, StubPagerComponent ],
       providers: [
         LanguageService,

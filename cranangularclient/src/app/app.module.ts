@@ -18,7 +18,6 @@ import { LanguageService } from './language.service';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { HomeComponent } from './home/home.component';
 import { ManageQuestionComponent } from './manage-question/manage-question.component';
-import { TagFinderComponent } from './tag-finder/tag-finder.component';
 import { AskQuestionComponent } from './ask-question/ask-question.component';
 import { QuestionListComponent } from './question-list/question-list.component';
 import { ResultListComponent } from './result-list/result-list.component';
@@ -56,7 +55,6 @@ if (isDevelopment()) {
     CourseListComponent,
     HomeComponent,
     ManageQuestionComponent,
-    TagFinderComponent,
     AskQuestionComponent,
     QuestionListComponent,
     ResultListComponent,
