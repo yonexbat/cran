@@ -31,7 +31,6 @@ import { CommentsComponent } from './comments/comments.component';
 import { VoteComponent } from './vote/vote.component';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { ManageCourseComponent } from './manage-course/manage-course.component';
-import { ConfirmComponent } from './confirm/confirm.component';
 import { ConfirmService } from './confirm.service';
 import { QuestionListItemComponent } from './question-list-item/question-list-item.component';
 import { CourseStarterComponent } from './course-starter/course-starter.component';
@@ -71,7 +70,6 @@ if (isDevelopment()) {
     VoteComponent,
     UserInfoComponent,
     ManageCourseComponent,
-    ConfirmComponent,
     QuestionListItemComponent,
     CourseStarterComponent,
     VersionsComponent,

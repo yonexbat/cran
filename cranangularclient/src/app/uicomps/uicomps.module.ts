@@ -10,6 +10,7 @@ import { SafeHtmlPipe } from './safe-html.pipe';
 import { TagsComponent } from './tags/tags.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { ImagelistComponent } from './imagelist/imagelist.component';
+import { ConfirmComponent } from './confirm/confirm.component'
 
 
 
@@ -25,6 +26,7 @@ import { ImagelistComponent } from './imagelist/imagelist.component';
     TagsComponent,
     FileUploadComponent,
     ImagelistComponent,
+    ConfirmComponent,
   ],
   imports: [
     CommonModule,
@@ -40,6 +42,7 @@ import { ImagelistComponent } from './imagelist/imagelist.component';
     TagsComponent,
     FileUploadComponent,
     ImagelistComponent,
+    ConfirmComponent,
   ]
 })
 export class UicompsModule { }
