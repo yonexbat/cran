@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import {Question} from '../model/question';
-import {LanguageService} from '../language.service';
+import {LanguageService} from '../services/language.service';
 
 declare var $: any;
 

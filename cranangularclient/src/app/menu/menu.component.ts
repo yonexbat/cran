@@ -1,10 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
 
-import {ICranDataService} from '../icrandataservice';
-import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
-import {NotificationService} from '../notification.service';
-import {LanguageService} from '../language.service';
-import {PushNotificationService} from '../push-notification.service';
+import {ICranDataService} from '../services/icrandataservice';
+import {CRAN_SERVICE_TOKEN} from '../services/cran-data.servicetoken';
+import {NotificationService} from '../services/notification.service';
+import {LanguageService} from '../services/language.service';
+import {PushNotificationService} from '../services/push-notification.service';
 
 @Component({
   selector: 'app-menu',

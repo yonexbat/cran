@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {trigger, state, animate, transition, style} from '@angular/animations';
-import {LanguageService} from '../../language.service';
+import {LanguageService} from '../../services/language.service';
 
 @Component({
   selector: 'app-statusmessage',

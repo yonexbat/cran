@@ -3,13 +3,13 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute,  ParamMap, Params, NavigationExtras} from '@angular/router';
 
 import {SearchTags} from '../../model/searchtags';
-import {ICranDataService} from '../../icrandataservice';
-import {CRAN_SERVICE_TOKEN} from '../../cran-data.servicetoken';
-import {NotificationService} from '../../notification.service';
+import {ICranDataService} from '../../services/icrandataservice';
+import {CRAN_SERVICE_TOKEN} from '../../services/cran-data.servicetoken';
+import {NotificationService} from '../../services/notification.service';
 import {PagedResult} from '../../model/pagedresult';
 import {Tag} from '../../model/tag';
-import {LanguageService} from '../../language.service';
-import {ConfirmService} from '../../confirm.service';
+import {LanguageService} from '../../services/language.service';
+import {ConfirmService} from '../../services/confirm.service';
 
 @Component({
   selector: 'app-manage-tags',

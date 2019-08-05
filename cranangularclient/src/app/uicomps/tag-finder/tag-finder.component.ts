@@ -6,9 +6,9 @@ import { switchMap, debounceTime, distinctUntilChanged, catchError } from 'rxjs/
 
 
 import {Tag} from '../../model/tag';
-import {ICranDataService} from '../../icrandataservice';
-import {CRAN_SERVICE_TOKEN} from '../../cran-data.servicetoken';
-import {NotificationService} from '../../notification.service';
+import {ICranDataService} from '../../services/icrandataservice';
+import {CRAN_SERVICE_TOKEN} from '../../services/cran-data.servicetoken';
+import {NotificationService} from '../../services/notification.service';
 
 @Component({
   selector: 'app-tag-finder',

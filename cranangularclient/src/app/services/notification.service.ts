@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Subject, Observable} from 'rxjs';
 
-import {NotificationEvent, NotificationType} from './model/notificationEvent';
+import {NotificationEvent, NotificationType} from '../model/notificationEvent';
 
 
 @Injectable()

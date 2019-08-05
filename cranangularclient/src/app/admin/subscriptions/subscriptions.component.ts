@@ -2,10 +2,10 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { SwPush } from '@angular/service-worker';
 
-import { NotificationService } from '../../notification.service';
-import { LanguageService } from '../../language.service';
-import { ICranDataService } from '../../icrandataservice';
-import { CRAN_SERVICE_TOKEN } from '../../cran-data.servicetoken';
+import { NotificationService } from '../../services/notification.service';
+import { LanguageService } from '../../services/language.service';
+import { ICranDataService } from '../../services/icrandataservice';
+import { CRAN_SERVICE_TOKEN } from '../../services/cran-data.servicetoken';
 import { SubscriptionShort } from '../../model/subscriptionshort';
 import { Notification } from '../../model/notification';
 

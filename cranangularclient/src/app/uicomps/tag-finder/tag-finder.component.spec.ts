@@ -5,10 +5,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { cold, getTestScheduler } from 'jasmine-marbles';
 import { UicompsModule } from '../uicomps.module';
 
-import { CRAN_SERVICE_TOKEN } from '../../cran-data.servicetoken';
-import { NotificationService } from '../../notification.service';
-import { ConfirmService } from '../../confirm.service';
-import { LanguageService } from '../../language.service';
+import { CRAN_SERVICE_TOKEN } from '../../services/cran-data.servicetoken';
+import { NotificationService } from '../../services/notification.service';
+import { ConfirmService } from '../../services/confirm.service';
+import { LanguageService } from '../../services/language.service';
 import { Tag } from '../../model/tag';
 import { TagFinderComponent } from './tag-finder.component';
 import { TagsComponent } from '../tags/tags.component';

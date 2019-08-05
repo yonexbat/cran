@@ -7,7 +7,7 @@ import { Component,
   Renderer2} from '@angular/core';
 
 import {Binary} from '../../model/binary';
-import {CookieService} from '../../cookie.service';
+import {CookieService} from '../../services/cookie.service';
 
 @Component({
   selector: 'app-file-upload',

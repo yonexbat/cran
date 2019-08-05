@@ -3,10 +3,10 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 import {Tag} from '../model/tag';
 import {Course} from '../model/course';
-import {ICranDataService} from '../icrandataservice';
-import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
-import {NotificationService} from '../notification.service';
-import {LanguageService} from '../language.service';
+import {ICranDataService} from '../services/icrandataservice';
+import {CRAN_SERVICE_TOKEN} from '../services/cran-data.servicetoken';
+import {NotificationService} from '../services/notification.service';
+import {LanguageService} from '../services/language.service';
 import {StatusmessageComponent} from '../uicomps/statusmessage/statusmessage.component';
 
 

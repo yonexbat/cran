@@ -1,7 +1,7 @@
 import { Directive, ElementRef, AfterViewInit, OnInit, OnDestroy,
      Input, HostListener, Renderer2 } from '@angular/core';
 
-import {LanguageService} from '../language.service';
+import {LanguageService} from '../services/language.service';
 
 declare var $: any;
 

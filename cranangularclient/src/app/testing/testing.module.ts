@@ -9,10 +9,10 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS,
 import { CranDataServiceSpy } from './crandataservicespy';
 import { ConfirmServiceSpy } from './confirmservicespy';
 import {NotificationServiceSpy} from './notificationservicespy';
-import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
-import {NotificationService} from '../notification.service';
-import {ConfirmService} from '../confirm.service';
-import {LanguageService} from '../language.service';
+import {CRAN_SERVICE_TOKEN} from '../services/cran-data.servicetoken';
+import {NotificationService} from '../services/notification.service';
+import {ConfirmService} from '../services/confirm.service';
+import {LanguageService} from '../services/language.service';
 import {PagedResult} from '../model/pagedresult';
 import {Tag} from '../model/tag';
 import {Image} from '../model/image';

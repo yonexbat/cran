@@ -6,10 +6,10 @@ import { UicompsModule } from '../uicomps/uicomps.module';
 
 import { CourseInstanceListComponent } from './course-instance-list.component';
 import {PagedResult} from '../model/pagedresult';
-import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
-import {NotificationService} from '../notification.service';
-import {LanguageService} from '../language.service';
-import {ConfirmService} from '../confirm.service';
+import { CRAN_SERVICE_TOKEN } from '../services/cran-data.servicetoken';
+import {NotificationService} from '../services/notification.service';
+import {LanguageService} from '../services/language.service';
+import {ConfirmService} from '../services/confirm.service';
 
 
 @Component({selector: 'app-pager', template: ''})

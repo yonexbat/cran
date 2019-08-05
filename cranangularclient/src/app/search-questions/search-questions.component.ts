@@ -1,14 +1,14 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute,  ParamMap, Params, NavigationExtras} from '@angular/router';
 
-import {ICranDataService} from '../icrandataservice';
-import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
+import {ICranDataService} from '../services/icrandataservice';
+import {CRAN_SERVICE_TOKEN} from '../services/cran-data.servicetoken';
 import {QuestionListEntry} from '../model/questionlistentry';
 import {SearchQParameters} from '../model/searchqparameters';
 import {PagedResult} from '../model/pagedresult';
-import {NotificationService} from '../notification.service';
-import {LanguageService} from '../language.service';
-import {ConfirmService} from '../confirm.service';
+import {NotificationService} from '../services/notification.service';
+import {LanguageService} from '../services/language.service';
+import {ConfirmService} from '../services/confirm.service';
 
 @Component({
   selector: 'app-search-questions',

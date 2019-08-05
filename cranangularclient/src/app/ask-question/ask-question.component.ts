@@ -1,16 +1,16 @@
 import {Component, OnInit, Inject, ViewChild, } from '@angular/core';
 import {Router, ActivatedRoute, ParamMap, } from '@angular/router';
 
-import {ICranDataService} from '../icrandataservice';
-import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
-import {LanguageService} from '../language.service';
+import {ICranDataService} from '../services/icrandataservice';
+import {CRAN_SERVICE_TOKEN} from '../services/cran-data.servicetoken';
+import {LanguageService} from '../services/language.service';
 import {QuestionToAsk} from '../model/questiontoask';
 import {Question} from '../model/question';
 import {QuestionAnswer} from '../model/questionanswer';
 import {CourseInstance} from '../model/courseinstance';
-import {NotificationService} from '../notification.service';
+import {NotificationService} from '../services/notification.service';
 import {CommentsComponent} from '../comments/comments.component';
-import {ConfirmService} from '../confirm.service';
+import {ConfirmService} from '../services/confirm.service';
 import {QuestionType} from '../model/questiontype';
 import {QuestionOptionToAsk} from '../model/questionoptiontoask';
 

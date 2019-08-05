@@ -8,13 +8,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UicompsModule } from './uicomps/uicomps.module';
 
 import { AppComponent } from './app.component';
-import { NotificationService } from './notification.service';
+import { NotificationService } from './services/notification.service';
 import { MenuComponent } from './menu/menu.component';
 import { CourseListComponent } from './course-list/course-list.component';
-import { CRAN_SERVICE_TOKEN } from './cran-data.servicetoken';
-import { CranDataService  } from './cran-data.service';
-import { CranDataServiceMock } from './cran-data-mock.service';
-import { LanguageService } from './language.service';
+import { CRAN_SERVICE_TOKEN } from './services/cran-data.servicetoken';
+import { CranDataService  } from './services/cran-data.service';
+import { CranDataServiceMock } from './services/cran-data-mock.service';
+import { LanguageService } from './services/language.service';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { HomeComponent } from './home/home.component';
 import { ManageQuestionComponent } from './manage-question/manage-question.component';
@@ -29,13 +29,13 @@ import { CommentsComponent } from './comments/comments.component';
 import { VoteComponent } from './vote/vote.component';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { ManageCourseComponent } from './manage-course/manage-course.component';
-import { ConfirmService } from './confirm.service';
+import { ConfirmService } from './services/confirm.service';
 import { QuestionListItemComponent } from './question-list-item/question-list-item.component';
 import { CourseStarterComponent } from './course-starter/course-starter.component';
 import { VersionsComponent } from './versions/versions.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { PushNotificationService } from './push-notification.service';
+import { PushNotificationService } from './services/push-notification.service';
 import { CourseFavoriteListComponent } from './course-favorite-list/course-favorite-list.component';
 
 

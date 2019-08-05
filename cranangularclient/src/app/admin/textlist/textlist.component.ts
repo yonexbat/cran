@@ -3,10 +3,10 @@ import { Router, ActivatedRoute, ParamMap, NavigationExtras } from '@angular/rou
 
 import {Text} from '../../model/text';
 import {SearchText} from '../../model/searchtext';
-import {ICranDataService} from '../../icrandataservice';
-import {CRAN_SERVICE_TOKEN} from '../../cran-data.servicetoken';
-import {NotificationService} from '../../notification.service';
-import {LanguageService} from '../../language.service';
+import {ICranDataService} from '../../services/icrandataservice';
+import {CRAN_SERVICE_TOKEN} from '../../services/cran-data.servicetoken';
+import {NotificationService} from '../../services/notification.service';
+import {LanguageService} from '../../services/language.service';
 import {PagedResult} from '../../model/pagedresult';
 
 @Component({

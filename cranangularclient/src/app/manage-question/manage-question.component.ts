@@ -4,13 +4,13 @@ import { NgForm } from '@angular/forms';
 
 import {Question} from '../model/question';
 import {QuestionOption} from '../model/questionoption';
-import {ICranDataService} from '../icrandataservice';
-import {ConfirmService} from '../confirm.service';
-import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
+import {ICranDataService} from '../services/icrandataservice';
+import {ConfirmService} from '../services/confirm.service';
+import {CRAN_SERVICE_TOKEN} from '../services/cran-data.servicetoken';
 import {StatusmessageComponent} from '../uicomps/statusmessage/statusmessage.component';
 import {QuestionPreviewComponent} from '../question-preview/question-preview.component';
-import {NotificationService} from '../notification.service';
-import {LanguageService} from '../language.service';
+import {NotificationService} from '../services/notification.service';
+import {LanguageService} from '../services/language.service';
 import {Binary} from '../model/binary';
 import {Image} from '../model/image';
 import { QuestionType } from '../model/questiontype';

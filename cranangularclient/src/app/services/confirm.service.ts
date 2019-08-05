@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Subject, Observable} from 'rxjs';
-import {ConfirmRequest} from './model/confirmrequest';
+import {ConfirmRequest} from '../model/confirmrequest';
 
 @Injectable()
 export class ConfirmService {

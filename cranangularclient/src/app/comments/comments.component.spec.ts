@@ -6,10 +6,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import {TestingModule} from '../testing/testing.module';
 import { UicompsModule } from '../uicomps/uicomps.module';
 
-import { ICranDataService } from '../icrandataservice';
+import { ICranDataService } from '../services/icrandataservice';
 import {Comment} from '../model/comment';
-import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
-import { ConfirmService } from '../confirm.service';
+import {CRAN_SERVICE_TOKEN} from '../services/cran-data.servicetoken';
+import { ConfirmService } from '../services/confirm.service';
 
 describe('CommentsComponent', () => {
   let component: CommentsComponent;

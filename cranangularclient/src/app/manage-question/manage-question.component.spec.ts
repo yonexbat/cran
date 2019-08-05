@@ -6,8 +6,8 @@ import { UicompsModule } from '../uicomps/uicomps.module';
 import { ManageQuestionComponent } from './manage-question.component';
 import {TestingModule,
   StubQuestionPreviewComponent, StubRichTextBoxComponent} from '../testing/testing.module';
-import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
-import {ICranDataService} from '../icrandataservice';
+import {CRAN_SERVICE_TOKEN} from '../services/cran-data.servicetoken';
+import {ICranDataService} from '../services/icrandataservice';
 import {Question} from '../model/question';
 import { QuestionType } from '../model/questiontype';
 import { RichTextBoxComponent } from '../uicomps/rich-text-box/rich-text-box.component';

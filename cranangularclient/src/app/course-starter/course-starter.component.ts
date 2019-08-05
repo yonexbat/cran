@@ -1,11 +1,11 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
-import {ICranDataService} from '../icrandataservice';
-import {ConfirmService} from '../confirm.service';
-import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
-import {NotificationService} from '../notification.service';
-import {LanguageService} from '../language.service';
+import {ICranDataService} from '../services/icrandataservice';
+import {ConfirmService} from '../services/confirm.service';
+import {CRAN_SERVICE_TOKEN} from '../services/cran-data.servicetoken';
+import {NotificationService} from '../services/notification.service';
+import {LanguageService} from '../services/language.service';
 
 @Component({
   selector: 'app-course-starter',

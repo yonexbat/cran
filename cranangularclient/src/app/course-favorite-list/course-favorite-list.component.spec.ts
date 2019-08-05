@@ -7,10 +7,10 @@ import { UicompsModule } from '../uicomps/uicomps.module';
 
 import {PagedResult} from '../model/pagedresult';
 import {Tag} from '../model/tag';
-import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
-import {NotificationService} from '../notification.service';
-import {LanguageService} from '../language.service';
-import {ConfirmService} from '../confirm.service';
+import { CRAN_SERVICE_TOKEN } from '../services/cran-data.servicetoken';
+import {NotificationService} from '../services/notification.service';
+import {LanguageService} from '../services/language.service';
+import {ConfirmService} from '../services/confirm.service';
 
 
 import { CourseFavoriteListComponent } from './course-favorite-list.component';

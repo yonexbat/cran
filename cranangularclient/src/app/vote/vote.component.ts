@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Inject } from '@angular/core';
 
-import {ICranDataService} from '../icrandataservice';
-import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
-import {NotificationService} from '../notification.service';
+import {ICranDataService} from '../services/icrandataservice';
+import {CRAN_SERVICE_TOKEN} from '../services/cran-data.servicetoken';
+import {NotificationService} from '../services/notification.service';
 import {Votes} from '../model/votes';
 
 @Component({

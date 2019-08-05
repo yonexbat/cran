@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import {LabelTuple} from './model/LabelTuple';
-import {LanguageInfo} from './model/languageInfo';
+import {LabelTuple} from '../model/LabelTuple';
+import {LanguageInfo} from '../model/languageInfo';
 
 @Injectable()
 export class LanguageService {

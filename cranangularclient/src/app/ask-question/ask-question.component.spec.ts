@@ -12,7 +12,7 @@ import {TestingModule,
   } from '../testing/testing.module';
 import {StubActivatedRoute} from '../testing/stubactivatedroute';
 
-import { NotificationService } from '../notification.service';
+import { NotificationService } from '../services/notification.service';
 
 
 

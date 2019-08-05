@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import {LanguageService} from '../../language.service';
-import {ConfirmService} from '../../confirm.service';
+import {LanguageService} from '../../services/language.service';
+import {ConfirmService} from '../../services/confirm.service';
 import {ConfirmRequest} from '../../model/confirmrequest';
 
 declare var $: any;

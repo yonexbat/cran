@@ -1,37 +1,37 @@
 import { Injectable, InjectionToken  } from '@angular/core';
 
 
-import {Course} from './model/course';
-import {Question} from './model/question';
-import {QuestionOption} from './model/questionoption';
+import {Course} from '../model/course';
+import {Question} from '../model/question';
+import {QuestionOption} from '../model/questionoption';
 import {ICranDataService} from './icrandataservice';
-import {Tag} from './model/tag';
-import {StartCourse} from './model/startcourse';
-import {CourseInstance} from './model/courseinstance';
-import {QuestionToAsk} from './model/questiontoask';
-import {QuestionOptionToAsk} from './model/questionoptiontoask';
-import {QuestionAnswer} from './model/questionanswer';
-import {QuestionListEntry} from './model/questionlistentry';
-import {Result} from './model/result';
-import {QuestionResult} from './model/questionresult';
-import {CourseInstanceListEntry} from './model/courseinstancelistentry';
-import {SearchQParameters} from './model/searchqparameters';
-import {PagedResult} from './model/pagedresult';
-import {Comment} from './model/comment';
-import {GetComments} from './model/getcomments';
-import {Votes} from './model/votes';
-import {Image} from './model/image';
-import {UserInfo} from './model/userinfo';
-import {SearchTags} from './model/searchtags';
-import {SearchText} from './model/searchtext';
-import {Text} from './model/text';
-import {VersionInfo} from './model/versionInfo';
-import {VersionInfoParameters} from './model/versionInfoParameters';
-import {QuestionStatus} from './model/questionstatus';
-import {QuestionType} from './model/questiontype';
-import {SubscriptionShort} from './model/subscriptionshort';
-import {Notification} from './model/notification';
-import {CourseToFavorites} from './model/coursetofavorites';
+import {Tag} from '../model/tag';
+import {StartCourse} from '../model/startcourse';
+import {CourseInstance} from '../model/courseinstance';
+import {QuestionToAsk} from '../model/questiontoask';
+import {QuestionOptionToAsk} from '../model/questionoptiontoask';
+import {QuestionAnswer} from '../model/questionanswer';
+import {QuestionListEntry} from '../model/questionlistentry';
+import {Result} from '../model/result';
+import {QuestionResult} from '../model/questionresult';
+import {CourseInstanceListEntry} from '../model/courseinstancelistentry';
+import {SearchQParameters} from '../model/searchqparameters';
+import {PagedResult} from '../model/pagedresult';
+import {Comment} from '../model/comment';
+import {GetComments} from '../model/getcomments';
+import {Votes} from '../model/votes';
+import {Image} from '../model/image';
+import {UserInfo} from '../model/userinfo';
+import {SearchTags} from '../model/searchtags';
+import {SearchText} from '../model/searchtext';
+import {Text} from '../model/text';
+import {VersionInfo} from '../model/versionInfo';
+import {VersionInfoParameters} from '../model/versionInfoParameters';
+import {QuestionStatus} from '../model/questionstatus';
+import {QuestionType} from '../model/questiontype';
+import {SubscriptionShort} from '../model/subscriptionshort';
+import {Notification} from '../model/notification';
+import {CourseToFavorites} from '../model/coursetofavorites';
 
 
 @Injectable()

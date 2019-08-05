@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, Input, Output, EventEmitter, } from '@angula
 
 import {Tag, TagType} from '../../model/tag';
 import {LanguageInfo} from '../../model/languageInfo';
-import {LanguageService} from '../../language.service';
+import {LanguageService} from '../../services/language.service';
 
 @Component({
   selector: 'app-tags',

@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { PushNotificationService } from './push-notification.service';
 import { SwPush } from '@angular/service-worker';
-import {ICranDataService} from './services/icrandataservice';
-import {CRAN_SERVICE_TOKEN} from './services/cran-data.servicetoken';
-import { LanguageService } from './services/language.service';
-import { NotificationService } from './services/notification.service';
+import {ICranDataService} from './icrandataservice';
+import {CRAN_SERVICE_TOKEN} from './cran-data.servicetoken';
+import { LanguageService } from './language.service';
+import { NotificationService } from './notification.service';
 
 
 describe('PushNotificationService', () => {

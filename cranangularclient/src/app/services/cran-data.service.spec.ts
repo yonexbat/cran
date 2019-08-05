@@ -3,8 +3,8 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { HttpClient, HttpResponse } from '@angular/common/http';
 
 import { CranDataService } from './cran-data.service';
-import {PagedResult} from './model/pagedresult';
-import {Course} from './model/course';
+import {PagedResult} from '../model/pagedresult';
+import {Course} from '../model/course';
 
 describe('LanguageService', () => {
 

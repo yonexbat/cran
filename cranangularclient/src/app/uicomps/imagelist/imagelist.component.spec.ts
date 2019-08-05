@@ -6,10 +6,10 @@ import { FormsModule } from '@angular/forms';
 
 
 import { ImagelistComponent } from './imagelist.component';
-import { CRAN_SERVICE_TOKEN } from '../../cran-data.servicetoken';
-import { NotificationService } from '../../notification.service';
-import { LanguageService } from '../../language.service';
-import { ConfirmService } from '../../confirm.service';
+import { CRAN_SERVICE_TOKEN } from '../../services/cran-data.servicetoken';
+import { NotificationService } from '../../services/notification.service';
+import { LanguageService } from '../../services/language.service';
+import { ConfirmService } from '../../services/confirm.service';
 import { IconComponent } from '../icon/icon.component';
 import { Image } from '../../model/image';
 

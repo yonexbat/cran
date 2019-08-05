@@ -4,10 +4,10 @@ import { Component, Input, Output, EventEmitter, DebugElement, TemplateRef} from
 import { RouterTestingModule } from '@angular/router/testing';
 import { UicompsModule } from '../uicomps/uicomps.module';
 
-import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
-import {NotificationService} from '../notification.service';
-import {ConfirmService} from '../confirm.service';
-import {LanguageService} from '../language.service';
+import { CRAN_SERVICE_TOKEN } from '../services/cran-data.servicetoken';
+import {NotificationService} from '../services/notification.service';
+import {ConfirmService} from '../services/confirm.service';
+import {LanguageService} from '../services/language.service';
 import {Tag} from '../model/tag';
 import { ViewQuestionComponent } from './view-question.component';
 import {SafeHtmlPipe} from '../uicomps/safe-html.pipe';

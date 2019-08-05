@@ -4,9 +4,9 @@ import { Component, Input, Output, EventEmitter, DebugElement, TemplateRef, View
 import { RouterTestingModule } from '@angular/router/testing';
 import { UicompsModule } from '../uicomps/uicomps.module';
 
-import {NotificationService} from '../notification.service';
-import {ConfirmService} from '../confirm.service';
-import {LanguageService} from '../language.service';
+import {NotificationService} from '../services/notification.service';
+import {ConfirmService} from '../services/confirm.service';
+import {LanguageService} from '../services/language.service';
 import { QuestionListItemComponent } from './question-list-item.component';
 import {QuestionListEntry} from '../model/questionlistentry';
 

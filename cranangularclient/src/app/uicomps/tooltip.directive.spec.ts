@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Input, DebugElement} from '@angular/core';
 
 import { TooltipDirective } from './tooltip.directive';
-import {LanguageService} from './../language.service';
+import {LanguageService} from '../services/language.service';
 
 @Component({selector: 'app-test-host', template: '<span id="testspan" [appTooltip] = "\'delete\'">Cranium</span>'})
 class StubTestHostComponent {

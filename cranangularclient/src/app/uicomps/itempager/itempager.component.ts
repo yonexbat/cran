@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef, Input, EventEmitter, Output } from '@angular/core';
 import {PagedResult} from '../../model/pagedresult';
-import {LanguageService} from '../../language.service';
+import {LanguageService} from '../../services/language.service';
 
 @Component({
   selector: 'app-itempager',
