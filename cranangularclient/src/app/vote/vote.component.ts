@@ -15,7 +15,9 @@ export class VoteComponent implements OnInit {
   @Input() public votes: Votes;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
-    private notificationService: NotificationService) { }
+              private notificationService: NotificationService) {
+
+  }
 
   ngOnInit() {
   }

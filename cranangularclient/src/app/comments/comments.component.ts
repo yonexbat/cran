@@ -46,7 +46,7 @@ export class CommentsComponent implements OnInit {
 
     try {
       this.notificationService.emitLoading();
-      const params: GetComments = {idQuestion: this.comment.idQuestion, page : page};
+      const params: GetComments = {idQuestion: this.comment.idQuestion, page};
       this.comments = await this.cranDataServiceService.getComments(params);
       this.notificationService.emitDone();
     } catch (error) {
