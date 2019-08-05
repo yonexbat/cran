@@ -17,8 +17,8 @@ export class HomeComponent implements OnInit {
   text: Text = new Text();
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
-      private ls: LanguageService,
-      private notificationService: NotificationService, ) {
+              private ls: LanguageService,
+              private notificationService: NotificationService, ) {
 
   }
 
