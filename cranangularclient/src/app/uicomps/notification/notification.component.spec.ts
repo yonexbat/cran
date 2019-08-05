@@ -2,12 +2,12 @@ import { async, ComponentFixture, TestBed, tick } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { CRAN_SERVICE_TOKEN } from '../cran-data.servicetoken';
-import {NotificationService} from '../notification.service';
-import {ConfirmService} from '../confirm.service';
-import {LanguageService} from '../language.service';
+import { CRAN_SERVICE_TOKEN } from '../../cran-data.servicetoken';
+import {NotificationService} from '../../notification.service';
+import {ConfirmService} from '../../confirm.service';
+import {LanguageService} from '../../language.service';
 import { NotificationComponent } from './notification.component';
-import {NotificationEvent, NotificationType} from '../model/notificationEvent';
+import {NotificationEvent, NotificationType} from '../../model/notificationEvent';
 
 describe('NotificationComponent', () => {
   let component: NotificationComponent;

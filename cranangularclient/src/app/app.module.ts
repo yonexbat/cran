@@ -25,7 +25,6 @@ import { ResultListComponent } from './result-list/result-list.component';
 import { QuestionPreviewComponent } from './question-preview/question-preview.component';
 import { CourseInstanceListComponent } from './course-instance-list/course-instance-list.component';
 import { SearchQuestionsComponent } from './search-questions/search-questions.component';
-import { NotificationComponent } from './notification/notification.component';
 import { ViewQuestionComponent } from './view-question/view-question.component';
 import { CommentsComponent } from './comments/comments.component';
 import { VoteComponent } from './vote/vote.component';
@@ -64,7 +63,6 @@ if (isDevelopment()) {
     QuestionPreviewComponent,
     CourseInstanceListComponent,
     SearchQuestionsComponent,
-    NotificationComponent,
     ViewQuestionComponent,
     CommentsComponent,
     VoteComponent,

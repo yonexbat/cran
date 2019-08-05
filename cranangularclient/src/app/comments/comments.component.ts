@@ -21,12 +21,13 @@ export class CommentsComponent implements OnInit {
 
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
-    private notificationService: NotificationService,
-    public ls: LanguageService,
-    private confirmService: ConfirmService) {
-      this.comment = new Comment();
-      this.comment.commentText = '';
-    }
+              private notificationService: NotificationService,
+              public ls: LanguageService,
+              private confirmService: ConfirmService) {
+
+    this.comment = new Comment();
+    this.comment.commentText = '';
+  }
 
 
   ngOnInit() {
