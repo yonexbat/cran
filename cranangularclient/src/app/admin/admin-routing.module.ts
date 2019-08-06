@@ -6,6 +6,7 @@ import { TextlistComponent } from './textlist/textlist.component';
 import {ManageTagsComponent} from './manage-tags/manage-tags.component';
 import {ManageTagComponent} from './manage-tag/manage-tag.component';
 import {SubscriptionsComponent} from './subscriptions/subscriptions.component';
+import {ManageCourseComponent} from '../admin/manage-course/manage-course.component';
 
 
 const routes: Routes = [
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'managetags', component: ManageTagsComponent},
   { path: 'managetag/:id', component: ManageTagComponent},
   { path: 'subscriptions', component: SubscriptionsComponent},
+  { path: 'managecourse/:id', component: ManageCourseComponent},
 ];
 
 @NgModule({

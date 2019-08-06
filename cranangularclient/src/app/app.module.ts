@@ -28,7 +28,6 @@ import { ViewQuestionComponent } from './view-question/view-question.component';
 import { CommentsComponent } from './comments/comments.component';
 import { VoteComponent } from './vote/vote.component';
 import { UserInfoComponent } from './user-info/user-info.component';
-import { ManageCourseComponent } from './manage-course/manage-course.component';
 import { ConfirmService } from './services/confirm.service';
 import { QuestionListItemComponent } from './question-list-item/question-list-item.component';
 import { CourseStarterComponent } from './course-starter/course-starter.component';
@@ -65,7 +64,6 @@ if (isDevelopment()) {
     CommentsComponent,
     VoteComponent,
     UserInfoComponent,
-    ManageCourseComponent,
     QuestionListItemComponent,
     CourseStarterComponent,
     VersionsComponent,

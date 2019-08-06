@@ -12,7 +12,6 @@ import {CourseInstanceListComponent} from '../course-instance-list/course-instan
 import {SearchQuestionsComponent} from '../search-questions/search-questions.component';
 import {ViewQuestionComponent} from '../view-question/view-question.component';
 import {FileUploadComponent} from '../uicomps/file-upload/file-upload.component';
-import {ManageCourseComponent} from '../manage-course/manage-course.component';
 import {CourseStarterComponent} from '../course-starter/course-starter.component';
 import {CourseFavoriteListComponent} from '../course-favorite-list/course-favorite-list.component';
 
@@ -30,7 +29,6 @@ const routes: Routes = [
   { path: 'searchq', component: SearchQuestionsComponent},
   { path: 'viewquestion/:id', component: ViewQuestionComponent},
   { path: 'fileupload', component: FileUploadComponent}, 
-  { path: 'managecourse/:id', component: ManageCourseComponent},
   { path: 'coursestarter/:id', component: CourseStarterComponent}, 
   { path: 'admin', loadChildren: () => import('../admin/admin.module').then(mod => mod.AdminModule)},
 ];

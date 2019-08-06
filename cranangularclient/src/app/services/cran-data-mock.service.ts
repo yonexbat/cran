@@ -32,6 +32,7 @@ import {QuestionType} from '../model/questiontype';
 import {SubscriptionShort} from '../model/subscriptionshort';
 import {Notification} from '../model/notification';
 import {CourseToFavorites} from '../model/coursetofavorites';
+import {createCoursesTestObjs} from '../testing/modelobjcreator';
 
 
 @Injectable()
@@ -39,7 +40,7 @@ export class CranDataServiceMock implements ICranDataService {
 
   addCourseToFavorites(favorite: CourseToFavorites): Promise<any> {
     const promiseResult = new Promise<any>((resolve, reject) => {
-      setTimeout(function() {
+      setTimeout(() => {
         resolve();
       }, 1000);
     });
@@ -47,7 +48,7 @@ export class CranDataServiceMock implements ICranDataService {
   }
   removeCoureFromFavorites(favorite: CourseToFavorites): Promise<any> {
     const promiseResult = new Promise<any>((resolve, reject) => {
-      setTimeout(function() {
+      setTimeout(() => {
         resolve();
       }, 1000);
     });
@@ -60,7 +61,7 @@ export class CranDataServiceMock implements ICranDataService {
 
   sendNotificationToUser(message: Notification): Promise<any> {
     const promiseResult = new Promise<any>((resolve, reject) => {
-      setTimeout(function() {
+      setTimeout(() => {
         resolve();
       }, 1000);
     });
@@ -83,7 +84,7 @@ export class CranDataServiceMock implements ICranDataService {
     }
 
     const promiseResult = new Promise<PagedResult<SubscriptionShort>>((resolve, reject) => {
-      setTimeout(function() {
+      setTimeout(() => {
         resolve(pagedResult);
       }, 1000);
     });
@@ -92,7 +93,7 @@ export class CranDataServiceMock implements ICranDataService {
 
   addPushRegistration(subscription: any): Promise<any> {
     const promiseResult = new Promise<any>((resolve, reject) => {
-      setTimeout(function() {
+      setTimeout(() => {
         resolve();
       }, 1000);
     });
@@ -111,7 +112,7 @@ export class CranDataServiceMock implements ICranDataService {
     pagedResult.numpages = 4;
     pagedResult.count = 20;
     const promiseResult = new Promise<PagedResult<VersionInfo>>((resolve, reject) => {
-      setTimeout(function() {
+      setTimeout(() => {
         resolve(pagedResult);
       }, 1000);
     });
@@ -126,7 +127,7 @@ export class CranDataServiceMock implements ICranDataService {
       id: 1,
     };
     const promiseResult = new Promise<Text>((resolve, reject) => {
-      setTimeout(function() {
+      setTimeout(() => {
         resolve(text);
       }, 1000);
     });
@@ -141,7 +142,7 @@ export class CranDataServiceMock implements ICranDataService {
       id: 1,
     };
     const promiseResult = new Promise<Text>((resolve, reject) => {
-      setTimeout(function() {
+      setTimeout(() => {
         resolve(text);
       }, 1000);
     });
@@ -150,7 +151,7 @@ export class CranDataServiceMock implements ICranDataService {
 
   updateText(text: Text): Promise<any> {
     const promiseResult = new Promise<Text>((resolve, reject) => {
-      setTimeout(function() {
+      setTimeout(() => {
         resolve();
       }, 1000);
     });
@@ -172,7 +173,7 @@ export class CranDataServiceMock implements ICranDataService {
     pagedResult.currentPage = 0;
     pagedResult.numpages = 4;
     const promiseResult = new Promise<PagedResult<Text>>((resolve, reject) => {
-      setTimeout(function() {
+      setTimeout(() => {
         resolve(pagedResult);
       }, 1000);
     });
@@ -183,7 +184,7 @@ export class CranDataServiceMock implements ICranDataService {
 
     const tags: Tag[]  = ids.map(id => {
       const tag: Tag = {
-        id: id,
+        id,
         description: 'desc',
         name: 'name',
         shortDescDe: 'ShortDesc de',
@@ -194,7 +195,7 @@ export class CranDataServiceMock implements ICranDataService {
     });
 
     const promiseResult = new Promise<Tag[]>((resolve, reject) => {
-      setTimeout(function() {
+      setTimeout(() => {
         resolve(tags);
       }, 1000);
     });
@@ -203,7 +204,7 @@ export class CranDataServiceMock implements ICranDataService {
 
   answerQuestion(answer: QuestionAnswer): Promise<any> {
     const promiseResult = new Promise<any>((resolve, reject) => {
-      setTimeout(function() {
+      setTimeout(() => {
         resolve();
       }, 1000);
     });
@@ -212,25 +213,25 @@ export class CranDataServiceMock implements ICranDataService {
 
   versionQuestion(id: number): Promise<number> {
      const promiseResult = new Promise<number>((resolve, reject) => {
-      setTimeout(function() {
+      setTimeout(() => {
         resolve(id + 1);
       }, 1000);
-    });
-    return promiseResult;
+     });
+     return promiseResult;
   }
 
   acceptQuestion(id: number): Promise<any> {
       const promiseResult = new Promise<any>((resolve, reject) => {
-      setTimeout(function() {
-        resolve('OK');
-      }, 1000);
-    });
-    return promiseResult;
+      setTimeout(() => {
+          resolve('OK');
+        }, 1000);
+      });
+      return promiseResult;
   }
 
   copyQuestion(id: number): Promise<number> {
     const promiseResult = new Promise<number>((resolve, reject) => {
-      setTimeout(function() {
+      setTimeout(() => {
         resolve(id - 1);
       }, 1000);
     });
@@ -239,7 +240,7 @@ export class CranDataServiceMock implements ICranDataService {
 
   deleteTag(id: number): Promise<any> {
     const promiseResult = new Promise<any>((resolve, reject) => {
-      setTimeout(function() {
+      setTimeout(() => {
         resolve();
       }, 1000);
     });
@@ -248,13 +249,14 @@ export class CranDataServiceMock implements ICranDataService {
 
   getCourse(id: number): Promise<Course> {
     const promiseResult = new Promise<Course>((resolve, reject) => {
-      setTimeout(function() {
+      setTimeout(() => {
         const athing: Course = {
-            id: id,  language: 'De',
+            id,  language: 'De',
             title: 'CouseTitle' ,
             description: 'desc',
             numQuestionsToAsk: 5,
             isFavorite: false,
+            isEditable: true,
           tags: [
             {id: 1, description: 'Desc', name: 'TagName', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, }
           ] };
@@ -266,7 +268,7 @@ export class CranDataServiceMock implements ICranDataService {
 
   insertCourse(course: Course): Promise<number> {
     const promiseResult = new Promise<number>((resolve, reject) => {
-      setTimeout(function() {
+      setTimeout(() => {
         resolve(1);
       }, 1000);
     });
@@ -275,7 +277,7 @@ export class CranDataServiceMock implements ICranDataService {
 
   updateCourse(course: Course): Promise<any> {
     const promiseResult = new Promise<any>((resolve, reject) => {
-      setTimeout(function() {
+      setTimeout(() => {
         resolve();
       }, 1000);
     });
@@ -284,9 +286,9 @@ export class CranDataServiceMock implements ICranDataService {
 
   getTag(id: number): Promise<Tag> {
     const promiseResult = new Promise<Tag>((resolve, reject) => {
-      setTimeout(function() {
+      setTimeout(() => {
         const tag: Tag = {
-          id: id,
+          id,
           description: 'desc',
           name: 'tag1',
           shortDescDe: 'ShortDesc de',
@@ -301,7 +303,7 @@ export class CranDataServiceMock implements ICranDataService {
 
   insertTag(tag: Tag): Promise<number> {
     const promiseResult = new Promise<number>((resolve, reject) => {
-      setTimeout(function() {
+      setTimeout(() => {
         resolve(16);
       }, 1000);
     });
@@ -309,11 +311,11 @@ export class CranDataServiceMock implements ICranDataService {
   }
 
   updateTag(tag: Tag): Promise<any> {
-     const promiseResult = new Promise<number>((resolve, reject) => {
-      setTimeout(function() {
+    const promiseResult = new Promise<number>((resolve, reject) => {
+      setTimeout(() => {
         resolve();
       }, 1000);
-    });
+     });
     return promiseResult;
   }
 
@@ -332,7 +334,7 @@ export class CranDataServiceMock implements ICranDataService {
     pagedResult.count = tags.length;
 
     const promiseResult = new Promise<PagedResult<Tag>>((resolve, reject) => {
-      setTimeout(function() {
+      setTimeout(() => {
         resolve(pagedResult);
       }, 1000);
     });
@@ -343,7 +345,7 @@ export class CranDataServiceMock implements ICranDataService {
 
   getUserInfo(): Promise<UserInfo> {
     const promiseResult = new Promise<UserInfo>((resolve, reject) => {
-      setTimeout(function() {
+      setTimeout(() => {
         const userInfo: UserInfo = {name: 'yonexi', isAnonymous: false, };
         resolve(userInfo);
       }, 1000);
@@ -353,7 +355,7 @@ export class CranDataServiceMock implements ICranDataService {
 
   addImage(image: Image): Promise<Image> {
     const promiseResult = new Promise<Image>((resolve, reject) => {
-      setTimeout(function() {
+      setTimeout(() => {
         resolve(image);
       }, 1000);
     });
@@ -362,7 +364,7 @@ export class CranDataServiceMock implements ICranDataService {
 
   vote(votes: Votes): Promise<Votes> {
     const promiseResult = new Promise<Votes>((resolve, reject) => {
-      setTimeout(function() {
+      setTimeout(() => {
         if (votes.myVote > 0) {
           votes.upVotes++;
         }
@@ -377,7 +379,7 @@ export class CranDataServiceMock implements ICranDataService {
 
   deleteComment(id: number): Promise<any> {
     const promiseResult = new Promise<any>((resolve, reject) => {
-      setTimeout(function() {
+      setTimeout(() => {
         resolve();
       }, 1000);
     });
@@ -405,8 +407,8 @@ export class CranDataServiceMock implements ICranDataService {
       userId: 'yoni', insertDate: new Date(2017, 9, 8), updateDate:  new Date(2017, 9, 8)},
     ];
 
-    const promiseResult = new Promise<PagedResult<Comment>>(function(resolve, reject){
-      setTimeout(function() {
+    const promiseResult = new Promise<PagedResult<Comment>>((resolve, reject) => {
+      setTimeout(() => {
         resolve(result);
       }, 1000);
     });
@@ -414,8 +416,8 @@ export class CranDataServiceMock implements ICranDataService {
   }
 
   addComment(comment: Comment): Promise<number> {
-    const promiseResult = new Promise<number>(function(resolve, reject){
-      setTimeout(function() {
+    const promiseResult = new Promise<number>((resolve, reject) => {
+      setTimeout(() => {
         resolve(9872);
       }, 1000);
     });
@@ -424,8 +426,8 @@ export class CranDataServiceMock implements ICranDataService {
 
   getRolesOfUser(): Promise<string[]> {
 
-    const promiseResult = new Promise<string[]>(function(resolve, reject){
-      setTimeout(function() {
+    const promiseResult = new Promise<string[]>((resolve, reject) => {
+      setTimeout(() => {
         resolve(['admin', 'user']);
       }, 1000);
     });
@@ -452,7 +454,7 @@ export class CranDataServiceMock implements ICranDataService {
     result.data = myList;
 
     const promiseResult = new Promise<PagedResult<QuestionListEntry>>((resolve, reject) => {
-      setTimeout(function() {
+      setTimeout(() => {
         resolve(result);
       }, 1000);
     });
@@ -461,8 +463,8 @@ export class CranDataServiceMock implements ICranDataService {
 
   deleteCourseInstance(id: number): Promise<any> {
 
-    const promiseResult = new Promise<any>(function(resolve, reject){
-      setTimeout(function() {
+    const promiseResult = new Promise<any>((resolve, reject) => {
+      setTimeout(() => {
         resolve();
       }, 1000);
     });
@@ -484,8 +486,8 @@ export class CranDataServiceMock implements ICranDataService {
     result.currentPage = page;
     result.numpages = 20;
 
-    const promiseResult = new Promise<PagedResult<CourseInstanceListEntry>>(function(resolve, reject){
-      setTimeout(function() {
+    const promiseResult = new Promise<PagedResult<CourseInstanceListEntry>>((resolve, reject) => {
+      setTimeout(() => {
         resolve(result);
       }, 1000);
     });
@@ -515,11 +517,11 @@ export class CranDataServiceMock implements ICranDataService {
       courseTitle: 'Dies und das',
       startedAt: new Date('2018-12-17T03:24:00'),
       endedAt: new Date('2018-12-17T03:50:00'),
-      questions: questions,
+      questions,
     };
 
-    const promiseResult = new Promise<Result>(function(resolve, reject){
-      setTimeout(function() {
+    const promiseResult = new Promise<Result>((resolve, reject) => {
+      setTimeout(() => {
         resolve(result);
       }, 1000);
     });
@@ -527,8 +529,8 @@ export class CranDataServiceMock implements ICranDataService {
   }
 
   deleteQuestion(id: number): Promise<any> {
-    const promiseResult = new Promise<any>(function(resolve, reject){
-      setTimeout(function() {
+    const promiseResult = new Promise<any>((resolve, reject) => {
+      setTimeout(() => {
         resolve();
       }, 1000);
     });
@@ -551,8 +553,8 @@ export class CranDataServiceMock implements ICranDataService {
     result.numpages = 5;
     result.currentPage = page;
 
-    const promiseResult = new Promise<PagedResult<QuestionListEntry>>(function(resolve, reject){
-      setTimeout(function() {
+    const promiseResult = new Promise<PagedResult<QuestionListEntry>>((resolve, reject) => {
+      setTimeout(() => {
         resolve(result);
       }, 1000);
     });
@@ -567,8 +569,8 @@ export class CranDataServiceMock implements ICranDataService {
     const questionResult = new CourseInstance();
     questionResult.idCourseInstanceQuestion = 2432;
 
-    const promiseResult = new Promise<CourseInstance>(function(resolve, reject){
-      setTimeout(function() {
+    const promiseResult = new Promise<CourseInstance>((resolve, reject) => {
+      setTimeout(() => {
         resolve(questionResult);
       }, 1000);
     });
@@ -627,8 +629,8 @@ export class CranDataServiceMock implements ICranDataService {
       numQuestionsTotal: 14,
     };
 
-    const promiseResult = new Promise<CourseInstance>(function(resolve, reject){
-      setTimeout(function() {
+    const promiseResult = new Promise<CourseInstance>((resolve, reject) => {
+      setTimeout(() => {
         resolve(result);
       }, 1000);
     });
@@ -655,7 +657,7 @@ export class CranDataServiceMock implements ICranDataService {
       idTagType: 1,
     });
 
-     tags.push({
+    tags.push({
       id : 3,
       name : 'C#',
       description : 'C SHarp',
@@ -673,8 +675,8 @@ export class CranDataServiceMock implements ICranDataService {
       idTagType: 1,
     });
 
-    const promiseResult = new Promise<Tag[]>(function(resolve, reject){
-      setTimeout(function() {
+    const promiseResult = new Promise<Tag[]>((resolve, reject) => {
+      setTimeout(() => {
         resolve(tags);
       }, 1000);
     });
@@ -684,7 +686,7 @@ export class CranDataServiceMock implements ICranDataService {
 
   updateQuestion(question: Question): Promise<any> {
       return new Promise<any>((resolve, reject) => {
-        setTimeout(function() {
+        setTimeout(() => {
           resolve('Ok');
         }, 1000);
       });
@@ -695,33 +697,7 @@ export class CranDataServiceMock implements ICranDataService {
   }
 
   getCourses(page: number): Promise<PagedResult<Course>> {
-    const courseList: Course[] =  [
-      {id: 1, language: 'De', description: 'Test Kurs bla', title: 'Kursus',
-        numQuestionsToAsk: 3,
-        isFavorite: true,
-        tags: [{id: 3, name: 'Js', description: 'desc',  shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, },
-               {id: 5, name: 'Hello', description: 'desc',  shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, }]},
-      {id: 1, language: 'De', numQuestionsToAsk: 3,
-        description: 'Test Kurs bla', title: 'Kursus',
-        isFavorite: false,
-          tags: [{id: 3, name: 'Js', description: 'desc', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, }]},
-      {id: 1, language: 'De', numQuestionsToAsk: 3,
-        isFavorite: true,
-        description: 'Test Kurs bla', title: 'Kursus',
-          tags: [{id: 3, name: 'Js', description: 'desc', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, }]},
-      {id: 1, language: 'De', numQuestionsToAsk: 3,
-        description: 'Test Kurs bla', title: 'Kursus',
-        isFavorite: true,
-          tags: [{id: 3, name: 'Js', description: 'desc', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, }]},
-      {id: 1, language: 'De', numQuestionsToAsk: 3,
-        description: 'Test Kurs bla', title: 'Kursus',
-        isFavorite: true,
-          tags: [{id: 3, name: 'Js', description: 'desc', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, }]},
-      {id: 1, language: 'De', numQuestionsToAsk: 3,
-        isFavorite: true,
-        description: 'GLOBI in den Ferien', title: 'Kursus',
-       tags: [{id: 3, name: 'Js', description: 'desc', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, }]},
-    ];
+    const courseList: Course[] = createCoursesTestObjs();
 
     const courses: PagedResult<Course> = {
       data: courseList,
@@ -732,7 +708,7 @@ export class CranDataServiceMock implements ICranDataService {
     };
 
     const promiseResult: Promise<PagedResult<Course>> = new Promise<PagedResult<Course>>((resolve, reject) => {
-      setTimeout(function() {
+      setTimeout(() => {
         resolve(courses);
       }, 1000);
     });
@@ -778,7 +754,7 @@ export class CranDataServiceMock implements ICranDataService {
           {id: 34, description: 'helo cran', name: 'cran', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, },
         ];
 
-        setTimeout(function() {
+        setTimeout(() => {
           resolve(question);
         }, 1000);
       });

@@ -8,6 +8,7 @@ import { ManageTextComponent } from './manage-text/manage-text.component';
 import { TextlistComponent } from './textlist/textlist.component';
 import { ManageTagComponent } from './manage-tag/manage-tag.component';
 import { ManageTagsComponent } from './manage-tags/manage-tags.component';
+import { ManageCourseComponent } from './manage-course/manage-course.component';
 import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
 
 
@@ -19,6 +20,7 @@ import { SubscriptionsComponent } from './subscriptions/subscriptions.component'
     ManageTagComponent,
     ManageTagComponent,
     ManageTagsComponent,
+    ManageCourseComponent,
     SubscriptionsComponent,
   ],
   imports: [
