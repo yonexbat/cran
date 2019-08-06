@@ -10,20 +10,16 @@ import { CoremoduleModule } from './coremodule/coremodule.module';
 
 import { AppComponent } from './app.component';
 import { NotificationService } from './services/notification.service';
-import { MenuComponent } from './menu/menu.component';
-import { CourseListComponent } from './course-list/course-list.component';
 import { CRAN_SERVICE_TOKEN } from './services/cran-data.servicetoken';
 import { CranDataService  } from './services/cran-data.service';
 import { CranDataServiceMock } from './services/cran-data-mock.service';
 import { LanguageService } from './services/language.service';
 import { AppRoutingModule } from './app-routing/app-routing.module';
-import { HomeComponent } from './home/home.component';
 import { QuestionListComponent } from './question-list/question-list.component';
 import { ResultListComponent } from './result-list/result-list.component';
 import { CourseInstanceListComponent } from './course-instance-list/course-instance-list.component';
 import { SearchQuestionsComponent } from './search-questions/search-questions.component';
 import { ViewQuestionComponent } from './view-question/view-question.component';
-import { UserInfoComponent } from './user-info/user-info.component';
 import { ConfirmService } from './services/confirm.service';
 import { QuestionListItemComponent } from './question-list-item/question-list-item.component';
 import { CourseStarterComponent } from './course-starter/course-starter.component';
@@ -46,15 +42,11 @@ if (isDevelopment()) {
 @NgModule({
   declarations: [
     AppComponent,
-    MenuComponent,
-    CourseListComponent,
-    HomeComponent,
     QuestionListComponent,
     ResultListComponent,
     CourseInstanceListComponent,
     SearchQuestionsComponent,
     ViewQuestionComponent,
-    UserInfoComponent,
     QuestionListItemComponent,
     CourseStarterComponent,
     VersionsComponent,

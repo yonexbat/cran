@@ -1,13 +1,13 @@
 import { Component, OnInit, Inject, ViewChild, } from '@angular/core';
 import { Router, } from '@angular/router';
-import {ICranDataService} from '../services/icrandataservice';
-import {CRAN_SERVICE_TOKEN} from '../services/cran-data.servicetoken';
-import {Course} from '../model/course';
-import {NotificationService} from '../services/notification.service';
-import {LanguageService} from '../services/language.service';
-import {PagedResult} from '../model/pagedresult';
-import {CourseToFavorites} from '../model/coursetofavorites';
-import {ConfirmService} from '../services/confirm.service';
+import {ICranDataService} from '../../services/icrandataservice';
+import {CRAN_SERVICE_TOKEN} from '../../services/cran-data.servicetoken';
+import {Course} from '../../model/course';
+import {NotificationService} from '../../services/notification.service';
+import {LanguageService} from '../../services/language.service';
+import {PagedResult} from '../../model/pagedresult';
+import {CourseToFavorites} from '../../model/coursetofavorites';
+import {ConfirmService} from '../../services/confirm.service';
 
 
 @Component({

@@ -2,8 +2,8 @@ import { TestBed, async } from '@angular/core/testing';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { MenuComponent } from './menu/menu.component';
-import { HomeComponent } from './home/home.component';
+import { MenuComponent } from './coremodule/menu/menu.component';
+import { HomeComponent } from './coremodule/home/home.component';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 
 describe('AppComponent', () => {

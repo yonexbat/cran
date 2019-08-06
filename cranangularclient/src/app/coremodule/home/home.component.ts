@@ -1,11 +1,11 @@
 import { Component, OnInit, Inject } from '@angular/core';
 
-import { LanguageService } from '../services/language.service';
-import {Text} from '../model/text';
-import {LanguageInfo} from '../model/languageInfo';
-import {ICranDataService} from '../services/icrandataservice';
-import {CRAN_SERVICE_TOKEN} from '../services/cran-data.servicetoken';
-import {NotificationService} from '../services/notification.service';
+import { LanguageService } from '../../services/language.service';
+import {Text} from '../../model/text';
+import {LanguageInfo} from '../../model/languageInfo';
+import {ICranDataService} from '../../services/icrandataservice';
+import {CRAN_SERVICE_TOKEN} from '../../services/cran-data.servicetoken';
+import {NotificationService} from '../../services/notification.service';
 
 @Component({
   selector: 'app-home',

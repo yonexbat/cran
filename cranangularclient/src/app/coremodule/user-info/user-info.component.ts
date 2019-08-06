@@ -1,11 +1,11 @@
 import { Component, OnInit, Inject } from '@angular/core';
 
-import {ICranDataService} from '../services/icrandataservice';
-import {CRAN_SERVICE_TOKEN} from '../services/cran-data.servicetoken';
-import {NotificationService} from '../services/notification.service';
-import {UserInfo} from '../model/userinfo';
-import {LanguageService} from '../services/language.service';
-import {LanguageInfo} from '../model/languageInfo';
+import {ICranDataService} from '../../services/icrandataservice';
+import {CRAN_SERVICE_TOKEN} from '../../services/cran-data.servicetoken';
+import {NotificationService} from '../../services/notification.service';
+import {UserInfo} from '../../model/userinfo';
+import {LanguageService} from '../../services/language.service';
+import {LanguageInfo} from '../../model/languageInfo';
 
 @Component({
   selector: 'app-user-info',
