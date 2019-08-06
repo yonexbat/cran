@@ -15,13 +15,23 @@ export class QuestionPreviewComponent implements OnInit {
   constructor(public ls: LanguageService) { }
 
   public question: Question;
+  private visible = false;
 
   ngOnInit() {
   }
 
   public showDialog(question: Question) {
     this.question = question;
+    this.visible = true;
     $('#questionpreview').modal('show');
   }
 
+  public hideDialog() {
+    this.visible = false;
+    $('#questionpreview').modal('hide');
+  }
+
+  public isVisible(): boolean {
+    return this.visible;
+  }
 }

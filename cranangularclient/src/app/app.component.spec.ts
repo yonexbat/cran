@@ -63,7 +63,7 @@ describe('AppComponent', () => {
     expect(component).toBeTruthy();
   }));
 
-  fit('should show elements', async(() => {
+  it('should show elements', async(() => {
     const appmMenu = fixture.debugElement.query(By.css('app-menu'));
     expect(appmMenu.nativeElement).toBeTruthy();
 

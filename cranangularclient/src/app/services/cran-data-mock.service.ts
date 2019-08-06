@@ -32,7 +32,7 @@ import {QuestionType} from '../model/questiontype';
 import {SubscriptionShort} from '../model/subscriptionshort';
 import {Notification} from '../model/notification';
 import {CourseToFavorites} from '../model/coursetofavorites';
-import {createCoursesTestObjs} from '../testing/modelobjcreator';
+import {createCoursesTestObjs, createQuestionTestObj} from '../testing/modelobjcreator';
 
 
 @Injectable()
@@ -723,37 +723,7 @@ export class CranDataServiceMock implements ICranDataService {
 
   getQuestion(id: number): Promise<Question> {
     return new Promise<Question>((resolve, reject) => {
-
-        const question = new Question();
-        question.text = 'Wie alt ist unsere Karotte?';
-        question.title = 'MyTitle';
-        question.id = id;
-        question.explanation = 'My explanation';
-        if (id > 10) {
-          question.status = 1;
-        } else {
-          question.status = 0;
-        }
-        question.isEditable = true;
-        question.language = 'De';
-        question.votes = {
-          downVotes: 2,
-          upVotes: 12,
-          idQuestion: question.id,
-          myVote: 0,
-        };
-
-        question.options = [
-          {isTrue : true, text : '1 Jahr'},
-          {isTrue : false, text : '2 Jahre'},
-          {isTrue : true, text : '4 Jahre'},
-          {isTrue : false, text : '5 Jahre'},
-        ];
-
-        question.tags = [
-          {id: 34, description: 'helo cran', name: 'cran', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, },
-        ];
-
+        const question =  createQuestionTestObj(id);
         setTimeout(() => {
           resolve(question);
         }, 1000);

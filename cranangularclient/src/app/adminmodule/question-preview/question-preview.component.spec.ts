@@ -1,14 +1,17 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import {FormsModule} from '@angular/forms';
-import { Component, Input, Output, EventEmitter, DebugElement, TemplateRef} from '@angular/core';
+import { async, ComponentFixture, TestBed,} from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
+import { Component, Input, Output, EventEmitter, DebugElement, TemplateRef } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UicompsModule } from '../../uicomps/uicomps.module';
+import { createQuestionTestObj } from '../../testing/modelobjcreator';
 
 import { CRAN_SERVICE_TOKEN } from '../../services/cran-data.servicetoken';
-import {NotificationService} from '../../services/notification.service';
-import {ConfirmService} from '../../services/confirm.service';
-import {LanguageService} from '../../services/language.service';
+import { NotificationService } from '../../services/notification.service';
+import { ConfirmService } from '../../services/confirm.service';
+import { LanguageService } from '../../services/language.service';
 import { QuestionPreviewComponent } from './question-preview.component';
+
 
 
 
@@ -44,4 +47,23 @@ describe('QuestionPreviewComponent', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should show preview', async( async () => {
+
+    let dialogDiv = fixture.debugElement.query(By.css('div.modal'));
+
+    const question = createQuestionTestObj(1);
+    component.showDialog(question);
+
+    fixture.detectChanges();
+
+    dialogDiv = fixture.debugElement.query(By.css('div.modal'));
+    expect(dialogDiv).toBeTruthy('Dialog shlould be visible now');
+
+    const ne: HTMLElement = dialogDiv.nativeElement;
+    expect(ne.innerText).toContain('Karotte');
+
+  }));
+
 });
+
