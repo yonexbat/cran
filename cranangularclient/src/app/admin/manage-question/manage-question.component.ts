@@ -2,18 +2,18 @@ import { Component, OnInit, Inject, ViewChild, } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
-import {Question} from '../model/question';
-import {QuestionOption} from '../model/questionoption';
-import {ICranDataService} from '../services/icrandataservice';
-import {ConfirmService} from '../services/confirm.service';
-import {CRAN_SERVICE_TOKEN} from '../services/cran-data.servicetoken';
-import {StatusmessageComponent} from '../uicomps/statusmessage/statusmessage.component';
-import {QuestionPreviewComponent} from '../question-preview/question-preview.component';
-import {NotificationService} from '../services/notification.service';
-import {LanguageService} from '../services/language.service';
-import {Binary} from '../model/binary';
-import {Image} from '../model/image';
-import { QuestionType } from '../model/questiontype';
+import {Question} from '../../model/question';
+import {QuestionOption} from '../../model/questionoption';
+import {ICranDataService} from '../../services/icrandataservice';
+import {ConfirmService} from '../../services/confirm.service';
+import {CRAN_SERVICE_TOKEN} from '../../services/cran-data.servicetoken';
+import {StatusmessageComponent} from '../../uicomps/statusmessage/statusmessage.component';
+import {QuestionPreviewComponent} from '../../question-preview/question-preview.component';
+import {NotificationService} from '../../services/notification.service';
+import {LanguageService} from '../../services/language.service';
+import {Binary} from '../../model/binary';
+import {Image} from '../../model/image';
+import { QuestionType } from '../../model/questiontype';
 
 
 @Component({

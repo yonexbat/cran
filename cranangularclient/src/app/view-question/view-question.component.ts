@@ -38,7 +38,7 @@ export class ViewQuestionComponent implements OnInit {
   }
 
   public goToEditQuestion() {
-    this.router.navigate(['/editquestion', this.question.id]);
+    this.router.navigate(['/admin/editquestion', this.question.id]);
   }
 
   private async createNewVersion() {
@@ -48,7 +48,7 @@ export class ViewQuestionComponent implements OnInit {
       this.notificationService.emitLoading();
       const newId = await this.cranDataService.versionQuestion(this.question.id);
       this.notificationService.emitDone();
-      this.router.navigate(['/editquestion', newId]);
+      this.router.navigate(['/admin/editquestion', newId]);
     } catch (error) {
       if (error === 'cancel') {
         // that is ok
@@ -65,7 +65,7 @@ export class ViewQuestionComponent implements OnInit {
         this.notificationService.emitLoading();
         const newQuestionId = await this.cranDataService.copyQuestion(this.question.id);
         this.notificationService.emitDone();
-        this.router.navigate(['/editquestion', newQuestionId]);
+        this.router.navigate(['/admin/editquestion', newQuestionId]);
       } catch (error) {
         if (error === 'cancel') {
           // that is ok

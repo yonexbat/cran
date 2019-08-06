@@ -1,17 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { UicompsModule } from '../uicomps/uicomps.module';
+import { UicompsModule } from '../../uicomps/uicomps.module';
 
 import { ManageQuestionComponent } from './manage-question.component';
 import {TestingModule,
-  StubQuestionPreviewComponent, StubRichTextBoxComponent} from '../testing/testing.module';
-import {CRAN_SERVICE_TOKEN} from '../services/cran-data.servicetoken';
-import {ICranDataService} from '../services/icrandataservice';
-import {Question} from '../model/question';
-import { QuestionType } from '../model/questiontype';
-import { RichTextBoxComponent } from '../uicomps/rich-text-box/rich-text-box.component';
-import { identifierModuleUrl } from '@angular/compiler';
+  StubQuestionPreviewComponent, StubRichTextBoxComponent} from '../../testing/testing.module';
+import {CRAN_SERVICE_TOKEN} from '../../services/cran-data.servicetoken';
+import {ICranDataService} from '../../services/icrandataservice';
+import {Question} from '../../model/question';
+import { QuestionType } from '../../model/questiontype';
+import { RichTextBoxComponent } from '../../uicomps/rich-text-box/rich-text-box.component';
 
 
 
@@ -161,8 +160,6 @@ describe('ManageQuestionComponent', () => {
     const textEl: HTMLInputElement = nativeEl.querySelector('#questiontext > input');
     textEl.value = 'Hello question text';
     textEl.dispatchEvent(new Event('input'));
-
-
 
     // Click add button;
     await fixture.whenStable();

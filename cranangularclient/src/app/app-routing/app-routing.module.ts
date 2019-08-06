@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 import {CourseListComponent} from '../course-list/course-list.component';
 import {HomeComponent} from '../home/home.component';
-import {ManageQuestionComponent} from '../manage-question/manage-question.component';
 import {AskQuestionComponent} from '../ask-question/ask-question.component';
 import {QuestionListComponent} from '../question-list/question-list.component';
 import {ResultListComponent} from '../result-list/result-list.component';
@@ -22,8 +21,6 @@ const routes: Routes = [
   { path: 'coursefavorites', component:  CourseFavoriteListComponent},
   { path: 'questionlist', component:  QuestionListComponent},
   { path: 'results', component: CourseInstanceListComponent},
-  { path: 'addquestion', component:  ManageQuestionComponent},
-  { path: 'editquestion/:id', component: ManageQuestionComponent},
   { path: 'askquestion/:id', component:  AskQuestionComponent},
   { path: 'resultlist/:id', component:  ResultListComponent},
   { path: 'searchq', component: SearchQuestionsComponent},

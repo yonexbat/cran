@@ -61,7 +61,7 @@ export class QuestionListItemComponent implements OnInit {
 
   private itemEdit() {
     this.onItemEditclick.emit(this.item);
-    this.router.navigate(['/editquestion', this.item.id]);
+    this.router.navigate(['/admin/editquestion', this.item.id]);
   }
 
   ngOnInit() {

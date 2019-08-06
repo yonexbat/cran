@@ -112,7 +112,7 @@ export class AskQuestionComponent implements OnInit {
       this.notificationService.emitLoading();
       const newId = await this.cranDataServiceService.versionQuestion( this.questionToAsk.question.id);
       this.notificationService.emitDone();
-      this.router.navigate(['/editquestion', newId]);
+      this.router.navigate(['/admin/editquestion', newId]);
     } catch (error) {
       this.notificationService.emitError(error);
     }

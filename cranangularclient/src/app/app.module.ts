@@ -17,7 +17,6 @@ import { CranDataServiceMock } from './services/cran-data-mock.service';
 import { LanguageService } from './services/language.service';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { HomeComponent } from './home/home.component';
-import { ManageQuestionComponent } from './manage-question/manage-question.component';
 import { AskQuestionComponent } from './ask-question/ask-question.component';
 import { QuestionListComponent } from './question-list/question-list.component';
 import { ResultListComponent } from './result-list/result-list.component';
@@ -53,7 +52,6 @@ if (isDevelopment()) {
     MenuComponent,
     CourseListComponent,
     HomeComponent,
-    ManageQuestionComponent,
     AskQuestionComponent,
     QuestionListComponent,
     ResultListComponent,
