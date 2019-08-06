@@ -2,13 +2,13 @@ import { Component, OnInit, Inject,  } from '@angular/core';
 import { Router, } from '@angular/router';
 import { DatePipe,  } from '@angular/common';
 
-import {ICranDataService} from '../services/icrandataservice';
-import {CRAN_SERVICE_TOKEN} from '../services/cran-data.servicetoken';
-import {CourseInstanceListEntry} from '../model/courseinstancelistentry';
-import {NotificationService} from '../services/notification.service';
-import {LanguageService} from '../services/language.service';
-import {ConfirmService} from '../services/confirm.service';
-import {PagedResult} from '../model/pagedresult';
+import {ICranDataService} from '../../services/icrandataservice';
+import {CRAN_SERVICE_TOKEN} from '../../services/cran-data.servicetoken';
+import {CourseInstanceListEntry} from '../../model/courseinstancelistentry';
+import {NotificationService} from '../../services/notification.service';
+import {LanguageService} from '../../services/language.service';
+import {ConfirmService} from '../../services/confirm.service';
+import {PagedResult} from '../../model/pagedresult';
 
 @Component({
   selector: 'app-course-instance-list',

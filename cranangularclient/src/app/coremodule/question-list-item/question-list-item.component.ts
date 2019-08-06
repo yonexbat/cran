@@ -3,8 +3,8 @@ import { Component, OnInit,
   EventEmitter, HostBinding } from '@angular/core';
 import { Router, } from '@angular/router';
 
-import {QuestionListEntry} from '../model/questionlistentry';
-import {LanguageService} from '../services/language.service';
+import {QuestionListEntry} from '../../model/questionlistentry';
+import {LanguageService} from '../../services/language.service';
 
 @Component({
   selector: 'app-question-list-item',

@@ -11,7 +11,12 @@ import { UserInfoComponent } from './user-info/user-info.component';
 import { CourseListComponent } from './course-list/course-list.component';
 import { MenuComponent } from './menu/menu.component';
 import { HomeComponent } from './home/home.component';
-
+import { ViewQuestionComponent } from './view-question/view-question.component';
+import { CourseStarterComponent } from './course-starter/course-starter.component';
+import { CourseFavoriteListComponent } from './course-favorite-list/course-favorite-list.component';
+import { CourseInstanceListComponent } from './course-instance-list/course-instance-list.component';
+import { QuestionListComponent } from './question-list/question-list.component';
+import { QuestionListItemComponent } from './question-list-item/question-list-item.component';
 
 
 @NgModule({
@@ -23,6 +28,12 @@ import { HomeComponent } from './home/home.component';
     CourseListComponent,
     MenuComponent,
     HomeComponent,
+    ViewQuestionComponent,
+    CourseInstanceListComponent,
+    CourseStarterComponent,
+    CourseFavoriteListComponent,
+    QuestionListComponent,
+    QuestionListItemComponent,
   ],
   imports: [
     CommonModule,
@@ -38,6 +49,12 @@ import { HomeComponent } from './home/home.component';
     CourseListComponent,
     MenuComponent,
     HomeComponent,
+    ViewQuestionComponent,
+    CourseInstanceListComponent,
+    CourseStarterComponent,
+    CourseFavoriteListComponent,
+    QuestionListComponent,
+    QuestionListItemComponent,
   ]
 
 })

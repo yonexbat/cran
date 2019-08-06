@@ -15,19 +15,18 @@ import { CranDataService  } from './services/cran-data.service';
 import { CranDataServiceMock } from './services/cran-data-mock.service';
 import { LanguageService } from './services/language.service';
 import { AppRoutingModule } from './app-routing/app-routing.module';
-import { QuestionListComponent } from './question-list/question-list.component';
+
 import { ResultListComponent } from './result-list/result-list.component';
-import { CourseInstanceListComponent } from './course-instance-list/course-instance-list.component';
+
 import { SearchQuestionsComponent } from './search-questions/search-questions.component';
-import { ViewQuestionComponent } from './view-question/view-question.component';
 import { ConfirmService } from './services/confirm.service';
-import { QuestionListItemComponent } from './question-list-item/question-list-item.component';
-import { CourseStarterComponent } from './course-starter/course-starter.component';
+
+
 import { VersionsComponent } from './versions/versions.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { PushNotificationService } from './services/push-notification.service';
-import { CourseFavoriteListComponent } from './course-favorite-list/course-favorite-list.component';
+
 
 
 function isDevelopment() {
@@ -42,15 +41,9 @@ if (isDevelopment()) {
 @NgModule({
   declarations: [
     AppComponent,
-    QuestionListComponent,
     ResultListComponent,
-    CourseInstanceListComponent,
     SearchQuestionsComponent,
-    ViewQuestionComponent,
-    QuestionListItemComponent,
-    CourseStarterComponent,
     VersionsComponent,
-    CourseFavoriteListComponent,
   ],
   imports: [
     BrowserModule,

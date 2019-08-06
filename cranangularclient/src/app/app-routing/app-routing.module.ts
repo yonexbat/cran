@@ -5,14 +5,14 @@ import { RouterModule, Routes } from '@angular/router';
 import {CourseListComponent} from '../coremodule/course-list/course-list.component';
 import {HomeComponent} from '../coremodule/home/home.component';
 import {AskQuestionComponent} from '../coremodule/ask-question/ask-question.component';
-import {QuestionListComponent} from '../question-list/question-list.component';
+import {QuestionListComponent} from '../coremodule/question-list/question-list.component';
 import {ResultListComponent} from '../result-list/result-list.component';
-import {CourseInstanceListComponent} from '../course-instance-list/course-instance-list.component';
+import {CourseInstanceListComponent} from '../coremodule/course-instance-list/course-instance-list.component';
 import {SearchQuestionsComponent} from '../search-questions/search-questions.component';
-import {ViewQuestionComponent} from '../view-question/view-question.component';
+import {ViewQuestionComponent} from '../coremodule/view-question/view-question.component';
 import {FileUploadComponent} from '../uicomps/file-upload/file-upload.component';
-import {CourseStarterComponent} from '../course-starter/course-starter.component';
-import {CourseFavoriteListComponent} from '../course-favorite-list/course-favorite-list.component';
+import {CourseStarterComponent} from '../coremodule/course-starter/course-starter.component';
+import {CourseFavoriteListComponent} from '../coremodule/course-favorite-list/course-favorite-list.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent},

@@ -2,13 +2,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import { Component, Input, Output, EventEmitter, DebugElement, TemplateRef, ViewChild} from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { UicompsModule } from '../uicomps/uicomps.module';
+import { UicompsModule } from '../../uicomps/uicomps.module';
 
-import {NotificationService} from '../services/notification.service';
-import {ConfirmService} from '../services/confirm.service';
-import {LanguageService} from '../services/language.service';
+import {NotificationService} from '../../services/notification.service';
+import {ConfirmService} from '../../services/confirm.service';
+import {LanguageService} from '../../services/language.service';
 import { QuestionListItemComponent } from './question-list-item.component';
-import {QuestionListEntry} from '../model/questionlistentry';
+import {QuestionListEntry} from '../../model/questionlistentry';
 
 
 // This compoment uses a host. we are testing the host.

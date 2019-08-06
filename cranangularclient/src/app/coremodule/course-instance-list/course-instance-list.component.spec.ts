@@ -2,14 +2,14 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Input, DebugElement, Directive, TemplateRef} from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DatePipe } from '@angular/common';
-import { UicompsModule } from '../uicomps/uicomps.module';
+import { UicompsModule } from '../../uicomps/uicomps.module';
 
 import { CourseInstanceListComponent } from './course-instance-list.component';
-import {PagedResult} from '../model/pagedresult';
-import { CRAN_SERVICE_TOKEN } from '../services/cran-data.servicetoken';
-import {NotificationService} from '../services/notification.service';
-import {LanguageService} from '../services/language.service';
-import {ConfirmService} from '../services/confirm.service';
+import {PagedResult} from '../../model/pagedresult';
+import { CRAN_SERVICE_TOKEN } from '../../services/cran-data.servicetoken';
+import {NotificationService} from '../../services/notification.service';
+import {LanguageService} from '../../services/language.service';
+import {ConfirmService} from '../../services/confirm.service';
 
 
 @Component({selector: 'app-pager', template: ''})
