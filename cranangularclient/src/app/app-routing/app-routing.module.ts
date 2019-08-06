@@ -27,7 +27,7 @@ const routes: Routes = [
   { path: 'viewquestion/:id', component: ViewQuestionComponent},
   { path: 'fileupload', component: FileUploadComponent}, 
   { path: 'coursestarter/:id', component: CourseStarterComponent}, 
-  { path: 'admin', loadChildren: () => import('../admin/admin.module').then(mod => mod.AdminModule)},
+  { path: 'admin', loadChildren: () => import('../adminmodule/admin.module').then(mod => mod.AdminModule)},
 ];
 
 @NgModule({

@@ -6,7 +6,7 @@ import { TextlistComponent } from './textlist/textlist.component';
 import { ManageTagsComponent } from './manage-tags/manage-tags.component';
 import { ManageTagComponent } from './manage-tag/manage-tag.component';
 import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
-import { ManageCourseComponent } from '../admin/manage-course/manage-course.component';
+import { ManageCourseComponent } from './manage-course/manage-course.component';
 import { ManageQuestionComponent } from './manage-question/manage-question.component';
 
 
