@@ -14,7 +14,7 @@ import { CRAN_SERVICE_TOKEN } from './services/cran-data.servicetoken';
 import { CranDataService  } from './services/cran-data.service';
 import { CranDataServiceMock } from './services/cran-data-mock.service';
 import { LanguageService } from './services/language.service';
-import { AppRoutingModule } from './app-routing/app-routing.module';
+import { CoreModuleRoutingModule } from './coremodule/coremodule-routing.module';
 
 
 import { ConfirmService } from './services/confirm.service';
@@ -43,7 +43,7 @@ if (isDevelopment()) {
     HttpClientModule,
     CommonModule,
     FormsModule,
-    AppRoutingModule,
+    CoreModuleRoutingModule,
     BrowserAnimationsModule,
     ServiceWorkerModule.register('pwacranium.js', { enabled: environment.production }),
     UicompsModule,

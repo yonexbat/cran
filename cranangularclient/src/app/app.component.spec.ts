@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { MenuComponent } from './coremodule/menu/menu.component';
 import { HomeComponent } from './coremodule/home/home.component';
-import { AppRoutingModule } from './app-routing/app-routing.module';
+import { CoreModuleRoutingModule } from './coremodule/coremodule-routing.module';
 
 describe('AppComponent', () => {
 
