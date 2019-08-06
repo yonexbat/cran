@@ -1,12 +1,12 @@
 import { Component, OnInit, Inject, } from '@angular/core';
 import { Router, ParamMap, ActivatedRoute, } from '@angular/router';
 
-import {ICranDataService} from '../services/icrandataservice';
-import {CRAN_SERVICE_TOKEN} from '../services/cran-data.servicetoken';
-import {NotificationService} from '../services/notification.service';
-import {Result} from '../model/result';
-import {QuestionResult} from '../model/questionresult';
-import {LanguageService} from '../services/language.service';
+import {ICranDataService} from '../../services/icrandataservice';
+import {CRAN_SERVICE_TOKEN} from '../../services/cran-data.servicetoken';
+import {NotificationService} from '../../services/notification.service';
+import {Result} from '../../model/result';
+import {QuestionResult} from '../../model/questionresult';
+import {LanguageService} from '../../services/language.service';
 
 @Component({
   selector: 'app-result-list',

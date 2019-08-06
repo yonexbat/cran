@@ -1,15 +1,15 @@
 import { Component, OnInit, Inject, ViewChild, } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap, } from '@angular/router';
-import {ICranDataService} from '../services/icrandataservice';
-import {CRAN_SERVICE_TOKEN} from '../services/cran-data.servicetoken';
-import {NotificationService} from '../services/notification.service';
-import {Question} from '../model/question';
-import {LanguageService} from '../services/language.service';
-import {ConfirmService} from '../services/confirm.service';
-import {VersionInfo} from '../model/versionInfo';
-import {VersionInfoParameters} from '../model/versionInfoParameters';
-import {PagedResult} from '../model/pagedresult';
-import {QuestionStatus} from '../model/questionstatus';
+import {ICranDataService} from '../../services/icrandataservice';
+import {CRAN_SERVICE_TOKEN} from '../../services/cran-data.servicetoken';
+import {NotificationService} from '../../services/notification.service';
+import {Question} from '../../model/question';
+import {LanguageService} from '../../services/language.service';
+import {ConfirmService} from '../../services/confirm.service';
+import {VersionInfo} from '../../model/versionInfo';
+import {VersionInfoParameters} from '../../model/versionInfoParameters';
+import {PagedResult} from '../../model/pagedresult';
+import {QuestionStatus} from '../../model/questionstatus';
 
 declare var $: any;
 

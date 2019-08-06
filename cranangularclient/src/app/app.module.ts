@@ -16,13 +16,8 @@ import { CranDataServiceMock } from './services/cran-data-mock.service';
 import { LanguageService } from './services/language.service';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 
-import { ResultListComponent } from './result-list/result-list.component';
 
-import { SearchQuestionsComponent } from './search-questions/search-questions.component';
 import { ConfirmService } from './services/confirm.service';
-
-
-import { VersionsComponent } from './versions/versions.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { PushNotificationService } from './services/push-notification.service';
@@ -41,9 +36,6 @@ if (isDevelopment()) {
 @NgModule({
   declarations: [
     AppComponent,
-    ResultListComponent,
-    SearchQuestionsComponent,
-    VersionsComponent,
   ],
   imports: [
     BrowserModule,
