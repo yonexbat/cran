@@ -20,7 +20,6 @@ import { HomeComponent } from './home/home.component';
 import { AskQuestionComponent } from './ask-question/ask-question.component';
 import { QuestionListComponent } from './question-list/question-list.component';
 import { ResultListComponent } from './result-list/result-list.component';
-import { QuestionPreviewComponent } from './question-preview/question-preview.component';
 import { CourseInstanceListComponent } from './course-instance-list/course-instance-list.component';
 import { SearchQuestionsComponent } from './search-questions/search-questions.component';
 import { ViewQuestionComponent } from './view-question/view-question.component';
@@ -55,7 +54,6 @@ if (isDevelopment()) {
     AskQuestionComponent,
     QuestionListComponent,
     ResultListComponent,
-    QuestionPreviewComponent,
     CourseInstanceListComponent,
     SearchQuestionsComponent,
     ViewQuestionComponent,

@@ -8,7 +8,7 @@ import {ICranDataService} from '../../services/icrandataservice';
 import {ConfirmService} from '../../services/confirm.service';
 import {CRAN_SERVICE_TOKEN} from '../../services/cran-data.servicetoken';
 import {StatusmessageComponent} from '../../uicomps/statusmessage/statusmessage.component';
-import {QuestionPreviewComponent} from '../../question-preview/question-preview.component';
+import {QuestionPreviewComponent} from '../question-preview/question-preview.component';
 import {NotificationService} from '../../services/notification.service';
 import {LanguageService} from '../../services/language.service';
 import {Binary} from '../../model/binary';

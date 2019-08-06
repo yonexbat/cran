@@ -10,6 +10,7 @@ import { ManageTagComponent } from './manage-tag/manage-tag.component';
 import { ManageTagsComponent } from './manage-tags/manage-tags.component';
 import { ManageCourseComponent } from './manage-course/manage-course.component';
 import { ManageQuestionComponent } from './manage-question/manage-question.component';
+import { QuestionPreviewComponent } from './question-preview/question-preview.component';
 import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
 
 
@@ -23,6 +24,7 @@ import { SubscriptionsComponent } from './subscriptions/subscriptions.component'
     ManageTagsComponent,
     ManageCourseComponent,
     ManageQuestionComponent,
+    QuestionPreviewComponent,
     SubscriptionsComponent,
   ],
   imports: [

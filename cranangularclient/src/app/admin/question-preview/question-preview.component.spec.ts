@@ -2,12 +2,12 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import { Component, Input, Output, EventEmitter, DebugElement, TemplateRef} from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { UicompsModule } from '../uicomps/uicomps.module';
+import { UicompsModule } from '../../uicomps/uicomps.module';
 
-import { CRAN_SERVICE_TOKEN } from '../services/cran-data.servicetoken';
-import {NotificationService} from '../services/notification.service';
-import {ConfirmService} from '../services/confirm.service';
-import {LanguageService} from '../services/language.service';
+import { CRAN_SERVICE_TOKEN } from '../../services/cran-data.servicetoken';
+import {NotificationService} from '../../services/notification.service';
+import {ConfirmService} from '../../services/confirm.service';
+import {LanguageService} from '../../services/language.service';
 import { QuestionPreviewComponent } from './question-preview.component';
 
 
