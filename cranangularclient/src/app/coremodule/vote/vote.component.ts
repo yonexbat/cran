@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, Inject } from '@angular/core';
 
-import {ICranDataService} from '../services/icrandataservice';
-import {CRAN_SERVICE_TOKEN} from '../services/cran-data.servicetoken';
-import {NotificationService} from '../services/notification.service';
-import {Votes} from '../model/votes';
+import {ICranDataService} from '../../services/icrandataservice';
+import {CRAN_SERVICE_TOKEN} from '../../services/cran-data.servicetoken';
+import {NotificationService} from '../../services/notification.service';
+import {Votes} from '../../model/votes';
 
 @Component({
   selector: 'app-vote',

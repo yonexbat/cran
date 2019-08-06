@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UicompsModule } from './uicomps/uicomps.module';
+import { CoremoduleModule } from './coremodule/coremodule.module';
 
 import { AppComponent } from './app.component';
 import { NotificationService } from './services/notification.service';
@@ -17,14 +18,11 @@ import { CranDataServiceMock } from './services/cran-data-mock.service';
 import { LanguageService } from './services/language.service';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { HomeComponent } from './home/home.component';
-import { AskQuestionComponent } from './ask-question/ask-question.component';
 import { QuestionListComponent } from './question-list/question-list.component';
 import { ResultListComponent } from './result-list/result-list.component';
 import { CourseInstanceListComponent } from './course-instance-list/course-instance-list.component';
 import { SearchQuestionsComponent } from './search-questions/search-questions.component';
 import { ViewQuestionComponent } from './view-question/view-question.component';
-import { CommentsComponent } from './comments/comments.component';
-import { VoteComponent } from './vote/vote.component';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { ConfirmService } from './services/confirm.service';
 import { QuestionListItemComponent } from './question-list-item/question-list-item.component';
@@ -51,14 +49,11 @@ if (isDevelopment()) {
     MenuComponent,
     CourseListComponent,
     HomeComponent,
-    AskQuestionComponent,
     QuestionListComponent,
     ResultListComponent,
     CourseInstanceListComponent,
     SearchQuestionsComponent,
     ViewQuestionComponent,
-    CommentsComponent,
-    VoteComponent,
     UserInfoComponent,
     QuestionListItemComponent,
     CourseStarterComponent,
@@ -75,6 +70,7 @@ if (isDevelopment()) {
     BrowserAnimationsModule,
     ServiceWorkerModule.register('pwacranium.js', { enabled: environment.production }),
     UicompsModule,
+    CoremoduleModule,
   ],
   providers: [
     { provide: CRAN_SERVICE_TOKEN, useClass: cranDataService },

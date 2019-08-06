@@ -5,9 +5,9 @@ import {ICranDataService} from '../services/icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../services/cran-data.servicetoken';
 import {NotificationService} from '../services/notification.service';
 import {Question} from '../model/question';
-import {CommentsComponent} from '../comments/comments.component';
-import {VersionsComponent} from '../versions/versions.component';
-import {LanguageService} from '../services/language.service';
+import { CommentsComponent } from '../coremodule/comments/comments.component';
+import { VersionsComponent } from '../versions/versions.component';
+import { LanguageService } from '../services/language.service';
 import { ConfirmService } from '../services/confirm.service';
 
 @Component({
@@ -23,11 +23,11 @@ export class ViewQuestionComponent implements OnInit {
   public question: Question;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
-    private router: Router,
-    private activeRoute: ActivatedRoute,
-    private notificationService: NotificationService,
-    private confirmService: ConfirmService,
-    private ls: LanguageService) {
+              private router: Router,
+              private activeRoute: ActivatedRoute,
+              private notificationService: NotificationService,
+              private confirmService: ConfirmService,
+              private ls: LanguageService) {
       this.activeRoute.paramMap.subscribe((params: ParamMap)  => {
       const id = params.get('id');
       this.handleRouteChanged(+id);

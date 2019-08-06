@@ -2,10 +2,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Input, DebugElement} from '@angular/core';
 
 import { VoteComponent } from './vote.component';
-import { CRAN_SERVICE_TOKEN } from '../services/cran-data.servicetoken';
-import {NotificationService} from '../services/notification.service';
-import {Votes} from '../model/votes';
-import {IconComponent} from '../uicomps/icon/icon.component';
+import { CRAN_SERVICE_TOKEN } from '../../services/cran-data.servicetoken';
+import {NotificationService} from '../../services/notification.service';
+import {Votes} from '../../model/votes';
+import {IconComponent} from '../../uicomps/icon/icon.component';
 
 
 describe('VoteComponent', () => {

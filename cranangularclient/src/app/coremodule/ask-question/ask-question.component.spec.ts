@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed, inject, tick } from '@angular/core/testing';
 import { Component, Input, DebugElement} from '@angular/core';
 import { Params, ActivatedRoute } from '@angular/router';
-import { UicompsModule } from '../uicomps/uicomps.module';
+import { UicompsModule } from '../../uicomps/uicomps.module';
 
 import {FormsModule} from '@angular/forms';
 import { AskQuestionComponent } from './ask-question.component';
@@ -9,10 +9,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import {TestingModule,
   StubVoteComponent,
   StubCommentsComponent,
-  } from '../testing/testing.module';
-import {StubActivatedRoute} from '../testing/stubactivatedroute';
+  } from '../../testing/testing.module';
+import {StubActivatedRoute} from '../../testing/stubactivatedroute';
 
-import { NotificationService } from '../services/notification.service';
+import { NotificationService } from '../../services/notification.service';
 
 
 

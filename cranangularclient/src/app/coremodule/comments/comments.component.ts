@@ -1,13 +1,13 @@
 import { Component, OnInit, Inject, ViewChild, } from '@angular/core';
 
-import {ICranDataService} from '../services/icrandataservice';
-import {CRAN_SERVICE_TOKEN} from '../services/cran-data.servicetoken';
-import {PagedResult} from '../model/pagedresult';
-import {Comment} from '../model/comment';
-import {GetComments} from '../model/getcomments';
-import {NotificationService} from '../services/notification.service';
-import {LanguageService} from '../services/language.service';
-import {ConfirmService} from '../services/confirm.service';
+import {ICranDataService} from '../../services/icrandataservice';
+import {CRAN_SERVICE_TOKEN} from '../../services/cran-data.servicetoken';
+import {PagedResult} from '../../model/pagedresult';
+import {Comment} from '../../model/comment';
+import {GetComments} from '../../model/getcomments';
+import {NotificationService} from '../../services/notification.service';
+import {LanguageService} from '../../services/language.service';
+import {ConfirmService} from '../../services/confirm.service';
 
 @Component({
   selector: 'app-comments',

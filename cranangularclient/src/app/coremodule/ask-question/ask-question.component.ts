@@ -1,18 +1,18 @@
 import {Component, OnInit, Inject, ViewChild, } from '@angular/core';
 import {Router, ActivatedRoute, ParamMap, } from '@angular/router';
 
-import {ICranDataService} from '../services/icrandataservice';
-import {CRAN_SERVICE_TOKEN} from '../services/cran-data.servicetoken';
-import {LanguageService} from '../services/language.service';
-import {QuestionToAsk} from '../model/questiontoask';
-import {Question} from '../model/question';
-import {QuestionAnswer} from '../model/questionanswer';
-import {CourseInstance} from '../model/courseinstance';
-import {NotificationService} from '../services/notification.service';
+import {ICranDataService} from '../../services/icrandataservice';
+import {CRAN_SERVICE_TOKEN} from '../../services/cran-data.servicetoken';
+import {LanguageService} from '../../services/language.service';
+import {QuestionToAsk} from '../../model/questiontoask';
+import {Question} from '../../model/question';
+import {QuestionAnswer} from '../../model/questionanswer';
+import {CourseInstance} from '../../model/courseinstance';
+import {NotificationService} from '../../services/notification.service';
 import {CommentsComponent} from '../comments/comments.component';
-import {ConfirmService} from '../services/confirm.service';
-import {QuestionType} from '../model/questiontype';
-import {QuestionOptionToAsk} from '../model/questionoptiontoask';
+import {ConfirmService} from '../../services/confirm.service';
+import {QuestionType} from '../../model/questiontype';
+import {QuestionOptionToAsk} from '../../model/questionoptiontoask';
 
 
 @Component({
@@ -30,11 +30,11 @@ export class AskQuestionComponent implements OnInit {
   public selectedOption: string;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
-    private router: Router,
-    private activeRoute: ActivatedRoute,
-    private notificationService: NotificationService,
-    private confirmService: ConfirmService,
-    private ls: LanguageService) {
+              private router: Router,
+              private activeRoute: ActivatedRoute,
+              private notificationService: NotificationService,
+              private confirmService: ConfirmService,
+              private ls: LanguageService) {
 
     this.activeRoute.paramMap.subscribe((params: ParamMap)  => {
       const id = params.get('id');
