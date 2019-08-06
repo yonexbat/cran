@@ -5,12 +5,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { UicompsModule } from '../../uicomps/uicomps.module';
 
 import { CourseListComponent } from './course-list.component';
-import {PagedResult} from '../../model/pagedresult';
-import {Tag} from '../../model/tag';
 import { CRAN_SERVICE_TOKEN } from '../../services/cran-data.servicetoken';
-import {NotificationService} from '../../services/notification.service';
-import {LanguageService} from '../../services/language.service';
-import {ConfirmService} from '../../services/confirm.service';
+import { NotificationService } from '../../services/notification.service';
+import { LanguageService } from '../../services/language.service';
+import { ConfirmService } from '../../services/confirm.service';
 
 
 describe('CourseListComponent', () => {
