@@ -72,16 +72,24 @@ describe('AskQuestionComponent', () => {
       expect(text).toContain('Karotte');
   }));
 
-  it('should show all green', async(async () => {
+  fit('should show all green', async(async () => {
     await fixture.whenStable();
 
     activeRoute.setParamMap({id: 2, });
+
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+
+    const checkBoxes: HTMLInputElement[] = fixture.debugElement.queryAll(By.css('input[type=\'checkbox\']'))
+      .map(x => x.nativeElement);
+    checkBoxes[0].checked = true;
+    checkBoxes[2].checked = true;
+    checkBoxes[0].dispatchEvent(new Event('change'));
+    checkBoxes[2].dispatchEvent(new Event('change'));
+
     await fixture.whenStable();
     fixture.detectChanges();
-
-    component.questionToAsk.options[0].isChecked = true;
-    component.questionToAsk.options[2].isChecked = true;
-
 
     const checkButton: HTMLElement = fixture.debugElement.query(By.css('button[name=\'check\']')).nativeElement;
     checkButton.dispatchEvent(new Event('click'));
