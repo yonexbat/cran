@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+
 import { ItempagerComponent } from './itempager/itempager.component';
 import { TooltipDirective } from './tooltip.directive';
 import { IconComponent} from './icon/icon.component';
@@ -13,6 +15,8 @@ import { ImagelistComponent } from './imagelist/imagelist.component';
 import { ConfirmComponent } from './confirm/confirm.component';
 import { NotificationComponent } from './notification/notification.component';
 import { TagFinderComponent } from './tag-finder/tag-finder.component';
+import { QuestionselectorComponent } from './questionselector/questionselector.component';
+
 
 
 
@@ -31,10 +35,12 @@ import { TagFinderComponent } from './tag-finder/tag-finder.component';
     ConfirmComponent,
     NotificationComponent,
     TagFinderComponent,
+    QuestionselectorComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
+    RouterModule,
   ],
   exports: [
     ItempagerComponent,
@@ -49,6 +55,7 @@ import { TagFinderComponent } from './tag-finder/tag-finder.component';
     ConfirmComponent,
     NotificationComponent,
     TagFinderComponent,
+    QuestionselectorComponent,
   ]
 })
 export class UicompsModule { }

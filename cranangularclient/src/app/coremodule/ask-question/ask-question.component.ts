@@ -9,7 +9,6 @@ import {Question} from '../../model/question';
 import {QuestionAnswer} from '../../model/questionanswer';
 import {CourseInstance} from '../../model/courseinstance';
 import {NotificationService} from '../../services/notification.service';
-import {CommentsComponent} from '../comments/comments.component';
 import {ConfirmService} from '../../services/confirm.service';
 import {QuestionType} from '../../model/questiontype';
 import {QuestionOptionToAsk} from '../../model/questionoptiontoask';

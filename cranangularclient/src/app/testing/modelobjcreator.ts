@@ -81,7 +81,7 @@ export function createQuestiontoAskTestObj(): QuestionToAsk {
     answered: false,
     courseEnded: false,
     answerShown: false,
-    idCourseInstanceQuestion: 1,
+    idCourseInstanceQuestion: 6666,
     numQuestions: 6,
     text: question.text,
     numCurrentQuestion: 2,
@@ -101,14 +101,14 @@ export function createQuestiontoAskTestObj(): QuestionToAsk {
     });
   }
   questiontoAsk.questionSelectors.push({
-    answerShown: false,
-    idCourseInstanceQuestion: 1,
-    correct: null,
+    answerShown: true,
+    idCourseInstanceQuestion: 100,
+    correct: true,
     number: 1,
   });
   questiontoAsk.questionSelectors.push({
     answerShown: false,
-    idCourseInstanceQuestion: i + 101,
+    idCourseInstanceQuestion: 666,
     correct: null,
     number: 2,
   });

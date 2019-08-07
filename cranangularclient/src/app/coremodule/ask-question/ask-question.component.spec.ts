@@ -72,7 +72,7 @@ describe('AskQuestionComponent', () => {
       expect(text).toContain('Karotte');
   }));
 
-  fit('should show all green', async(async () => {
+  it('should show all green', async(async () => {
     await fixture.whenStable();
 
     activeRoute.setParamMap({id: 2, });

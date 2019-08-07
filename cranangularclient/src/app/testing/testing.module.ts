@@ -42,6 +42,20 @@ export class StubImageListComponent {
 
 @Component({selector: 'app-comments', template: ''})
 export class StubCommentsComponent {
+
+  // tslint:disable-next-line:variable-name
+  private _questionid: number;
+  @Input()
+  set questionId(id: number) {
+    if (this._questionid !== id) {
+      this.showComments(id);
+    }
+    this._questionid = id;
+  }
+  get questionId(): number {
+    return this._questionid;
+  }
+
   public showComments(idQuestion: number): Promise<void> {
     return Promise.resolve();
   }

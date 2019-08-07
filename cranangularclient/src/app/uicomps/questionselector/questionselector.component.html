@@ -1,0 +1,12 @@
+<div>
+    <a *ngFor="let selector of questionSelectors; let selectorIndex=index"
+        [routerLink]="['/askquestion', selector.idCourseInstanceQuestion]"
+        [class.crananswercorrect]="selector.correct === true"
+        [class.crananswerwrong]="selector.correct === false"
+        [class.currentquestion]="selector.number === numCurrentQuestion">
+      {{selectorIndex+1}}
+    </a>
+    <span *ngFor="let selector of remainingQuestions">
+      {{selector}}
+    </span>
+</div>

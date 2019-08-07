@@ -1,18 +1,11 @@
 <div class="container" *ngIf="questionToAsk">
 
   <!-- Question selector  -->
-  <div>
-    <a *ngFor="let selector of questionToAsk?.questionSelectors; let selectorIndex=index"
-        [routerLink]="['/askquestion', selector.idCourseInstanceQuestion]"
-        [class.crananswercorrect]="selector.correct === true"
-        [class.crananswerwrong]="selector.correct === false"
-        [class.currentquestion]="selector.number === questionToAsk.numCurrentQuestion">
-      {{selectorIndex+1}}
-    </a>
-    <span *ngFor="let selector of remainingQuestions">
-      {{selector}}
-    </span>
-  </div>
+  <app-questionselector
+    [questionSelectors]="questionToAsk?.questionSelectors"
+    [numCurrentQuestion]="questionToAsk.numCurrentQuestion"
+    [numQuestions]="questionToAsk.numQuestions">
+  </app-questionselector>
 
   <form #questionForm="ngForm">
 
