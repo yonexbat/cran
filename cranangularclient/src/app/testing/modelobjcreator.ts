@@ -1,6 +1,9 @@
 import { Tag } from '../model/tag';
 import { Course } from '../model/course';
 import { Question } from '../model/question';
+import { QuestionToAsk } from '../model/questiontoask';
+import { QuestionType } from '../model/questiontype';
+import { Comment } from '../model/comment';
 
 export function createCoursesTestObjs(): Course[] {
     const courseList: Course[] =  [
@@ -70,11 +73,78 @@ export function createQuestionTestObj(id: number): Question {
   return question;
 }
 
+export function createQuestiontoAskTestObj(): QuestionToAsk {
+  const question = createQuestionTestObj(1);
+  const questiontoAsk: QuestionToAsk = {
+    idCourseInstance: 1,
+    idQuestion: 1,
+    answered: false,
+    courseEnded: false,
+    answerShown: false,
+    idCourseInstanceQuestion: 1,
+    numQuestions: 6,
+    text: question.text,
+    numCurrentQuestion: 2,
+    questionType: QuestionType.MultipleChoice,
+    question,
+    options: [],
+    questionSelectors: [],
+  };
+  let i = 1000;
+  for (const option of question.options) {
+    questiontoAsk.options.push(
+      {
+        text: option.text,
+        idCourseInstanceQuestionOption: i++,
+        isChecked: false,
+        isEditable: true,
+        isTrue: true,
+    });
+  }
+  questiontoAsk.questionSelectors.push({
+    answerShown: false,
+    idCourseInstanceQuestion: 1,
+    correct: null,
+    number: 1,
+  });
+  questiontoAsk.questionSelectors.push({
+    answerShown: false,
+    idCourseInstanceQuestion: i + 101,
+    correct: null,
+    number: 2,
+  });
+  return questiontoAsk;
+}
+
 export function createTagsTestObjs(): Tag[] {
   const tags = [
     {id: 34, description: 'helo cran', name: 'cran', shortDescDe: 'short desc de', shortDescEn: 'short desc en', idTagType: 1, },
   ];
   return tags;
+}
+
+export function createCommentsTestObjs(): Comment[] {
+  const comment1: Comment = {
+    commentText: 'comment1',
+    idComment: 1,
+    idQuestion: 1,
+    insertDate: new Date(),
+    isEditable: true,
+    updateDate: new Date(),
+    userId: 'cranium',
+  };
+
+  const comment2: Comment = {
+    commentText: 'comment2',
+    idComment: 1,
+    idQuestion: 1,
+    insertDate: new Date(),
+    isEditable: false,
+    updateDate: new Date(),
+    userId: 'cranium',
+  };
+
+  return [comment1, comment2];
 }
 
 

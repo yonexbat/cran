@@ -13,6 +13,8 @@ import {TestingModule,
 import {StubActivatedRoute} from '../../testing/stubactivatedroute';
 
 import { NotificationService } from '../../services/notification.service';
+import { By } from '@angular/platform-browser';
+import { IconComponent } from 'src/app/uicomps/icon/icon.component';
 
 
 
@@ -47,23 +49,64 @@ describe('AskQuestionComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('show question', inject([NotificationService], async (notificationService: NotificationService) => {
+  it('should show question', inject([NotificationService], async (notificationService: NotificationService) => {
 
       await fixture.whenStable;
 
       const spyEmitDone = spyOn(notificationService, 'emitDone');
       const spyEmitError = spyOn(notificationService, 'emitError');
 
+      spyEmitDone.calls.reset();
+      spyEmitError.calls.reset();
+
       activeRoute.setParamMap({id: 2, });
 
       await fixture.whenStable;
-
       fixture.detectChanges();
+
       expect(spyEmitError).toHaveBeenCalledTimes(0);
       expect(spyEmitDone).toHaveBeenCalledTimes(1);
 
       const nativeElement: HTMLElement = fixture.debugElement.nativeElement;
       const text = nativeElement.textContent;
-      expect(text).toContain('how are you?');
+      expect(text).toContain('Karotte');
   }));
+
+  it('should show all green', async(async () => {
+    await fixture.whenStable();
+
+    activeRoute.setParamMap({id: 2, });
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    component.questionToAsk.options[0].isChecked = true;
+    component.questionToAsk.options[2].isChecked = true;
+
+
+    const checkButton: HTMLElement = fixture.debugElement.query(By.css('button[name=\'check\']')).nativeElement;
+    checkButton.dispatchEvent(new Event('click'));
+
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(component.checkShown).toBeTruthy();
+    const greendivs = fixture.debugElement.queryAll(By.css('div.crananswercorrect'));
+    expect(greendivs.length).toBe(4);
+
+    const icons = fixture.debugElement.queryAll(By.css('app-icon'));
+    expect(icons.length).toBe(4); // 4 Options
+
+
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < icons.length; i++) {
+      const appIcon = icons[i];
+      const option = component.questionToAsk.question.options[i];
+      const theIcon: IconComponent = appIcon.componentInstance;
+      const iconExpected = option.isTrue ? 'ok' : 'nok';
+      expect(theIcon.icon).toBe(iconExpected);
+    }
+
+
+  }));
+
 });

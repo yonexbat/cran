@@ -4,8 +4,8 @@
   <div>
     <a *ngFor="let selector of questionToAsk?.questionSelectors; let selectorIndex=index"
         [routerLink]="['/askquestion', selector.idCourseInstanceQuestion]"
-        [class.crananswercorrect]="selector.correct===true"
-        [class.crananswerwrong]="selector.correct===false"
+        [class.crananswercorrect]="selector.correct === true"
+        [class.crananswerwrong]="selector.correct === false"
         [class.currentquestion]="selector.number === questionToAsk.numCurrentQuestion">
       {{selectorIndex+1}}
     </a>
@@ -104,6 +104,7 @@
       <button 
           *ngIf="!checkShown && !(questionToAsk?.courseEnded)"
           type="button" 
+          name="check"
           class="btn btn btn-success"
           (click)="getSolution()">
         {{ls.label('check')}}

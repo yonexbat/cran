@@ -35,6 +35,8 @@ export class StubTagsComponent {
 export class StubImageListComponent {
   @Input() public images: Image[] = [];
   @Input() public imagesDeletable: boolean;
+
+  // tslint:disable-next-line:no-output-on-prefix
   @Output() onDeleted = new EventEmitter<Image[]>();
 }
 
@@ -64,6 +66,7 @@ export class StubCommentsComponent {
 export class StubRichTextBoxComponent implements ControlValueAccessor,
   Validator, OnInit, OnChanges {
 
+  // tslint:disable-next-line:variable-name
   private _content: string;
   private onChangelistener: any;
   private validateFn: any;

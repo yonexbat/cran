@@ -32,7 +32,8 @@ import {QuestionType} from '../model/questiontype';
 import {SubscriptionShort} from '../model/subscriptionshort';
 import {Notification} from '../model/notification';
 import {CourseToFavorites} from '../model/coursetofavorites';
-import {createCoursesTestObjs, createQuestionTestObj} from '../testing/modelobjcreator';
+import {createCoursesTestObjs, createQuestionTestObj,
+  createQuestiontoAskTestObj} from '../testing/modelobjcreator';
 
 
 @Injectable()
@@ -578,44 +579,18 @@ export class CranDataServiceMock implements ICranDataService {
   }
 
   getQuestionToAsk(id: number): Promise<QuestionToAsk> {
-    return this.getQuestion(23).then((question: Question) => {
-      const questiontoask: QuestionToAsk = {
-        courseEnded: false,
-        idCourseInstance: 342423,
-        numQuestions: 5,
-        idQuestion: 800,
-        options: [],
-        text: 'Ich frage mal nach',
-        idCourseInstanceQuestion: id,
-        numCurrentQuestion: 3,
-        question: undefined,
-        answered: false,
-        answerShown: false,
-        questionType: QuestionType.SingleChoice,
+    const questionToAsk = createQuestiontoAskTestObj();
+    if (id >= 8000) {
+      questionToAsk.courseEnded = true;
+      questionToAsk.answered = true;
+    }
 
-        questionSelectors: [
-          {answerShown: true, correct: true, number: 1, idCourseInstanceQuestion: 122},
-          {answerShown: false, correct: null, number: 2, idCourseInstanceQuestion: 123},
-          {answerShown: true, correct: false, number: 3, idCourseInstanceQuestion: 124}
-        ],
-      };
-
-      if (id >= 8000) {
-        questiontoask.courseEnded = true;
-        questiontoask.answered = true;
-      }
-
-      for (const option of question.options) {
-        const ota = new QuestionOptionToAsk();
-        ota.text = option.text;
-        ota.isTrue = option.isTrue;
-        questiontoask.options.push(ota);
-      }
-      if (questiontoask.options.length > 0) {
-        questiontoask.options[0].isChecked = true;
-      }
-      return questiontoask;
+    const promiseResult = new Promise<QuestionToAsk>((resolve, reject) => {
+      setTimeout(() => {
+        resolve(questionToAsk);
+      }, 1000);
     });
+    return promiseResult;
   }
 
   startCourse(courseId: number): Promise<CourseInstance> {
