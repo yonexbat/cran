@@ -108,7 +108,7 @@ describe('AskQuestionComponent', () => {
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < icons.length; i++) {
       const appIcon = icons[i];
-      const option = component.questionToAsk.question.options[i];
+      const option = component.question.options[i];
       const theIcon: IconComponent = appIcon.componentInstance;
       const iconExpected = option.isTrue ? 'ok' : 'nok';
       expect(theIcon.icon).toBe(iconExpected);

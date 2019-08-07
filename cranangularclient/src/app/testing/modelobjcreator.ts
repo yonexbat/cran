@@ -86,7 +86,6 @@ export function createQuestiontoAskTestObj(): QuestionToAsk {
     text: question.text,
     numCurrentQuestion: 2,
     questionType: QuestionType.MultipleChoice,
-    question,
     options: [],
     questionSelectors: [],
   };

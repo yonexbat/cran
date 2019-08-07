@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild, } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, Input, } from '@angular/core';
 
 import {ICranDataService} from '../../services/icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../../services/cran-data.servicetoken';
@@ -16,9 +16,21 @@ import {ConfirmService} from '../../services/confirm.service';
 })
 export class CommentsComponent implements OnInit {
 
+  // tslint:disable-next-line:variable-name
+  private _questionid: number;
+  @Input()
+  set questionId(id: number) {
+    if (this._questionid !== id) {
+      this.showComments(id);
+    }
+    this._questionid = id;
+  }
+  get questionId(): number {
+    return this._questionid;
+  }
+
   public comments: PagedResult<Comment>;
   private comment: Comment;
-
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
               private notificationService: NotificationService,

@@ -22,10 +22,9 @@ import {QuestionOptionToAsk} from '../../model/questionoptiontoask';
 })
 export class AskQuestionComponent implements OnInit {
 
-  @ViewChild('comments', { static: true }) private commentsControl: CommentsComponent;
-
   public checkShown: boolean;
   public questionToAsk: QuestionToAsk;
+  public question: Question;
   private remainingQuestions: number[];
   public selectedOption: string;
 
@@ -51,8 +50,7 @@ export class AskQuestionComponent implements OnInit {
     try {
       this.notificationService.emitLoading();
       const question =  await this.cranDataServiceService.answerQuestionAndGetSolution(answer);
-      await this.commentsControl.showComments(question.id);
-      const answeredCorrectly = this.showSolution(question);
+      const answeredCorrectly = this.showSolutionAndGetResult(question);
       const questionSelector =
         this.questionToAsk.questionSelectors.find(x => x.idCourseInstanceQuestion === this.questionToAsk.idCourseInstanceQuestion);
       questionSelector.answerShown = true;
@@ -63,7 +61,7 @@ export class AskQuestionComponent implements OnInit {
     }
   }
 
-  private showSolution(question: Question): boolean {
+  private showSolutionAndGetResult(question: Question): boolean {
     let answeredCorrectly = true;
     for (let i = 0; i < question.options.length; i++) {
       this.questionToAsk.options[i].isTrue = question.options[i].isTrue;
@@ -71,7 +69,7 @@ export class AskQuestionComponent implements OnInit {
         answeredCorrectly = false;
       }
     }
-    this.questionToAsk.question = question;
+    this.question = question;
     this.checkShown = true;
     return answeredCorrectly;
   }
@@ -110,7 +108,7 @@ export class AskQuestionComponent implements OnInit {
     try {
       await this.confirmService.confirm(this.ls.label('version'), this.ls.label('versionq'));
       this.notificationService.emitLoading();
-      const newId = await this.cranDataServiceService.versionQuestion( this.questionToAsk.question.id);
+      const newId = await this.cranDataServiceService.versionQuestion( this.question.id);
       this.notificationService.emitDone();
       this.router.navigate(['/admin/editquestion', newId]);
     } catch (error) {
@@ -132,16 +130,14 @@ export class AskQuestionComponent implements OnInit {
   private async handleRouteChanged(id: number): Promise<void> {
     try {
       this.checkShown = false;
+      this.question = null;
       this.notificationService.emitLoading();
       this.questionToAsk   = await this.cranDataServiceService.getQuestionToAsk(id);
       this.initRadioButtons();
 
       if (this.questionToAsk.courseEnded || this.questionToAsk.answerShown) {
         const question =  await this.cranDataServiceService.getQuestion(this.questionToAsk.idQuestion);
-        await this.commentsControl.showComments(question.id);
-        this.showSolution(question);
-      } else {
-        await this.commentsControl.showComments(null);
+        this.showSolutionAndGetResult(question);
       }
       this.remainingQuestions = [];
       for (let i = this.questionToAsk.questionSelectors.length; i < this.questionToAsk.numQuestions; i++) {

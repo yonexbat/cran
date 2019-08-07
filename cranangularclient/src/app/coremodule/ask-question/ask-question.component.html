@@ -21,14 +21,14 @@
     </h6>
 
     <!-- Titel -->
-    <p *ngIf="checkShown && questionToAsk.question">
-      <b>#{{questionToAsk.question.id}} {{questionToAsk.question.title}}</b>
-      <span><app-vote [votes]="questionToAsk.question.votes"></app-vote></span>
+    <p *ngIf="checkShown && question">
+      <b>#{{question.id}} {{question.title}}</b>
+      <span><app-vote [votes]="question.votes"></app-vote></span>
     </p>
 
     <!-- tags -->
-    <div *ngIf="checkShown && questionToAsk.question" style="margin-bottom: 30px;">
-        <app-tags [tagList]="questionToAsk.question.tags"></app-tags>
+    <div *ngIf="checkShown && question" style="margin-bottom: 30px;">
+        <app-tags [tagList]="question.tags"></app-tags>
     </div>
 
     <!-- question text -->
@@ -93,7 +93,7 @@
     <!-- question explanation -->
     <div *ngIf="checkShown">
       <hr/>                  
-      <div [innerHtml] = "questionToAsk?.question?.explanation | safeHtml"></div>       
+      <div [innerHtml] = "question?.explanation | safeHtml"></div>       
     </div>
 
     <hr/>
@@ -112,7 +112,7 @@
 
       <!-- neue version erstellen -->
       <button 
-        *ngIf="questionToAsk?.courseEnded && questionToAsk?.question?.isEditable"
+        *ngIf="questionToAsk?.courseEnded && question?.isEditable"
         type="button" 
         class="btn btn btn-success"
         (click)="createNewVersion()">
@@ -160,5 +160,5 @@
 </div>
 
  <!-- Kommentare -->
- <app-comments #comments></app-comments>
+ <app-comments #comments [questionId]="question?.id"></app-comments>
  
