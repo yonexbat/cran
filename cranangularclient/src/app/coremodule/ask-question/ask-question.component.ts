@@ -24,7 +24,6 @@ export class AskQuestionComponent implements OnInit {
   public checkShown: boolean;
   public questionToAsk: QuestionToAsk;
   public question: Question;
-  private remainingQuestions: number[];
   public selectedOption: string;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
@@ -49,18 +48,24 @@ export class AskQuestionComponent implements OnInit {
     try {
       this.notificationService.emitLoading();
       const question =  await this.cranDataServiceService.answerQuestionAndGetSolution(answer);
-      const answeredCorrectly = this.showSolutionAndGetResult(question);
-      const questionSelector =
-        this.questionToAsk.questionSelectors.find(x => x.idCourseInstanceQuestion === this.questionToAsk.idCourseInstanceQuestion);
-      questionSelector.answerShown = true;
-      questionSelector.correct = answeredCorrectly;
+      const answeredCorrectly = this.showSolutionAndCalculateResult(question);
+
+      this.updateCurrentQuestionSelector(answeredCorrectly);
+
       this.notificationService.emitDone();
     } catch (error) {
       this.notificationService.emitError(error);
     }
   }
 
-  private showSolutionAndGetResult(question: Question): boolean {
+  private updateCurrentQuestionSelector(answeredCorrectly: boolean) {
+    const questionSelector =
+    this.questionToAsk.questionSelectors.find(x => x.idCourseInstanceQuestion === this.questionToAsk.idCourseInstanceQuestion);
+    questionSelector.answerShown = true;
+    questionSelector.correct = answeredCorrectly;
+  }
+
+  private showSolutionAndCalculateResult(question: Question): boolean {
     let answeredCorrectly = true;
     for (let i = 0; i < question.options.length; i++) {
       this.questionToAsk.options[i].isTrue = question.options[i].isTrue;
@@ -136,12 +141,9 @@ export class AskQuestionComponent implements OnInit {
 
       if (this.questionToAsk.courseEnded || this.questionToAsk.answerShown) {
         const question =  await this.cranDataServiceService.getQuestion(this.questionToAsk.idQuestion);
-        this.showSolutionAndGetResult(question);
+        this.showSolutionAndCalculateResult(question);
       }
-      this.remainingQuestions = [];
-      for (let i = this.questionToAsk.questionSelectors.length; i < this.questionToAsk.numQuestions; i++) {
-        this.remainingQuestions.push(i + 1);
-      }
+
       this.notificationService.emitDone();
     } catch (error) {
       this.notificationService.emitError(error);

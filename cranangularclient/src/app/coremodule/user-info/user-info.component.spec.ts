@@ -60,7 +60,7 @@ describe('UserInfoComponent', () => {
     expect(text).toContain(userInfo.name, 'username shall be displayed');
   }));
 
-  it('shloud change language to English', async( async() => {
+  it('should change language to English', async( async() => {
     await fixture.whenStable();
     fixture.detectChanges();
     const enButton = fixture.debugElement.nativeElement.querySelector('#userinfosetenbutton');

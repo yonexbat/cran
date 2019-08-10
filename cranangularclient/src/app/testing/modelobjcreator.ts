@@ -47,7 +47,7 @@ export function createQuestionTestObj(id: number): Question {
   question.text = 'Wie alt ist unsere Karotte?';
   question.title = 'Frage über Katze die die Farbe einer Karotte hat';
   question.id = id;
-  question.explanation = 'Ist Alt, benimmt sich aber wie ein kleines Büsi';
+  question.explanation = 'Ist alt, benimmt sich aber wie ein kleines Büsi';
   if (id > 10) {
     question.status = 1;
   } else {

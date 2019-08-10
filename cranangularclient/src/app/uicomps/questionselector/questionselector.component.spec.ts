@@ -42,11 +42,12 @@ describe('QuestionselectorComponent', () => {
     component.numCurrentQuestion = questionToAsk.numCurrentQuestion;
     component.numQuestions = questionToAsk.numQuestions;
     fixture.detectChanges();
-
-    const items = fixture.debugElement.queryAll(By.css('a'));
+    const items = fixture.debugElement.queryAll(By.css('span.crananswercorrect,span.crananswerwrong,span.currentquestion'));
     expect(items.length).toBe(questionToAsk.questionSelectors.length);
 
-    const remainingItems = fixture.debugElement.queryAll(By.css('span'));
+    const selector = 'span:not(.crananswercorrect):not(.currentquestion):not(.crananswerwrong)';
+    const remainingItems =
+      fixture.debugElement.queryAll(By.css(selector));
     expect(remainingItems.length).toBe(questionToAsk.numQuestions - questionToAsk.questionSelectors.length);
   });
 

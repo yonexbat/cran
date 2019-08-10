@@ -66,7 +66,7 @@ export class ManageQuestionComponent implements OnInit {
       } else { // crate new question
         const questionId = await this.cranDataService.insertQuestion(this.question);
         this.actionInProgress = false;
-        this.router.navigate(['/editquestion', questionId]);
+        this.router.navigate(['/admin/editquestion', questionId]);
 
       }
       this.notificationService.emitDone();
