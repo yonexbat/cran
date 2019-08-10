@@ -1,0 +1,32 @@
+
+<div *ngFor="let image of images; let imageIndex=index">
+
+  <div>
+    <img src="/api/Data/GetFile/{{image.idBinary}}" [ngStyle]="{ 'width': image.width + '%' }">
+  </div>
+
+  <div class="row"  *ngIf="imagesDeletable">
+
+    <!-- Width  -->
+    <div class="col-md-3">          
+      <label for="title">{{ls.label('width')}} (%)</label>  
+      <input type="number" 
+                class="form-control" 
+                [(ngModel)]="image.width" name="width"
+                #width="ngModel"> 
+    </div>
+    
+    <!-- Delete Button -->
+    <div class="col-md-1">      
+      <button 
+        type="button" 
+        class="btn btn-default cranbutton align-bottom"
+        (click)="removeImage(image)">
+            <app-icon [icon]="'trash'" title="{{ls.label('removeImage')}}"></app-icon>                  
+      </button>   
+    </div>   
+
+  </div>
+
+</div>
+

@@ -1,0 +1,25 @@
+.questionselector {
+    border-style: solid; 
+    margin: 0px /*t*/ 4px /*r*/ 4px /*b*/ 4px /*l*/;
+    border-width: 1px;
+    display: inline-block;
+    padding: 1px /*t*/ 4px /*r*/ 1px /*b*/ 4px /*l*/;
+    border-radius: 5px;
+    border-color: #c2c2c2
+}
+
+.crananswercorrect {
+    background: #e6f9e5;
+}
+
+.crananswerwrong {
+    background: #f9e5e5;
+}
+
+.currentquestion {
+    font-weight: bold;    
+}
+
+.questionselectorcontainer {
+    margin: 5px /*t*/ 0px /*r*/ 5px /*b*/ 0px /*l*/;
+}

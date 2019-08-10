@@ -14,7 +14,6 @@ export class QuestionToAsk {
     public answered: boolean;
     public answerShown: boolean;
     public options: QuestionOptionToAsk[] = [];
-    public question: Question;
     public questionType: QuestionType;
     public questionSelectors: QuestionSelectorInfo[] = [];
 }

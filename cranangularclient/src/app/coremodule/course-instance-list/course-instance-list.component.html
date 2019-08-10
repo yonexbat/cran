@@ -1,0 +1,40 @@
+<div class="container">
+   
+    <!-- Template for ListItem -->
+    <ng-template #listItem let-item="item">      
+        <div class="list-group-item">
+            <h6>
+              {{item.insertDate | date:'dd.MM.yyyy HH:mm'}}
+              {{item.title}}
+              ({{item.percentage}}%)
+  
+              <span class="btn-group float-right">
+                  <button class="btn btn-default" 
+                          type="button" 
+                          (click)="deleteCourseInstance(item)"
+                          [appTooltip] = "'delete'">
+                        <app-icon [icon]="'trash'"></app-icon>
+                  </button>
+
+                  <button class="btn btn-default" 
+                          type="button" 
+                          (click)="goToCourseInstance(item)"
+                          [appTooltip] = "'view'">                                             
+                      <app-icon [icon]="'info'"></app-icon>
+                  </button>
+              </span>           
+  
+            </h6>
+   
+          </div>
+    </ng-template> 
+
+    <!-- Pager -->
+    <app-itempager 
+            [itemTemplate]="listItem"
+            [pagedResult]="pagedResult"
+            [nodatafoundmessage]="ls.label('nocoursesdone')"
+            (onSelectedPageChanged)="pageSelected($event)">            
+    </app-itempager>
+   
+</div>

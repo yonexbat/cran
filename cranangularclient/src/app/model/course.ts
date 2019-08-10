@@ -7,5 +7,6 @@ export class Course {
     public numQuestionsToAsk: number;
     public language = '';
     public isFavorite = false;
+    public isEditable = false;
     public tags: Tag[] = [];
 }

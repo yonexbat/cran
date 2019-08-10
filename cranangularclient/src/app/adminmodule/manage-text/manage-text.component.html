@@ -1,0 +1,75 @@
+<div class="container">
+
+    <h2>{{ls.label('edittext', text.key)}}</h2>
+    <form  #textForm="ngForm">
+  
+      
+      <div class="row form-group">
+       
+        <!-- Text De -->
+        <div class="col-md-12">
+          
+          <label for="contentDe">{{ls.label('textDe')}}</label>
+  
+          <textarea           
+            class="form-control"
+            id="contentDe" 
+            rows="10"
+            [(ngModel)]="text.contentDe"
+            name="contentDe" 
+            required
+            #contentDe="ngModel"></textarea>
+        
+  
+          <div [hidden]="contentDe.valid || contentDe.pristine"
+              class="alert alert-danger">
+                {{ls.label('textDeRequired')}}
+          </div>
+  
+        </div>
+  
+        <!-- Text En -->
+        <div class="col-md-12">
+          
+            <label for="contentEn">{{ls.label('textEn')}}</label>
+    
+            <textarea           
+              class="form-control"
+              id="contentEn" 
+              rows="10"
+              [(ngModel)]="text.contentEn"
+              name="contentEn" 
+              required
+              #contentEn="ngModel"></textarea>
+          
+    
+            <div [hidden]="contentEn.valid || contentEn.pristine"
+                class="alert alert-danger">
+                  {{ls.label('textEnRequired')}}
+            </div>
+    
+          </div>      
+  
+      </div>
+  
+      
+  
+      <!-- Statusmessage -->
+      <app-statusmessage #statusMessage></app-statusmessage>
+  
+      <!-- Buttons -->
+      <div class="btn-group float-right" role="group">                  
+  
+        <!-- Speichern -->
+        <button 
+            type="button" 
+            class="btn btn btn-success" 
+            (click)="save()" 
+            [disabled]="!textForm.form.valid || actionInProgress">
+            {{ls.label('save')}}
+        </button> 
+            
+      </div>    
+      
+    </form>
+  </div>

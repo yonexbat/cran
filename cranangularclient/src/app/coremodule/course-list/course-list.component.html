@@ -1,0 +1,68 @@
+<div id="crancourses" class="container">
+
+  <!-- Title -->
+  <h2>{{ls.label('allcourses')}}</h2>
+
+  <!-- Template for ListItem -->
+  <ng-template #listItem let-item="item"> 
+      <div class="list-group-item">
+        <h6>
+          
+          #{{item.id}}
+
+          {{item.title}} <span ngNonBindable>[</span>{{ls.label('language')}}: {{item.language}}<span ngNonBindable>]</span>
+  
+          <span class="btn-group float-right">
+
+              <!-- edit button -->
+              <button class="btn btn-default" 
+                    type="button" 
+                    (click)="editCourse(item)" 
+                    *ngIf="item.isEditable"
+                    [appTooltip] = "'edit'">
+                  <app-icon [icon]="'edit'"></app-icon>    
+              </button>
+
+              <!-- add course to favorites  -->
+              <button class="btn btn-default" 
+                    type="button"              
+                    (click)="addToFavorites(item)"                 
+                    [appTooltip] = "'addcoursetofavorites'"
+                    *ngIf="!item.isFavorite">
+                  <app-icon [icon]="'favoriteoff'"></app-icon>    
+              </button>     
+              
+              <!-- remove course from favorites  -->
+              <button class="btn btn-default" 
+                      type="button"              
+                      (click)="removeFromFavorites(item)"                 
+                      [appTooltip] = "'removecoursefromfavorites'"
+                      *ngIf="item.isFavorite">
+                    <app-icon [icon]="'favoriteon'"></app-icon>    
+              </button>     
+
+              <!-- play button -->
+              <button class="btn btn-default" 
+                      type="button" 
+                      (click)="startCourse(item)"
+                      [appTooltip] = "'startcourse'">                
+                  <!-- play -->
+                  <app-icon [icon]="'start'"></app-icon>
+              </button>
+          </span>
+  
+        </h6>
+        <app-tags [tagList]="item.tags"></app-tags>   
+          
+        <div [innerHtml] = "item.description | safeHtml"></div>     
+    </div>
+  </ng-template>
+
+  <!-- Pager -->
+  <app-itempager 
+    [itemTemplate]="listItem"
+    [pagedResult]="pagedResult"   
+    (onSelectedPageChanged)="pageSelected($event)">            
+  </app-itempager>  
+
+</div>

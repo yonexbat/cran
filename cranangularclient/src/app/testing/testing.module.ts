@@ -9,14 +9,14 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS,
 import { CranDataServiceSpy } from './crandataservicespy';
 import { ConfirmServiceSpy } from './confirmservicespy';
 import {NotificationServiceSpy} from './notificationservicespy';
-import {CRAN_SERVICE_TOKEN} from '../cran-data.servicetoken';
-import {NotificationService} from '../notification.service';
-import {ConfirmService} from '../confirm.service';
-import {LanguageService} from '../language.service';
+import {CRAN_SERVICE_TOKEN} from '../services/cran-data.servicetoken';
+import {NotificationService} from '../services/notification.service';
+import {ConfirmService} from '../services/confirm.service';
+import {LanguageService} from '../services/language.service';
 import {PagedResult} from '../model/pagedresult';
 import {Tag} from '../model/tag';
 import {Image} from '../model/image';
-import {htmlRequired} from '../rich-text-box/htmlrequired';
+import {htmlRequired} from '../uicomps/rich-text-box/htmlrequired';
 
 
 
@@ -35,11 +35,27 @@ export class StubTagsComponent {
 export class StubImageListComponent {
   @Input() public images: Image[] = [];
   @Input() public imagesDeletable: boolean;
+
+  // tslint:disable-next-line:no-output-on-prefix
   @Output() onDeleted = new EventEmitter<Image[]>();
 }
 
 @Component({selector: 'app-comments', template: ''})
 export class StubCommentsComponent {
+
+  // tslint:disable-next-line:variable-name
+  private _questionid: number;
+  @Input()
+  set questionId(id: number) {
+    if (this._questionid !== id) {
+      this.showComments(id);
+    }
+    this._questionid = id;
+  }
+  get questionId(): number {
+    return this._questionid;
+  }
+
   public showComments(idQuestion: number): Promise<void> {
     return Promise.resolve();
   }
@@ -47,7 +63,7 @@ export class StubCommentsComponent {
 
 @Component({
   selector: 'app-rich-text-box',
-  template: '<input id="{{elementId}}" required={{required}} [(ngModel)]="content">',
+  template: '<input required={{required}} [(ngModel)]="content">',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -64,11 +80,11 @@ export class StubCommentsComponent {
 export class StubRichTextBoxComponent implements ControlValueAccessor,
   Validator, OnInit, OnChanges {
 
+  // tslint:disable-next-line:variable-name
   private _content: string;
   private onChangelistener: any;
   private validateFn: any;
 
-  @Input() elementId: string;
   @Input() public required: boolean;
   @Output() htmlString = new EventEmitter<string>();
 

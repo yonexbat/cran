@@ -1,0 +1,207 @@
+<div class="container" *ngIf="this.question != null">
+  
+  <app-question-preview #questionPreview></app-question-preview>
+
+  <h2>{{getHeadingText()}}</h2>
+
+  <form #questionForm="ngForm">
+
+   
+    <div class="row form-group">
+
+       <!-- Titel -->
+      <div class="col-md-6">
+          
+        <label for="title">{{ls.label('title')}}</label>
+
+        <input type="text" class="form-control" id="title"
+                required
+                [(ngModel)]="question.title" name="title"
+                #title="ngModel">
+
+        <div [hidden]="title.valid || title.pristine"
+              class="alert alert-danger">
+            {{ls.label('titelrequired')}}
+        </div>
+      </div>
+
+      <!-- Language -->
+      <div class="col-md-3">
+        
+          <label for="language">
+            {{ls.label('language')}}
+          </label>
+  
+          <select class="form-control"
+                  #language="ngModel"
+                  [(ngModel)]="question.language"
+                  name="language" 
+                  id="language"
+                  required>
+                  <option [value]="''"></option>                  
+                  <option [value]="'De'">Deutsch</option>
+                  <option [value]="'En'">English</option>
+          </select>
+
+          <div [hidden]="language.valid || language.pristine"
+              class="alert alert-danger">
+              {{ls.label('languagerequired')}}
+           </div>
+        
+      </div>      
+
+      <!-- Tags -->
+      <div class="col-md-3">
+         <app-tag-finder [tagsArray]="question.tags"></app-tag-finder>
+      </div>
+    </div>
+
+    <!-- Text -->
+    <div class="row form-group">
+      
+      <div class="col-md-12">
+          
+        <label for="questiontext">{{ls.label('text')}}</label>        
+
+        <app-rich-text-box 
+          #questiontext="ngModel"
+          name="questiontext"
+          [(ngModel)]="question.text" 
+          [required]="true"    
+          id="questiontext"></app-rich-text-box>
+
+        <div [hidden]="questiontext.valid || questiontext.pristine"
+          class="alert alert-danger">
+          {{ls.label('textrequired')}}
+        </div>
+
+      </div>
+    
+    </div>
+
+    <!-- Images -->
+    <div class="row form-group">
+      <div class="col-md-12">
+          <app-imagelist [images]="question.images" 
+                         [imagesDeletable]="true"
+                         (onDeleted)="onRemoveImage($event)"></app-imagelist>
+      </div>
+      <div class="col-md-12">
+        <label>{{ls.label('addimage')}}</label>   
+        <app-file-upload 
+           (onUploaded)="addImages($event)"
+           (onError)="addImagesError($event)"></app-file-upload>
+      </div>
+    </div>
+
+    <!-- options -->
+    <div *ngFor="let option of question.options; let optionIndex=index">
+      <hr/>
+      <div class="row form-group">
+
+        <div class="col-md-10">
+          <label for="optionText{{optionIndex}}">{{ls.label('option')}} {{optionIndex + 1}}</label>
+
+          <app-rich-text-box 
+            #questionoption="ngModel"
+            name="questionoption{{optionIndex}}"          
+            id="questionoption{{optionIndex}}"   
+            [(ngModel)]="option.text"
+            [required]="true"></app-rich-text-box>  
+          
+          <div [hidden]="questionoption.valid || questionoption.pristine"
+            class="alert alert-danger">
+            {{ls.label('optionrequired')}}
+          </div>                        
+          
+        </div>  
+
+        <div class="col-md-1">
+          <label for="checkBox{{optionIndex}}">Ok</label>
+          <input type="checkbox"
+            class="checkbox"
+            [(ngModel)]="option.isTrue" 
+            id="checkBox{{optionIndex}}"
+            name="checkBox{{optionIndex}}"
+            #optionChecked="ngModel">
+        </div>
+
+        <div class="col-md-1">
+          <button type="button" 
+              class="btn btn-default cranbutton" 
+              (click)="removeOption(optionIndex)" 
+              [appTooltip] = "'delete'">
+            <app-icon [icon]="'trash'" title="{{ls.label('removeoption')}}"></app-icon>            
+          </button>
+        </div>
+
+
+      </div> 
+    </div>
+
+    <hr/>
+
+    <!-- Option Hinzufügen -->
+    <div class="row form-group">
+      <div class="col-md-1 col-md-offset-11">
+        <button                             
+              type="button" 
+              class="btn btn-default" 
+              (click)="addOption()"
+              [appTooltip] = "'add'">
+            <app-icon [icon]="'add'" title="{{ls.label('addoption')}}"></app-icon>            
+          </button>
+      </div>
+    </div>
+
+    <!-- Erklärung -->
+    <div class="row form-group">
+      
+      <div class="col-md-12">
+          
+        <label for="explanation">{{ls.label('explanation')}}</label>
+
+        <app-rich-text-box 
+        #explanation="ngModel"
+        name="richtextboxexplanation"
+        id="richtextboxexplanation"
+        [(ngModel)]="question.explanation"
+        [required]="true"></app-rich-text-box>
+
+        <div [hidden]="explanation.valid || explanation.pristine"
+            class="alert alert-danger">
+            {{ls.label('explanationrequired')}}
+        </div>     
+
+      </div>
+    
+    </div>
+
+    <!-- Statusmessage -->
+    <app-statusmessage #statusMessage></app-statusmessage>
+    
+    <!-- Buttons -->
+    <div class="btn-group float-right" role="group">
+
+      <!-- Vorschau -->
+      <button 
+          type="button" 
+          class="btn btn btn-success" 
+          (click)="showPreview()" 
+          [disabled]="!questionForm.form.valid || actionInProgress">
+          {{ls.label('preview')}}
+      </button>        
+
+      <!-- Speichern -->
+      <button 
+          type="button" 
+          id="saveQuestionBtn"
+          class="btn btn btn-success" 
+          (click)="save()" 
+          [disabled]="!questionForm.form.valid || actionInProgress">
+        {{getSaveButtonText()}}
+      </button> 
+    </div>    
+
+  </form>
+</div>

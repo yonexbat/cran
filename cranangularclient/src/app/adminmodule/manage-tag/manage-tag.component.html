@@ -1,0 +1,99 @@
+<div class="container">
+  
+    
+    <h2>{{getHeadingText()}}</h2>    
+    <form  #tagForm="ngForm">
+           
+        <div class="row form-group">
+            
+          <!-- Name -->
+          <div class="col-md-4">
+              
+            <label for="title">{{ls.label('name')}}</label>
+    
+            <input 
+              type="text" 
+              class="form-control" 
+              id="name"
+              required
+              [(ngModel)]="tag.name" 
+              name="name"
+              #name="ngModel">  
+            <div [hidden]="name.valid || name.pristine"
+                  class="alert alert-danger">
+                {{ls.label('namerequired')}}
+            </div>
+          </div>              
+          
+          <!-- Description De tagdescde -->
+          <div class="col-md-4">
+            <label for="shorttextde">{{ls.label('tagdescde')}}</label>
+            <input 
+                type="text" class="form-control" 
+                required
+                id="shorttextde"
+                [(ngModel)]="tag.shortDescDe" 
+                name="shorttextde"
+                #shorttextde="ngModel">
+
+            <div [hidden]="shorttextde.valid || shorttextde.pristine"                
+                class="alert alert-danger">
+              {{ls.label('tagdescderequired')}}
+            </div>            
+          </div>
+
+          <!-- Description En -->
+          <div class="col-md-4">
+              <label for="shorttexten">{{ls.label('tagdescen')}}</label>
+              <input 
+                  type="text" class="form-control" 
+                  required
+                  id="shorttexten" 
+                  [(ngModel)]="tag.shortDescEn"
+                  name="shorttexten"
+                  #shorttexten="ngModel">
+              <div [hidden]="shorttexten.valid || shorttexten.pristine"
+                  class="alert alert-danger">
+                {{ls.label('shorttextenrequired')}}
+              </div>        
+          </div>                            
+        </div>
+
+
+
+        <!-- Description  -->
+        <div class="row form-group">
+          
+          <div class="col-md-12">
+              
+            <label for="description">{{ls.label('description')}}</label>        
+
+            <app-rich-text-box 
+              [content]="tag.description"
+              [required]="true"
+              (htmlString)="tag.description = $event"></app-rich-text-box>
+
+          </div>
+        
+        </div>
+
+        <!-- Statusmessage -->
+        <app-statusmessage #statusMessage></app-statusmessage>
+
+        <!-- Buttons -->
+        <div class="btn-group float-right" role="group">                  
+        
+          <!-- Speichern -->
+          <button 
+              type="button" 
+              class="btn btn btn-success" 
+              (click)="save()" 
+              [disabled]="!tagForm.form.valid || actionInProgress">
+            {{getSaveButtonText()}}
+          </button> 
+              
+        </div>    
+    
+    </form>    
+</div>
+    

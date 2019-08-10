@@ -1,0 +1,48 @@
+<div>
+        
+        <ng-template #nodatafound>
+          <span *ngIf="pagedResult">{{nodatafoundmessage}}</span>
+        </ng-template>
+      
+        <ng-template #datalist>
+      
+            <!-- Render Items here -->
+            <div class="list-group itemcontainer">
+              <ng-container *ngFor="let item of pagedResult.data">
+                  <ng-container *ngTemplateOutlet="itemTemplate;context:{item:item}">
+                  </ng-container>          
+              </ng-container>
+            </div>
+      
+            <!-- Page selector control  -->  
+            <div class="pageselector">    
+              <nav aria-label="select page">
+                <ul class="pagination" *ngIf="pagedResult.numpages > 1">
+      
+                    <li  aria-label="previous page" *ngIf="showPreviousPagesButton()"  class="page-item">          
+                      <span (click)="pageClicked(previousPagesFirstPage())" aria-hidden="true" class="page-link">&laquo;</span>          
+                    </li>
+                    <li *ngFor="let number of getPages()" [ngClass]="{'active': this.pagedResult.currentPage===number}"  class="page-item">
+                      <span (click)="pageClicked(number)" class="page-link">{{number + 1}}</span>
+                    </li>
+                    <li aria-label="next page" *ngIf="showNextPagesButton()"  class="page-item">          
+                        <span (click)="pageClicked(nextPagesFirstPage())" aria-hidden="true" class="page-link">&raquo;</span>          
+                    </li>
+      
+                </ul>  
+              </nav>
+            </div>
+      
+            <!-- Show num hits -->
+            <div>
+              <span>
+                {{ls.label('count')}}: {{pagedResult.count}}
+              </span>
+            </div>
+            
+        </ng-template>
+        
+        <div *ngIf="pagedResult && pagedResult.data && pagedResult.data.length > 0;then datalist else nodatafound">
+        </div>  
+             
+      </div>
