@@ -53,14 +53,14 @@ describe('UserInfoComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show username', async(async() => {
+  it('should show username', async(async () => {
     await fixture.whenStable();
     fixture.detectChanges();
     const text = fixture.debugElement.nativeElement.querySelector('#spanuserinfoname').textContent;
     expect(text).toContain(userInfo.name, 'username shall be displayed');
   }));
 
-  it('should change language to English', async( async() => {
+  it('should change language to English', async( async () => {
     await fixture.whenStable();
     fixture.detectChanges();
     const enButton = fixture.debugElement.nativeElement.querySelector('#userinfosetenbutton');
