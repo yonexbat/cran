@@ -24,7 +24,7 @@ describe('ManageQuestionComponent', () => {
       imports: [
         RouterTestingModule.withRoutes(
           [
-            { path: 'editquestion/:id', component: ManageQuestionComponent},
+            { path: 'admin/editquestion/:id', component: ManageQuestionComponent},
           ]
         ),
         FormsModule,
