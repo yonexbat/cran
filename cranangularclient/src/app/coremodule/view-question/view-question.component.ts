@@ -5,7 +5,7 @@ import {ICranDataService} from '../../services/icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../../services/cran-data.servicetoken';
 import {NotificationService} from '../../services/notification.service';
 import {Question} from '../../model/question';
-import { CommentsComponent } from '../comments/comments.component';
+import { CommentsComponent } from '../../uicomps/comments/comments.component';
 import { VersionsComponent } from '../versions/versions.component';
 import { LanguageService } from '../../services/language.service';
 import { ConfirmService } from '../../services/confirm.service';

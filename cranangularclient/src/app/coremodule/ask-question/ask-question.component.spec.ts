@@ -7,8 +7,6 @@ import {FormsModule} from '@angular/forms';
 import { AskQuestionComponent } from './ask-question.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import {TestingModule,
-  StubVoteComponent,
-  StubCommentsComponent,
   } from '../../testing/testing.module';
 import {StubActivatedRoute} from '../../testing/stubactivatedroute';
 
@@ -29,9 +27,8 @@ describe('AskQuestionComponent', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, FormsModule, TestingModule, UicompsModule],
       declarations: [
-        AskQuestionComponent,
-        StubVoteComponent,
-        StubCommentsComponent],
+          AskQuestionComponent,
+        ],
         providers: [
           {provide: ActivatedRoute, useValue: activeRoute}
         ],
@@ -101,7 +98,7 @@ describe('AskQuestionComponent', () => {
     const greendivs = fixture.debugElement.queryAll(By.css('div.crananswercorrect'));
     expect(greendivs.length).toBe(4);
 
-    const icons = fixture.debugElement.queryAll(By.css('app-icon'));
+    const icons = fixture.debugElement.queryAll(By.css('app-icon.oknokicon'));
     expect(icons.length).toBe(4); // 4 Options
 
 

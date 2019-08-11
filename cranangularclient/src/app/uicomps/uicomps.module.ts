@@ -16,6 +16,8 @@ import { ConfirmComponent } from './confirm/confirm.component';
 import { NotificationComponent } from './notification/notification.component';
 import { TagFinderComponent } from './tag-finder/tag-finder.component';
 import { QuestionselectorComponent } from './questionselector/questionselector.component';
+import { CommentsComponent } from './comments/comments.component';
+import { VoteComponent } from './vote/vote.component';
 
 
 
@@ -36,6 +38,8 @@ import { QuestionselectorComponent } from './questionselector/questionselector.c
     NotificationComponent,
     TagFinderComponent,
     QuestionselectorComponent,
+    CommentsComponent,
+    VoteComponent,
   ],
   imports: [
     CommonModule,
@@ -56,6 +60,8 @@ import { QuestionselectorComponent } from './questionselector/questionselector.c
     NotificationComponent,
     TagFinderComponent,
     QuestionselectorComponent,
+    CommentsComponent,
+    VoteComponent,
   ]
 })
 export class UicompsModule { }
