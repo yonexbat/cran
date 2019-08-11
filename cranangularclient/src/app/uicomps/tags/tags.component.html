@@ -1,7 +1,7 @@
   <!-- List of tags -->
   <div  *ngIf="tagList">
     <div>
-      <span *ngFor="let tag of tagList"            
+      <span *ngFor="let tag of tagList, let i = index"            
             [className]="classNamesForTag(tag)"                       
             [appTooltip] ="tooltip(tag)">
 
@@ -11,7 +11,9 @@
           [icon]="'remove'"
           *ngIf="isEditable"
           [appTooltip] = "'removeTag'"         
-          (click)="removeTag(tag)"></app-icon>        
+          (click)="removeTag(tag)"
+          (keyup.enter)="removeTag(tag)"
+          [tabindex]="index + 1"></app-icon>        
       </span>
     </div>
   </div>
