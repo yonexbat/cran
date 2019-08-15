@@ -20,11 +20,11 @@ export class CourseInstanceListComponent implements OnInit {
   public pagedResult: PagedResult<CourseInstanceListEntry> = new PagedResult<CourseInstanceListEntry>();
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
-    private router: Router,
-    private notificationService: NotificationService,
-    public ls: LanguageService,
-    private confirmService: ConfirmService,
-    private datePipe: DatePipe) { }
+              private router: Router,
+              private notificationService: NotificationService,
+              public ls: LanguageService,
+              private confirmService: ConfirmService,
+              private datePipe: DatePipe) { }
 
   ngOnInit() {
     this.loadInstances(0);

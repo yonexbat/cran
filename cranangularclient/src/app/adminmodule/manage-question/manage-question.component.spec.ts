@@ -166,11 +166,8 @@ describe('ManageQuestionComponent', () => {
     fixture.detectChanges();
 
     expect(component.questionForm.valid).toBeFalsy('form should be not valid');
+
     expect(component.questionForm.form.controls['questiontext'].valid).toBeTruthy('text is valid');
   }));
 
 });
-
-function setRichTextBoxText(id, value){
-
-}

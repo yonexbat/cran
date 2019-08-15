@@ -16,7 +16,6 @@ import {ConfirmService} from '../../services/confirm.service';
 })
 export class CommentsComponent implements OnInit {
 
-  // tslint:disable-next-line:variable-name
   private _questionid: number;
   @Input()
   set questionId(id: number) {

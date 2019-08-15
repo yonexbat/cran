@@ -22,11 +22,11 @@ export class SearchQuestionsComponent implements OnInit {
   private lastParams: ParamMap;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataServiceService: ICranDataService,
-    private router: Router,
-    private activeRoute: ActivatedRoute,
-    private notificationService: NotificationService,
-    public ls: LanguageService,
-    private confirmService: ConfirmService) {
+              private router: Router,
+              private activeRoute: ActivatedRoute,
+              private notificationService: NotificationService,
+              public ls: LanguageService,
+              private confirmService: ConfirmService) {
 
       this.activeRoute.queryParams.subscribe((params: ParamMap)  => {
         this.handleRouteChanged(params);
@@ -74,9 +74,9 @@ export class SearchQuestionsComponent implements OnInit {
   private toNumberArray(parameter): number[] {
     let result = [];
     if (typeof parameter === 'string') {
-      result.push(Number.parseInt(parameter));
+      result.push(Number.parseInt(parameter, 10));
     } else if (parameter instanceof Array) {
-      result = parameter.map(x => Number.parseInt(x));
+      result = parameter.map(x => Number.parseInt(x, 10));
     }
 
     return result;
@@ -93,10 +93,10 @@ export class SearchQuestionsComponent implements OnInit {
 
     const navigationExtras: NavigationExtras = {
       queryParams: {
-         pageNumber: pageNumber,
+         pageNumber,
          title: this.search.title,
-         andTags: andTags,
-         orTags: orTags,
+         andTags,
+         orTags,
          language: this.search.language,
          statusCreated: this.search.statusCreated,
          statusReleased: this.search.statusReleased,

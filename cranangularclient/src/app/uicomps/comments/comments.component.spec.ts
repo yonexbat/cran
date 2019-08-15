@@ -38,7 +38,7 @@ describe('CommentsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('shloud show comments', async(async() => {
+  it('shloud show comments', async(async () => {
     component.showComments(1);
     await fixture.whenStable();
     fixture.detectChanges();
@@ -94,7 +94,7 @@ describe('CommentsComponent', () => {
     expect(calledText).toBe('Test add my comment');
   }));
 
-  it('shloud delete comment', async(async() => {
+  it('shloud delete comment', async(async () => {
     component.showComments(7);
     await fixture.whenStable();
     fixture.detectChanges();

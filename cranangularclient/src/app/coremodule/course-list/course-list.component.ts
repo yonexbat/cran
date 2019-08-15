@@ -58,7 +58,6 @@ export class CourseListComponent implements OnInit {
   }
 
   public async editCourse(course: Course) {
-    debugger;
     this.router.navigate(['/admin/managecourse', course.id]);
   }
 

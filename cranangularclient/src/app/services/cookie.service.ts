@@ -12,7 +12,7 @@ export class CookieService {
     return this.getCookieFromString(cname, cookiestring);
   }
 
-  public getCookieFromString(cname: string, cookievalue: string):  string {
+  public getCookieFromString(cname: string, cookievalue: string): string {
     const decodedCookie = decodeURIComponent(cookievalue);
     const ca = decodedCookie.split(';');
     for (const c of ca) {

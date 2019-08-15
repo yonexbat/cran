@@ -8,7 +8,6 @@ import { QuestionSelectorInfo } from 'src/app/model/questionselectorinfo';
 })
 export class QuestionselectorComponent implements OnInit {
 
-  // tslint:disable-next-line:variable-name
   private _questionSelectors: QuestionSelectorInfo[];
   @Input()
   set questionSelectors(questionSelectors: QuestionSelectorInfo[]) {
@@ -19,7 +18,6 @@ export class QuestionselectorComponent implements OnInit {
     return this._questionSelectors;
   }
 
-  // tslint:disable-next-line:variable-name
   private _numCurrentQuestion: number;
   @Input()
   set numCurrentQuestion(num: number) {
@@ -29,7 +27,6 @@ export class QuestionselectorComponent implements OnInit {
     return this._numCurrentQuestion;
   }
 
-  // tslint:disable-next-line:variable-name
   private _numQuestions: number;
   @Input()
   set numQuestions(num: number) {

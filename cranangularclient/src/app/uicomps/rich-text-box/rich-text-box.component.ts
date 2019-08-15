@@ -37,8 +37,22 @@ declare const tinymce: any;
 export class RichTextBoxComponent implements OnInit, AfterViewInit,
   OnDestroy, ControlValueAccessor, Validator {
 
+  constructor(private zone: NgZone, private renderer: Renderer2) {
+    this.elementId = generateGuid();
+  }
 
-  private _content: string;
+   private _content: string;
+  @Input() public set content(content: string) {
+    this._content = content;
+    if (this.editor && this.editor.getContent() !== content) {
+      this.showContent();
+    }
+  }
+
+  public get content(): string {
+    return this._content;
+  }
+
   private editor: any;
   private onChangelistener: any;
   private validateFn: any;
@@ -47,10 +61,6 @@ export class RichTextBoxComponent implements OnInit, AfterViewInit,
   @Input() public required: boolean;
   @Output() htmlString = new EventEmitter<string>();
   @ViewChild('richtextboxcontainer', {static: true}) container: ElementRef;
-
-  constructor(private zone: NgZone, private renderer: Renderer2) {
-    this.elementId = generateGuid();
-  }
 
   writeValue(value: any): void {
     this.content = value;
@@ -64,17 +74,6 @@ export class RichTextBoxComponent implements OnInit, AfterViewInit,
   }
 
   setDisabledState?(isDisabled: boolean): void {
-  }
-
-  @Input() public set content(content: string) {
-    this._content = content;
-    if (this.editor && this.editor.getContent() !== content) {
-      this.showContent();
-    }
-  }
-
-  public get content(): string {
-    return this._content;
   }
 
   ngOnInit() {

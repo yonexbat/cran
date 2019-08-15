@@ -38,15 +38,12 @@ export class QuestionListItemComponent implements OnInit {
   @Input()
   public item: QuestionListEntry;
 
-  // tslint:disable-next-line:no-output-on-prefix
   @Output()
   onItemDeletedClick = new EventEmitter<QuestionListEntry>();
 
-  // tslint:disable-next-line:no-output-on-prefix
   @Output()
   onItemViewClick = new EventEmitter<QuestionListEntry>();
 
-  // tslint:disable-next-line:no-output-on-prefix
   @Output()
   onItemEditclick = new EventEmitter<QuestionListEntry>();
 

@@ -38,7 +38,7 @@ describe('CourseFavoriteListComponent', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, UicompsModule],
       declarations: [ CourseFavoriteListComponent,
-        StubPagerComponent,],
+        StubPagerComponent, ],
       providers: [
           LanguageService,
           { provide: CRAN_SERVICE_TOKEN, useValue: cranDataService },
