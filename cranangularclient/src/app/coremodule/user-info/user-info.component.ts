@@ -15,8 +15,8 @@ import {LanguageInfo} from '../../model/languageInfo';
 export class UserInfoComponent implements OnInit {
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
-    private notificationService: NotificationService,
-    private ls: LanguageService) { }
+              private notificationService: NotificationService,
+              private ls: LanguageService) { }
 
   userInfo: UserInfo;
 

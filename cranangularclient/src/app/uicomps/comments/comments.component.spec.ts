@@ -4,12 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { CommentsComponent } from './comments.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TestingModule } from '../../testing/testing.module';
-import { UicompsModule } from '../../uicomps/uicomps.module';
+
 
 import { ICranDataService } from '../../services/icrandataservice';
-import {Comment} from '../../model/comment';
-import {CRAN_SERVICE_TOKEN} from '../../services/cran-data.servicetoken';
+import { Comment } from '../../model/comment';
+import { CRAN_SERVICE_TOKEN } from '../../services/cran-data.servicetoken';
 import { ConfirmService } from '../../services/confirm.service';
+import { IconComponent } from '../icon/icon.component';
+import { ItempagerComponent } from '../itempager/itempager.component';
 
 describe('CommentsComponent', () => {
   let component: CommentsComponent;
@@ -18,8 +20,8 @@ describe('CommentsComponent', () => {
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, FormsModule, TestingModule, UicompsModule],
-      declarations: [ CommentsComponent, ],
+      imports: [RouterTestingModule, FormsModule, TestingModule, ],
+      declarations: [ CommentsComponent, IconComponent, ItempagerComponent, ],
       providers: [
       ],
     })
@@ -36,7 +38,7 @@ describe('CommentsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('shloud show comments', async(async() => {
+  it('shloud show comments', async(async () => {
     component.showComments(1);
     await fixture.whenStable();
     fixture.detectChanges();
@@ -46,7 +48,7 @@ describe('CommentsComponent', () => {
     expect(text).toContain('comment2');
   }));
 
-  it('shloud add comment', async(async() => {
+  it('shloud add comment', async(async () => {
     component.showComments(7);
     await fixture.whenStable();
     fixture.detectChanges();
@@ -92,7 +94,7 @@ describe('CommentsComponent', () => {
     expect(calledText).toBe('Test add my comment');
   }));
 
-  it('shloud delete comment', async(async() => {
+  it('shloud delete comment', async(async () => {
     component.showComments(7);
     await fixture.whenStable();
     fixture.detectChanges();

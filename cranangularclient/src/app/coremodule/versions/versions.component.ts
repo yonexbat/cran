@@ -24,11 +24,11 @@ export class VersionsComponent implements OnInit {
   private idQuestion: number;
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
-  private router: Router,
-  private activeRoute: ActivatedRoute,
-  private notificationService: NotificationService,
-  private confirmService: ConfirmService,
-  public ls: LanguageService) { }
+              private router: Router,
+              private activeRoute: ActivatedRoute,
+              private notificationService: NotificationService,
+              private confirmService: ConfirmService,
+              public ls: LanguageService) { }
 
   ngOnInit() {
   }

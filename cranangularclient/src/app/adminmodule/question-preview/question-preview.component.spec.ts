@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed,} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { Component, Input, Output, EventEmitter, DebugElement, TemplateRef } from '@angular/core';

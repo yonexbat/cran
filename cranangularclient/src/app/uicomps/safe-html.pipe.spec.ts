@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component, Input, DebugElement, SecurityContext} from '@angular/core';
+import { Component, Input, DebugElement, SecurityContext, Type} from '@angular/core';
 
 import { DomSanitizer } from '@angular/platform-browser';
 import {SafeHtmlPipe} from './safe-html.pipe';
@@ -43,7 +43,7 @@ describe('SaveHtmlPipe', () => {
   teststrings.forEach(testelem => {
 
     it(testelem.input, () => {
-        const htmlSaniziter: DomSanitizer = fixture.debugElement.injector.get(DomSanitizer);
+        const htmlSaniziter: DomSanitizer = fixture.debugElement.injector.get<DomSanitizer>(DomSanitizer as Type<DomSanitizer>);
         const result = htmlSaniziter.sanitize(SecurityContext.HTML, testelem.input);
         expect(result).toBe(testelem.output);
     });

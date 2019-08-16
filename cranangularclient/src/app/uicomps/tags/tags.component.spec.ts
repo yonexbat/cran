@@ -86,4 +86,5 @@ function createTag(id, name): Tag {
   tag.shortDescDe = `${name} Desc`;
   tag.idTagType = 1;
   return tag;
-};
+}
+

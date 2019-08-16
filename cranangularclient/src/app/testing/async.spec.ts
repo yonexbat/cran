@@ -150,7 +150,7 @@ describe('Marble tests', () => {
 describe('Observable tests', () => {
   it('observable unsibscribe when resolved', () => {
     let unsubscribeCalled = false;
-    const observable = new Observable<Number>((observer: Subscriber<Number>) => {
+    const observable = new Observable<number>((observer: Subscriber<number>) => {
       observer.next(1);
       observer.next(2);
       observer.next(3);
@@ -187,7 +187,7 @@ describe('Observable tests', () => {
   });
 
   it('observable unsibscribe when not resolved', () => {
-    const observable = new Observable<Number>((observer: Subscriber<Number>) => {
+    const observable = new Observable<number>((observer: Subscriber<number>) => {
       observer.next(1);
       observer.next(2);
       observer.next(3);

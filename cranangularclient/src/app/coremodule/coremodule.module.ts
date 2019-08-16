@@ -4,9 +4,8 @@ import { UicompsModule } from '../uicomps/uicomps.module';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import { CommentsComponent } from './comments/comments.component';
+
 import { AskQuestionComponent } from './ask-question/ask-question.component';
-import { VoteComponent } from './vote/vote.component';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { CourseListComponent } from './course-list/course-list.component';
 import { MenuComponent } from './menu/menu.component';
@@ -24,9 +23,7 @@ import { VersionsComponent } from './versions/versions.component';
 
 @NgModule({
   declarations: [
-    CommentsComponent,
     AskQuestionComponent,
-    VoteComponent,
     UserInfoComponent,
     CourseListComponent,
     MenuComponent,
@@ -48,9 +45,7 @@ import { VersionsComponent } from './versions/versions.component';
     UicompsModule,
   ],
   exports: [
-    CommentsComponent,
     AskQuestionComponent,
-    VoteComponent,
     UserInfoComponent,
     CourseListComponent,
     MenuComponent,

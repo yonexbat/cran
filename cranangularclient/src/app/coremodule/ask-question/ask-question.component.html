@@ -72,8 +72,8 @@
                    (change)="radioButtonChanged(optionIndex)"
                    [disabled] = "checkShown" >          
             
-            <app-icon [icon]="'ok'"  *ngIf="checkShown && option.isTrue"></app-icon>
-            <app-icon [icon]="'nok'" *ngIf="checkShown && !option.isTrue"></app-icon>
+            <app-icon [icon]="'ok'"  *ngIf="checkShown && option.isTrue"  class="oknokicon"></app-icon>
+            <app-icon [icon]="'nok'" *ngIf="checkShown && !option.isTrue" class="oknokicon"></app-icon>
           </div>
 
           <!-- Option text -->                    

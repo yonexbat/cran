@@ -18,10 +18,10 @@ export class ResultListComponent implements OnInit {
   public result: Result = new Result();
 
   constructor(@Inject(CRAN_SERVICE_TOKEN) private cranDataService: ICranDataService,
-    private router: Router,
-    private activeRoute: ActivatedRoute,
-    private notificationService: NotificationService,
-    public ls: LanguageService) {
+              private router: Router,
+              private activeRoute: ActivatedRoute,
+              private notificationService: NotificationService,
+              public ls: LanguageService) {
 
       this.activeRoute.paramMap.subscribe((params: ParamMap)  => {
         const id = params.get('id');

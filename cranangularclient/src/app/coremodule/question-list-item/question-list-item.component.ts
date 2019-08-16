@@ -47,8 +47,7 @@ export class QuestionListItemComponent implements OnInit {
   @Output()
   onItemEditclick = new EventEmitter<QuestionListEntry>();
 
-  constructor(private router: Router,
-    private ls: LanguageService) { }
+  constructor(private router: Router) { }
 
   public itemDelete() {
     this.onItemDeletedClick.emit(this.item);

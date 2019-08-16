@@ -24,7 +24,7 @@ describe('ManageQuestionComponent', () => {
       imports: [
         RouterTestingModule.withRoutes(
           [
-            { path: 'editquestion/:id', component: ManageQuestionComponent},
+            { path: 'admin/editquestion/:id', component: ManageQuestionComponent},
           ]
         ),
         FormsModule,
@@ -166,11 +166,8 @@ describe('ManageQuestionComponent', () => {
     fixture.detectChanges();
 
     expect(component.questionForm.valid).toBeFalsy('form should be not valid');
+
     expect(component.questionForm.form.controls['questiontext'].valid).toBeTruthy('text is valid');
   }));
 
 });
-
-function setRichTextBoxText(id, value){
-
-}

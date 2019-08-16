@@ -10,9 +10,11 @@
           class="form-control"
           [(ngModel)]="searchText" />
     <div class="crantagresultanchor">
-      <div *ngFor="let tag of tags | async" 
+      <div *ngFor="let tag of tags | async, let i = index" 
            class="crantagresult" 
-           (click)="addTag(tag)">
+           (click)="addTag(tag)"
+           (keyup.enter)="addTag(tag)"
+           [tabindex]="index + 1">
         {{tag.name}}
       </div>
     </div>

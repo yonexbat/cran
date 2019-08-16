@@ -3,3 +3,11 @@
     content: "";    
     clear: both;
 }
+
+.username {
+    color: brown
+}
+
+.creationdate {
+    color: cadetblue;
+}

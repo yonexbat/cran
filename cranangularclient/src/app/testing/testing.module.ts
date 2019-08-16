@@ -35,15 +35,12 @@ export class StubTagsComponent {
 export class StubImageListComponent {
   @Input() public images: Image[] = [];
   @Input() public imagesDeletable: boolean;
-
-  // tslint:disable-next-line:no-output-on-prefix
   @Output() onDeleted = new EventEmitter<Image[]>();
 }
 
 @Component({selector: 'app-comments', template: ''})
 export class StubCommentsComponent {
 
-  // tslint:disable-next-line:variable-name
   private _questionid: number;
   @Input()
   set questionId(id: number) {
@@ -80,7 +77,6 @@ export class StubCommentsComponent {
 export class StubRichTextBoxComponent implements ControlValueAccessor,
   Validator, OnInit, OnChanges {
 
-  // tslint:disable-next-line:variable-name
   private _content: string;
   private onChangelistener: any;
   private validateFn: any;

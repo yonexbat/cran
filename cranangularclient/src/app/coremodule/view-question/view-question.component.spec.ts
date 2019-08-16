@@ -18,15 +18,7 @@ class StubVersionsComponent {
 
 }
 
-@Component({selector: 'app-vote', template: ''})
-class StubVoteComponent {
-  @Input() public votes;
-}
 
-
-@Component({selector: 'app-comments', template: ''})
-class StubCommentsComponent {
-}
 
 describe('ViewQuestionComponent', () => {
   let component: ViewQuestionComponent;
@@ -47,8 +39,6 @@ describe('ViewQuestionComponent', () => {
       declarations: [
         ViewQuestionComponent,
         StubVersionsComponent,
-        StubVoteComponent,
-        StubCommentsComponent,
       ],
       providers: [
         LanguageService,

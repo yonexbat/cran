@@ -58,7 +58,7 @@ describe('TagFinderComponent', () => {
     expect(component).toBeTruthy();
   }));
 
-  it('Sould display selection', async( async() => {
+  it('Sould display selection', async( async () => {
 
     const nameInput: HTMLInputElement = fixture.debugElement.nativeElement.querySelector('input');
     nameInput.value = 'javascript';
@@ -75,7 +75,7 @@ describe('TagFinderComponent', () => {
     expect(cranDataService.findTags).toHaveBeenCalled();
   }));
 
-  it('Select Tag', async( async() => {
+  it('Select Tag by click', async( async () => {
 
     const nameInput: HTMLInputElement = fixture.debugElement.nativeElement.querySelector('input');
     nameInput.value = 'javascript';

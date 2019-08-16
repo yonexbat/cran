@@ -25,7 +25,7 @@ describe('ImagelistComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, FormsModule,],
+      imports: [RouterTestingModule, FormsModule, ],
       declarations: [ ImagelistComponent, IconComponent, ],
       providers: [
         LanguageService,
