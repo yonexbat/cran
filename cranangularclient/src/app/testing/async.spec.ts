@@ -2,6 +2,7 @@ import { TestBed,  fakeAsync, tick } from '@angular/core/testing';
 import {asyncData, asyncError} from './async';
 import { of, Observable, Subject, Subscriber, Subscription } from 'rxjs';
 import { cold, getTestScheduler } from 'jasmine-marbles';
+import { switchMap } from 'rxjs/operators';
 
 
 class CraniumService {
@@ -218,4 +219,43 @@ describe('Observable tests', () => {
     subsciption.unsubscribe();
 
   });
+
+  it('switchMap', () => {
+    const res = [];
+    let doneCount = 0;
+    const switched = of(1, 2).pipe(switchMap((x: number) => of(x, x ** 2, x ** 3)));
+    switched.subscribe(
+      (x: number) => {
+        res.push(x);
+      },
+      (error) => {},
+      () => {
+        doneCount++;
+      });
+    expect(res).toEqual([1, 1, 1, 2, 4, 8]);
+    expect(doneCount).toBe(1);
+  });
+
+
+  it('completeCount', () => {
+    const subject = new Subject<number>();
+    let completeCount = 0;
+    subject.subscribe(
+      // next
+      (thenumber: number) => {},
+
+      // error
+      (theerror) => {},
+
+      // complete
+      () => {
+        completeCount++;
+      }
+    );
+    subject.next(1);
+    subject.next(3);
+    subject.next(3);
+    expect(completeCount).toBe(0);
+  });
+
 });
