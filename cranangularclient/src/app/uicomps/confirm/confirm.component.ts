@@ -15,7 +15,6 @@ export class ConfirmComponent implements OnInit {
 
   title  = '';
   text = '';
-  promiseResolver: any;
   public cancelButtonVisible = true;
 
   constructor(public ls: LanguageService,
