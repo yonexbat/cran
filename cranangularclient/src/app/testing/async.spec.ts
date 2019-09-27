@@ -1,6 +1,6 @@
 import { TestBed,  fakeAsync, tick } from '@angular/core/testing';
 import {asyncData, asyncError} from './async';
-import { of, Observable, Subject, Subscriber, Subscription } from 'rxjs';
+import { of, Observable, Subject, Subscriber, Subscription, pipe } from 'rxjs';
 import { cold, getTestScheduler } from 'jasmine-marbles';
 import { switchMap } from 'rxjs/operators';
 
@@ -237,25 +237,17 @@ describe('Observable tests', () => {
   });
 
 
-  it('completeCount', () => {
+
+  it('switchMap2', () => {
     const subject = new Subject<number>();
-    let completeCount = 0;
-    subject.subscribe(
-      // next
-      (thenumber: number) => {},
-
-      // error
-      (theerror) => {},
-
-      // complete
-      () => {
-        completeCount++;
-      }
-    );
+    let count = 0;
     subject.next(1);
+    subject.next(2);
+    subject.pipe(switchMap((x: number) => of(x, x)))
+      .subscribe(x => count++);
+    expect(count).toBe(0);
     subject.next(3);
-    subject.next(3);
-    expect(completeCount).toBe(0);
+    expect(count).toBe(2);
   });
 
 });
