@@ -138,12 +138,12 @@
           (click)="nextQuestion()">   
 
         <!-- Nächste Frage -->
-        <span *ngIf="(questionToAsk?.questionSelectors.length < questionToAsk?.numQuestions)">
+        <span *ngIf="(questionToAsk?.questionSelectors?.length < questionToAsk?.numQuestions)">
           {{ls.label('nextquestion')}}
         </span>
 
         <!-- Kurs beenden -->
-        <span *ngIf="(questionToAsk?.questionSelectors.length >= questionToAsk?.numQuestions)">
+        <span *ngIf="(questionToAsk?.questionSelectors?.length >= questionToAsk?.numQuestions)">
             {{ls.label('endcourse')}}
         </span>
 

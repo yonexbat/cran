@@ -107,7 +107,7 @@ namespace cran.Services
             //Optionen
             questionToAskDto.Options = await _context.CourseInstancesQuestionOption
                             .Where(x => x.CourseInstanceQuestion.Id == courseInstanceQuestionId)
-                            .OrderBy(x => x.CourseInstanceQuestion.Id)
+                            .OrderBy(x => x.QuestionOption.Id)
                             .Select(x => new QuestionOptionToAskDto
                             {
                                 IdCourseInstanceQuestionOption = x.Id,
@@ -373,7 +373,7 @@ namespace cran.Services
 
             IList<CourseInstanceQuestionOption> options = await _context.CourseInstancesQuestionOption
                 .Where(x => x.CourseInstanceQuestion.Id == courseInstanceQuestionEntity.Id)
-                .OrderBy(x => x.Id)
+                .OrderBy(x => x.QuestionOption.Id)
                 .Include(x => x.QuestionOption).ToListAsync();
 
             if (options.Count != answer.Answers.Count)

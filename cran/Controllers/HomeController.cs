@@ -25,7 +25,7 @@ namespace cran.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            //Because service-worker js file is in ths jsclient directory.
+            //Because service-worker js file is in the jsclient directory.
             if(this.HttpContext.Request.Path == "/")
             {
                 return Redirect("/jsclient");
