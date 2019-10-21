@@ -15,7 +15,6 @@ using Serilog;
 using cran.Model.Dto;
 using cran.Filters;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace cran
 {
@@ -47,8 +46,7 @@ namespace cran
 
             services.AddControllersWithViews()                
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-                .AddDataAnnotationsLocalization()                
-                .AddNewtonsoftJson()
+                .AddDataAnnotationsLocalization()                                
                 .SetCompatibilityVersion(CompatibilityVersion.Latest);
            
 
