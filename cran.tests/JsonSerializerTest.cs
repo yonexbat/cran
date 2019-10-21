@@ -14,7 +14,7 @@ namespace cran.tests
     public class JsonSerializerTest
     {
         [Fact]
-        public async Task JsonSerializerTest_Ok()
+        public void JsonSerializerTest_Ok()
         {
             QuestionDto dto = new QuestionDto();
             dto.Options.Add(new QuestionOptionDto());
