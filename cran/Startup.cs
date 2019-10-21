@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Hosting;
 using cran.Middleware;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Rewrite;
@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using cran.Model.Dto;
 using cran.Filters;
+using Microsoft.AspNetCore.Hosting;
 
 namespace cran
 {
@@ -22,7 +23,7 @@ namespace cran
 
         private IFileProvider _physicalFileProvider;
 
-        public Startup(IHostingEnvironment env)
+        public Startup(IWebHostEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -43,12 +44,17 @@ namespace cran
         {
             services.AddSingleton(_physicalFileProvider);
 
-            services.AddMvc(options => options.Filters.Add(typeof(AuditFilter)))               
+            services.AddControllersWithViews()                
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-                .AddDataAnnotationsLocalization()
+                .AddDataAnnotationsLocalization()                                
                 .SetCompatibilityVersion(CompatibilityVersion.Latest);
+           
 
-            
+            services.AddMvc(options => options
+                   .Filters.Add(typeof(AuditFilter)));
+
+
+
             services.AddCranLocalization();
             services.AddCranDbContext(Configuration);
             services.AddCranGoogleAuth(Configuration);
@@ -64,8 +70,8 @@ namespace cran
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, 
-            IHostingEnvironment env, 
+        public void Configure(IApplicationBuilder app,
+            IWebHostEnvironment env, 
             IAntiforgery antiforgery,
             ILoggerFactory loggerFactory)
         {            
@@ -84,27 +90,33 @@ namespace cran
                 app.UseHsts();
             }
 
+            app.UseRouting();
+
             //Redirect to  HTTPS
             app.UseRewriter(new RewriteOptions().AddRedirectToHttps());
 
             //Add Seri Log
-            loggerFactory.AddSerilog();           
+            loggerFactory.AddSerilog();
 
             //Static files
+            app.UseDefaultFiles();
             app.UseStaticFiles();
+           
 
             //Localization          
             IOptions<RequestLocalizationOptions> options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
             app.UseRequestLocalization(options.Value);
 
-            //Google login
+            //Security
             app.UseAuthentication();
-
+            app.UseAuthorization();           
             //AntiforgeryCookies
             app.AddAntiforgery(antiforgery);
 
-            //Routes
-            app.UseMvc(ConfigRouting.ConfigureRoutes);
+            app.UseEndpoints(endpoints =>
+            {
+                ConfigRouting.ConfigureRoutes(endpoints);
+            });
 
         }
     }

@@ -164,7 +164,7 @@ namespace cran.Services
             IList<RelQuestionImage> relImages = await _context.RelQuestionImages.Where(x => x.IdQuestion == questionEntity.Id).ToListAsync();
             IDictionary<int, int> relIdByImageId = relImages.ToDictionary(x => x.IdImage, x => x.Id);
             IList<RelQuestionImageDto> relImagesDtos = new List<RelQuestionImageDto>();
-            IList<int> binaryIds = questionDto.Images.Select(x => x.IdBinary).ToList();
+            IEnumerable<int> binaryIds = questionDto.Images.Select(x => x.IdBinary);
             IList<Image> images = await _context.Images.Where(x => binaryIds.Contains(x.IdBinary)).ToListAsync();
             IDictionary<int, Image> imageByBinaryId = images.ToDictionary(x => x.IdBinary, x => x);
             foreach (ImageDto image in questionDto.Images)

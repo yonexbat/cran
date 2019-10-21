@@ -46,8 +46,10 @@ export class QuestionselectorComponent implements OnInit {
 
   private initremainingQuestions() {
     this.remainingQuestions = [];
-    for (let i = this.questionSelectors.length; i < this.numQuestions; i++) {
-      this.remainingQuestions.push(i + 1);
+    if (this.questionSelectors) {
+      for (let i = this.questionSelectors.length; i < this.numQuestions; i++) {
+        this.remainingQuestions.push(i + 1);
+      }
     }
   }
 

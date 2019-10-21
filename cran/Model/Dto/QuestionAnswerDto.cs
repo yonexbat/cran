@@ -7,7 +7,7 @@ namespace cran.Model.Dto
 {
     public class QuestionAnswerDto
     {
-        public int IdCourseInstanceQuestion;
+        public int IdCourseInstanceQuestion { get; set; }
         public IList<bool> Answers { get; set; } = new List<bool>();
     }
 }

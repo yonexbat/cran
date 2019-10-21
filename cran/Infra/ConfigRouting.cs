@@ -9,15 +9,14 @@ namespace cran.Infra
 {
     public static class ConfigRouting
     {
-        public static void ConfigureRoutes(IRouteBuilder rb)
+        public static void ConfigureRoutes(IEndpointRouteBuilder rb)
         {
-            rb.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+            rb.MapFallbackToController("Index", "Home");
 
-            rb.MapSpaFallbackRoute(
-                name: "spa-fallback",
-                defaults: new { controller = "Home", action = "Index" });
+            rb.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");            
+                              
         }
     }
 }
