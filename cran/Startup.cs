@@ -15,6 +15,7 @@ using Serilog;
 using cran.Model.Dto;
 using cran.Filters;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace cran
 {
@@ -44,16 +45,17 @@ namespace cran
         {
             services.AddSingleton(_physicalFileProvider);
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()                
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization()                
+                .SetCompatibilityVersion(CompatibilityVersion.Latest);
+           
 
             services.AddMvc(options => options
-                    .Filters.Add(typeof(AuditFilter)))               
-                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-                .AddDataAnnotationsLocalization()
-                .AddNewtonsoftJson()
-                .SetCompatibilityVersion(CompatibilityVersion.Latest);
+                   .Filters.Add(typeof(AuditFilter)));
 
-            
+
+
             services.AddCranLocalization();
             services.AddCranDbContext(Configuration);
             services.AddCranGoogleAuth(Configuration);
@@ -106,11 +108,9 @@ namespace cran
             IOptions<RequestLocalizationOptions> options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
             app.UseRequestLocalization(options.Value);
 
-            //User Authorization
+            //Security
             app.UseAuthentication();
-            app.UseAuthorization();
-            
-
+            app.UseAuthorization();           
             //AntiforgeryCookies
             app.AddAntiforgery(antiforgery);
 

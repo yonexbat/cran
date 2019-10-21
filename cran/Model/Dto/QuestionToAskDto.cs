@@ -17,8 +17,8 @@ namespace cran.Model.Dto
         public QuestionType QuestionType { get; set; }
 
 
-        public IList<QuestionOptionToAskDto> Options = new List<QuestionOptionToAskDto>();
-        public IList<ImageDto> Images = new List<ImageDto>();
-        public IList<QuestionSelectorInfoDto> QuestionSelectors = new List<QuestionSelectorInfoDto>();
+        public IList<QuestionOptionToAskDto> Options { get; set; } = new List<QuestionOptionToAskDto>();
+        public IList<ImageDto> Images { get; set; } = new List<ImageDto>();
+        public IList<QuestionSelectorInfoDto> QuestionSelectors { get; set; } = new List<QuestionSelectorInfoDto>();
     }
 }

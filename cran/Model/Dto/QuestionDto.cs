@@ -19,13 +19,13 @@ namespace cran.Model.Dto
 
         public bool IsEditable { get; set; }
 
-        public IList<QuestionOptionDto> Options = new List<QuestionOptionDto>();
+        public IList<QuestionOptionDto> Options { get; set; } = new List<QuestionOptionDto>();
 
-        public IList<TagDto> Tags = new List<TagDto>();
+        public IList<TagDto> Tags { get; set; } = new List<TagDto>();
 
         public VotesDto Votes { get; set; }
 
-        public IList<ImageDto> Images = new List<ImageDto>();
+        public IList<ImageDto> Images { get; set; } = new List<ImageDto>();
         
         public string Language { get;set; }
 

@@ -13,7 +13,7 @@ namespace cran.Model.Dto
         public string Language { get; set; }
         public bool IsFavorite { get; set; }
 
-        public IList<TagDto> Tags = new List<TagDto>();        
+        public IList<TagDto> Tags { get; set; } = new List<TagDto>();        
 
     }
 }

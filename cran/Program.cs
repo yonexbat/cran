@@ -2,9 +2,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore;
 using cran.Middleware;
 using System;
-using Microsoft.Extensions.Logging;
-using Serilog.Extensions.Logging;
 using cran.Infra;
+using Microsoft.Extensions.Hosting;
 
 namespace cran
 {
@@ -21,7 +20,8 @@ namespace cran
                .UseStartup<Startup>();
 
             string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-            bool isDevelopment = environment == EnvironmentName.Development;
+            
+            bool isDevelopment = environment == Environments.Development;
 
             if (isDevelopment)
             {
