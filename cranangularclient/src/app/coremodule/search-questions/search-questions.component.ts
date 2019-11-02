@@ -1,14 +1,14 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { Router, ActivatedRoute,  ParamMap, Params, NavigationExtras} from '@angular/router';
+import { Router, ActivatedRoute, ParamMap, NavigationExtras } from '@angular/router';
 
-import {ICranDataService} from '../../services/icrandataservice';
-import {CRAN_SERVICE_TOKEN} from '../../services/cran-data.servicetoken';
-import {QuestionListEntry} from '../../model/questionlistentry';
-import {SearchQParameters} from '../../model/searchqparameters';
-import {PagedResult} from '../../model/pagedresult';
-import {NotificationService} from '../../services/notification.service';
-import {LanguageService} from '../../services/language.service';
-import {ConfirmService} from '../../services/confirm.service';
+import { ICranDataService } from '../../services/icrandataservice';
+import { CRAN_SERVICE_TOKEN } from '../../services/cran-data.servicetoken';
+import { QuestionListEntry } from '../../model/questionlistentry';
+import { SearchQParameters } from '../../model/searchqparameters';
+import { PagedResult } from '../../model/pagedresult';
+import { NotificationService } from '../../services/notification.service';
+import { LanguageService } from '../../services/language.service';
+import { ConfirmService } from '../../services/confirm.service';
 
 @Component({
   selector: 'app-search-questions',
@@ -28,13 +28,23 @@ export class SearchQuestionsComponent implements OnInit {
               public ls: LanguageService,
               private confirmService: ConfirmService) {
 
-      this.activeRoute.queryParams.subscribe((params: ParamMap)  => {
-        this.handleRouteChanged(params);
-      });
+    this.activeRoute.queryParams.subscribe((params: ParamMap) => {
+      this.handleRouteChanged(params);
+    });
   }
 
   private async handleRouteChanged(params: ParamMap): Promise<void> {
+    await this.initSearch(params);
+    try {
+      this.notificationService.emitLoading();
+      this.pagedResult = await this.cranDataServiceService.searchForQuestions(this.search);
+      this.notificationService.emitDone();
+    } catch (error) {
+      this.notificationService.emitError(error);
+    }
+  }
 
+  private async initSearch(params: ParamMap): Promise<void> {
     this.lastParams = params;
     this.search.page = +params['pageNumber'];
     this.search.title = params['title'];
@@ -44,7 +54,7 @@ export class SearchQuestionsComponent implements OnInit {
       this.search.statusCreated = params['statusCreated'] === 'true';
     }
     if (params['statusReleased']) {
-      this.search.statusReleased =  params['statusReleased'] === 'true';
+      this.search.statusReleased = params['statusReleased'] === 'true';
     }
     if (params['statusObsolete']) {
       this.search.statusObsolete = params['statusObsolete'] === 'true';
@@ -56,18 +66,11 @@ export class SearchQuestionsComponent implements OnInit {
     if (andTagsIds.length > 0) {
       this.search.andTags = await this.cranDataServiceService.getTags(andTagsIds);
     }
-    if (orTagsIds.length  > 0) {
+    if (orTagsIds.length > 0) {
       this.search.orTags = await this.cranDataServiceService.getTags(orTagsIds);
     }
     if (isNaN(this.search.page)) {
       this.search.page = 0;
-    }
-    try {
-      this.notificationService.emitLoading();
-      this.pagedResult = await this.cranDataServiceService.searchForQuestions(this.search);
-      this.notificationService.emitDone();
-    } catch (error) {
-      this.notificationService.emitError(error);
     }
   }
 
@@ -93,14 +96,14 @@ export class SearchQuestionsComponent implements OnInit {
 
     const navigationExtras: NavigationExtras = {
       queryParams: {
-         pageNumber,
-         title: this.search.title,
-         andTags,
-         orTags,
-         language: this.search.language,
-         statusCreated: this.search.statusCreated,
-         statusReleased: this.search.statusReleased,
-         statusObsolete: this.search.statusObsolete,
+        pageNumber,
+        title: this.search.title,
+        andTags,
+        orTags,
+        language: this.search.language,
+        statusCreated: this.search.statusCreated,
+        statusReleased: this.search.statusReleased,
+        statusObsolete: this.search.statusObsolete,
       }
     };
 
