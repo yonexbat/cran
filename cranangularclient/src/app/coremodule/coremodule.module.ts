@@ -15,9 +15,7 @@ import { CourseStarterComponent } from './course-starter/course-starter.componen
 import { CourseFavoriteListComponent } from './course-favorite-list/course-favorite-list.component';
 import { CourseInstanceListComponent } from './course-instance-list/course-instance-list.component';
 import { QuestionListComponent } from './question-list/question-list.component';
-import { QuestionListItemComponent } from './question-list-item/question-list-item.component';
 import { ResultListComponent } from './result-list/result-list.component';
-import { SearchQuestionsComponent } from './search-questions/search-questions.component';
 import { VersionsComponent } from './versions/versions.component';
 
 
@@ -33,9 +31,7 @@ import { VersionsComponent } from './versions/versions.component';
     CourseStarterComponent,
     CourseFavoriteListComponent,
     QuestionListComponent,
-    QuestionListItemComponent,
     ResultListComponent,
-    SearchQuestionsComponent,
     VersionsComponent,
   ],
   imports: [
@@ -55,9 +51,7 @@ import { VersionsComponent } from './versions/versions.component';
     CourseStarterComponent,
     CourseFavoriteListComponent,
     QuestionListComponent,
-    QuestionListItemComponent,
     ResultListComponent,
-    SearchQuestionsComponent,
     VersionsComponent,
   ]
 

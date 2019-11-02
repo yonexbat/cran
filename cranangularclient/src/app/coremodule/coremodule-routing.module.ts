@@ -8,7 +8,6 @@ import {AskQuestionComponent} from './ask-question/ask-question.component';
 import {QuestionListComponent} from './question-list/question-list.component';
 import {ResultListComponent} from './result-list/result-list.component';
 import {CourseInstanceListComponent} from './course-instance-list/course-instance-list.component';
-import {SearchQuestionsComponent} from './search-questions/search-questions.component';
 import {ViewQuestionComponent} from './view-question/view-question.component';
 import {FileUploadComponent} from '../uicomps/file-upload/file-upload.component';
 import {CourseStarterComponent} from './course-starter/course-starter.component';
@@ -23,7 +22,6 @@ const routes: Routes = [
   { path: 'results', component: CourseInstanceListComponent},
   { path: 'askquestion/:id', component:  AskQuestionComponent},
   { path: 'resultlist/:id', component:  ResultListComponent},
-  { path: 'searchq', component: SearchQuestionsComponent},
   { path: 'viewquestion/:id', component: ViewQuestionComponent},
   { path: 'fileupload', component: FileUploadComponent},
   { path: 'coursestarter/:id', component: CourseStarterComponent},

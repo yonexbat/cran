@@ -107,7 +107,7 @@ export class SearchQuestionsComponent implements OnInit {
       }
     };
 
-    this.router.navigate(['/searchq'], navigationExtras);
+    this.router.navigate(['/admin/searchq'], navigationExtras);
   }
 
   public pageSelected(pageNumber: number) {

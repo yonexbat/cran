@@ -12,6 +12,7 @@ import { ManageCourseComponent } from './manage-course/manage-course.component';
 import { ManageQuestionComponent } from './manage-question/manage-question.component';
 import { QuestionPreviewComponent } from './question-preview/question-preview.component';
 import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
+import { SearchQuestionsComponent } from './search-questions/search-questions.component';
 
 
 
@@ -26,6 +27,7 @@ import { SubscriptionsComponent } from './subscriptions/subscriptions.component'
     ManageQuestionComponent,
     QuestionPreviewComponent,
     SubscriptionsComponent,
+    SearchQuestionsComponent,
   ],
   imports: [
     CommonModule,

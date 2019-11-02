@@ -18,6 +18,7 @@ import { TagFinderComponent } from './tag-finder/tag-finder.component';
 import { QuestionselectorComponent } from './questionselector/questionselector.component';
 import { CommentsComponent } from './comments/comments.component';
 import { VoteComponent } from './vote/vote.component';
+import { QuestionListItemComponent } from './question-list-item/question-list-item.component';
 
 
 
@@ -40,6 +41,7 @@ import { VoteComponent } from './vote/vote.component';
     QuestionselectorComponent,
     CommentsComponent,
     VoteComponent,
+    QuestionListItemComponent,
   ],
   imports: [
     CommonModule,
@@ -62,6 +64,7 @@ import { VoteComponent } from './vote/vote.component';
     QuestionselectorComponent,
     CommentsComponent,
     VoteComponent,
+    QuestionListItemComponent,
   ]
 })
 export class UicompsModule { }

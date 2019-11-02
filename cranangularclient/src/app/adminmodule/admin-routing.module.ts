@@ -8,6 +8,7 @@ import { ManageTagComponent } from './manage-tag/manage-tag.component';
 import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
 import { ManageCourseComponent } from './manage-course/manage-course.component';
 import { ManageQuestionComponent } from './manage-question/manage-question.component';
+import { SearchQuestionsComponent } from './search-questions/search-questions.component';
 
 
 const routes: Routes = [
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'managecourse/:id', component: ManageCourseComponent},
   { path: 'addquestion', component:  ManageQuestionComponent},
   { path: 'editquestion/:id', component: ManageQuestionComponent},
+  { path: 'searchq', component: SearchQuestionsComponent},
 ];
 
 @NgModule({

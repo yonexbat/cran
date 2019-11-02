@@ -4,7 +4,6 @@ import { Component, OnInit,
 import { Router, } from '@angular/router';
 
 import {QuestionListEntry} from '../../model/questionlistentry';
-import {LanguageService} from '../../services/language.service';
 
 @Component({
   selector: 'app-question-list-item',
