@@ -112,8 +112,9 @@ namespace cran.Services
 
         public async Task<IList<TagDto>> GetTagsAsync(IList<int> ids)
         {
+            IEnumerable<int> idsEnumearble = ids.AsEnumerable();
             IQueryable<Tag> query = _context.Tags
-                .Where(x => ids.Contains(x.Id))
+                .Where(x => idsEnumearble.Contains(x.Id))
                 .OrderBy(x => x.Name);
             IList<TagDto> tags = await ToDto(query);
             return tags;
