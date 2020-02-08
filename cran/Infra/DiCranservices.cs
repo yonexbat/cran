@@ -19,7 +19,7 @@ namespace cran.Infra
             //Scoped: once per request.
             //Singleton: self explained.
 
-            services.AddTransient<IPrincipal>(provider => provider.GetService<IHttpContextAccessor>().HttpContext.User);
+            services.AddTransient<IPrincipal>((IServiceProvider provider) => GetPrincipal(provider));
             services.AddTransient<ICultureService, CultureService>();
             services.AddScoped<SignInManager<ApplicationUser>, SignInManager<ApplicationUser>>();
             services.AddScoped<IDbLogService, DbLogService>();
@@ -40,5 +40,19 @@ namespace cran.Infra
             services.AddSingleton<IWebPushClient, WebPushClient>();              
             
         }
+
+        public static IPrincipal GetPrincipal(IServiceProvider provider)
+        {
+            IPrincipal principal = provider.GetService<IHttpContextAccessor>()?.HttpContext?.User;
+            if(principal == null)
+            {
+                principal = new GenericPrincipal(new GenericIdentity("anonymous"), new string[0]);
+            }
+
+            return principal;
+        }
+
+
+
     }
 }
