@@ -6,11 +6,13 @@ import { QuestionAnswer } from '../model/questionanswer';
 import { Question } from '../model/question';
 import { createQuestiontoAskTestObj, createCommentsTestObjs,
  createQuestionTestObj } from './modelobjcreator';
+import { Injectable } from "@angular/core";
 
 
 const questiontoAsk: QuestionToAsk = createQuestiontoAskTestObj();
 const comments = createCommentsTestObjs();
 
+@Injectable()
 export class CranDataServiceSpy {
     public constructor() {
     }
