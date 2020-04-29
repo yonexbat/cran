@@ -24,7 +24,7 @@
     "@angular/service-worker": "~9.1.0",
     "@fortawesome/fontawesome-free": "^5.12.1",
     "bootstrap": "^4.4.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "popper.js": "^1.16.1",
     "rxjs": "^6.5.4",
     "tinymce": "^4.9.8",
