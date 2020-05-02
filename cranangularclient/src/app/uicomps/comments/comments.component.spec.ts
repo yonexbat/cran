@@ -102,7 +102,7 @@ describe('CommentsComponent', () => {
     // Prepare dataservice
     const dataServiceSpy: ICranDataService = fixture.debugElement.injector.get(CRAN_SERVICE_TOKEN);
     const deleteCommentFn = dataServiceSpy.deleteComment;
-    dataServiceSpy.addComment = spyOn(dataServiceSpy, 'deleteComment')
+    dataServiceSpy.deleteComment = spyOn(dataServiceSpy, 'deleteComment')
       .and.callFake(deleteCommentFn);
 
     // Prempare Confirmservice
