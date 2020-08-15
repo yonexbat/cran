@@ -1,8 +1,8 @@
 import { TestBed,  fakeAsync, tick } from '@angular/core/testing';
 import {asyncData, asyncError} from './async';
-import { of, Observable, Subject, Subscriber, Subscription, pipe } from 'rxjs';
+import { of, Observable, Subject, Subscriber, Subscription, pipe, from } from 'rxjs';
 import { cold, getTestScheduler } from 'jasmine-marbles';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, delay, mergeMap, map, concatMap, debounceTime, take, throttleTime, auditTime } from 'rxjs/operators';
 
 
 class CraniumService {
@@ -249,5 +249,45 @@ describe('Observable tests', () => {
     subject.next(3);
     expect(count).toBe(2);
   });
+
+  it('switchMap3', () => {
+    const obsrvable = of(1, 2, 3, 4).pipe(concatMap(x => {
+      const d = Math.random() * 1000;
+      return of(x).pipe(delay(d));
+    }));
+
+    obsrvable.subscribe(
+      // next
+      (x) => {
+        console.log(x);
+      },
+      // error
+      (e) => {},
+      // complete
+      () => {
+        console.log('complete');
+      }
+    );
+  });
+
+  fit('deboune', () => {
+    const observable = from([1, 2, 3, 4]).pipe(concatMap(x => {
+      return of(x).pipe(delay(500));
+    }));
+
+    observable.pipe(auditTime(600)).subscribe(
+      // next
+      (x) => {
+        console.log(x);
+      },
+      // error
+      (e) => {},
+      // complete
+      () => {
+        console.log('complete');
+      }
+    );
+  });
+
 
 });
