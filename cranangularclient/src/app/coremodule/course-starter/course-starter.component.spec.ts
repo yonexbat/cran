@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CourseStarterComponent } from './course-starter.component';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -17,7 +17,7 @@ describe('CourseStarterComponent', () => {
   const notificationService = jasmine.createSpyObj('NotificationService', ['emitLoading', 'emitDone', 'emitError']);
   const confirmationService = jasmine.createSpyObj('ConfirmService', ['some']);
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [ CourseStarterComponent ],

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Component, Input, DebugElement} from '@angular/core';
 
 import { TooltipDirective } from './tooltip.directive';
@@ -14,7 +14,7 @@ describe('TooltipDirective', () => {
   let component: StubTestHostComponent;
   let fixture: ComponentFixture<StubTestHostComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ StubTestHostComponent, TooltipDirective ],
       providers: [
@@ -36,7 +36,7 @@ describe('TooltipDirective', () => {
     expect(directive).toBeTruthy();
   });
 
-  it('should show warning', async(() => {
+  it('should show warning', waitForAsync(() => {
 
     // Maybe this test is not so valuable because it depends on inner workings of bootstrap.
     const spanEl: HTMLElement = fixture.debugElement.nativeElement.querySelector('#testspan');

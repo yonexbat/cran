@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Component, Input, DebugElement} from '@angular/core';
 
 import { VoteComponent } from './vote.component';
@@ -12,7 +12,7 @@ describe('VoteComponent', () => {
   let component: VoteComponent;
   let fixture: ComponentFixture<VoteComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     const cranDataService = jasmine.createSpyObj('CranDataService', ['vote']);
     const vote: Votes = {
@@ -58,7 +58,7 @@ describe('VoteComponent', () => {
     expect(innerText).toMatch(/\s*2\s*4\s*/i, '2 downvotes and 4 upvotes');
   });
 
-  it('upvote', async(() => {
+  it('upvote', waitForAsync(() => {
 
     component.upVote();
 

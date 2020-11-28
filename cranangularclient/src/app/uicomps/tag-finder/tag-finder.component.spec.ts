@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, waitForAsync } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import { Component, Input, Output, EventEmitter, DebugElement, TemplateRef} from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -22,7 +22,7 @@ describe('TagFinderComponent', () => {
   let fixture: ComponentFixture<TagFinderComponent>;
   let cranDataService;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     cranDataService = jasmine.createSpyObj('CranDataService', ['findTags']);
     const notificationService = jasmine.createSpyObj('NotificationService', ['emitLoading', 'emitDone', 'emitError']);
@@ -54,11 +54,11 @@ describe('TagFinderComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should be created', async(() => {
+  it('should be created', waitForAsync(() => {
     expect(component).toBeTruthy();
   }));
 
-  it('Sould display selection', async( async () => {
+  it('Sould display selection', waitForAsync( async () => {
 
     const nameInput: HTMLInputElement = fixture.debugElement.nativeElement.querySelector('input');
     nameInput.value = 'javascript';
@@ -75,7 +75,7 @@ describe('TagFinderComponent', () => {
     expect(cranDataService.findTags).toHaveBeenCalled();
   }));
 
-  it('Select Tag by click', async( async () => {
+  it('Select Tag by click', waitForAsync( async () => {
 
     const nameInput: HTMLInputElement = fixture.debugElement.nativeElement.querySelector('input');
     nameInput.value = 'javascript';

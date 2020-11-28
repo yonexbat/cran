@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { FileUploadComponent } from './file-upload.component';
 import {Binary} from '../../model/binary';
@@ -7,7 +7,7 @@ describe('FileUploadComponent', () => {
   let component: FileUploadComponent;
   let fixture: ComponentFixture<FileUploadComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ FileUploadComponent ]
     })
@@ -27,7 +27,7 @@ describe('FileUploadComponent', () => {
     expect(fileInput).toBeTruthy();
   });
 
-  it('should add file', async(async () => {
+  it('should add file', waitForAsync(async () => {
 
     // mock fetch.
     const fetcher: (RequestInfo, init?: RequestInit) => Promise<Response> = (requestInfo, init) => {

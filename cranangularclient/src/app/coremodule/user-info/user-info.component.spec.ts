@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import { Component, Input, Output, EventEmitter, DebugElement, TemplateRef} from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -21,7 +21,7 @@ describe('UserInfoComponent', () => {
     isAnonymous: false,
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     const cranDataService = jasmine.createSpyObj('CranDataService', ['getUserInfo']);
     cranDataService.getUserInfo.and.returnValue(Promise.resolve(userInfo));
@@ -53,14 +53,14 @@ describe('UserInfoComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show username', async(async () => {
+  it('should show username', waitForAsync(async () => {
     await fixture.whenStable();
     fixture.detectChanges();
     const text = fixture.debugElement.nativeElement.querySelector('#spanuserinfoname').textContent;
     expect(text).toContain(userInfo.name, 'username shall be displayed');
   }));
 
-  it('should change language to English', async( async () => {
+  it('should change language to English', waitForAsync( async () => {
     await fixture.whenStable();
     fixture.detectChanges();
     const enButton = fixture.debugElement.nativeElement.querySelector('#userinfosetenbutton');

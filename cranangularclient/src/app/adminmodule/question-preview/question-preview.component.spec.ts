@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { Component, Input, Output, EventEmitter, DebugElement, TemplateRef } from '@angular/core';
@@ -19,7 +19,7 @@ describe('QuestionPreviewComponent', () => {
   let component: QuestionPreviewComponent;
   let fixture: ComponentFixture<QuestionPreviewComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     const cranDataService = jasmine.createSpyObj('CranDataService', ['vote']);
     const notificationService = jasmine.createSpyObj('NotificationService', ['emitLoading', 'emitDone', 'emitError']);
@@ -48,7 +48,7 @@ describe('QuestionPreviewComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show preview', async( async () => {
+  it('should show preview', waitForAsync( async () => {
 
     let dialogDiv = fixture.debugElement.query(By.css('div.modal'));
 

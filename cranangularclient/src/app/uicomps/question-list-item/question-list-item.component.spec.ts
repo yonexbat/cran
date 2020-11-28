@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import { Component, Input, Output, EventEmitter, DebugElement, TemplateRef, ViewChild} from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -30,7 +30,7 @@ describe('QuestionListItemComponent', () => {
   let component: StubHostComponent;
   let fixture: ComponentFixture<StubHostComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, FormsModule, UicompsModule],

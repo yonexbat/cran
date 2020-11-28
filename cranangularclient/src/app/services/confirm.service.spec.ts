@@ -1,4 +1,4 @@
-import { TestBed, inject, async } from '@angular/core/testing';
+import { TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { ConfirmService } from './confirm.service';
 import {LanguageService} from './language.service';
 
@@ -13,7 +13,7 @@ describe('ConfirmService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('should callback when ok', async(inject([ConfirmService], async (service: ConfirmService) => {
+  it('should callback when ok', waitForAsync(inject([ConfirmService], async (service: ConfirmService) => {
     const promise = service.confirm('test', 'testok');
     service.ok();
     try {
@@ -24,7 +24,7 @@ describe('ConfirmService', () => {
     }
   })));
 
-  it('should callback when nok', async(inject([ConfirmService], async (service: ConfirmService) => {
+  it('should callback when nok', waitForAsync(inject([ConfirmService], async (service: ConfirmService) => {
     const promise = service.confirm('test', 'testnok');
     service.nok();
     try {

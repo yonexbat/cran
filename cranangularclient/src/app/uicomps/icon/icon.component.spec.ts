@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { IconComponent } from './icon.component';
 
@@ -6,7 +6,7 @@ describe('IconComponent', () => {
   let component: IconComponent;
   let fixture: ComponentFixture<IconComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ IconComponent ]
     })
@@ -23,7 +23,7 @@ describe('IconComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show edit icon', async(async () => {
+  it('should show edit icon', waitForAsync(async () => {
     const nativeEl: HTMLElement = fixture.debugElement.nativeElement;
     const ibug = nativeEl.querySelector('i.fa-bug');
     expect(ibug).toBeTruthy();

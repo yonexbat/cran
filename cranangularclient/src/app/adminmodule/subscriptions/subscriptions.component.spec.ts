@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { SubscriptionsComponent } from './subscriptions.component';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -20,7 +20,7 @@ describe('SubscriptionsComponent', () => {
   let component: SubscriptionsComponent;
   let fixture: ComponentFixture<SubscriptionsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     const cranDataService = jasmine.createSpyObj('CranDataService', ['getAllSubscriptions']);
     const pagedResult = new PagedResult<SubscriptionShort>();

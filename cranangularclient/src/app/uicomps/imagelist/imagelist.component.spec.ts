@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement, Component, Input, TemplateRef } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -23,7 +23,7 @@ describe('ImagelistComponent', () => {
   const confirmationService = jasmine.createSpyObj('ConfirmService', ['some']);
 
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, FormsModule, ],
       declarations: [ ImagelistComponent, IconComponent, ],
@@ -47,7 +47,7 @@ describe('ImagelistComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show 2 images', async(async () => {
+  it('should show 2 images', waitForAsync(async () => {
     const images: Image[] = createImages();
     component.images = images;
     fixture.detectChanges();
@@ -65,7 +65,7 @@ describe('ImagelistComponent', () => {
 
   }));
 
-  it('should delete image', async(async () => {
+  it('should delete image', waitForAsync(async () => {
     const images: Image[] = createImages();
     component.images = images;
     component.imagesDeletable = true;
@@ -87,7 +87,7 @@ describe('ImagelistComponent', () => {
 
   }));
 
-  it('should change width', async(async () => {
+  fit('should change width', waitForAsync(async () => {
     const images: Image[] = createImages();
     component.images = images;
     component.imagesDeletable = true;
@@ -101,6 +101,7 @@ describe('ImagelistComponent', () => {
     const firstInput: DebugElement = fixture.debugElement.query(By.css('input[type=\'number\']'));
     firstInput.nativeElement.value = '55';
     firstInput.nativeElement.dispatchEvent(new Event('change'));
+    firstInput.nativeElement.dispatchEvent(new Event('blur'));
 
 
     fixture.detectChanges();

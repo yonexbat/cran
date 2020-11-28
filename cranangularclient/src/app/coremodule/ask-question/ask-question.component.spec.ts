@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, inject, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, tick, waitForAsync } from '@angular/core/testing';
 import { Component, Input, DebugElement} from '@angular/core';
 import { Params, ActivatedRoute } from '@angular/router';
 import { UicompsModule } from '../../uicomps/uicomps.module';
@@ -22,7 +22,7 @@ describe('AskQuestionComponent', () => {
   const initRoutePram: Params = { id: 1, };
   const activeRoute = new StubActivatedRoute(initRoutePram);
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, FormsModule, TestingModule, UicompsModule],
@@ -69,7 +69,7 @@ describe('AskQuestionComponent', () => {
       expect(text).toContain('Karotte');
   }));
 
-  it('should show all green', async(async () => {
+  it('should show all green', waitForAsync(async () => {
     await fixture.whenStable();
 
     activeRoute.setParamMap({id: 2, });

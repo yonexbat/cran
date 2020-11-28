@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import { Component, Input, Output, EventEmitter, DebugElement, TemplateRef} from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -17,7 +17,7 @@ describe('TagsComponent', () => {
   let component: TagsComponent;
   let fixture: ComponentFixture<TagsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const cranDataService = jasmine.createSpyObj('CranDataService', ['vote']);
     const notificationService = jasmine.createSpyObj('NotificationService', ['emitLoading', 'emitDone', 'emitError']);
     const confirmationService = jasmine.createSpyObj('ConfirmService', ['some']);
@@ -45,7 +45,7 @@ describe('TagsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('tag should be shown', async(async () => {
+  it('tag should be shown', waitForAsync(async () => {
     component.isEditable = false;
     component.tagList.push(createTag(2, 'test1'));
     component.tagList.push(createTag(2, 'test2'));
@@ -63,7 +63,7 @@ describe('TagsComponent', () => {
 
   }));
 
-  it('tag should be deletable', async(async () => {
+  it('tag should be deletable', waitForAsync(async () => {
     component.isEditable = true;
     component.tagList.push(createTag(2, 'test1'));
     component.tagList.push(createTag(2, 'test2'));

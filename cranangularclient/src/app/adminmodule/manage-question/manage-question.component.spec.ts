@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UicompsModule } from '../../uicomps/uicomps.module';
@@ -18,7 +18,7 @@ describe('ManageQuestionComponent', () => {
   let component: ManageQuestionComponent;
   let fixture: ComponentFixture<ManageQuestionComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     TestBed.configureTestingModule({
       imports: [
@@ -56,7 +56,7 @@ describe('ManageQuestionComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should add question', async(async () => {
+  it('should add question', waitForAsync(async () => {
 
 
     const cranDataServiceSpy: ICranDataService = fixture.debugElement.injector.get(CRAN_SERVICE_TOKEN);
@@ -130,7 +130,7 @@ describe('ManageQuestionComponent', () => {
 
   }));
 
-  it('should not add question, invalid input', async(async () => {
+  it('should not add question, invalid input', waitForAsync(async () => {
 
     const cranDataServiceSpy: ICranDataService = fixture.debugElement.injector.get(CRAN_SERVICE_TOKEN);
     let questionCapture: Question;

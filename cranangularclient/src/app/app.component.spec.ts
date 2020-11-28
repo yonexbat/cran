@@ -1,4 +1,4 @@
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { RouterModule, Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DebugElement, Component, Input, TemplateRef } from '@angular/core';
@@ -24,7 +24,7 @@ describe('AppComponent', () => {
   let de: DebugElement;
   let el: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     const pushNotificationService = jasmine.createSpyObj('PushNotificationService', ['checkForSubscripton']);
     const cranDataService = new CranDataServiceMock();
@@ -59,11 +59,11 @@ describe('AppComponent', () => {
     el = de.nativeElement;
   });
 
-  it('should create the app', async(() => {
+  it('should create the app', waitForAsync(() => {
     expect(component).toBeTruthy();
   }));
 
-  it('should show elements', async(() => {
+  it('should show elements', waitForAsync(() => {
     const appmMenu = fixture.debugElement.query(By.css('app-menu'));
     expect(appmMenu.nativeElement).toBeTruthy();
 

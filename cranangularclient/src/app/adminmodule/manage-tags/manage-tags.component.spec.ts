@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import { Component, Input, Output, DebugElement, TemplateRef, EventEmitter} from '@angular/core';
 import { UicompsModule } from '../../uicomps/uicomps.module';
@@ -26,7 +26,7 @@ describe('ManageTagsComponent', () => {
   let component: ManageTagsComponent;
   let fixture: ComponentFixture<ManageTagsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     const cranDataService = jasmine.createSpyObj('CranDataService', ['vote']);
     const notificationService = jasmine.createSpyObj('NotificationService', ['emitLoading', 'emitDone', 'emitError']);

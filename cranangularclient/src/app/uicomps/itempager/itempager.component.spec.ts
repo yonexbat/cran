@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import { Component, Input, DebugElement, TemplateRef, OnInit} from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -56,7 +56,7 @@ describe('PagerComponent', () => {
   let component: PagerHostComponent;
   let fixture: ComponentFixture<PagerHostComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const cranDataService = jasmine.createSpyObj('CranDataService', ['vote']);
     const notificationService = jasmine.createSpyObj('NotificationService', ['emitLoading', 'emitDone', 'emitError']);
     const confirmationService = jasmine.createSpyObj('ConfirmService', ['some']);
@@ -90,7 +90,7 @@ describe('PagerComponent', () => {
     expect(items.length).toBe(5);
   });
 
-  it('should call page', async(async () => {
+  it('should call page', waitForAsync(async () => {
     const nativeEl: HTMLElement = fixture.debugElement.nativeElement;
     const pagingButtons = nativeEl.querySelectorAll('.page-item > span');
 

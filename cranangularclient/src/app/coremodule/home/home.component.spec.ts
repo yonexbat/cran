@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import { Component, Input, DebugElement, TemplateRef} from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -21,7 +21,7 @@ describe('HomeComponent', () => {
   text.contentEn = 'Testcontent en';
   let cranDataServiceSpy;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     const notificationService = jasmine.createSpyObj('NotificationService', ['emitLoading', 'emitDone', 'emitError']);
     const confirmationService = jasmine.createSpyObj('ConfirmService', ['some']);
@@ -57,7 +57,7 @@ describe('HomeComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display home text', async(async () => {
+  it('should display home text', waitForAsync(async () => {
 
     await fixture.whenStable();
     fixture.detectChanges();

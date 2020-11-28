@@ -126,7 +126,7 @@ namespace cran.Services
                 if (exception.Message == "Subscription no longer valid") {
                     await DeactivateSubscription(notification.SubscriptionId);
                 }
-                throw exception;
+                throw;
             }
         }
         

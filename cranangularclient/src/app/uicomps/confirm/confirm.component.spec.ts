@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ConfirmComponent } from './confirm.component';
 import {ConfirmService} from '../../services/confirm.service';
@@ -9,7 +9,7 @@ describe('ConfirmComponent', () => {
   let component: ConfirmComponent;
   let fixture: ComponentFixture<ConfirmComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     TestBed.configureTestingModule({
       imports: [],
@@ -40,7 +40,7 @@ describe('ConfirmComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show dialog', async(() => {
+  it('should show dialog', waitForAsync(() => {
     const confirmService = fixture.debugElement.injector.get(ConfirmService);
     confirmService.confirm('show this', 'please show this message');
     fixture.detectChanges();
@@ -48,7 +48,7 @@ describe('ConfirmComponent', () => {
     expect(text).toContain('show this', 'show this should be diplayed');
   }));
 
-  it('press ok button', async(() => {
+  it('press ok button', waitForAsync(() => {
     const confirmService = fixture.debugElement.injector.get(ConfirmService);
     confirmService.confirm('show this', 'please show this message')
       .then(() => {
@@ -62,7 +62,7 @@ describe('ConfirmComponent', () => {
     fixture.detectChanges();
   }));
 
-  it('press nok button', async(() => {
+  it('press nok button', waitForAsync(() => {
     const confirmService = fixture.debugElement.injector.get(ConfirmService);
     confirmService.confirm('show this', 'please show this message')
       .then(() => {

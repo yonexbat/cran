@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 
@@ -13,7 +13,7 @@ describe('NotificationComponent', () => {
   let component: NotificationComponent;
   let fixture: ComponentFixture<NotificationComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const cranDataService = jasmine.createSpyObj('CranDataService', ['vote']);
     const confirmationService = jasmine.createSpyObj('ConfirmService', ['some']);
 
@@ -39,7 +39,7 @@ describe('NotificationComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('emit an error', async(() => {
+  it('emit an error', waitForAsync(() => {
     const notificationService: NotificationService = fixture.debugElement.injector.get(NotificationService);
     notificationService.on().subscribe((res: NotificationEvent) => {
       fixture.whenStable().then(() => {
@@ -58,7 +58,7 @@ describe('NotificationComponent', () => {
     notificationService.emitError('howdi');
   }));
 
-  it('emit an error without when stable', async(() => {
+  it('emit an error without when stable', waitForAsync(() => {
     const notificationService: NotificationService = fixture.debugElement.injector.get(NotificationService);
     notificationService.on().subscribe((res: NotificationEvent) => {
 
@@ -77,7 +77,7 @@ describe('NotificationComponent', () => {
     notificationService.emitError('howdi');
   }));
 
-  it('emit a loading notificaton', async(() => {
+  it('emit a loading notificaton', waitForAsync(() => {
     const notificationService = fixture.debugElement.injector.get(NotificationService);
     notificationService.emitLoading();
     fixture.whenStable().then(() => {

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { FormsModule } from '@angular/forms';
 import { CommentsComponent } from './comments.component';
@@ -17,7 +17,7 @@ describe('CommentsComponent', () => {
   let component: CommentsComponent;
   let fixture: ComponentFixture<CommentsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, FormsModule, TestingModule, ],
@@ -38,7 +38,7 @@ describe('CommentsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('shloud show comments', async(async () => {
+  it('shloud show comments', waitForAsync(async () => {
     component.showComments(1);
     await fixture.whenStable();
     fixture.detectChanges();
@@ -48,7 +48,7 @@ describe('CommentsComponent', () => {
     expect(text).toContain('comment2');
   }));
 
-  it('shloud add comment', async(async () => {
+  it('shloud add comment', waitForAsync(async () => {
     component.showComments(7);
     await fixture.whenStable();
     fixture.detectChanges();
@@ -94,7 +94,7 @@ describe('CommentsComponent', () => {
     expect(calledText).toBe('Test add my comment');
   }));
 
-  it('shloud delete comment', async(async () => {
+  it('shloud delete comment', waitForAsync(async () => {
     component.showComments(7);
     await fixture.whenStable();
     fixture.detectChanges();

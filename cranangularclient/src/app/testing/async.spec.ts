@@ -270,7 +270,7 @@ describe('Observable tests', () => {
     );
   });
 
-  fit('deboune', () => {
+  it('deboune', () => {
     const observable = from([1, 2, 3, 4]).pipe(concatMap(x => {
       return of(x).pipe(delay(500));
     }));

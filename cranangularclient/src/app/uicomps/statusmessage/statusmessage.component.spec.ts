@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import { Component, Input, Output, EventEmitter, DebugElement, TemplateRef} from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -14,7 +14,7 @@ describe('StatusMessageComponent', () => {
   let component: StatusmessageComponent;
   let fixture: ComponentFixture<StatusmessageComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     const cranDataService = jasmine.createSpyObj('CranDataService', ['vote']);
     const notificationService = jasmine.createSpyObj('NotificationService', ['emitLoading', 'emitDone', 'emitError']);
@@ -42,7 +42,7 @@ describe('StatusMessageComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show successmessage', async(async () => {
+  it('should show successmessage', waitForAsync(async () => {
 
     component.showError('test error message');
 
@@ -64,7 +64,7 @@ describe('StatusMessageComponent', () => {
 
   }));
 
-  it('should show errormessage', async(async () => {
+  it('should show errormessage', waitForAsync(async () => {
 
     component.showSaveSuccess();
 
@@ -86,7 +86,7 @@ describe('StatusMessageComponent', () => {
 
   }));
 
-  it('should be invisible when there is no message to be shown', async(async () => {
+  it('should be invisible when there is no message to be shown', waitForAsync(async () => {
 
     await fixture.whenStable();
     fixture.detectChanges();
