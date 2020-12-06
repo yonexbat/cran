@@ -31,6 +31,7 @@ namespace cran.tests
             testingContext.AddBinaryServiceMock();
             testingContext.AddInMemoryDb();
             testingContext.AddUserService();
+            testingContext.AddBusinessSecurityService();
             testingContext.AddLogServiceMock();
             testingContext.AddGermanCultureServiceMock();
             testingContext.AddQuestionService();      

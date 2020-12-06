@@ -21,6 +21,7 @@ namespace cran.Services
         private readonly ISecurityService _securityService;
         private readonly ApplicationDbContext _dbContext;
         private readonly IUserService _userService;
+        private readonly IBusinessSecurityService _businessSecurityService;
 
 
         public QuestionService(ApplicationDbContext context, 
@@ -29,7 +30,8 @@ namespace cran.Services
             ICommentsService commentsService,
             ITagService tagService,
             ISecurityService securityService,
-            IUserService userService) :
+            IUserService userService,
+            IBusinessSecurityService businessSecurityService) :
             base(context, dbLogService, securityService)
         {
             _tagService = tagService;
@@ -37,6 +39,7 @@ namespace cran.Services
             _securityService = securityService;
             _dbContext = context;
             _userService = userService;
+            _businessSecurityService = businessSecurityService;
         }
 
         public async Task<int> InsertQuestionAsync(QuestionDto questionDto)
@@ -80,7 +83,7 @@ namespace cran.Services
             };
 
             //Authorization
-            questionDto.IsEditable = await HasWriteAccess(questionEntity.IdUser);
+            questionDto.IsEditable = await _businessSecurityService.HasWriteAccess(questionEntity.IdUser);
 
             //Vote-Statistics
             questionDto.Votes = await _commentsService.GetVoteAsync(id);
@@ -395,7 +398,7 @@ namespace cran.Services
         {
             //Security Check
             Question question = await _dbContext.FindAsync<Question>(idQuestion);
-            bool hasWriteAccess = await HasWriteAccess(question.IdUser);
+            bool hasWriteAccess = await _businessSecurityService.HasWriteAccess(question.IdUser);
 
             if (!hasWriteAccess)
             {

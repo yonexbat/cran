@@ -69,6 +69,11 @@ namespace cran.tests.Infra
             _dependencyMap[typeof(IUserService)] = GetService<UserService>();
         }
 
+        public void AddBusinessSecurityService()
+        {
+            _dependencyMap[typeof(IBusinessSecurityService)] = GetService<BusinessSecurityService>();
+        }
+
         public void AddCranAppSettings()
         {
            IOptions<CranSettingsDto> settings =  Microsoft.Extensions.Options.Options.Create(new CranSettingsDto()

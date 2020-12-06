@@ -12,17 +12,23 @@ namespace cran.tests
     public class CourseInstanceServiceTest
     {
 
-        [Fact]
-        public async Task TestStartTest()
+        private void InitTestingContext(TestingContext testingContext)
         {
-            TestingContext testingContext = new TestingContext();
             testingContext.AddPrincipalMock();
             testingContext.AddBinaryServiceMock();
             testingContext.AddInMemoryDb();
             testingContext.AddUserService();
+            testingContext.AddBusinessSecurityService();
             testingContext.AddLogServiceMock();
             testingContext.AddGermanCultureServiceMock();
             testingContext.AddQuestionService();
+        }
+
+        [Fact]
+        public async Task TestStartTest()
+        {
+            TestingContext testingContext = new TestingContext();
+            InitTestingContext(testingContext);
           
             ICourseService courseService = testingContext.GetService<CourseService>();
             testingContext.DependencyMap[typeof(ICourseService)] = courseService;
@@ -84,13 +90,8 @@ namespace cran.tests
         {
             //Prepare
             TestingContext testingContext = new TestingContext();
-            testingContext.AddPrincipalMock();           
-            testingContext.AddBinaryServiceMock();
-            testingContext.AddInMemoryDb();
-            testingContext.AddUserService();
-            testingContext.AddLogServiceMock();
-            testingContext.AddGermanCultureServiceMock();
-            testingContext.AddQuestionService();
+            InitTestingContext(testingContext);
+
             CourseService courseService = testingContext.GetService<CourseService>();
             testingContext.DependencyMap[typeof(ICourseService)] = courseService;
 

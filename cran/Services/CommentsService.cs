@@ -18,12 +18,16 @@ namespace cran.Services
         private readonly ISecurityService _securityService;
         private readonly ApplicationDbContext _dbContext;
         private readonly IUserService _userService;
+        private readonly IBusinessSecurityService _businessSecurityService;
 
-        public CommentsService(ApplicationDbContext context, IDbLogService dbLogService, ISecurityService securityService, IUserService userService) : base(context, dbLogService, securityService)
+        public CommentsService(ApplicationDbContext context, IDbLogService dbLogService, 
+            ISecurityService securityService, IUserService userService,
+            IBusinessSecurityService businessSecurityService) : base(context, dbLogService, securityService)
         {
             _securityService = securityService;
             _dbContext = context;
             _userService = userService;
+            _businessSecurityService = businessSecurityService;
         }
 
         public async Task<VotesDto> VoteAsync(VotesDto vote)
@@ -93,7 +97,7 @@ namespace cran.Services
         public async Task DeleteCommentAsync(int id)
         {
             Comment comment = await _dbContext.FindAsync<Comment>(id);
-            if (!(await HasWriteAccess(comment.IdUser)))
+            if (!(await _businessSecurityService.HasWriteAccess(comment.IdUser)))
             {
                 throw new SecurityException($"No access to comment,  id: {id}");
             }
@@ -141,7 +145,7 @@ namespace cran.Services
                     UserId = commentData.UserId,
                     InsertDate = commentData.InsertDate,
                     UpdateDate = commentData.UpdateDate,
-                    IsEditable = await HasWriteAccess(commentData.IdUser),
+                    IsEditable = await _businessSecurityService.HasWriteAccess(commentData.IdUser),
                 };
                 result.Add(commentDto);
             }

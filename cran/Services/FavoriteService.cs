@@ -69,7 +69,7 @@ namespace cran.Services
                .Include(x => x.RelTags)
                .ThenInclude(x => x.Tag)
                .ToListAsync();
-            return ToDtoList(list, ToCourseDto);
+            return ListUtil.ToDtoList(list, ToCourseDto);
         }
 
 

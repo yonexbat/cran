@@ -21,6 +21,7 @@ namespace cran.tests
             testingContext.AddPrincipalMock();
             testingContext.AddInMemoryDb();
             testingContext.AddUserService();
+            testingContext.AddBusinessSecurityService();
             testingContext.AddLogServiceMock();
             testingContext.AddGermanCultureServiceMock();
             testingContext.AddBinaryServiceMock();
@@ -48,7 +49,8 @@ namespace cran.tests
             SetUpTestingContext(testingContext);
             ApplicationDbContext dbContext = testingContext.GetSimple<ApplicationDbContext>();
             Question question = dbContext.Questions.First();
-            testingContext.AddPrincipalMock(question.User.UserId, Roles.User);           
+            testingContext.AddPrincipalMock(question.User.UserId, Roles.User);
+            testingContext.AddBusinessSecurityService();
 
             IQuestionService questionService = testingContext.GetService<QuestionService>();
             testingContext.DependencyMap[typeof(IQuestionService)] = questionService;
@@ -85,15 +87,16 @@ namespace cran.tests
         public async Task TestGetVersions()
         {
             //Prepare
-            TestingContext context = new TestingContext();
-            SetUpTestingContext(context);
-            ApplicationDbContext dbContext = context.GetSimple<ApplicationDbContext>();
+            TestingContext testingContext = new TestingContext();
+            SetUpTestingContext(testingContext);
+            ApplicationDbContext dbContext = testingContext.GetSimple<ApplicationDbContext>();
             Question question = dbContext.Questions.First();
-            context.AddPrincipalMock(question.User.UserId, Roles.User);
+            testingContext.AddPrincipalMock(question.User.UserId, Roles.User);
+            testingContext.AddBusinessSecurityService();
 
-            IQuestionService questionService = context.GetService<QuestionService>();
-            context.DependencyMap[typeof(IQuestionService)] = questionService;
-            IVersionService versionService = context.GetService<VersionService>();
+            IQuestionService questionService = testingContext.GetService<QuestionService>();
+            testingContext.DependencyMap[typeof(IQuestionService)] = questionService;
+            IVersionService versionService = testingContext.GetService<VersionService>();
 
             
             int newId = await versionService.VersionQuestionAsync(question.Id);           
@@ -122,9 +125,9 @@ namespace cran.tests
             ApplicationDbContext dbContext = testingContext.GetSimple<ApplicationDbContext>();
             Question question = dbContext.Questions.First();
             testingContext.AddPrincipalMock(question.User.UserId, Roles.User);
+            testingContext.AddBusinessSecurityService();
+            testingContext.AddUserService();
 
-            IUserService userService = testingContext.GetService<UserService>();
-            testingContext.DependencyMap[typeof(IUserService)] = userService;
             IQuestionService questionService = testingContext.GetService<QuestionService>();
             testingContext.DependencyMap[typeof(IQuestionService)] = questionService;           
             IVersionService versionService = testingContext.GetService<VersionService>();

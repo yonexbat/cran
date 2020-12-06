@@ -28,6 +28,7 @@ namespace cran.tests
             testingContext.AddPrincipalMock();
             testingContext.AddInMemoryDb();
             testingContext.AddUserService();
+            testingContext.AddBusinessSecurityService();
             testingContext.AddLogServiceMock();
             testingContext.AddGermanCultureServiceMock();
             testingContext.AddBinaryServiceMock();
@@ -44,7 +45,8 @@ namespace cran.tests
             ApplicationDbContext dbContext = testingContext.GetSimple<ApplicationDbContext>();
             Question question = dbContext.Questions.First();           
 
-            testingContext.AddPrincipalMock(question.User.UserId, Roles.User);           
+            testingContext.AddPrincipalMock(question.User.UserId, Roles.User);
+            testingContext.AddBusinessSecurityService();
             IQuestionService questionService = testingContext.GetService<QuestionService>();
 
             QuestionDto dto = await questionService.GetQuestionAsync(question.Id);

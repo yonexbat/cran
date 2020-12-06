@@ -27,30 +27,6 @@ namespace cran.Services
             _securityService = securityService;
         }
 
-        protected IList<T> ToDtoList<T, Q>(IList<Q> input, Func<Q, T> func)
-        {
-            IList<T> result = new List<T>();
-            foreach (Q q in input)
-            {
-                T t = func(q);
-                result.Add(t);
-            }
-            return result;
-        }
-
-        protected async Task<IList<T>> ToDtoListAsync<T, Q>(IList<Q> input, Func<Q, Task<T>> func)
-        {
-            IList<T> result = new List<T>();
-            foreach (Q q in input)
-            {
-                T t =  await func(q);
-                result.Add(t);
-            }
-            return result;
-        }
-
-
-
         protected void UpdateRelation<Tdto, Tentity>(IList<Tdto> dtos, IList<Tentity> entities, Action<Tdto, Tentity> copyData) 
             where Tdto: IDto 
             where Tentity : CranEntity, IIdentifiable, new()
@@ -81,19 +57,6 @@ namespace cran.Services
                 copyData(dto, entity);
                 _dbContext.Set<Tentity>().Add(entity);
             }
-        }
-        
-
-        protected async Task<bool> HasWriteAccess(int idUser)
-        {
-            CranUser cranUser = await _dbContext.FindAsync<CranUser>(idUser);
-
-            //Security Check
-            if (cranUser.UserId == _securityService.GetUserId() || _securityService.IsInRole(Roles.Admin))
-            {
-                return true;
-            }
-            return false;
         }
                
     }

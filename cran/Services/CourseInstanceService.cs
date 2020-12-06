@@ -20,18 +20,21 @@ namespace cran.Services
         private readonly ISecurityService _securityService;
         private readonly ApplicationDbContext _dbContext;
         private readonly IUserService _userService;
+        private readonly IBusinessSecurityService _businessSecurityService;
 
         public CourseInstanceService(ApplicationDbContext context, 
             IDbLogService dbLogService, 
             IPrincipal principal,
             IQuestionService questionService,
             ISecurityService securityService,
-            IUserService userService) : base(context, dbLogService, securityService)
+            IUserService userService,
+            IBusinessSecurityService businessSecurityService) : base(context, dbLogService, securityService)
         {
             _questionService = questionService;
             _securityService = securityService;
             _dbContext = context;
             _userService = userService;
+            _businessSecurityService = businessSecurityService;
             _random = new Random();
         }
 
@@ -409,7 +412,7 @@ namespace cran.Services
             CourseInstance instance = await _dbContext.FindAsync<CourseInstance>(idCourseInstance);
 
             //Security Check
-            bool hasWriteAccess = await HasWriteAccess(instance.IdUser);
+            bool hasWriteAccess = await _businessSecurityService.HasWriteAccess(instance.IdUser);
 
             //Security Check
             if (!hasWriteAccess)

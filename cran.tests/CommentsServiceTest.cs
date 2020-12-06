@@ -22,6 +22,7 @@ namespace cran.tests
             testingContext.AddLogServiceMock();
             testingContext.AddInMemoryDb();
             testingContext.AddUserService();
+            testingContext.AddBusinessSecurityService();
         }
 
         [Fact]
