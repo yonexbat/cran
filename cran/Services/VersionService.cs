@@ -40,7 +40,7 @@ namespace cran.Services
             int newId = await _questionService.InsertQuestionAsync(questionDto);
             Question questionNew = await _dbContext.FindAsync<Question>(newId);
             questionNew.IdQuestionCopySource = id;
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
             return newId;
         }
 
@@ -65,7 +65,7 @@ namespace cran.Services
             CopyData(questionDto, newQuestion);
 
             await _dbContext.Questions.AddAsync(newQuestion);
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
             //Copy all data                    
             questionDto.Id = newQuestion.Id;

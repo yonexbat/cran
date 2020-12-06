@@ -44,7 +44,7 @@ namespace cran.Services
 
             int r = vote.MyVote > 0 ? 1 : (vote.MyVote < 0 ? -1 : 0);
             rating.QuestionRating = r;
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
             vote = await GetVoteAsync(vote.IdQuestion);
             return vote;
         }
@@ -83,7 +83,7 @@ namespace cran.Services
                 CommentText = vm.CommentText,
             };
             _dbContext.Comments.Add(comment);
-            await this.SaveChangesAsync();
+            await this._dbContext.SaveChangesAsync();
             return comment.Id;
         }
 
@@ -95,7 +95,7 @@ namespace cran.Services
                 throw new SecurityException($"No access to comment,  id: {id}");
             }
             _dbContext.Remove(comment);
-            await this.SaveChangesAsync();
+            await this._dbContext.SaveChangesAsync();
         }
 
 

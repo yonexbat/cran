@@ -67,7 +67,7 @@ namespace cran.Services
 
             _dbContext.Binaries.Add(fileEntity);
 
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
             BinaryDto dto = ToDto(fileEntity);
             return dto;
         }
@@ -184,7 +184,7 @@ namespace cran.Services
 
             _dbContext.Binaries.Add(binary);
 
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
             return binary.Id;
         }
 
@@ -196,7 +196,7 @@ namespace cran.Services
             }
             Binary binary = await _dbContext.FindAsync<Binary>(id);
             _dbContext.Remove(binary);
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

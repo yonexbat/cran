@@ -49,7 +49,7 @@ namespace cran.Services
 
             await _dbContext.AddAsync(courseInstanceEntity);
 
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
             CourseInstanceDto result = await GetNextQuestion(courseInstanceEntity);
 
             return result;
@@ -151,7 +151,7 @@ namespace cran.Services
 
             CourseInstanceQuestion courseInstanceQuestion = await _dbContext.FindAsync<CourseInstanceQuestion>(answer.IdCourseInstanceQuestion);
             courseInstanceQuestion.AnswerShown = true;
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
 
             return await _questionService.GetQuestionAsync(questionId);
@@ -161,7 +161,7 @@ namespace cran.Services
         {
             CourseInstance courseInstanceEntity = _dbContext.Find<CourseInstance>(courseInstanceId);
             CourseInstanceDto result = await GetNextQuestion(courseInstanceEntity);
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
             return result;
         }
 
@@ -266,7 +266,7 @@ namespace cran.Services
 
             _dbContext.Remove(instance);
 
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
         }
 
@@ -349,7 +349,7 @@ namespace cran.Services
                     await _dbContext.AddAsync(courseInstanceQuestionOptionEntity);
                 }
 
-                await SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
                 result.IdCourseInstanceQuestion = courseInstanceQuestionEntity.Id;
             }
 
@@ -361,7 +361,7 @@ namespace cran.Services
         {
             CourseInstance courseInstance = await _dbContext.FindAsync<CourseInstance>(courseInstanceId);
             courseInstance.EndedAt = DateTime.Now;
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
 
         
@@ -397,7 +397,7 @@ namespace cran.Services
             courseInstanceQuestionEntity.Correct = options.All(x => x.Correct);
             courseInstanceQuestionEntity.AnsweredAt = DateTime.Now;
 
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
 
         private async Task CheckAccessToCourseInstance(int idCourseInstance)

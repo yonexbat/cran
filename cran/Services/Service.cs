@@ -10,18 +10,13 @@ namespace cran.Services
     public abstract class Service
     {
 
-        private ApplicationDbContext _context;
-        private ISecurityService _securityService;
+        private readonly ApplicationDbContext _context;
+        private readonly ISecurityService _securityService;
 
         public Service(ApplicationDbContext context, ISecurityService securityService)
         {
             this._context = context;
             this._securityService = securityService;
-        }
-       
-        protected async Task<int> SaveChangesAsync()
-        {
-            return await _context.SaveChangesAsync();
         }
 
 
@@ -38,7 +33,7 @@ namespace cran.Services
                 };
                 await _context.AddAsync(cranUserEntity);
             }
-            await SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return cranUserEntity;
         }
      

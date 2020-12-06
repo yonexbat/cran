@@ -40,7 +40,7 @@ namespace cran.Services
         {
             Tag tag = await _dbContext.FindAsync<Tag>(vm.Id);
             UpdateEntity(tag, vm);          
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<int> InsertTagAsync(TagDto dto)
@@ -49,7 +49,7 @@ namespace cran.Services
             tag.TagType = TagType.Standard;
             UpdateEntity(tag, dto);
             _dbContext.Tags.Add(tag);
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
             return tag.Id;           
         }
 
@@ -111,7 +111,7 @@ namespace cran.Services
 
             _dbContext.Remove(tag);
 
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<IList<TagDto>> GetTagsAsync(IList<int> ids)

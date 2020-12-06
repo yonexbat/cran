@@ -47,7 +47,7 @@ namespace cran.Services
             questionEntity.User = await GetOrCreateCranUserAsync();
             questionEntity.Container = container;
             await _dbContext.AddAsync(questionEntity);
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
             questionDto.Id = questionEntity.Id;
             await UpdateQuestionAsync(questionDto);
 
@@ -195,7 +195,7 @@ namespace cran.Services
 
             CopyData(questionDto, questionEntity);
 
-            await SaveChangesAsync();            
+            await _dbContext.SaveChangesAsync();            
         }
 
         public async Task<ImageDto> AddImageAsync(ImageDto imageDto)
@@ -212,7 +212,7 @@ namespace cran.Services
             };
             _dbContext.Images.Add(image);
 
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
             imageDto.Id = image.Id;
             return imageDto;
@@ -282,7 +282,7 @@ namespace cran.Services
                 copy.IdQuestionCopySource = null;
             }
             _dbContext.Remove(questionEntity);
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
            
         }
 

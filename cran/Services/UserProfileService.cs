@@ -30,7 +30,7 @@ namespace cran.Services
                     IsAnonymous = info.IsAnonymous,
                 };
                 _dbContext.CranUsers.Add(user);
-                await SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
             }         
         }
 

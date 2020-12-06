@@ -76,7 +76,7 @@ namespace cran.Services
 
             await _dbContext.AddAsync(entity);
 
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
             courseDto.Id = entity.Id;
             await UpdateCourseAsync(courseDto);
 
@@ -112,7 +112,7 @@ namespace cran.Services
 
             CopyData(courseDto, courseEntity);
 
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

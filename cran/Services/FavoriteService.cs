@@ -39,7 +39,7 @@ namespace cran.Services
                     Course = course,
                 };
                 _dbContext.RelUserCourseFavorites.Add(relUserCourseFavorite);
-                await SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
             }
         }
 
@@ -88,7 +88,7 @@ namespace cran.Services
             if(rel != null)
             {
                 _dbContext.Remove(rel);
-                await this.SaveChangesAsync();
+                await this._dbContext.SaveChangesAsync();
             }
         }
     }

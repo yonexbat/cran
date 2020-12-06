@@ -74,7 +74,7 @@ namespace cran.Services
             Text text = await _dbContext.FindAsync<Text>(vm.Id);
             text.ContentDe = vm.ContentDe;
             text.ContentEn = vm.ContentEn;
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
 
         private async Task<IList<TextDto>> ToDto(IQueryable<Text> query)
