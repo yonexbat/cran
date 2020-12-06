@@ -16,13 +16,16 @@ namespace cran.Services
         private Random _random;
 
         private readonly IQuestionService _questionService;
+        private readonly ISecurityService _securityService;
 
         public CourseInstanceService(ApplicationDbContext context, 
             IDbLogService dbLogService, 
             IPrincipal principal,
-            IQuestionService questionService) : base(context, dbLogService, principal)
+            IQuestionService questionService,
+            ISecurityService securityService) : base(context, dbLogService, securityService)
         {
             _questionService = questionService;
+            _securityService = securityService;
             _random = new Random();
         }
 
@@ -411,7 +414,7 @@ namespace cran.Services
 
         public async Task<PagedResultDto<CourseInstanceListEntryDto>> GetMyCourseInstancesAsync(int page)
         {
-            string userid = GetUserId();
+            string userid = _securityService.GetUserId();
             IQueryable<CourseInstance> query = _context.CourseInstances
                 .Where(x => x.User.UserId == userid)              
                 .OrderByDescending(x => x.InsertDate)

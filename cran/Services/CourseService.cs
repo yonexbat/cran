@@ -13,8 +13,12 @@ namespace cran.Services
 {
     public class CourseService : CraniumService, ICourseService
     {
-        public CourseService(ApplicationDbContext context, IDbLogService dbLogService, IPrincipal principal) : base(context, dbLogService, principal)
+
+        private readonly ISecurityService _securityService;
+
+        public CourseService(ApplicationDbContext context, IDbLogService dbLogService, ISecurityService securityService) : base(context, dbLogService, securityService)
         {
+            _securityService = securityService;
         }
 
         public async Task<CourseDto> GetCourseAsync(int id)
@@ -53,11 +57,11 @@ namespace cran.Services
      
 
         private async Task<CourseDto> ToCourseDto(Course course)
-        {            
-            string userid = GetUserId();
+        {
+            string userid = _securityService.GetUserId();
             bool isFavorite = await _context.RelUserCourseFavorites
                 .AnyAsync(x => x.Course.Id == course.Id && x.User.UserId == userid);
-            bool isEditable = _currentPrincipal.IsInRole(Roles.Admin);
+            bool isEditable = _securityService.IsInRole(Roles.Admin);
             return course.Map(isEditable, isFavorite);
         }
 

@@ -21,17 +21,19 @@ namespace cran.Services
         private IWebPushClient _webPushClient;
 
         private ITextService _textService;
+        private readonly ISecurityService _securityService;
 
         public NotificationService(ApplicationDbContext context, 
             IDbLogService dbLogService, 
-            IPrincipal principal,
+            ISecurityService securityService,
             IOptions<CranSettingsDto> settingsOption,
             IWebPushClient webPushClient,
-            ITextService textService) : base(context, dbLogService, principal)
+            ITextService textService) : base(context, dbLogService, securityService)
         {
             this._settings = settingsOption.Value;
             this._webPushClient = webPushClient;
             this._textService = textService;
+            this._securityService = securityService;
         }
 
         public async Task AddPushNotificationSubscriptionAsync(NotificationSubscriptionDto subscriptionDto)

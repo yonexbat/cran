@@ -13,13 +13,17 @@ namespace cran.Services
 {
     public class CommentsService : CraniumService, ICommentsService
     {
-        public CommentsService(ApplicationDbContext context, IDbLogService dbLogService, IPrincipal principal) : base(context, dbLogService, principal)
+
+        private readonly ISecurityService _securityService;
+
+        public CommentsService(ApplicationDbContext context, IDbLogService dbLogService, ISecurityService securityService) : base(context, dbLogService, securityService)
         {
+            _securityService = securityService;
         }
 
         public async Task<VotesDto> VoteAsync(VotesDto vote)
         {
-            string userId = this.GetUserId();
+            string userId = _securityService.GetUserId();
             Rating rating = _context.Ratings
                 .Where(x => x.User.UserId == userId && x.Question.Id == vote.IdQuestion)
                 .SingleOrDefault();
@@ -51,7 +55,7 @@ namespace cran.Services
             int downRatings = await _context.Ratings.Where(x => x.Question.Id == idQuestion && x.QuestionRating < 0)
                 .CountAsync();
 
-            string userId = this.GetUserId();
+            string userId = this._securityService.GetUserId();
             int? myRating = await _context.Ratings.Where(x => x.User.UserId == userId && x.Question.Id == idQuestion)
                 .Select(x => x.QuestionRating).SingleOrDefaultAsync();
 

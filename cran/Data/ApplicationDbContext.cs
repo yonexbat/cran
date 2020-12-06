@@ -60,6 +60,12 @@ namespace cran.Data
             return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            InitTechnicalFields();
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
         protected void InitTechnicalFields()
         {
             ChangeTracker.DetectChanges();

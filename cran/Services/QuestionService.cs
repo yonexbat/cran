@@ -16,17 +16,20 @@ namespace cran.Services
 
         private readonly ICommentsService _commentsService;
         private readonly ITagService _tagService;
+        private readonly ISecurityService _securityService;
        
 
         public QuestionService(ApplicationDbContext context, 
             IDbLogService dbLogService, 
             IPrincipal principal,
             ICommentsService commentsService,
-            ITagService tagService) :
-            base(context, dbLogService, principal)
+            ITagService tagService,
+            ISecurityService securityService) :
+            base(context, dbLogService, securityService)
         {
             _tagService = tagService;
             _commentsService = commentsService;
+            _securityService = securityService;
         }
 
         public async Task<int> InsertQuestionAsync(QuestionDto questionDto)
@@ -286,7 +289,7 @@ namespace cran.Services
 
         public async Task<PagedResultDto<QuestionListEntryDto>> GetMyQuestionsAsync(int page)
         {
-            string userId = GetUserId();
+            string userId = _securityService.GetUserId();
 
             IQueryable<Question> query = _context.Questions.Where(q => q.User.UserId == userId)
                 .OrderBy(x => x.Title)

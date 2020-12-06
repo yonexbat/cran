@@ -17,21 +17,24 @@ namespace cran.Services
     {
         private IQuestionService _questionService;
         private IBinaryService _binaryService;
+        private ISecurityService _securityService;
 
         public ExportService(ApplicationDbContext context, 
             IDbLogService dbLogService,
             IPrincipal principal,
             IQuestionService questionService,
-            IBinaryService binaryService) : base(context, dbLogService, principal)
+            IBinaryService binaryService,
+            ISecurityService securityService) : base(context, dbLogService, securityService)
         {
             _questionService = questionService;
             _binaryService = binaryService;
+            _securityService = securityService;
         }
 
         public async Task<Stream> Export()
         {
             //Security Check
-            if(!_currentPrincipal.IsInRole(Roles.Admin))
+            if(!_securityService.IsInRole(Roles.Admin))
             {
                 throw new SecurityException($"Admin rights required");
             }

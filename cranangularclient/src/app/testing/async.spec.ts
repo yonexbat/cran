@@ -1,5 +1,5 @@
-import { TestBed,  fakeAsync, tick } from '@angular/core/testing';
-import {asyncData, asyncError} from './async';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { asyncData, asyncError } from './async';
 import { of, Observable, Subject, Subscriber, Subscription, pipe, from } from 'rxjs';
 import { cold, getTestScheduler } from 'jasmine-marbles';
 import { switchMap, delay, mergeMap, map, concatMap, debounceTime, take, throttleTime, auditTime } from 'rxjs/operators';
@@ -10,7 +10,7 @@ class CraniumService {
   private observableIntern = new Subject<string>();
 
   public getWordOfDay(): Observable<string> {
-     return this.observableIntern;
+    return this.observableIntern;
   }
 
   public pushMessage(message: string) {
@@ -45,11 +45,11 @@ describe('Marble tests', () => {
   it('test realservice synchronous', () => {
     const synchronousCraniumService = new CraniumService();
     const subsciption = synchronousCraniumService.getWordOfDay().subscribe(
-    (message: string) => {
-      expect(message).toBe('hello');
-    },
-    (error) => {},
-    () => {});
+      (message: string) => {
+        expect(message).toBe('hello');
+      },
+      (error) => { },
+      () => { });
     synchronousCraniumService.pushMessage('hello');
     subsciption.unsubscribe();
     synchronousCraniumService.done();
@@ -61,13 +61,13 @@ describe('Marble tests', () => {
     let message: string;
     let error;
     const subsciption = synchronousCraniumService.getWordOfDay().subscribe(
-    (thismessage: string) => {
-      message = thismessage;
-    },
-    (thiserror) => {
-      error = thiserror;
-    },
-    () => {});
+      (thismessage: string) => {
+        message = thismessage;
+      },
+      (thiserror) => {
+        error = thiserror;
+      },
+      () => { });
     synchronousCraniumService.pushError('hello error');
     synchronousCraniumService.pushMessage('mymessage');
     expect(message).toBeUndefined();
@@ -82,8 +82,8 @@ describe('Marble tests', () => {
       (message: string) => {
         itiscalled = message;
       },
-      (error) => {},
-      () => {}
+      (error) => { },
+      () => { }
     );
 
     expect(itiscalled).toBe(serviceReturnValue);
@@ -98,8 +98,8 @@ describe('Marble tests', () => {
       (message: string) => {
         itiscalled = message;
       },
-      (error) => {},
-      () => {}
+      (error) => { },
+      () => { }
     );
     expect(itiscalled).toBeUndefined();
     tick();
@@ -116,7 +116,7 @@ describe('Marble tests', () => {
       (error) => {
         errorOccurred = true;
       },
-      () => {}
+      () => { }
     );
     expect(errorOccurred).toBeFalsy();
     tick();
@@ -129,7 +129,7 @@ describe('Marble tests', () => {
     let numerrors = 0;
     const q$ = cold('-x----x--x--y--z-#|', { x: serviceReturnValue, y: 'hello', z: 'from marble' },
       new Error('CraniumService failure'));
-    getWordOfDaySpy.and.returnValue( q$ );
+    getWordOfDaySpy.and.returnValue(q$);
 
     const subsciption = craniumService.getWordOfDay().subscribe(
       (message: string) => {
@@ -138,7 +138,7 @@ describe('Marble tests', () => {
       (error) => {
         numerrors++;
       },
-      () => {}
+      () => { }
     );
 
     getTestScheduler().flush();
@@ -170,7 +170,7 @@ describe('Observable tests', () => {
       },
 
       // error
-      (theerror) => {},
+      (theerror) => { },
 
       // complete
       () => {
@@ -192,7 +192,7 @@ describe('Observable tests', () => {
       observer.next(1);
       observer.next(2);
       observer.next(3);
-      return () => {};
+      return () => { };
     });
 
     let x = 0;
@@ -204,7 +204,7 @@ describe('Observable tests', () => {
       },
 
       // error
-      (theerror) => {},
+      (theerror) => { },
 
       // complete
       () => {
@@ -212,7 +212,7 @@ describe('Observable tests', () => {
       }
     );
     expect(x).toBe(3);
-    expect(complete).toBe(false, 'completed to be false' );
+    expect(complete).toBe(false, 'completed to be false');
     expect(subsciption.closed).toBe(false, 'subscription to be still open');
     const unsubscribeFn = subsciption.unsubscribe;
     expect(unsubscribeFn).toBeDefined();
@@ -228,66 +228,12 @@ describe('Observable tests', () => {
       (x: number) => {
         res.push(x);
       },
-      (error) => {},
+      (error) => { },
       () => {
         doneCount++;
       });
     expect(res).toEqual([1, 1, 1, 2, 4, 8]);
     expect(doneCount).toBe(1);
   });
-
-
-
-  it('switchMap2', () => {
-    const subject = new Subject<number>();
-    let count = 0;
-    subject.next(1);
-    subject.next(2);
-    subject.pipe(switchMap((x: number) => of(x, x)))
-      .subscribe(x => count++);
-    expect(count).toBe(0);
-    subject.next(3);
-    expect(count).toBe(2);
-  });
-
-  it('switchMap3', () => {
-    const obsrvable = of(1, 2, 3, 4).pipe(concatMap(x => {
-      const d = Math.random() * 1000;
-      return of(x).pipe(delay(d));
-    }));
-
-    obsrvable.subscribe(
-      // next
-      (x) => {
-        console.log(x);
-      },
-      // error
-      (e) => {},
-      // complete
-      () => {
-        console.log('complete');
-      }
-    );
-  });
-
-  it('deboune', () => {
-    const observable = from([1, 2, 3, 4]).pipe(concatMap(x => {
-      return of(x).pipe(delay(500));
-    }));
-
-    observable.pipe(auditTime(600)).subscribe(
-      // next
-      (x) => {
-        console.log(x);
-      },
-      // error
-      (e) => {},
-      // complete
-      () => {
-        console.log('complete');
-      }
-    );
-  });
-
 
 });

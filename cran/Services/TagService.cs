@@ -15,11 +15,13 @@ namespace cran.Services
     public class TagService : CraniumService, ITagService
     {
         private readonly ICacheService _cacheService;
+        private readonly ISecurityService _securityService;
 
         public TagService(ApplicationDbContext context, IDbLogService dbLogService, IPrincipal principal,
-            ICacheService cacheService) : base(context, dbLogService, principal)
+            ICacheService cacheService, ISecurityService securityService) : base(context, dbLogService, securityService)
         {
             _cacheService = cacheService;
+            _securityService = securityService;
         }
 
         public async Task<TagDto> GetTagAsync(int id)
@@ -84,7 +86,7 @@ namespace cran.Services
        
         public async Task DeleteTagAsync(int id)
         {
-            if(!_currentPrincipal.IsInRole(Roles.Admin))
+            if(!_securityService.IsInRole(Roles.Admin))
             {
                 throw new SecurityException($"No rights to delete a tag");
             }

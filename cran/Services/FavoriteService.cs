@@ -13,9 +13,11 @@ namespace cran.Services
 {
     public class FavoriteService : CraniumService, IFavoriteService
     {
-        public FavoriteService(ApplicationDbContext context, IDbLogService dbLogService, IPrincipal principal) 
-            : base(context, dbLogService, principal)
+        private ISecurityService _securityService;
+        public FavoriteService(ApplicationDbContext context, IDbLogService dbLogService, ISecurityService securityService) 
+            : base(context, dbLogService, securityService)
         {
+            _securityService = securityService;
         }
 
         public async Task AddCourseToFavoritesAsync(CourseToFavoritesDto dto)
@@ -39,7 +41,7 @@ namespace cran.Services
 
         public async Task<PagedResultDto<CourseDto>> GetFavoriteCourseAsync(int page)
         {
-            string userId = this.GetUserId();
+            string userId = this._securityService.GetUserId();
             IQueryable<Course> query = from x in _context.Courses
                                        join relUser in _context.RelUserCourseFavorites on x.Id equals relUser.Course.Id
                                        where
@@ -67,7 +69,7 @@ namespace cran.Services
 
         private CourseDto ToCourseDto(Course course)
         {
-            bool isEditable = _currentPrincipal.IsInRole(Roles.Admin);
+            bool isEditable = _securityService.IsInRole(Roles.Admin);
             CourseDto courseVm = course.Map(isEditable, true);                    
             return courseVm;
         }

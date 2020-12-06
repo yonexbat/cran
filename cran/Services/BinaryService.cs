@@ -17,11 +17,12 @@ namespace cran.Services
 {
     public class BinaryService : Service, IBinaryService
     {
+        private ISecurityService _securityService;
 
-        public BinaryService(ApplicationDbContext context, IDbLogService dbLogService, IPrincipal principal) 
-            : base(context, principal)
+        public BinaryService(ApplicationDbContext context, IDbLogService dbLogService, ISecurityService securityService) 
+            : base(context, securityService)
         {
-            
+            _securityService = securityService;
         }
 
         public async Task<IList<BinaryDto>> UploadFilesAsync(IList<IFormFile> files)
@@ -187,7 +188,7 @@ namespace cran.Services
 
         public async Task DeleteBinaryAsync(int id)
         {
-            if(!_currentPrincipal.IsInRole(Roles.Admin))
+            if(!_securityService.IsInRole(Roles.Admin))
             {
                 throw new SecurityException();
             }

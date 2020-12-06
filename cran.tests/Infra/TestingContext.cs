@@ -128,6 +128,9 @@ namespace cran.tests.Infra
             }          
             IPrincipal principal = pricipalMock.Object;
             _dependencyMap[typeof(IPrincipal)] = principal;
+
+            ISecurityService securityService = new SecurityService(principal);
+            _dependencyMap[typeof(ISecurityService)] = securityService;
         }
 
         public void AddLogServiceMock()

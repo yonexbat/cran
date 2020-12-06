@@ -15,13 +15,15 @@ namespace cran.Services
     public class TextService : CraniumService, ITextService
     {
         private ICultureService _cultureService;
+        private ISecurityService _securityService;
 
         public TextService(ApplicationDbContext context, 
             IDbLogService dbLogService, 
-            IPrincipal principal,
-            ICultureService cultureService) : base(context, dbLogService, principal)
+            ISecurityService securityService,
+            ICultureService cultureService) : base(context, dbLogService, securityService)
         {
             _cultureService = cultureService;
+            _securityService = securityService;
         }
 
         public async Task<string> GetTextAsync(string key, params string[] placeholders)

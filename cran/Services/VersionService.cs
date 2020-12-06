@@ -17,19 +17,21 @@ namespace cran.Services
         private ITagService _tagService;
         private INotificationService _notificationService;
         private ITextService _textService;
+        private readonly ISecurityService _securityService;
 
         public VersionService(ApplicationDbContext context,
             IDbLogService dbLogService,
-            IPrincipal principal,
+            ISecurityService securityService,
             IQuestionService questionService,
             ITagService tagService,
             INotificationService notificationService,
-            ITextService textService) : base(context, dbLogService, principal)
+            ITextService textService) : base(context, dbLogService, securityService)
         {
             _questionService = questionService;
             _tagService = tagService;
             _notificationService = notificationService;
             _textService = textService;
+            _securityService = securityService;
         }
 
         public async Task<int> CopyQuestionAsync(int id)

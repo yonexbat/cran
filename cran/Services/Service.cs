@@ -11,27 +11,23 @@ namespace cran.Services
     {
 
         protected ApplicationDbContext _context;
-        protected IPrincipal _currentPrincipal;
+        private ISecurityService _securityService;
 
-        public Service(ApplicationDbContext context, IPrincipal principal)
+        public Service(ApplicationDbContext context, ISecurityService securityService)
         {
             this._context = context;
-            this._currentPrincipal = principal;
+            this._securityService = securityService;
         }
        
         protected async Task<int> SaveChangesAsync()
         {
-            return await _context.SaveChangesCranAsync(_currentPrincipal);
+            return await _context.SaveChangesAsync();
         }
 
-        public string GetUserId()
-        {
-            return _currentPrincipal.Identity.Name;
-        }
 
         protected async Task<CranUser> GetCranUserAsync()
         {
-            string userId = GetUserId();
+            string userId = _securityService.GetUserId();
             CranUser cranUserEntity = await _context.CranUsers.Where(x => x.UserId == userId).SingleOrDefaultAsync();
             if (cranUserEntity == null)
             {

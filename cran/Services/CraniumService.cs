@@ -15,16 +15,17 @@ namespace cran.Services
     public abstract class CraniumService : Service
     {
 
-        protected IDbLogService _dbLogService;       
+        protected IDbLogService _dbLogService;
+        private ISecurityService _securityService;
         protected static int PageSize = 5;
 
 
-        public CraniumService(ApplicationDbContext context, IDbLogService dbLogService, IPrincipal principal) :
-            base(context, principal)
+        public CraniumService(ApplicationDbContext context, IDbLogService dbLogService, ISecurityService securityService) :
+            base(context, securityService)
         {
             _context = context;
             _dbLogService = dbLogService;
-            _currentPrincipal = principal;
+            _securityService = securityService;
         }
 
         protected IList<T> ToDtoList<T, Q>(IList<Q> input, Func<Q, T> func)
@@ -163,7 +164,7 @@ namespace cran.Services
             CranUser cranUser = await _context.FindAsync<CranUser>(idUser);
 
             //Security Check
-            if (cranUser.UserId == GetUserId() || _currentPrincipal.IsInRole(Roles.Admin))
+            if (cranUser.UserId == _securityService.GetUserId() || _securityService.IsInRole(Roles.Admin))
             {
                 return true;
             }

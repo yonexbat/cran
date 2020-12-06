@@ -10,8 +10,10 @@ namespace cran.Services
 {
     public class UserProfileService : CraniumService, IUserProfileService
     {
-        public UserProfileService(ApplicationDbContext context, IDbLogService dbLogService, IPrincipal principal) : base(context, dbLogService, principal)
+        private readonly ISecurityService _securityService;
+        public UserProfileService(ApplicationDbContext context, IDbLogService dbLogService, ISecurityService securityService) : base(context, dbLogService, securityService)
         {
+            _securityService = securityService;
         }
 
         public async Task CreateUserAsync(UserInfoDto info)
