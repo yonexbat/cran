@@ -15,15 +15,17 @@ namespace cran.Services
     {
 
         private readonly ISecurityService _securityService;
+        private readonly ApplicationDbContext _dbContext;
 
         public CourseService(ApplicationDbContext context, IDbLogService dbLogService, ISecurityService securityService) : base(context, dbLogService, securityService)
         {
             _securityService = securityService;
+            _dbContext = context;
         }
 
         public async Task<CourseDto> GetCourseAsync(int id)
         {
-            Course course = await this._context.Courses
+            Course course = await this._dbContext.Courses
                 .Where(x => x.Id == id)
                 .Include(x => x.RelTags)
                 .ThenInclude(x => x.Tag)
@@ -35,7 +37,7 @@ namespace cran.Services
 
         public async Task<PagedResultDto<CourseDto>> GetCoursesAsync(int page)
         {
-            IQueryable<Course> query = this._context.Courses
+            IQueryable<Course> query = this._dbContext.Courses
                 .OrderBy(x => x.Title)
                 .ThenBy(x => x.Id);
 
@@ -59,7 +61,7 @@ namespace cran.Services
         private async Task<CourseDto> ToCourseDto(Course course)
         {
             string userid = _securityService.GetUserId();
-            bool isFavorite = await _context.RelUserCourseFavorites
+            bool isFavorite = await _dbContext.RelUserCourseFavorites
                 .AnyAsync(x => x.Course.Id == course.Id && x.User.UserId == userid);
             bool isEditable = _securityService.IsInRole(Roles.Admin);
             return course.Map(isEditable, isFavorite);
@@ -72,7 +74,7 @@ namespace cran.Services
             Course entity = new Course();
             CopyData(courseDto, entity);
 
-            await _context.AddAsync(entity);
+            await _dbContext.AddAsync(entity);
 
             await SaveChangesAsync();
             courseDto.Id = entity.Id;
@@ -84,10 +86,10 @@ namespace cran.Services
         public async Task UpdateCourseAsync(CourseDto courseDto)
         {
 
-            Course courseEntity = await this._context.FindAsync<Course>(courseDto.Id);
+            Course courseEntity = await this._dbContext.FindAsync<Course>(courseDto.Id);
 
             //Tags
-            IList<RelCourseTag> relTagEntities = await _context.RelCourseTags
+            IList<RelCourseTag> relTagEntities = await _dbContext.RelCourseTags
                 .Where(x => x.IdCourse == courseEntity.Id).ToListAsync();
             relTagEntities = relTagEntities.GroupBy(x => x.IdTag).Select(x => x.First()).ToList();
             IDictionary<int, int> relIdByTagId = relTagEntities.ToDictionary(x => x.IdTag, x => x.Id);

@@ -18,11 +18,13 @@ namespace cran.Services
     public class BinaryService : Service, IBinaryService
     {
         private ISecurityService _securityService;
+        private ApplicationDbContext _dbContext;
 
         public BinaryService(ApplicationDbContext context, IDbLogService dbLogService, ISecurityService securityService) 
             : base(context, securityService)
         {
             _securityService = securityService;
+            _dbContext = context;
         }
 
         public async Task<IList<BinaryDto>> UploadFilesAsync(IList<IFormFile> files)
@@ -59,11 +61,11 @@ namespace cran.Services
             fileEntity.FileName = formfile.FileName;
             fileEntity.ContentDisposition = formfile.ContentDisposition;
             fileEntity.Name = formfile.Name;
-            fileEntity.User = await GetCranUserAsync();
+            fileEntity.User = await GetOrCreateCranUserAsync();
             fileEntity.IdUser = fileEntity.User.Id;
-            
 
-            _context.Binaries.Add(fileEntity);
+
+            _dbContext.Binaries.Add(fileEntity);
 
             await SaveChangesAsync();
             BinaryDto dto = ToDto(fileEntity);
@@ -87,7 +89,7 @@ namespace cran.Services
         public async Task SaveAsync(int id, Stream input)
         {
             using (input) {
-                DbConnection connection = _context.Database.GetDbConnection();
+                DbConnection connection = _dbContext.Database.GetDbConnection();
                 bool connectionOpended = false;
                 if (connection.State != System.Data.ConnectionState.Open)
                 {
@@ -123,7 +125,7 @@ namespace cran.Services
         public async Task<Stream> GetBinaryAsync(int id)
         {
             MemoryStream memoryStream = new MemoryStream();
-            DbConnection connection = _context.Database.GetDbConnection();
+            DbConnection connection = _dbContext.Database.GetDbConnection();
             bool connectionOpended = false;
             if (connection.State != System.Data.ConnectionState.Open)
             {
@@ -164,7 +166,7 @@ namespace cran.Services
 
         public async Task<BinaryDto> GetFileInfoAsync(int id)
         {
-            Binary binary = await _context.FindAsync<Binary>(id);
+            Binary binary = await _dbContext.FindAsync<Binary>(id);
             return ToDto(binary);
         }
 
@@ -176,11 +178,11 @@ namespace cran.Services
             binary.FileName = binary.FileName;
             binary.ContentDisposition = binary.ContentDisposition;
             binary.Name = binary.Name;
-            binary.User = await GetCranUserAsync();
+            binary.User = await GetOrCreateCranUserAsync();
             binary.IdUser = binary.User.Id;
 
 
-            _context.Binaries.Add(binary);
+            _dbContext.Binaries.Add(binary);
 
             await SaveChangesAsync();
             return binary.Id;
@@ -192,8 +194,8 @@ namespace cran.Services
             {
                 throw new SecurityException();
             }
-            Binary binary = await _context.FindAsync<Binary>(id);
-            _context.Remove(binary);
+            Binary binary = await _dbContext.FindAsync<Binary>(id);
+            _dbContext.Remove(binary);
             await SaveChangesAsync();
         }
     }

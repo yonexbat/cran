@@ -11,14 +11,17 @@ namespace cran.Services
     public class UserProfileService : CraniumService, IUserProfileService
     {
         private readonly ISecurityService _securityService;
+        private readonly ApplicationDbContext _dbContext;
+
         public UserProfileService(ApplicationDbContext context, IDbLogService dbLogService, ISecurityService securityService) : base(context, dbLogService, securityService)
         {
             _securityService = securityService;
+            _dbContext = context;
         }
 
         public async Task CreateUserAsync(UserInfoDto info)
         {
-            CranUser user = await _context.CranUsers.Where(x => x.UserId == info.Name).SingleOrDefaultAsync();
+            CranUser user = await _dbContext.CranUsers.Where(x => x.UserId == info.Name).SingleOrDefaultAsync();
             if(user == null)
             {
                 user = new CranUser
@@ -26,14 +29,14 @@ namespace cran.Services
                     UserId = info.Name,
                     IsAnonymous = info.IsAnonymous,
                 };
-                _context.CranUsers.Add(user);
+                _dbContext.CranUsers.Add(user);
                 await SaveChangesAsync();
             }         
         }
 
         public async Task<UserInfoDto> GetUserInfoAsync()
         {
-            CranUser user = await GetCranUserAsync();
+            CranUser user = await GetOrCreateCranUserAsync();
             return ToProfileDto(user);
         }
 

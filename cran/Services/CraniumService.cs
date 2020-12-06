@@ -15,15 +15,16 @@ namespace cran.Services
     public abstract class CraniumService : Service
     {
 
-        protected IDbLogService _dbLogService;
-        private ISecurityService _securityService;
+        protected readonly IDbLogService _dbLogService;
+        private readonly ISecurityService _securityService;
+        private readonly ApplicationDbContext _dbContext;
         protected static int PageSize = 5;
 
 
         public CraniumService(ApplicationDbContext context, IDbLogService dbLogService, ISecurityService securityService) :
             base(context, securityService)
         {
-            _context = context;
+            _dbContext = context;
             _dbLogService = dbLogService;
             _securityService = securityService;
         }
@@ -65,7 +66,7 @@ namespace cran.Services
             //Delete
             foreach(IIdentifiable entity in entitiesToDelete)
             {
-                _context.Remove(entity);
+                _dbContext.Remove(entity);
             }
 
             //Update
@@ -80,7 +81,7 @@ namespace cran.Services
             {
                 Tentity entity = new Tentity();
                 CopyData(dto, entity);
-                _context.Set<Tentity>().Add(entity);
+                _dbContext.Set<Tentity>().Add(entity);
             }
         }
 
@@ -161,7 +162,7 @@ namespace cran.Services
 
         protected async Task<bool> HasWriteAccess(int idUser)
         {
-            CranUser cranUser = await _context.FindAsync<CranUser>(idUser);
+            CranUser cranUser = await _dbContext.FindAsync<CranUser>(idUser);
 
             //Security Check
             if (cranUser.UserId == _securityService.GetUserId() || _securityService.IsInRole(Roles.Admin))

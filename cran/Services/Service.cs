@@ -10,7 +10,7 @@ namespace cran.Services
     public abstract class Service
     {
 
-        protected ApplicationDbContext _context;
+        private ApplicationDbContext _context;
         private ISecurityService _securityService;
 
         public Service(ApplicationDbContext context, ISecurityService securityService)
@@ -25,7 +25,7 @@ namespace cran.Services
         }
 
 
-        protected async Task<CranUser> GetCranUserAsync()
+        protected async Task<CranUser> GetOrCreateCranUserAsync()
         {
             string userId = _securityService.GetUserId();
             CranUser cranUserEntity = await _context.CranUsers.Where(x => x.UserId == userId).SingleOrDefaultAsync();

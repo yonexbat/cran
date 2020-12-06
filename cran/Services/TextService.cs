@@ -14,8 +14,9 @@ namespace cran.Services
 {
     public class TextService : CraniumService, ITextService
     {
-        private ICultureService _cultureService;
-        private ISecurityService _securityService;
+        private readonly ICultureService _cultureService;
+        private readonly ISecurityService _securityService;
+        private readonly ApplicationDbContext _dbContext;
 
         public TextService(ApplicationDbContext context, 
             IDbLogService dbLogService, 
@@ -24,11 +25,12 @@ namespace cran.Services
         {
             _cultureService = cultureService;
             _securityService = securityService;
+            _dbContext = context;
         }
 
         public async Task<string> GetTextAsync(string key, params string[] placeholders)
         {            
-            Text template = await _context.Texts.Where(x => x.Key == key).SingleAsync();           
+            Text template = await _dbContext.Texts.Where(x => x.Key == key).SingleAsync();           
             string templateContent = template.ContentDe;
             switch(_cultureService.GetCurrentLanguage())
             {
@@ -45,20 +47,20 @@ namespace cran.Services
 
         public async Task<TextDto> GetTextDtoAsync(int id)
         {
-            Text text = await _context.FindAsync<Text>(id);
+            Text text = await _dbContext.FindAsync<Text>(id);
             return ToDtoSingle(text);
         }
 
         public async Task<TextDto> GetTextDtoByKeyAsync(string key)
         {
-            Text text = await _context.Texts.Where(x => x.Key == key)
+            Text text = await _dbContext.Texts.Where(x => x.Key == key)
                 .SingleOrDefaultAsync();
             return ToDtoSingle(text);
         }
 
         public async Task<PagedResultDto<TextDto>> GetTextsAsync(SearchTextDto parameters)
         {
-            IQueryable<Text> query = _context.Texts
+            IQueryable<Text> query = _dbContext.Texts
                  .OrderBy(x => x.Key)
                  .ThenBy(x => x.Id);
 
@@ -69,7 +71,7 @@ namespace cran.Services
 
         public async Task UpdateTextAsync(TextDto vm)
         {
-            Text text = await _context.FindAsync<Text>(vm.Id);
+            Text text = await _dbContext.FindAsync<Text>(vm.Id);
             text.ContentDe = vm.ContentDe;
             text.ContentEn = vm.ContentEn;
             await SaveChangesAsync();

@@ -15,29 +15,31 @@ namespace cran.Services
     {
 
         private readonly ISecurityService _securityService;
+        private readonly ApplicationDbContext _dbContext;
 
         public CommentsService(ApplicationDbContext context, IDbLogService dbLogService, ISecurityService securityService) : base(context, dbLogService, securityService)
         {
             _securityService = securityService;
+            _dbContext = context;
         }
 
         public async Task<VotesDto> VoteAsync(VotesDto vote)
         {
             string userId = _securityService.GetUserId();
-            Rating rating = _context.Ratings
+            Rating rating = _dbContext.Ratings
                 .Where(x => x.User.UserId == userId && x.Question.Id == vote.IdQuestion)
                 .SingleOrDefault();
             if (rating == null)
             {
-                Question question = await _context.FindAsync<Question>(vote.IdQuestion);
-                CranUser user = await GetCranUserAsync();
+                Question question = await _dbContext.FindAsync<Question>(vote.IdQuestion);
+                CranUser user = await GetOrCreateCranUserAsync();
                 rating = new Rating
                 {
                     Question = question,
                     User = user,
                     QuestionRating = 0,
                 };
-                _context.Ratings.Add(rating);
+                _dbContext.Ratings.Add(rating);
             }
 
             int r = vote.MyVote > 0 ? 1 : (vote.MyVote < 0 ? -1 : 0);
@@ -50,13 +52,13 @@ namespace cran.Services
         public async Task<VotesDto> GetVoteAsync(int idQuestion)
         {
 
-            int upRatings = await _context.Ratings.Where(x => x.Question.Id == idQuestion && x.QuestionRating > 0)
+            int upRatings = await _dbContext.Ratings.Where(x => x.Question.Id == idQuestion && x.QuestionRating > 0)
                 .CountAsync();
-            int downRatings = await _context.Ratings.Where(x => x.Question.Id == idQuestion && x.QuestionRating < 0)
+            int downRatings = await _dbContext.Ratings.Where(x => x.Question.Id == idQuestion && x.QuestionRating < 0)
                 .CountAsync();
 
             string userId = this._securityService.GetUserId();
-            int? myRating = await _context.Ratings.Where(x => x.User.UserId == userId && x.Question.Id == idQuestion)
+            int? myRating = await _dbContext.Ratings.Where(x => x.User.UserId == userId && x.Question.Id == idQuestion)
                 .Select(x => x.QuestionRating).SingleOrDefaultAsync();
 
             VotesDto result = new VotesDto()
@@ -72,27 +74,27 @@ namespace cran.Services
 
         public async Task<int> AddCommentAsync(CommentDto vm)
         {
-            CranUser cranUser = await this.GetCranUserAsync();
-            Question question = await _context.FindAsync<Question>(vm.IdQuestion);
+            CranUser cranUser = await this.GetOrCreateCranUserAsync();
+            Question question = await _dbContext.FindAsync<Question>(vm.IdQuestion);
             Comment comment = new Comment()
             {
                 Question = question,
                 User = cranUser,
                 CommentText = vm.CommentText,
             };
-            _context.Comments.Add(comment);
+            _dbContext.Comments.Add(comment);
             await this.SaveChangesAsync();
             return comment.Id;
         }
 
         public async Task DeleteCommentAsync(int id)
         {
-            Comment comment = await _context.FindAsync<Comment>(id);
+            Comment comment = await _dbContext.FindAsync<Comment>(id);
             if (!(await HasWriteAccess(comment.IdUser)))
             {
                 throw new SecurityException($"No access to comment,  id: {id}");
             }
-            _context.Remove(comment);
+            _dbContext.Remove(comment);
             await this.SaveChangesAsync();
         }
 
@@ -101,7 +103,7 @@ namespace cran.Services
         {
             PagedResultDto<CommentDto> resultDto = new PagedResultDto<CommentDto>();
 
-            IQueryable<Comment> queryBeforeSkipAndTake = _context.Comments
+            IQueryable<Comment> queryBeforeSkipAndTake = _dbContext.Comments
                 .Where(x => x.Question.Id == parameters.IdQuestion)
                 .OrderByDescending(x => x.InsertDate)
                 .ThenBy(x => x.Id);
