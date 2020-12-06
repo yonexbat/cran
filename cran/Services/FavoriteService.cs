@@ -7,6 +7,7 @@ using cran.Data;
 using cran.Mappers;
 using cran.Model.Dto;
 using cran.Model.Entities;
+using cran.Services.Util;
 using Microsoft.EntityFrameworkCore;
 
 namespace cran.Services
@@ -56,7 +57,7 @@ namespace cran.Services
 
 
             query = query.OrderBy(x => x.Title).ThenBy(x => x.Id);
-            return await ToPagedResult(query, page, ToDto);
+            return await PagedResultUtil.ToPagedResult(query, page, ToDto);
         }
 
         private async Task<IList<CourseDto>> ToDto(IQueryable<Course> query)

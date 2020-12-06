@@ -8,6 +8,7 @@ using cran.Model.Dto;
 using cran.Model.Entities;
 using System.Security;
 using Microsoft.EntityFrameworkCore;
+using cran.Services.Util;
 
 namespace cran.Services
 {
@@ -110,7 +111,7 @@ namespace cran.Services
                 .OrderByDescending(x => x.InsertDate)
                 .ThenBy(x => x.Id);
 
-            PagedResultDto<CommentDto> result = await ToPagedResult(queryBeforeSkipAndTake, parameters.Page, ToDto);
+            PagedResultDto<CommentDto> result = await Util.PagedResultUtil.ToPagedResult(queryBeforeSkipAndTake, parameters.Page, ToDto);
             return result;
         }
 

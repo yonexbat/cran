@@ -2,7 +2,9 @@
 using cran.Model.Dto;
 using cran.Model.Entities;
 using cran.Services.Exceptions;
+using cran.Services.Util;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security;
@@ -46,7 +48,7 @@ namespace cran.Services
             Question questionEntity = new Question();
             questionDto.QuestionType = questionDto.QuestionType == QuestionType.Unknown ?
                     QuestionType.MultipleChoice : questionDto.QuestionType;
-            CopyData(questionDto, questionEntity);
+            CopyDataQuestion(questionDto, questionEntity);
             questionEntity.User = await _userService.GetOrCreateCranUserAsync();
             questionEntity.Container = container;
             await _dbContext.AddAsync(questionEntity);
@@ -138,7 +140,7 @@ namespace cran.Services
 
             //Options
             IList<QuestionOption> questionOptionEntities = await _dbContext.QuestionOptions.Where(x => x.IdQuestion == questionEntity.Id).ToListAsync();
-            UpdateRelation(questionDto.Options, questionOptionEntities);
+            UpdateRelation(questionDto.Options, questionOptionEntities, CopyDataQuestionOption);
 
             //QuestionType
             questionEntity.QuestionType = questionDto.Options.Count(x => x.IsTrue) == 1 ?
@@ -166,7 +168,7 @@ namespace cran.Services
                 relQuestionTagDtos.Add(relQuestionTagDto);
             }
 
-            UpdateRelation(relQuestionTagDtos, relTagEntities);
+            UpdateRelation(relQuestionTagDtos, relTagEntities, CopyDataRelQuestonTag);
 
             //Image Relation
             IList<RelQuestionImage> relImages = await _dbContext.RelQuestionImages.Where(x => x.IdQuestion == questionEntity.Id).ToListAsync();
@@ -186,19 +188,56 @@ namespace cran.Services
                 }
                 relImagesDtos.Add(relQuestionImageDto);
             }
-            UpdateRelation(relImagesDtos, relImages);
+            UpdateRelation(relImagesDtos, relImages, CopyDataRelImage);
 
             //Image Data           
             foreach (ImageDto imageDto in questionDto.Images)
             {
                 Image image = imageByBinaryId[imageDto.IdBinary];
-                CopyData(imageDto, image);
+                CopyDataImage(imageDto, image);
             }
 
 
-            CopyData(questionDto, questionEntity);
+            CopyDataQuestion(questionDto, questionEntity);
 
             await _dbContext.SaveChangesAsync();            
+        }
+
+        private void CopyDataRelImage(RelQuestionImageDto dto, RelQuestionImage entity)
+        {
+            RelQuestionImageDto dtoSource = dto;
+            RelQuestionImage entityDestination = entity;
+            entityDestination.IdQuestion = dtoSource.IdQuestion;
+            entityDestination.IdImage = dtoSource.IdImage;
+        }
+
+        private void CopyDataRelQuestonTag(RelQuestionTagDto dto, RelQuestionTag entity)
+        {
+            entity.IdQuestion = dto.IdQuestion;
+            entity.IdTag = dto.IdTag;
+        }
+
+        private void CopyDataQuestionOption(QuestionOptionDto dto, QuestionOption entity)
+        {
+            entity.IsTrue = dto.IsTrue;
+            entity.Text = dto.Text ?? string.Empty;
+            entity.IdQuestion = dto.IdQuestion;
+        }
+
+        private void CopyDataQuestion(QuestionDto dto, Question entity)
+        {
+            entity.Title = dto.Title;
+            entity.Text = dto.Text ?? string.Empty;
+            entity.Explanation = dto.Explanation;
+            entity.QuestionType = dto.QuestionType;
+            entity.Language = Enum.Parse<Language>(dto.Language);
+        }
+
+        private void CopyDataImage(ImageDto dto, Image entity)
+        {
+            entity.Width = dto.Width;
+            entity.Height = dto.Height;
+            entity.Full = dto.Full;
         }
 
         public async Task<ImageDto> AddImageAsync(ImageDto imageDto)
@@ -289,9 +328,6 @@ namespace cran.Services
            
         }
 
-       
-       
-
         public async Task<PagedResultDto<QuestionListEntryDto>> GetMyQuestionsAsync(int page)
         {
             string userId = _securityService.GetUserId();
@@ -299,7 +335,7 @@ namespace cran.Services
             IQueryable<Question> query = _dbContext.Questions.Where(q => q.User.UserId == userId)
                 .OrderBy(x => x.Title)
                 .ThenBy(x => x.Id);
-            PagedResultDto<QuestionListEntryDto> result = await ToPagedResult(query, page, MaterializeQuestionList);
+            PagedResultDto<QuestionListEntryDto> result = await PagedResultUtil.ToPagedResult(query, page, MaterializeQuestionList);
             
 
             return result;            
@@ -351,7 +387,7 @@ namespace cran.Services
                    x.Status == QuestionStatus.Released);
             }
 
-            PagedResultDto<QuestionListEntryDto> result = await ToPagedResult(queryBeforeSkipAndTake, parameters.Page, MaterializeQuestionList);
+            PagedResultDto<QuestionListEntryDto> result = await PagedResultUtil.ToPagedResult(queryBeforeSkipAndTake, parameters.Page, MaterializeQuestionList);
             return result;
         }
 

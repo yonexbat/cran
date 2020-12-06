@@ -8,6 +8,7 @@ using cran.Model.Dto;
 using cran.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Security;
+using cran.Services.Util;
 
 namespace cran.Services
 {
@@ -425,7 +426,7 @@ namespace cran.Services
                 .OrderByDescending(x => x.InsertDate)
                 .ThenBy(x => x.Id);
 
-            PagedResultDto<CourseInstanceListEntryDto> resultDto = await ToPagedResult(query, page, ToDto);
+            PagedResultDto<CourseInstanceListEntryDto> resultDto = await PagedResultUtil.ToPagedResult(query, page, ToDto);
            
             return resultDto;
         }

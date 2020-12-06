@@ -17,8 +17,7 @@ namespace cran.Services
 
         protected readonly IDbLogService _dbLogService;
         private readonly ISecurityService _securityService;
-        private readonly ApplicationDbContext _dbContext;
-        protected static int PageSize = 5;
+        private readonly ApplicationDbContext _dbContext;        
 
 
         public CraniumService(ApplicationDbContext context, IDbLogService dbLogService, ISecurityService securityService)
@@ -52,7 +51,7 @@ namespace cran.Services
 
 
 
-        protected void UpdateRelation<Tdto, Tentity>(IList<Tdto> dtos, IList<Tentity> entities) 
+        protected void UpdateRelation<Tdto, Tentity>(IList<Tdto> dtos, IList<Tentity> entities, Action<Tdto, Tentity> copyData) 
             where Tdto: IDto 
             where Tentity : CranEntity, IIdentifiable, new()
         {
@@ -69,94 +68,20 @@ namespace cran.Services
             }
 
             //Update
-            foreach(CranEntity entity in entitiesToUpdate)
+            foreach(Tentity entity in entitiesToUpdate)
             {
-                IDto dto = dtos.Single(x => x.Id == entity.Id);
-                CopyData(dto, entity);
+                Tdto dto = dtos.Single(x => x.Id == entity.Id);
+                copyData(dto, entity);
             }
             
             //Add
-            foreach(IDto dto in dtosToAdd)
+            foreach(Tdto dto in dtosToAdd)
             {
                 Tentity entity = new Tentity();
-                CopyData(dto, entity);
+                copyData(dto, entity);
                 _dbContext.Set<Tentity>().Add(entity);
             }
         }
-
-        protected virtual void CopyData(object dto, CranEntity entity)
-        {
-            if(dto is QuestionOptionDto && entity is QuestionOption)
-            {
-                QuestionOptionDto dtoSource = (QuestionOptionDto)dto;
-                QuestionOption entityDestination = (QuestionOption) entity;
-                entityDestination.IsTrue = dtoSource.IsTrue;
-                entityDestination.Text = dtoSource.Text ?? string.Empty;
-                entityDestination.IdQuestion = dtoSource.IdQuestion;
-            }
-            else if (dto is QuestionDto && entity is Question)
-            {
-                QuestionDto dtoSource = (QuestionDto )dto;
-                Question entityDestination = (Question)entity;
-                entityDestination.Title = dtoSource.Title;                
-                entityDestination.Text = dtoSource.Text ?? string.Empty;
-                entityDestination.Explanation = dtoSource.Explanation;
-                entityDestination.QuestionType = dtoSource.QuestionType;
-                entityDestination.Language = Enum.Parse<Language>(dtoSource.Language);
-            }
-            else if(dto is RelQuestionTagDto && entity is RelQuestionTag)
-            {
-                RelQuestionTagDto dtoSource = (RelQuestionTagDto)dto;
-                RelQuestionTag entityDestination = (RelQuestionTag)entity;
-                entityDestination.IdQuestion = dtoSource.IdQuestion;
-                entityDestination.IdTag = dtoSource.IdTag;
-            }
-            else if(dto is RelQuestionImageDto && entity is RelQuestionImage)
-            {
-                RelQuestionImageDto dtoSource = (RelQuestionImageDto)dto;
-                RelQuestionImage entityDestination = (RelQuestionImage)entity;
-                entityDestination.IdQuestion = dtoSource.IdQuestion;
-                entityDestination.IdImage = dtoSource.IdImage;
-            }
-            else if(dto is ImageDto && entity is Image)
-            {
-                ImageDto dtoSource = (ImageDto)dto;
-                Image entityDestination = (Image) entity;
-                entityDestination.Width = dtoSource.Width;
-                entityDestination.Height = dtoSource.Height;
-                entityDestination.Full = dtoSource.Full;
-            }
-            else if(dto is CourseDto && entity is Course)
-            {
-                CourseDto dtoSource = (CourseDto)dto;
-                Course entityDestination = (Course)entity;
-                entityDestination.Title = dtoSource.Title;
-                entityDestination.Language = Enum.Parse<Language>(dtoSource.Language);
-                entityDestination.NumQuestionsToAsk = dtoSource.NumQuestionsToAsk;
-                entityDestination.Description = dtoSource.Description;                
-            }
-            else if (dto is RelCourseTagDto && entity is RelCourseTag)
-            {
-                RelCourseTagDto dtoSource = (RelCourseTagDto)dto;
-                RelCourseTag entityDestination = (RelCourseTag)entity;
-                entityDestination.IdCourse = dtoSource.IdCourse;
-                entityDestination.IdTag = dtoSource.IdTag;
-            }
-            else if(dto is NotificationSubscriptionDto && entity is NotificationSubscription)
-            {
-                NotificationSubscriptionDto dtoSource = (NotificationSubscriptionDto)dto;
-                NotificationSubscription entityDestination = (NotificationSubscription)entity;
-                entityDestination.Endpoint = dtoSource.Endpoint;
-                entityDestination.Auth = dtoSource.Keys?.Auth;
-                entityDestination.P256DiffHell = dtoSource.Keys?.P256dh;
-                entityDestination.ExpirationTime = dtoSource.ExpirationTime;
-                entityDestination.AsString = dtoSource.AsString;
-            }
-            else
-            {
-                throw new NotImplementedException();
-            }                  
-        }            
         
 
         protected async Task<bool> HasWriteAccess(int idUser)
@@ -171,38 +96,5 @@ namespace cran.Services
             return false;
         }
                
-
-        private int InitPagedResult(IPagedResult pagedResult, int count, int page)
-        {
-            pagedResult.Count = count;
-            pagedResult.Pagesize = PageSize;
-            pagedResult.Numpages = CalculateNumPages(count);
-            pagedResult.CurrentPage = pagedResult.Numpages >= page ? page : pagedResult.Numpages;
-            return pagedResult.CurrentPage * PageSize;
-        }
-
-        protected async Task<PagedResultDto<TModel>> ToPagedResult<TEntity, TModel>(IQueryable<TEntity> queryBeforeSkipAndTake,
-           int page, Func<IQueryable<TEntity>, Task<IList<TModel>>> toDtoFunc)
-               where TModel : class
-        {
-            PagedResultDto<TModel> resultDto = new PagedResultDto<TModel>();
-
-            //Count und paging.
-            int count = await queryBeforeSkipAndTake.CountAsync();
-            int startindex = InitPagedResult(resultDto, count, page);
-
-            //Daten 
-            IQueryable<TEntity> query = queryBeforeSkipAndTake.Skip(startindex).Take(PageSize);
-
-            resultDto.Data = await toDtoFunc(query);
-
-            return resultDto;
-        }
-
-        private int CalculateNumPages(int count)
-        {
-            return ((count + PageSize - 1) / PageSize);   
-        }
-        
     }
 }

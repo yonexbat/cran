@@ -2,6 +2,7 @@
 using cran.Model.Dto;
 using cran.Model.Entities;
 using cran.Services.Exceptions;
+using cran.Services.Util;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -62,7 +63,9 @@ namespace cran.Services
             newQuestion.IdContainer = questionSourceEntity.IdContainer;
             newQuestion.User = questionSourceEntity.User;
             newQuestion.IdQuestionCopySource = id;
-            CopyData(questionDto, newQuestion);
+            newQuestion.Text = string.Empty;
+            newQuestion.Title = string.Empty;
+            newQuestion.Language = Language.De;
 
             await _dbContext.Questions.AddAsync(newQuestion);
             await _dbContext.SaveChangesAsync();
@@ -146,7 +149,7 @@ namespace cran.Services
             IQueryable<Question> query = _dbContext.Questions.Where(x => x.Container.Id == questionEntity.IdContainer)
                 .OrderByDescending(x => x.Id);
 
-            return await ToPagedResult(query, versionInfoParameters.Page, MaterializeQuestionList);
+            return await PagedResultUtil.ToPagedResult(query, versionInfoParameters.Page, MaterializeQuestionList);
         }
 
         private async Task<IList<VersionInfoDto>> MaterializeQuestionList(IQueryable<Question> query)

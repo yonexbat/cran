@@ -7,6 +7,7 @@ using cran.Data;
 using cran.Model.Dto;
 using cran.Model.Dto.Notification;
 using cran.Model.Entities;
+using cran.Services.Util;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
@@ -49,12 +50,21 @@ namespace cran.Services
             && x.Auth == subscriptionDto.Keys.Auth && x.Active))
             {
                 NotificationSubscription entity = new NotificationSubscription();
-                CopyData(subscriptionDto, entity);
+                CopyDataSubscription(subscriptionDto, entity);
                 entity.User = await _userService.GetOrCreateCranUserAsync();
                 await _dbContext.Notifications.AddAsync(entity);
                 await _dbContext.SaveChangesAsync();
             }            
-        }        
+        }      
+        
+        private void CopyDataSubscription(NotificationSubscriptionDto dto, NotificationSubscription entity)
+        {
+            entity.Endpoint = dto.Endpoint;
+            entity.Auth = dto.Keys?.Auth;
+            entity.P256DiffHell = dto.Keys?.P256dh;
+            entity.ExpirationTime = dto.ExpirationTime;
+            entity.AsString = dto.AsString;
+        }
 
         private string GetMessage(NotificationDto notificationDto)
         {                            
@@ -104,7 +114,7 @@ namespace cran.Services
         public async Task<PagedResultDto<SubscriptionShortDto>> GetAllSubscriptionsAsync(int page)
         {
             IQueryable<NotificationSubscription> query = _dbContext.Notifications.Where(x => x.Active);
-            PagedResultDto<SubscriptionShortDto> result = await ToPagedResult(query, page, MaterializeSubscriptionList);
+            PagedResultDto<SubscriptionShortDto> result = await PagedResultUtil.ToPagedResult(query, page, MaterializeSubscriptionList);
             return result;
         }
 

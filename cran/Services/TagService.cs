@@ -8,6 +8,7 @@ using cran.Data;
 using cran.Model.Dto;
 using cran.Model.Entities;
 using cran.Services.Exceptions;
+using cran.Services.Util;
 using Microsoft.EntityFrameworkCore;
 
 namespace cran.Services
@@ -81,7 +82,7 @@ namespace cran.Services
                 query = query.Where(x => x.Name.Contains(parameters.Name));
             }
 
-            PagedResultDto<TagDto> result = await ToPagedResult(query, parameters.Page, ToDto);
+            PagedResultDto<TagDto> result = await PagedResultUtil.ToPagedResult(query, parameters.Page, ToDto);
             return result;
 
         }

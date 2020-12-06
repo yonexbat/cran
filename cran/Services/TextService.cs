@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using cran.Data;
 using cran.Model.Dto;
 using cran.Model.Entities;
+using cran.Services.Util;
 using Microsoft.EntityFrameworkCore;
 
 namespace cran.Services
@@ -64,7 +65,7 @@ namespace cran.Services
                  .OrderBy(x => x.Key)
                  .ThenBy(x => x.Id);
 
-            PagedResultDto<TextDto> result = await ToPagedResult(query, parameters.Page, ToDto);
+            PagedResultDto<TextDto> result = await PagedResultUtil.ToPagedResult(query, parameters.Page, ToDto);
             return result;
         }
       

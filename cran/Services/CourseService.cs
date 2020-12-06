@@ -8,6 +8,7 @@ using cran.Model.Entities;
 using cran.Model.Dto;
 using Microsoft.EntityFrameworkCore;
 using cran.Mappers;
+using cran.Services.Util;
 
 namespace cran.Services
 {
@@ -41,7 +42,7 @@ namespace cran.Services
                 .OrderBy(x => x.Title)
                 .ThenBy(x => x.Id);
 
-            return await ToPagedResult(query, page, ToDto);
+            return await PagedResultUtil.ToPagedResult(query, page, ToDto);
         }
 
         private async Task<IList<CourseDto>> ToDto(IQueryable<Course> query)
@@ -72,7 +73,7 @@ namespace cran.Services
             await _dbLogService.LogMessageAsync("Adding course");
 
             Course entity = new Course();
-            CopyData(courseDto, entity);
+            CopyDataCourse(courseDto, entity);
 
             await _dbContext.AddAsync(entity);
 
@@ -80,7 +81,7 @@ namespace cran.Services
             courseDto.Id = entity.Id;
             await UpdateCourseAsync(courseDto);
 
-            return courseDto.Id;         
+            return courseDto.Id;
         }
 
         public async Task UpdateCourseAsync(CourseDto courseDto)
@@ -108,11 +109,28 @@ namespace cran.Services
 
                 relCourseTagDtos.Add(relCourseTag);
             }
-            UpdateRelation(relCourseTagDtos, relTagEntities);
+            UpdateRelation(relCourseTagDtos, relTagEntities, CopyDataRelCourse);
 
-            CopyData(courseDto, courseEntity);
+            CopyDataCourse(courseDto, courseEntity);
 
             await _dbContext.SaveChangesAsync();
         }
+
+        private void CopyDataRelCourse(RelCourseTagDto dto, RelCourseTag entity)
+        {
+            RelCourseTagDto dtoSource = dto;
+            RelCourseTag entityDestination = entity;
+            entityDestination.IdCourse = dtoSource.IdCourse;
+            entityDestination.IdTag = dtoSource.IdTag;
+        }
+
+        private void CopyDataCourse(CourseDto dto, Course entity)
+        {
+            entity.Title = dto.Title;
+            entity.Language = Enum.Parse<Language>(dto.Language);
+            entity.NumQuestionsToAsk = dto.NumQuestionsToAsk;
+            entity.Description = dto.Description;
+        }
+ 
     }
 }
