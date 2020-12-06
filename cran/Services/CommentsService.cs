@@ -16,11 +16,13 @@ namespace cran.Services
 
         private readonly ISecurityService _securityService;
         private readonly ApplicationDbContext _dbContext;
+        private readonly IUserService _userService;
 
-        public CommentsService(ApplicationDbContext context, IDbLogService dbLogService, ISecurityService securityService) : base(context, dbLogService, securityService)
+        public CommentsService(ApplicationDbContext context, IDbLogService dbLogService, ISecurityService securityService, IUserService userService) : base(context, dbLogService, securityService)
         {
             _securityService = securityService;
             _dbContext = context;
+            _userService = userService;
         }
 
         public async Task<VotesDto> VoteAsync(VotesDto vote)
@@ -32,7 +34,7 @@ namespace cran.Services
             if (rating == null)
             {
                 Question question = await _dbContext.FindAsync<Question>(vote.IdQuestion);
-                CranUser user = await GetOrCreateCranUserAsync();
+                CranUser user = await _userService.GetOrCreateCranUserAsync();
                 rating = new Rating
                 {
                     Question = question,
@@ -74,7 +76,7 @@ namespace cran.Services
 
         public async Task<int> AddCommentAsync(CommentDto vm)
         {
-            CranUser cranUser = await this.GetOrCreateCranUserAsync();
+            CranUser cranUser = await _userService.GetOrCreateCranUserAsync();
             Question question = await _dbContext.FindAsync<Question>(vm.IdQuestion);
             Comment comment = new Comment()
             {

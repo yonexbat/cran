@@ -12,7 +12,7 @@ using cran.Model.Dto.Notification;
 
 namespace cran.Services
 {
-    public abstract class CraniumService : Service
+    public abstract class CraniumService
     {
 
         protected readonly IDbLogService _dbLogService;
@@ -21,8 +21,7 @@ namespace cran.Services
         protected static int PageSize = 5;
 
 
-        public CraniumService(ApplicationDbContext context, IDbLogService dbLogService, ISecurityService securityService) :
-            base(context, securityService)
+        public CraniumService(ApplicationDbContext context, IDbLogService dbLogService, ISecurityService securityService)
         {
             _dbContext = context;
             _dbLogService = dbLogService;

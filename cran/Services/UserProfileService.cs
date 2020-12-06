@@ -12,11 +12,13 @@ namespace cran.Services
     {
         private readonly ISecurityService _securityService;
         private readonly ApplicationDbContext _dbContext;
+        private readonly IUserService _userService;
 
-        public UserProfileService(ApplicationDbContext context, IDbLogService dbLogService, ISecurityService securityService) : base(context, dbLogService, securityService)
+        public UserProfileService(ApplicationDbContext context, IDbLogService dbLogService, ISecurityService securityService, IUserService userService) : base(context, dbLogService, securityService)
         {
             _securityService = securityService;
             _dbContext = context;
+            _userService = userService;
         }
 
         public async Task CreateUserAsync(UserInfoDto info)
@@ -36,7 +38,7 @@ namespace cran.Services
 
         public async Task<UserInfoDto> GetUserInfoAsync()
         {
-            CranUser user = await GetOrCreateCranUserAsync();
+            CranUser user = await _userService.GetOrCreateCranUserAsync();
             return ToProfileDto(user);
         }
 

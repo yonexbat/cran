@@ -23,15 +23,16 @@ namespace cran.tests
             return questionService;
         }
 
-        private void InitContext(TestingContext context)
+        private void InitContext(TestingContext testingContext)
         {
-            context.AddPrincipalMock();
-            context.AddInMemoryDb();
-            context.AddLogServiceMock();
-            context.AddGermanCultureServiceMock();
-            context.AddBinaryServiceMock();
-            context.AddQuestionService();
-            context.DependencyMap[typeof(IBinaryService)] = context.GetService<BinaryService>();
+            testingContext.AddPrincipalMock();
+            testingContext.AddInMemoryDb();
+            testingContext.AddUserService();
+            testingContext.AddLogServiceMock();
+            testingContext.AddGermanCultureServiceMock();
+            testingContext.AddBinaryServiceMock();
+            testingContext.AddQuestionService();
+            testingContext.DependencyMap[typeof(IBinaryService)] = testingContext.GetService<BinaryService>();
         }
 
         [Fact]

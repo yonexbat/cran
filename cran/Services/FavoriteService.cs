@@ -13,21 +13,23 @@ namespace cran.Services
 {
     public class FavoriteService : CraniumService, IFavoriteService
     {
-        private ISecurityService _securityService;
+        private readonly ISecurityService _securityService;
         private readonly ApplicationDbContext _dbContext;
+        private readonly IUserService _userService;
 
 
-        public FavoriteService(ApplicationDbContext context, IDbLogService dbLogService, ISecurityService securityService) 
+        public FavoriteService(ApplicationDbContext context, IDbLogService dbLogService, ISecurityService securityService, IUserService userService) 
             : base(context, dbLogService, securityService)
         {
             _securityService = securityService;
             _dbContext = context;
+            _userService = userService;
         }
 
         public async Task AddCourseToFavoritesAsync(CourseToFavoritesDto dto)
         {
 
-            CranUser cranUser = await this.GetOrCreateCranUserAsync();
+            CranUser cranUser = await _userService.GetOrCreateCranUserAsync();
             Course course = await _dbContext.Courses.FindAsync(dto.CourseId);
 
             bool exists = await _dbContext.RelUserCourseFavorites.AnyAsync(x => x.User.Id == cranUser.Id && x.Course.Id == course.Id);
@@ -80,7 +82,7 @@ namespace cran.Services
 
         public async Task RemoveCoureFromFavoritesAsync(CourseToFavoritesDto dto)
         {
-            CranUser cranUser = await this.GetOrCreateCranUserAsync();
+            CranUser cranUser = await _userService.GetOrCreateCranUserAsync();
 
             RelUserCourseFavorite rel = await _dbContext.RelUserCourseFavorites.Where(x => x.User.Id == cranUser.Id && x.Course.Id == dto.CourseId)
                 .FirstOrDefaultAsync();

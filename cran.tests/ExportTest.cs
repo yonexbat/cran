@@ -26,15 +26,16 @@ namespace cran.tests
         {
 
             //Prepare
-            TestingContext context = new TestingContext();
-            context.AddAdminPrincipalMock();
-            context.AddBinaryServiceMock();
-            context.AddInMemoryDb();
-            context.AddLogServiceMock();
-            context.AddGermanCultureServiceMock();
-            context.AddQuestionService();      
+            TestingContext testingContext = new TestingContext();
+            testingContext.AddAdminPrincipalMock();
+            testingContext.AddBinaryServiceMock();
+            testingContext.AddInMemoryDb();
+            testingContext.AddUserService();
+            testingContext.AddLogServiceMock();
+            testingContext.AddGermanCultureServiceMock();
+            testingContext.AddQuestionService();      
 
-            IExportService exportService = context.GetService<ExportService>();
+            IExportService exportService = testingContext.GetService<ExportService>();
 
             //Act
             Stream stream = await exportService.Export();

@@ -22,8 +22,6 @@ namespace cran.tests.Infra
     {
         readonly IDictionary<Type, object> _dependencyMap = new Dictionary<Type, object>();
 
-        
-
         public IDictionary<Type, object> DependencyMap => _dependencyMap;
 
         public void AddBinaryServiceMock()
@@ -64,6 +62,11 @@ namespace cran.tests.Infra
             infoMock.Setup(x => x.GetTextAsync(It.IsAny<string>(), It.IsAny<string[]>()))
                     .Returns((string key, string[] paramsarray) => Task.FromResult<string>(key));
             _dependencyMap[typeof(ITextService)] = infoMock.Object;
+        }
+
+        public void AddUserService()
+        {
+            _dependencyMap[typeof(IUserService)] = GetService<UserService>();
         }
 
         public void AddCranAppSettings()

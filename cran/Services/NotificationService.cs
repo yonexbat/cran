@@ -23,6 +23,7 @@ namespace cran.Services
         private readonly ITextService _textService;
         private readonly ISecurityService _securityService;
         private readonly ApplicationDbContext _dbContext;
+        private readonly IUserService _userService;
 
 
         public NotificationService(ApplicationDbContext context, 
@@ -30,13 +31,15 @@ namespace cran.Services
             ISecurityService securityService,
             IOptions<CranSettingsDto> settingsOption,
             IWebPushClient webPushClient,
-            ITextService textService) : base(context, dbLogService, securityService)
+            ITextService textService,
+            IUserService userService) : base(context, dbLogService, securityService)
         {
             _settings = settingsOption.Value;
             _webPushClient = webPushClient;
             _textService = textService;
             _securityService = securityService;
             _dbContext = context;
+            _userService = userService;
         }
 
         public async Task AddPushNotificationSubscriptionAsync(NotificationSubscriptionDto subscriptionDto)
@@ -47,7 +50,7 @@ namespace cran.Services
             {
                 NotificationSubscription entity = new NotificationSubscription();
                 CopyData(subscriptionDto, entity);
-                entity.User = await GetOrCreateCranUserAsync();
+                entity.User = await _userService.GetOrCreateCranUserAsync();
                 await _dbContext.Notifications.AddAsync(entity);
                 await _dbContext.SaveChangesAsync();
             }            

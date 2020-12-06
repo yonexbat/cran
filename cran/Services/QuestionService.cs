@@ -18,6 +18,7 @@ namespace cran.Services
         private readonly ITagService _tagService;
         private readonly ISecurityService _securityService;
         private readonly ApplicationDbContext _dbContext;
+        private readonly IUserService _userService;
 
 
         public QuestionService(ApplicationDbContext context, 
@@ -25,13 +26,15 @@ namespace cran.Services
             IPrincipal principal,
             ICommentsService commentsService,
             ITagService tagService,
-            ISecurityService securityService) :
+            ISecurityService securityService,
+            IUserService userService) :
             base(context, dbLogService, securityService)
         {
             _tagService = tagService;
             _commentsService = commentsService;
             _securityService = securityService;
             _dbContext = context;
+            _userService = userService;
         }
 
         public async Task<int> InsertQuestionAsync(QuestionDto questionDto)
@@ -44,7 +47,7 @@ namespace cran.Services
             questionDto.QuestionType = questionDto.QuestionType == QuestionType.Unknown ?
                     QuestionType.MultipleChoice : questionDto.QuestionType;
             CopyData(questionDto, questionEntity);
-            questionEntity.User = await GetOrCreateCranUserAsync();
+            questionEntity.User = await _userService.GetOrCreateCranUserAsync();
             questionEntity.Container = container;
             await _dbContext.AddAsync(questionEntity);
             await _dbContext.SaveChangesAsync();

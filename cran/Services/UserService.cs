@@ -7,23 +7,23 @@ using System.Threading.Tasks;
 
 namespace cran.Services
 {
-    public abstract class Service
+    public sealed class UserService : IUserService
     {
 
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
         private readonly ISecurityService _securityService;
 
-        public Service(ApplicationDbContext context, ISecurityService securityService)
+        public UserService(ApplicationDbContext context, ISecurityService securityService)
         {
-            this._context = context;
+            this._dbContext = context;
             this._securityService = securityService;
         }
 
 
-        protected async Task<CranUser> GetOrCreateCranUserAsync()
+        public async Task<CranUser> GetOrCreateCranUserAsync()
         {
             string userId = _securityService.GetUserId();
-            CranUser cranUserEntity = await _context.CranUsers.Where(x => x.UserId == userId).SingleOrDefaultAsync();
+            CranUser cranUserEntity = await _dbContext.CranUsers.Where(x => x.UserId == userId).SingleOrDefaultAsync();
             if (cranUserEntity == null)
             {
                 cranUserEntity = new CranUser
@@ -31,9 +31,9 @@ namespace cran.Services
                     UserId = userId,
                     IsAnonymous = true,
                 };
-                await _context.AddAsync(cranUserEntity);
+                await _dbContext.AddAsync(cranUserEntity);
             }
-            await _context.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
             return cranUserEntity;
         }
      

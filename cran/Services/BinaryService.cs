@@ -15,16 +15,17 @@ using System.Security;
 
 namespace cran.Services
 {
-    public class BinaryService : Service, IBinaryService
+    public class BinaryService : IBinaryService
     {
         private ISecurityService _securityService;
         private ApplicationDbContext _dbContext;
+        private IUserService _userService;
 
-        public BinaryService(ApplicationDbContext context, IDbLogService dbLogService, ISecurityService securityService) 
-            : base(context, securityService)
+        public BinaryService(ApplicationDbContext context, IDbLogService dbLogService, ISecurityService securityService, IUserService userService)         
         {
             _securityService = securityService;
             _dbContext = context;
+            _userService = userService;
         }
 
         public async Task<IList<BinaryDto>> UploadFilesAsync(IList<IFormFile> files)
@@ -61,7 +62,7 @@ namespace cran.Services
             fileEntity.FileName = formfile.FileName;
             fileEntity.ContentDisposition = formfile.ContentDisposition;
             fileEntity.Name = formfile.Name;
-            fileEntity.User = await GetOrCreateCranUserAsync();
+            fileEntity.User = await _userService.GetOrCreateCranUserAsync();
             fileEntity.IdUser = fileEntity.User.Id;
 
 
@@ -178,7 +179,7 @@ namespace cran.Services
             binary.FileName = binary.FileName;
             binary.ContentDisposition = binary.ContentDisposition;
             binary.Name = binary.Name;
-            binary.User = await GetOrCreateCranUserAsync();
+            binary.User = await _userService.GetOrCreateCranUserAsync();
             binary.IdUser = binary.User.Id;
 
 

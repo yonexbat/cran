@@ -20,6 +20,7 @@ namespace cran.tests
         {
             testingContext.AddPrincipalMock();
             testingContext.AddInMemoryDb();
+            testingContext.AddUserService();
             testingContext.AddLogServiceMock();
             testingContext.AddGermanCultureServiceMock();
             testingContext.AddBinaryServiceMock();
@@ -116,15 +117,17 @@ namespace cran.tests
         public async Task TestCopyQuestion()
         {
             //Prepare
-            TestingContext context = new TestingContext();
-            SetUpTestingContext(context);
-            ApplicationDbContext dbContext = context.GetSimple<ApplicationDbContext>();
+            TestingContext testingContext = new TestingContext();
+            SetUpTestingContext(testingContext);
+            ApplicationDbContext dbContext = testingContext.GetSimple<ApplicationDbContext>();
             Question question = dbContext.Questions.First();
-            context.AddPrincipalMock(question.User.UserId, Roles.User);
+            testingContext.AddPrincipalMock(question.User.UserId, Roles.User);
 
-            IQuestionService questionService = context.GetService<QuestionService>();
-            context.DependencyMap[typeof(IQuestionService)] = questionService;
-            IVersionService versionService = context.GetService<VersionService>();
+            IUserService userService = testingContext.GetService<UserService>();
+            testingContext.DependencyMap[typeof(IUserService)] = userService;
+            IQuestionService questionService = testingContext.GetService<QuestionService>();
+            testingContext.DependencyMap[typeof(IQuestionService)] = questionService;           
+            IVersionService versionService = testingContext.GetService<VersionService>();
 
             //Act
             int newId = await versionService.CopyQuestionAsync(question.Id);

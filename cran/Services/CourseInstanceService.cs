@@ -18,16 +18,19 @@ namespace cran.Services
         private readonly IQuestionService _questionService;
         private readonly ISecurityService _securityService;
         private readonly ApplicationDbContext _dbContext;
+        private readonly IUserService _userService;
 
         public CourseInstanceService(ApplicationDbContext context, 
             IDbLogService dbLogService, 
             IPrincipal principal,
             IQuestionService questionService,
-            ISecurityService securityService) : base(context, dbLogService, securityService)
+            ISecurityService securityService,
+            IUserService userService) : base(context, dbLogService, securityService)
         {
             _questionService = questionService;
             _securityService = securityService;
             _dbContext = context;
+            _userService = userService;
             _random = new Random();
         }
 
@@ -36,7 +39,7 @@ namespace cran.Services
             
 
             Course courseEntity = await _dbContext.FindAsync<Course>(courseId);
-            CranUser cranUserEntity = await GetOrCreateCranUserAsync();
+            CranUser cranUserEntity = await _userService.GetOrCreateCranUserAsync();
 
             await _dbLogService.LogMessageAsync($"Starting course {courseId}. Name: {courseEntity.Title}");
 
