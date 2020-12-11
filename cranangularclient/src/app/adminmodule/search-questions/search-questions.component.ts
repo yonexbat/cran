@@ -49,6 +49,7 @@ export class SearchQuestionsComponent implements OnInit {
     this.search.page = +params['pageNumber'];
     this.search.title = params['title'];
     this.search.language = params['language'];
+    debugger;
 
     if (params['statusCreated']) {
       this.search.statusCreated = params['statusCreated'] === 'true';

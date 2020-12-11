@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild, } from '@angular/core';
+import { Component, OnInit, Inject, } from '@angular/core';
 import { Router, } from '@angular/router';
 import {ICranDataService} from '../../services/icrandataservice';
 import {CRAN_SERVICE_TOKEN} from '../../services/cran-data.servicetoken';

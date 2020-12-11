@@ -368,9 +368,12 @@ namespace cran.Services
                 queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x => x.RelTags.Any(rel => tagids.Contains(rel.Tag.Id)));
             }
 
-            if(parameters.Language.HasValue)
-            {
-                queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x => x.Language == parameters.Language);
+            if(!string.IsNullOrWhiteSpace(parameters.Language))
+            {       
+                if(Enum.TryParse(parameters.Language, out Language lang))
+                {
+                    queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x => x.Language == lang);
+                }                
             }
 
             if(parameters.StatusCreated || parameters.StatusReleased || parameters.StatusObsolete)
