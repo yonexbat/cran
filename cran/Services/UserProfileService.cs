@@ -8,15 +8,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace cran.Services
 {
-    public class UserProfileService : CraniumService, IUserProfileService
+    public class UserProfileService : IUserProfileService
     {
-        private readonly ISecurityService _securityService;
         private readonly ApplicationDbContext _dbContext;
         private readonly IUserService _userService;
 
-        public UserProfileService(ApplicationDbContext context, IDbLogService dbLogService, ISecurityService securityService, IUserService userService) : base(context, dbLogService, securityService)
+        public UserProfileService(
+            ApplicationDbContext context, 
+            IUserService userService)
         {
-            _securityService = securityService;
             _dbContext = context;
             _userService = userService;
         }

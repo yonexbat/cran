@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace cran.Services
 {
-    public class VersionService : CraniumService, IVersionService
+    public class VersionService : IVersionService
     {
         private readonly IQuestionService _questionService;
         private readonly ITagService _tagService;
@@ -21,12 +21,10 @@ namespace cran.Services
         private readonly ApplicationDbContext _dbContext;
 
         public VersionService(ApplicationDbContext context,
-            IDbLogService dbLogService,
-            ISecurityService securityService,
             IQuestionService questionService,
             ITagService tagService,
             INotificationService notificationService,
-            ITextService textService) : base(context, dbLogService, securityService)
+            ITextService textService)
         {
             _questionService = questionService;
             _tagService = tagService;

@@ -12,16 +12,21 @@ using cran.Services.Util;
 
 namespace cran.Services
 {
-    public class CourseService : CraniumService, ICourseService
+    public class CourseService : ICourseService
     {
 
         private readonly ISecurityService _securityService;
         private readonly ApplicationDbContext _dbContext;
+        private readonly IDbLogService _dbLogService;
 
-        public CourseService(ApplicationDbContext context, IDbLogService dbLogService, ISecurityService securityService) : base(context, dbLogService, securityService)
+        public CourseService(
+            ApplicationDbContext context, 
+            IDbLogService dbLogService, 
+            ISecurityService securityService)
         {
             _securityService = securityService;
             _dbContext = context;
+            _dbLogService = dbLogService;
         }
 
         public async Task<CourseDto> GetCourseAsync(int id)

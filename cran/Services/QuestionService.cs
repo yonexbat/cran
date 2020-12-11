@@ -13,33 +13,30 @@ using System.Threading.Tasks;
 
 namespace cran.Services
 {
-    public class QuestionService : CraniumService, IQuestionService
+    public class QuestionService : IQuestionService
     {
 
         private readonly ICommentsService _commentsService;
-        private readonly ITagService _tagService;
         private readonly ISecurityService _securityService;
         private readonly ApplicationDbContext _dbContext;
         private readonly IUserService _userService;
         private readonly IBusinessSecurityService _businessSecurityService;
+        private readonly IDbLogService _dbLogService;
 
 
         public QuestionService(ApplicationDbContext context, 
             IDbLogService dbLogService, 
-            IPrincipal principal,
             ICommentsService commentsService,
-            ITagService tagService,
             ISecurityService securityService,
             IUserService userService,
-            IBusinessSecurityService businessSecurityService) :
-            base(context, dbLogService, securityService)
+            IBusinessSecurityService businessSecurityService)
         {
-            _tagService = tagService;
             _commentsService = commentsService;
             _securityService = securityService;
             _dbContext = context;
             _userService = userService;
             _businessSecurityService = businessSecurityService;
+            _dbLogService = dbLogService;
         }
 
         public async Task<int> InsertQuestionAsync(QuestionDto questionDto)

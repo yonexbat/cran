@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security;
-using System.Security.Principal;
 using System.Threading.Tasks;
 using cran.Data;
 using cran.Model.Dto;
@@ -13,14 +12,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace cran.Services
 {
-    public class TagService : CraniumService, ITagService
+    public class TagService : ITagService
     {
         private readonly ICacheService _cacheService;
         private readonly ISecurityService _securityService;
         private readonly ApplicationDbContext _dbContext;
 
-        public TagService(ApplicationDbContext context, IDbLogService dbLogService, IPrincipal principal,
-            ICacheService cacheService, ISecurityService securityService) : base(context, dbLogService, securityService)
+        public TagService(
+            ApplicationDbContext context,
+            ICacheService cacheService, 
+            ISecurityService securityService)
         {
             _cacheService = cacheService;
             _securityService = securityService;

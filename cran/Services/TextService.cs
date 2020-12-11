@@ -13,19 +13,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace cran.Services
 {
-    public class TextService : CraniumService, ITextService
+    public class TextService : ITextService
     {
         private readonly ICultureService _cultureService;
-        private readonly ISecurityService _securityService;
         private readonly ApplicationDbContext _dbContext;
 
-        public TextService(ApplicationDbContext context, 
-            IDbLogService dbLogService, 
-            ISecurityService securityService,
-            ICultureService cultureService) : base(context, dbLogService, securityService)
+        public TextService(ApplicationDbContext context,  
+            ICultureService cultureService)
         {
             _cultureService = cultureService;
-            _securityService = securityService;
             _dbContext = context;
         }
 

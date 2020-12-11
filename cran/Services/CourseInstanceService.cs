@@ -12,7 +12,7 @@ using cran.Services.Util;
 
 namespace cran.Services
 {
-    public class CourseInstanceService : CraniumService, ICourseInstanceService
+    public class CourseInstanceService : ICourseInstanceService
     {
         private Random _random;
 
@@ -21,20 +21,21 @@ namespace cran.Services
         private readonly ApplicationDbContext _dbContext;
         private readonly IUserService _userService;
         private readonly IBusinessSecurityService _businessSecurityService;
+        private readonly IDbLogService _dbLogService;
 
         public CourseInstanceService(ApplicationDbContext context, 
             IDbLogService dbLogService, 
-            IPrincipal principal,
             IQuestionService questionService,
             ISecurityService securityService,
             IUserService userService,
-            IBusinessSecurityService businessSecurityService) : base(context, dbLogService, securityService)
+            IBusinessSecurityService businessSecurityService)
         {
             _questionService = questionService;
             _securityService = securityService;
             _dbContext = context;
             _userService = userService;
             _businessSecurityService = businessSecurityService;
+            _dbLogService = dbLogService;
             _random = new Random();
         }
 

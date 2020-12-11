@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 
 namespace cran.Services
 {
-    public class ExportService : CraniumService, IExportService
+    public class ExportService : IExportService
     {
         private IQuestionService _questionService;
         private IBinaryService _binaryService;
@@ -25,7 +25,7 @@ namespace cran.Services
             IPrincipal principal,
             IQuestionService questionService,
             IBinaryService binaryService,
-            ISecurityService securityService) : base(context, dbLogService, securityService)
+            ISecurityService securityService)
         {
             _questionService = questionService;
             _binaryService = binaryService;

@@ -12,7 +12,7 @@ using cran.Services.Util;
 
 namespace cran.Services
 {
-    public class CommentsService : CraniumService, ICommentsService
+    public class CommentsService : ICommentsService
     {
 
         private readonly ISecurityService _securityService;
@@ -22,7 +22,7 @@ namespace cran.Services
 
         public CommentsService(ApplicationDbContext context, IDbLogService dbLogService, 
             ISecurityService securityService, IUserService userService,
-            IBusinessSecurityService businessSecurityService) : base(context, dbLogService, securityService)
+            IBusinessSecurityService businessSecurityService)
         {
             _securityService = securityService;
             _dbContext = context;

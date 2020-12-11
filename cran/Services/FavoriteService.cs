@@ -12,19 +12,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace cran.Services
 {
-    public class FavoriteService : CraniumService, IFavoriteService
+    public class FavoriteService : IFavoriteService
     {
         private readonly ISecurityService _securityService;
         private readonly ApplicationDbContext _dbContext;
         private readonly IUserService _userService;
+        private readonly IDbLogService _dbLogService;
 
 
-        public FavoriteService(ApplicationDbContext context, IDbLogService dbLogService, ISecurityService securityService, IUserService userService) 
-            : base(context, dbLogService, securityService)
+        public FavoriteService(
+            ApplicationDbContext context, 
+            IDbLogService dbLogService, 
+            ISecurityService securityService, 
+            IUserService userService)
         {
             _securityService = securityService;
             _dbContext = context;
             _userService = userService;
+            _dbLogService = dbLogService;
         }
 
         public async Task AddCourseToFavoritesAsync(CourseToFavoritesDto dto)

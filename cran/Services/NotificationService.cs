@@ -15,7 +15,7 @@ using WebPush;
 
 namespace cran.Services
 {
-    public class NotificationService : CraniumService, INotificationService
+    public class NotificationService : INotificationService
     {
 
         private CranSettingsDto _settings;
@@ -25,6 +25,7 @@ namespace cran.Services
         private readonly ISecurityService _securityService;
         private readonly ApplicationDbContext _dbContext;
         private readonly IUserService _userService;
+        private readonly IDbLogService _dbLogService;
 
 
         public NotificationService(ApplicationDbContext context, 
@@ -33,7 +34,7 @@ namespace cran.Services
             IOptions<CranSettingsDto> settingsOption,
             IWebPushClient webPushClient,
             ITextService textService,
-            IUserService userService) : base(context, dbLogService, securityService)
+            IUserService userService)
         {
             _settings = settingsOption.Value;
             _webPushClient = webPushClient;
@@ -41,6 +42,7 @@ namespace cran.Services
             _securityService = securityService;
             _dbContext = context;
             _userService = userService;
+            _dbLogService = dbLogService;
         }
 
         public async Task AddPushNotificationSubscriptionAsync(NotificationSubscriptionDto subscriptionDto)
