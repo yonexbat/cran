@@ -63,6 +63,10 @@ export class CourseFavoriteListComponent implements OnInit {
     }
   }
 
+  public async editCourse(course: Course) {
+    this.router.navigate(['/admin/managecourse', course.id]);
+  }
+
   public async startCourse(course: Course): Promise<void> {
     try {
       this.notificationService.emitLoading();
