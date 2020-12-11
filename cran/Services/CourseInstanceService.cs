@@ -8,21 +8,34 @@ using cran.Model.Dto;
 using cran.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Security;
+using cran.Services.Util;
 
 namespace cran.Services
 {
-    public class CourseInstanceService : CraniumService, ICourseInstanceService
+    public class CourseInstanceService : ICourseInstanceService
     {
         private Random _random;
 
         private readonly IQuestionService _questionService;
+        private readonly ISecurityService _securityService;
+        private readonly ApplicationDbContext _dbContext;
+        private readonly IUserService _userService;
+        private readonly IBusinessSecurityService _businessSecurityService;
+        private readonly IDbLogService _dbLogService;
 
         public CourseInstanceService(ApplicationDbContext context, 
             IDbLogService dbLogService, 
-            IPrincipal principal,
-            IQuestionService questionService) : base(context, dbLogService, principal)
+            IQuestionService questionService,
+            ISecurityService securityService,
+            IUserService userService,
+            IBusinessSecurityService businessSecurityService)
         {
             _questionService = questionService;
+            _securityService = securityService;
+            _dbContext = context;
+            _userService = userService;
+            _businessSecurityService = businessSecurityService;
+            _dbLogService = dbLogService;
             _random = new Random();
         }
 
@@ -30,8 +43,8 @@ namespace cran.Services
         {
             
 
-            Course courseEntity = await _context.FindAsync<Course>(courseId);
-            CranUser cranUserEntity = await GetCranUserAsync();
+            Course courseEntity = await _dbContext.FindAsync<Course>(courseId);
+            CranUser cranUserEntity = await _userService.GetOrCreateCranUserAsync();
 
             await _dbLogService.LogMessageAsync($"Starting course {courseId}. Name: {courseEntity.Title}");
 
@@ -42,9 +55,9 @@ namespace cran.Services
                 IdCourse = courseId,
             };
 
-            await _context.AddAsync(courseInstanceEntity);
+            await _dbContext.AddAsync(courseInstanceEntity);
 
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
             CourseInstanceDto result = await GetNextQuestion(courseInstanceEntity);
 
             return result;
@@ -52,7 +65,7 @@ namespace cran.Services
 
         public async Task<QuestionToAskDto> GetQuestionToAskAsync(int courseInstanceQuestionId)
         {
-            QuestionToAskDto questionToAskDto = await _context.CourseInstancesQuestion
+            QuestionToAskDto questionToAskDto = await _dbContext.CourseInstancesQuestion
                 .Where(x => x.Id == courseInstanceQuestionId)
                 .Select(x => new QuestionToAskDto
                 {
@@ -72,7 +85,7 @@ namespace cran.Services
             await CheckAccessToCourseInstance(questionToAskDto.IdCourseInstance);
 
             //Images
-            questionToAskDto.Images = await _context.RelQuestionImages
+            questionToAskDto.Images = await _dbContext.RelQuestionImages
                .Where(x => x.Question.CourseInstancesQuestion.Any(y => y.Id == courseInstanceQuestionId))
                .Select(x => new ImageDto
                {
@@ -87,7 +100,7 @@ namespace cran.Services
             //Diese Infos ist nur nötig, wenn Kurs noch nicht beendet ist.
             if (!questionToAskDto.CourseEnded)
             {
-                Language language = await _context.CourseInstancesQuestion.Where(x => x.Id == courseInstanceQuestionId)
+                Language language = await _dbContext.CourseInstancesQuestion.Where(x => x.Id == courseInstanceQuestionId)
                     .Select(x => x.CourseInstance.Course.Language).SingleAsync();
 
                 int possibleQuestions = await PossibleQuestionsQuery(questionToAskDto.IdCourseInstance, language).CountAsync();
@@ -101,11 +114,11 @@ namespace cran.Services
             }
             else
             {
-                questionToAskDto.NumQuestions = await _context.CourseInstancesQuestion.Where(x => x.CourseInstance.Id == questionToAskDto.IdCourseInstance).CountAsync();
+                questionToAskDto.NumQuestions = await _dbContext.CourseInstancesQuestion.Where(x => x.CourseInstance.Id == questionToAskDto.IdCourseInstance).CountAsync();
             }
 
             //Optionen
-            questionToAskDto.Options = await _context.CourseInstancesQuestionOption
+            questionToAskDto.Options = await _dbContext.CourseInstancesQuestionOption
                             .Where(x => x.CourseInstanceQuestion.Id == courseInstanceQuestionId)
                             .OrderBy(x => x.QuestionOption.Id)
                             .Select(x => new QuestionOptionToAskDto
@@ -117,7 +130,7 @@ namespace cran.Services
 
 
             //Questions already asked
-            questionToAskDto.QuestionSelectors = await _context.CourseInstancesQuestion.Where(x => x.CourseInstance.Id == questionToAskDto.IdCourseInstance)
+            questionToAskDto.QuestionSelectors = await _dbContext.CourseInstancesQuestion.Where(x => x.CourseInstance.Id == questionToAskDto.IdCourseInstance)
                 .Select(x => new QuestionSelectorInfoDto()
                 {
                     IdCourseInstanceQuestion = x.Id,
@@ -141,12 +154,12 @@ namespace cran.Services
         {
             await SaveAnswers(answer);
 
-            int questionId = await _context.CourseInstancesQuestion.Where(x => x.Id == answer.IdCourseInstanceQuestion)
+            int questionId = await _dbContext.CourseInstancesQuestion.Where(x => x.Id == answer.IdCourseInstanceQuestion)
                 .Select(x => x.Question.Id).SingleAsync();
 
-            CourseInstanceQuestion courseInstanceQuestion = await _context.FindAsync<CourseInstanceQuestion>(answer.IdCourseInstanceQuestion);
+            CourseInstanceQuestion courseInstanceQuestion = await _dbContext.FindAsync<CourseInstanceQuestion>(answer.IdCourseInstanceQuestion);
             courseInstanceQuestion.AnswerShown = true;
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
 
             return await _questionService.GetQuestionAsync(questionId);
@@ -154,9 +167,9 @@ namespace cran.Services
 
         public async Task<CourseInstanceDto> NextQuestion(int courseInstanceId)
         {
-            CourseInstance courseInstanceEntity = _context.Find<CourseInstance>(courseInstanceId);
+            CourseInstance courseInstanceEntity = _dbContext.Find<CourseInstance>(courseInstanceId);
             CourseInstanceDto result = await GetNextQuestion(courseInstanceEntity);
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
             return result;
         }
 
@@ -165,8 +178,8 @@ namespace cran.Services
             await SaveAnswers(answer);
 
             //Nächste Frage vorbereiten.
-            CourseInstanceQuestion courseInstanceQuestionEntity = await _context.FindAsync<CourseInstanceQuestion>(answer.IdCourseInstanceQuestion);
-            CourseInstance courseInstanceEntity = await _context.FindAsync<CourseInstance>(courseInstanceQuestionEntity.IdCourseInstance);
+            CourseInstanceQuestion courseInstanceQuestionEntity = await _dbContext.FindAsync<CourseInstanceQuestion>(answer.IdCourseInstanceQuestion);
+            CourseInstance courseInstanceEntity = await _dbContext.FindAsync<CourseInstance>(courseInstanceQuestionEntity.IdCourseInstance);
             CourseInstanceDto result = await GetNextQuestion(courseInstanceEntity);
             result.AnsweredCorrectly = courseInstanceQuestionEntity.Correct;
             return result;
@@ -174,8 +187,8 @@ namespace cran.Services
 
         public async Task<ResultDto> GetCourseResultAsync(int idCourseInstance)
         {
-            CourseInstance courseInstance = await _context.FindAsync<CourseInstance>(idCourseInstance);
-            Course course = await _context.FindAsync<Course>(courseInstance.IdCourse);
+            CourseInstance courseInstance = await _dbContext.FindAsync<CourseInstance>(idCourseInstance);
+            Course course = await _dbContext.FindAsync<Course>(courseInstance.IdCourse);
             ResultDto result = new ResultDto()
             {
                 IdCourse = course.Id,
@@ -185,7 +198,7 @@ namespace cran.Services
                 EndedAt = courseInstance.EndedAt,
             };
 
-            result.Questions = await _context.CourseInstancesQuestion.Where(x => x.CourseInstance.Id == idCourseInstance)
+            result.Questions = await _dbContext.CourseInstancesQuestion.Where(x => x.CourseInstance.Id == idCourseInstance)
                 .Select(x => new QuestionResultDto
                 {
                     IdCourseInstanceQuestion = x.Id,
@@ -195,7 +208,7 @@ namespace cran.Services
                 }).ToListAsync();
 
             //Tags holen
-            var tags = await _context.RelQuestionTags.Where(x => x.Question.CourseInstancesQuestion.Any(y => y.CourseInstance.Id == idCourseInstance))
+            var tags = await _dbContext.RelQuestionTags.Where(x => x.Question.CourseInstancesQuestion.Any(y => y.CourseInstance.Id == idCourseInstance))
                 .Select(x => new
                 {
                     IdQuestion = x.Question.Id,
@@ -237,47 +250,47 @@ namespace cran.Services
         {
             await CheckAccessToCourseInstance(idCourseInstance);
 
-            CourseInstance instance = await _context.FindAsync<CourseInstance>(idCourseInstance);
+            CourseInstance instance = await _dbContext.FindAsync<CourseInstance>(idCourseInstance);
 
 
             IList<CourseInstanceQuestionOption> courseInstanceQuestionOptions =
-                    await _context.CourseInstancesQuestionOption
+                    await _dbContext.CourseInstancesQuestionOption
                     .Where(x => x.CourseInstanceQuestion.CourseInstance.Id == instance.Id)
                     .ToListAsync();
 
             foreach (CourseInstanceQuestionOption courseInstanceQuestionOption in courseInstanceQuestionOptions)
             {
-                _context.CourseInstancesQuestionOption.Remove(courseInstanceQuestionOption);
+                _dbContext.CourseInstancesQuestionOption.Remove(courseInstanceQuestionOption);
             }
 
-            IList<CourseInstanceQuestion> coureInstanceQuestions = await _context.CourseInstancesQuestion
+            IList<CourseInstanceQuestion> coureInstanceQuestions = await _dbContext.CourseInstancesQuestion
                 .Where(x => x.CourseInstance.Id == instance.Id)
                 .ToListAsync();
 
             foreach (CourseInstanceQuestion courseInstanceQuestion in coureInstanceQuestions)
             {
-                _context.Remove(courseInstanceQuestion);
+                _dbContext.Remove(courseInstanceQuestion);
             }
 
-            _context.Remove(instance);
+            _dbContext.Remove(instance);
 
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
         }
 
         private IQueryable<int> PossibleQuestionsQuery(int idCourseInstance, Language language)
         {
             //Get Tags of course
-            IQueryable<int> tagIds = _context.RelCourseTags.Where(x => x.Course.CourseInstances.Any(y => y.Id == idCourseInstance))
+            IQueryable<int> tagIds = _dbContext.RelCourseTags.Where(x => x.Course.CourseInstances.Any(y => y.Id == idCourseInstance))
                 .Select(x => x.Tag.Id);
 
             //Questions already asked
-            IQueryable<int> questionIdsAlreadyAsked = _context.CourseInstancesQuestion
+            IQueryable<int> questionIdsAlreadyAsked = _dbContext.CourseInstancesQuestion
                 .Where(x => x.CourseInstance.Id == idCourseInstance)
                 .Select(x => x.Question.Id);
 
             //Possible Questions Query
-            IQueryable<int> questionIds = _context.RelQuestionTags
+            IQueryable<int> questionIds = _dbContext.RelQuestionTags
                 .Where(x => tagIds.Contains(x.Tag.Id))
                 .Where(x => !questionIdsAlreadyAsked.Contains(x.Question.Id))
                 .Where(x => x.Question.Status == QuestionStatus.Released)
@@ -293,9 +306,9 @@ namespace cran.Services
             result.IdCourse = courseInstanceEntity.IdCourse;
             result.IdCourseInstance = courseInstanceEntity.Id;
 
-            Course courseEntity = await _context.FindAsync<Course>(courseInstanceEntity.IdCourse);
+            Course courseEntity = await _dbContext.FindAsync<Course>(courseInstanceEntity.IdCourse);
 
-            result.NumQuestionsAlreadyAsked = await _context.CourseInstancesQuestion.Where(x => x.CourseInstance.Id == courseInstanceEntity.Id)
+            result.NumQuestionsAlreadyAsked = await _dbContext.CourseInstancesQuestion.Where(x => x.CourseInstance.Id == courseInstanceEntity.Id)
                 .CountAsync();
 
             result.NumQuestionsTotal = courseEntity.NumQuestionsToAsk;
@@ -319,7 +332,7 @@ namespace cran.Services
                 }
                 int quesitonNo = _random.Next(0, count - 1);
                 int questionId = await questionIds.Skip(quesitonNo).FirstAsync();
-                Question questionEntity = await _context.FindAsync<Question>(questionId);
+                Question questionEntity = await _dbContext.FindAsync<Question>(questionId);
 
                 //Course instance question
                 CourseInstanceQuestion courseInstanceQuestionEntity = new CourseInstanceQuestion
@@ -328,10 +341,10 @@ namespace cran.Services
                     Question = questionEntity,
                     Number = result.NumQuestionsAlreadyAsked + 1,
                 };
-                await _context.AddAsync(courseInstanceQuestionEntity);
+                await _dbContext.AddAsync(courseInstanceQuestionEntity);
 
                 //Course instance question options
-                IList<QuestionOption> options = await _context.QuestionOptions.Where(option => option.Question.Id == questionEntity.Id).ToListAsync();
+                IList<QuestionOption> options = await _dbContext.QuestionOptions.Where(option => option.Question.Id == questionEntity.Id).ToListAsync();
                 foreach (QuestionOption questionOptionEntity in options)
                 {
                     CourseInstanceQuestionOption courseInstanceQuestionOptionEntity = new CourseInstanceQuestionOption();
@@ -341,10 +354,10 @@ namespace cran.Services
                     courseInstanceQuestionOptionEntity.CourseInstanceQuestion = courseInstanceQuestionEntity;
                     courseInstanceQuestionEntity.CourseInstancesQuestionOption.Add(courseInstanceQuestionOptionEntity);
 
-                    await _context.AddAsync(courseInstanceQuestionOptionEntity);
+                    await _dbContext.AddAsync(courseInstanceQuestionOptionEntity);
                 }
 
-                await SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
                 result.IdCourseInstanceQuestion = courseInstanceQuestionEntity.Id;
             }
 
@@ -354,16 +367,16 @@ namespace cran.Services
 
         private async Task EndCourseAsync(int courseInstanceId)
         {
-            CourseInstance courseInstance = await _context.FindAsync<CourseInstance>(courseInstanceId);
+            CourseInstance courseInstance = await _dbContext.FindAsync<CourseInstance>(courseInstanceId);
             courseInstance.EndedAt = DateTime.Now;
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
 
         
         private async Task SaveAnswers(QuestionAnswerDto answer)
         {
 
-            CourseInstanceQuestion courseInstanceQuestionEntity = await _context.FindAsync<CourseInstanceQuestion>(answer.IdCourseInstanceQuestion);
+            CourseInstanceQuestion courseInstanceQuestionEntity = await _dbContext.FindAsync<CourseInstanceQuestion>(answer.IdCourseInstanceQuestion);
 
             //Check if already answered.
             if (courseInstanceQuestionEntity.AnsweredAt.HasValue && courseInstanceQuestionEntity.AnswerShown)
@@ -371,7 +384,7 @@ namespace cran.Services
                 return;
             }
 
-            IList<CourseInstanceQuestionOption> options = await _context.CourseInstancesQuestionOption
+            IList<CourseInstanceQuestionOption> options = await _dbContext.CourseInstancesQuestionOption
                 .Where(x => x.CourseInstanceQuestion.Id == courseInstanceQuestionEntity.Id)
                 .OrderBy(x => x.QuestionOption.Id)
                 .Include(x => x.QuestionOption).ToListAsync();
@@ -392,15 +405,15 @@ namespace cran.Services
             courseInstanceQuestionEntity.Correct = options.All(x => x.Correct);
             courseInstanceQuestionEntity.AnsweredAt = DateTime.Now;
 
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
 
         private async Task CheckAccessToCourseInstance(int idCourseInstance)
         {
-            CourseInstance instance = await _context.FindAsync<CourseInstance>(idCourseInstance);
+            CourseInstance instance = await _dbContext.FindAsync<CourseInstance>(idCourseInstance);
 
             //Security Check
-            bool hasWriteAccess = await HasWriteAccess(instance.IdUser);
+            bool hasWriteAccess = await _businessSecurityService.HasWriteAccess(instance.IdUser);
 
             //Security Check
             if (!hasWriteAccess)
@@ -411,13 +424,13 @@ namespace cran.Services
 
         public async Task<PagedResultDto<CourseInstanceListEntryDto>> GetMyCourseInstancesAsync(int page)
         {
-            string userid = GetUserId();
-            IQueryable<CourseInstance> query = _context.CourseInstances
+            string userid = _securityService.GetUserId();
+            IQueryable<CourseInstance> query = _dbContext.CourseInstances
                 .Where(x => x.User.UserId == userid)              
                 .OrderByDescending(x => x.InsertDate)
                 .ThenBy(x => x.Id);
 
-            PagedResultDto<CourseInstanceListEntryDto> resultDto = await ToPagedResult(query, page, ToDto);
+            PagedResultDto<CourseInstanceListEntryDto> resultDto = await PagedResultUtil.ToPagedResult(query, page, ToDto);
            
             return resultDto;
         }

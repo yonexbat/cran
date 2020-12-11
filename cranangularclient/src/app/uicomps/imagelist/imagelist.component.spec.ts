@@ -87,7 +87,7 @@ describe('ImagelistComponent', () => {
 
   }));
 
-  fit('should change width', waitForAsync(async () => {
+  it('should change width', waitForAsync(async () => {
     const images: Image[] = createImages();
     component.images = images;
     component.imagesDeletable = true;
@@ -100,8 +100,7 @@ describe('ImagelistComponent', () => {
     await fixture.whenStable();
     const firstInput: DebugElement = fixture.debugElement.query(By.css('input[type=\'number\']'));
     firstInput.nativeElement.value = '55';
-    firstInput.nativeElement.dispatchEvent(new Event('change'));
-    firstInput.nativeElement.dispatchEvent(new Event('blur'));
+    firstInput.nativeElement.dispatchEvent(new Event('input'));
 
 
     fixture.detectChanges();
@@ -113,15 +112,6 @@ describe('ImagelistComponent', () => {
   }));
 
 });
-
-
-
-function waitSomeMillis(): Promise<any> {
-  return new Promise((resovle, reject) => {
-    setTimeout(() => resovle(), 2000);
-  });
-}
-
 
 function createImages(): Image[] {
   const images: Image[] = [];

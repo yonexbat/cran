@@ -26,6 +26,8 @@ namespace cran.Infra
             services.AddScoped<ISecurityService, SecurityService>();
             services.AddScoped<IBinaryService, BinaryService>();
             services.AddScoped<IQuestionService, QuestionService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IBusinessSecurityService, BusinessSecurityService>();
             services.AddScoped<IVersionService, VersionService>();
             services.AddScoped<ITagService, TagService>();
             services.AddScoped<ICourseService, CourseService>();

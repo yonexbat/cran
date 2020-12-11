@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 
 namespace cran.Services
 {
-    public class DbLogService : Service, IDbLogService
+    public class DbLogService : IDbLogService
     {
+        private readonly ApplicationDbContext _dbContext;
 
-        public DbLogService(ApplicationDbContext context, IPrincipal principal) : base(context, principal)
+        public DbLogService(ApplicationDbContext context) 
         {
-            _context = context;
+            _dbContext = context;
         }
 
         public async Task LogMessageAsync(string message)
@@ -22,8 +23,8 @@ namespace cran.Services
             logEntry.Created = DateTime.Now;
             logEntry.Message = message;
 
-            _context.LogEntires.Add(logEntry);
-            await SaveChangesAsync();
+            _dbContext.LogEntires.Add(logEntry);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

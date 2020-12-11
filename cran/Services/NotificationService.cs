@@ -7,6 +7,7 @@ using cran.Data;
 using cran.Model.Dto;
 using cran.Model.Dto.Notification;
 using cran.Model.Entities;
+using cran.Services.Util;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
@@ -14,39 +15,58 @@ using WebPush;
 
 namespace cran.Services
 {
-    public class NotificationService : CraniumService, INotificationService
+    public class NotificationService : INotificationService
     {
 
         private CranSettingsDto _settings;
         private IWebPushClient _webPushClient;
 
-        private ITextService _textService;
+        private readonly ITextService _textService;
+        private readonly ISecurityService _securityService;
+        private readonly ApplicationDbContext _dbContext;
+        private readonly IUserService _userService;
+        private readonly IDbLogService _dbLogService;
+
 
         public NotificationService(ApplicationDbContext context, 
             IDbLogService dbLogService, 
-            IPrincipal principal,
+            ISecurityService securityService,
             IOptions<CranSettingsDto> settingsOption,
             IWebPushClient webPushClient,
-            ITextService textService) : base(context, dbLogService, principal)
+            ITextService textService,
+            IUserService userService)
         {
-            this._settings = settingsOption.Value;
-            this._webPushClient = webPushClient;
-            this._textService = textService;
+            _settings = settingsOption.Value;
+            _webPushClient = webPushClient;
+            _textService = textService;
+            _securityService = securityService;
+            _dbContext = context;
+            _userService = userService;
+            _dbLogService = dbLogService;
         }
 
         public async Task AddPushNotificationSubscriptionAsync(NotificationSubscriptionDto subscriptionDto)
         {
             await this._dbLogService.LogMessageAsync($"adding subscription: {subscriptionDto.Endpoint}");
-            if (!_context.Notifications.Any(x => x.Endpoint == subscriptionDto.Endpoint
+            if (!_dbContext.Notifications.Any(x => x.Endpoint == subscriptionDto.Endpoint
             && x.Auth == subscriptionDto.Keys.Auth && x.Active))
             {
                 NotificationSubscription entity = new NotificationSubscription();
-                CopyData(subscriptionDto, entity);
-                entity.User = await GetCranUserAsync();
-                await this._context.Notifications.AddAsync(entity);
-                await this._context.SaveChangesAsync();
+                CopyDataSubscription(subscriptionDto, entity);
+                entity.User = await _userService.GetOrCreateCranUserAsync();
+                await _dbContext.Notifications.AddAsync(entity);
+                await _dbContext.SaveChangesAsync();
             }            
-        }        
+        }      
+        
+        private void CopyDataSubscription(NotificationSubscriptionDto dto, NotificationSubscription entity)
+        {
+            entity.Endpoint = dto.Endpoint;
+            entity.Auth = dto.Keys?.Auth;
+            entity.P256DiffHell = dto.Keys?.P256dh;
+            entity.ExpirationTime = dto.ExpirationTime;
+            entity.AsString = dto.AsString;
+        }
 
         private string GetMessage(NotificationDto notificationDto)
         {                            
@@ -85,7 +105,7 @@ namespace cran.Services
 
         private async Task<PushSubscription> GetPushSubsciption(int id)
         {
-            NotificationSubscription sub = await _context.FindAsync<NotificationSubscription>(id);
+            NotificationSubscription sub = await _dbContext.FindAsync<NotificationSubscription>(id);
             PushSubscription subscription = new PushSubscription();
             subscription.P256DH = sub.P256DiffHell;
             subscription.Auth = sub.Auth;
@@ -95,8 +115,8 @@ namespace cran.Services
 
         public async Task<PagedResultDto<SubscriptionShortDto>> GetAllSubscriptionsAsync(int page)
         {
-            IQueryable<NotificationSubscription> query = _context.Notifications.Where(x => x.Active);
-            PagedResultDto<SubscriptionShortDto> result = await ToPagedResult(query, page, MaterializeSubscriptionList);
+            IQueryable<NotificationSubscription> query = _dbContext.Notifications.Where(x => x.Active);
+            PagedResultDto<SubscriptionShortDto> result = await PagedResultUtil.ToPagedResult(query, page, MaterializeSubscriptionList);
             return result;
         }
 
@@ -132,9 +152,9 @@ namespace cran.Services
         
         private async Task DeactivateSubscription(int id)
         {
-            NotificationSubscription entity =  await this._context.Notifications.FindAsync(id);
+            NotificationSubscription entity =  await _dbContext.Notifications.FindAsync(id);
             entity.Active = false;
-            _context.SaveChanges();
+            _dbContext.SaveChanges();
         }
 
         public async Task SendNotificationAboutQuestionAsync(int questionId, string title, string text)
@@ -168,12 +188,12 @@ namespace cran.Services
         private async Task<IList<int>> GetPushSubscriptions(int questionId)
         {
 
-            var userIds = _context.Questions
+            var userIds = _dbContext.Questions
                  .Where(x => x.Container.Questions.Any(y => y.Id == questionId))
                  .Select(x => x.User.Id)
                  .Distinct();
 
-            return await _context.Notifications
+            return await _dbContext.Notifications
                 .Where(x => userIds.Any(y => y == x.User.Id))
                 .Where(x => x.Active)
                 .Select(x => x.Id)

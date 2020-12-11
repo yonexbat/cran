@@ -8,18 +8,30 @@ using cran.Model.Entities;
 using cran.Model.Dto;
 using Microsoft.EntityFrameworkCore;
 using cran.Mappers;
+using cran.Services.Util;
 
 namespace cran.Services
 {
-    public class CourseService : CraniumService, ICourseService
+    public class CourseService : ICourseService
     {
-        public CourseService(ApplicationDbContext context, IDbLogService dbLogService, IPrincipal principal) : base(context, dbLogService, principal)
+
+        private readonly ISecurityService _securityService;
+        private readonly ApplicationDbContext _dbContext;
+        private readonly IDbLogService _dbLogService;
+
+        public CourseService(
+            ApplicationDbContext context, 
+            IDbLogService dbLogService, 
+            ISecurityService securityService)
         {
+            _securityService = securityService;
+            _dbContext = context;
+            _dbLogService = dbLogService;
         }
 
         public async Task<CourseDto> GetCourseAsync(int id)
         {
-            Course course = await this._context.Courses
+            Course course = await this._dbContext.Courses
                 .Where(x => x.Id == id)
                 .Include(x => x.RelTags)
                 .ThenInclude(x => x.Tag)
@@ -31,11 +43,11 @@ namespace cran.Services
 
         public async Task<PagedResultDto<CourseDto>> GetCoursesAsync(int page)
         {
-            IQueryable<Course> query = this._context.Courses
+            IQueryable<Course> query = this._dbContext.Courses
                 .OrderBy(x => x.Title)
                 .ThenBy(x => x.Id);
 
-            return await ToPagedResult(query, page, ToDto);
+            return await PagedResultUtil.ToPagedResult(query, page, ToDto);
         }
 
         private async Task<IList<CourseDto>> ToDto(IQueryable<Course> query)
@@ -47,17 +59,17 @@ namespace cran.Services
                .Include(x => x.RelTags)
                .ThenInclude(x => x.Tag)
                .ToListAsync();
-            return await ToDtoListAsync(list, ToCourseDto);
+            return await ListUtil.ToDtoListAsync(list, ToCourseDto);
         }
 
      
 
         private async Task<CourseDto> ToCourseDto(Course course)
-        {            
-            string userid = GetUserId();
-            bool isFavorite = await _context.RelUserCourseFavorites
+        {
+            string userid = _securityService.GetUserId();
+            bool isFavorite = await _dbContext.RelUserCourseFavorites
                 .AnyAsync(x => x.Course.Id == course.Id && x.User.UserId == userid);
-            bool isEditable = _currentPrincipal.IsInRole(Roles.Admin);
+            bool isEditable = _securityService.IsInRole(Roles.Admin);
             return course.Map(isEditable, isFavorite);
         }
 
@@ -66,24 +78,24 @@ namespace cran.Services
             await _dbLogService.LogMessageAsync("Adding course");
 
             Course entity = new Course();
-            CopyData(courseDto, entity);
+            CopyDataCourse(courseDto, entity);
 
-            await _context.AddAsync(entity);
+            await _dbContext.AddAsync(entity);
 
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
             courseDto.Id = entity.Id;
             await UpdateCourseAsync(courseDto);
 
-            return courseDto.Id;         
+            return courseDto.Id;
         }
 
         public async Task UpdateCourseAsync(CourseDto courseDto)
         {
 
-            Course courseEntity = await this._context.FindAsync<Course>(courseDto.Id);
+            Course courseEntity = await this._dbContext.FindAsync<Course>(courseDto.Id);
 
             //Tags
-            IList<RelCourseTag> relTagEntities = await _context.RelCourseTags
+            IList<RelCourseTag> relTagEntities = await _dbContext.RelCourseTags
                 .Where(x => x.IdCourse == courseEntity.Id).ToListAsync();
             relTagEntities = relTagEntities.GroupBy(x => x.IdTag).Select(x => x.First()).ToList();
             IDictionary<int, int> relIdByTagId = relTagEntities.ToDictionary(x => x.IdTag, x => x.Id);
@@ -102,11 +114,28 @@ namespace cran.Services
 
                 relCourseTagDtos.Add(relCourseTag);
             }
-            UpdateRelation(relCourseTagDtos, relTagEntities);
+            _dbContext.UpdateRelation(relCourseTagDtos, relTagEntities, CopyDataRelCourse);
 
-            CopyData(courseDto, courseEntity);
+            CopyDataCourse(courseDto, courseEntity);
 
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
+
+        private void CopyDataRelCourse(RelCourseTagDto dto, RelCourseTag entity)
+        {
+            RelCourseTagDto dtoSource = dto;
+            RelCourseTag entityDestination = entity;
+            entityDestination.IdCourse = dtoSource.IdCourse;
+            entityDestination.IdTag = dtoSource.IdTag;
+        }
+
+        private void CopyDataCourse(CourseDto dto, Course entity)
+        {
+            entity.Title = dto.Title;
+            entity.Language = Enum.Parse<Language>(dto.Language);
+            entity.NumQuestionsToAsk = dto.NumQuestionsToAsk;
+            entity.Description = dto.Description;
+        }
+ 
     }
 }

@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace cran.Services
 {
-    public interface ISecurityService
+    public interface IUserService
     {
-        IList<string> GetRolesOfUser();
-
-        string GetUserId();
-
-        bool IsInRole(string roleName);
+        Task<CranUser> GetOrCreateCranUserAsync();
     }
 }

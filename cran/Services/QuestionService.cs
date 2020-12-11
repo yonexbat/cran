@@ -2,7 +2,9 @@
 using cran.Model.Dto;
 using cran.Model.Entities;
 using cran.Services.Exceptions;
+using cran.Services.Util;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security;
@@ -11,22 +13,30 @@ using System.Threading.Tasks;
 
 namespace cran.Services
 {
-    public class QuestionService : CraniumService, IQuestionService
+    public class QuestionService : IQuestionService
     {
 
         private readonly ICommentsService _commentsService;
-        private readonly ITagService _tagService;
-       
+        private readonly ISecurityService _securityService;
+        private readonly ApplicationDbContext _dbContext;
+        private readonly IUserService _userService;
+        private readonly IBusinessSecurityService _businessSecurityService;
+        private readonly IDbLogService _dbLogService;
+
 
         public QuestionService(ApplicationDbContext context, 
             IDbLogService dbLogService, 
-            IPrincipal principal,
             ICommentsService commentsService,
-            ITagService tagService) :
-            base(context, dbLogService, principal)
+            ISecurityService securityService,
+            IUserService userService,
+            IBusinessSecurityService businessSecurityService)
         {
-            _tagService = tagService;
             _commentsService = commentsService;
+            _securityService = securityService;
+            _dbContext = context;
+            _userService = userService;
+            _businessSecurityService = businessSecurityService;
+            _dbLogService = dbLogService;
         }
 
         public async Task<int> InsertQuestionAsync(QuestionDto questionDto)
@@ -34,15 +44,15 @@ namespace cran.Services
             await _dbLogService.LogMessageAsync("Adding question");
 
             Container container = new Container();
-            _context.Containers.Add(container);                        
+            _dbContext.Containers.Add(container);                        
             Question questionEntity = new Question();
             questionDto.QuestionType = questionDto.QuestionType == QuestionType.Unknown ?
                     QuestionType.MultipleChoice : questionDto.QuestionType;
-            CopyData(questionDto, questionEntity);
-            questionEntity.User = await GetCranUserAsync();
+            CopyDataQuestion(questionDto, questionEntity);
+            questionEntity.User = await _userService.GetOrCreateCranUserAsync();
             questionEntity.Container = container;
-            await _context.AddAsync(questionEntity);
-            await SaveChangesAsync();
+            await _dbContext.AddAsync(questionEntity);
+            await _dbContext.SaveChangesAsync();
             questionDto.Id = questionEntity.Id;
             await UpdateQuestionAsync(questionDto);
 
@@ -51,7 +61,7 @@ namespace cran.Services
 
         public async Task<QuestionDto> GetQuestionAsync(int id)
         {
-            Question questionEntity = await _context.FindAsync<Question>(id);
+            Question questionEntity = await _dbContext.FindAsync<Question>(id);
 
             if(questionEntity == null)
             {
@@ -70,13 +80,13 @@ namespace cran.Services
             };
 
             //Authorization
-            questionDto.IsEditable = await HasWriteAccess(questionEntity.IdUser);
+            questionDto.IsEditable = await _businessSecurityService.HasWriteAccess(questionEntity.IdUser);
 
             //Vote-Statistics
             questionDto.Votes = await _commentsService.GetVoteAsync(id);
 
             //Options
-            questionDto.Options = await _context.QuestionOptions
+            questionDto.Options = await _dbContext.QuestionOptions
                 .Where(x => x.IdQuestion == id)
                 .OrderBy(x => x.Id)
                 .Select(x => new QuestionOptionDto
@@ -87,7 +97,7 @@ namespace cran.Services
                 }).ToListAsync();
 
             //Tags
-            questionDto.Tags = await _context.RelQuestionTags
+            questionDto.Tags = await _dbContext.RelQuestionTags
                 .Where(x => x.IdQuestion == id)               
                 .Select(x => new TagDto
                 {
@@ -101,7 +111,7 @@ namespace cran.Services
           
 
             //Images
-            questionDto.Images = await _context.RelQuestionImages
+            questionDto.Images = await _dbContext.RelQuestionImages
                 .Where(x => x.IdQuestion == id)
                 .Select(x => new ImageDto
                 {
@@ -126,18 +136,18 @@ namespace cran.Services
                 optionDto.IdQuestion = questionDto.Id;
             }
 
-            Question questionEntity = await _context.FindAsync<Question>(questionDto.Id);
+            Question questionEntity = await _dbContext.FindAsync<Question>(questionDto.Id);
 
             //Options
-            IList<QuestionOption> questionOptionEntities = await _context.QuestionOptions.Where(x => x.IdQuestion == questionEntity.Id).ToListAsync();
-            UpdateRelation(questionDto.Options, questionOptionEntities);
+            IList<QuestionOption> questionOptionEntities = await _dbContext.QuestionOptions.Where(x => x.IdQuestion == questionEntity.Id).ToListAsync();
+            _dbContext.UpdateRelation(questionDto.Options, questionOptionEntities, CopyDataQuestionOption);
 
             //QuestionType
             questionEntity.QuestionType = questionDto.Options.Count(x => x.IsTrue) == 1 ?
                 QuestionType.SingleChoice : QuestionType.MultipleChoice;
 
             //Tags
-            IList<RelQuestionTag> relTagEntities = await _context.RelQuestionTags
+            IList<RelQuestionTag> relTagEntities = await _dbContext.RelQuestionTags
                 .Where(x => x.IdQuestion == questionEntity.Id).ToListAsync();
             relTagEntities = relTagEntities.GroupBy(x => x.IdTag).Select(x => x.First()).ToList();
             IDictionary<int, int> relIdByTagId = relTagEntities.ToDictionary(x => x.IdTag, x => x.Id);
@@ -158,14 +168,14 @@ namespace cran.Services
                 relQuestionTagDtos.Add(relQuestionTagDto);
             }
 
-            UpdateRelation(relQuestionTagDtos, relTagEntities);
+            _dbContext.UpdateRelation(relQuestionTagDtos, relTagEntities, CopyDataRelQuestonTag);
 
             //Image Relation
-            IList<RelQuestionImage> relImages = await _context.RelQuestionImages.Where(x => x.IdQuestion == questionEntity.Id).ToListAsync();
+            IList<RelQuestionImage> relImages = await _dbContext.RelQuestionImages.Where(x => x.IdQuestion == questionEntity.Id).ToListAsync();
             IDictionary<int, int> relIdByImageId = relImages.ToDictionary(x => x.IdImage, x => x.Id);
             IList<RelQuestionImageDto> relImagesDtos = new List<RelQuestionImageDto>();
             IEnumerable<int> binaryIds = questionDto.Images.Select(x => x.IdBinary);
-            IList<Image> images = await _context.Images.Where(x => binaryIds.Contains(x.IdBinary)).ToListAsync();
+            IList<Image> images = await _dbContext.Images.Where(x => binaryIds.Contains(x.IdBinary)).ToListAsync();
             IDictionary<int, Image> imageByBinaryId = images.ToDictionary(x => x.IdBinary, x => x);
             foreach (ImageDto image in questionDto.Images)
             {
@@ -178,24 +188,61 @@ namespace cran.Services
                 }
                 relImagesDtos.Add(relQuestionImageDto);
             }
-            UpdateRelation(relImagesDtos, relImages);
+            _dbContext.UpdateRelation(relImagesDtos, relImages, CopyDataRelImage);
 
             //Image Data           
             foreach (ImageDto imageDto in questionDto.Images)
             {
                 Image image = imageByBinaryId[imageDto.IdBinary];
-                CopyData(imageDto, image);
+                CopyDataImage(imageDto, image);
             }
 
 
-            CopyData(questionDto, questionEntity);
+            CopyDataQuestion(questionDto, questionEntity);
 
-            await SaveChangesAsync();            
+            await _dbContext.SaveChangesAsync();            
+        }
+
+        private void CopyDataRelImage(RelQuestionImageDto dto, RelQuestionImage entity)
+        {
+            RelQuestionImageDto dtoSource = dto;
+            RelQuestionImage entityDestination = entity;
+            entityDestination.IdQuestion = dtoSource.IdQuestion;
+            entityDestination.IdImage = dtoSource.IdImage;
+        }
+
+        private void CopyDataRelQuestonTag(RelQuestionTagDto dto, RelQuestionTag entity)
+        {
+            entity.IdQuestion = dto.IdQuestion;
+            entity.IdTag = dto.IdTag;
+        }
+
+        private void CopyDataQuestionOption(QuestionOptionDto dto, QuestionOption entity)
+        {
+            entity.IsTrue = dto.IsTrue;
+            entity.Text = dto.Text ?? string.Empty;
+            entity.IdQuestion = dto.IdQuestion;
+        }
+
+        private void CopyDataQuestion(QuestionDto dto, Question entity)
+        {
+            entity.Title = dto.Title;
+            entity.Text = dto.Text ?? string.Empty;
+            entity.Explanation = dto.Explanation;
+            entity.QuestionType = dto.QuestionType;
+            entity.Language = Enum.Parse<Language>(dto.Language);
+        }
+
+        private void CopyDataImage(ImageDto dto, Image entity)
+        {
+            entity.Width = dto.Width;
+            entity.Height = dto.Height;
+            entity.Full = dto.Full;
         }
 
         public async Task<ImageDto> AddImageAsync(ImageDto imageDto)
         {
-            Binary binary = await _context.FindAsync<Binary>(imageDto.IdBinary);
+            Binary binary = await _dbContext.FindAsync<Binary>(imageDto.IdBinary);
 
             Image image = new Image
             {
@@ -205,9 +252,9 @@ namespace cran.Services
                 Height = imageDto.Height,
                 Width = imageDto.Width,
             };
-            _context.Images.Add(image);
+            _dbContext.Images.Add(image);
 
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
             imageDto.Id = image.Id;
             return imageDto;
@@ -219,79 +266,76 @@ namespace cran.Services
 
             await CheckWriteAccessToQuestion(idQuestion);
 
-            Question questionEntity = await _context.FindAsync<Question>(idQuestion);
+            Question questionEntity = await _dbContext.FindAsync<Question>(idQuestion);
 
             //Options
-            IList<QuestionOption> questionOptions = await _context.QuestionOptions.Where(x => x.Question.Id == questionEntity.Id).ToListAsync();
+            IList<QuestionOption> questionOptions = await _dbContext.QuestionOptions.Where(x => x.Question.Id == questionEntity.Id).ToListAsync();
             foreach (QuestionOption questionOptionEntity in questionOptions)
             {
-                _context.Remove(questionOptionEntity);
+                _dbContext.Remove(questionOptionEntity);
 
                 //CourseInstanceQuestionOption
-                IList<CourseInstanceQuestionOption> courseInstacesQuestionOption = await _context.CourseInstancesQuestionOption.Where(x => x.QuestionOption.Id == questionOptionEntity.Id).ToListAsync();
+                IList<CourseInstanceQuestionOption> courseInstacesQuestionOption = await _dbContext.CourseInstancesQuestionOption.Where(x => x.QuestionOption.Id == questionOptionEntity.Id).ToListAsync();
                 foreach (CourseInstanceQuestionOption ciqo in courseInstacesQuestionOption)
                 {
-                    _context.Remove(ciqo);
+                    _dbContext.Remove(ciqo);
                 }
             }
 
             //Tags
-            IList<RelQuestionTag> relTags = await _context.RelQuestionTags.Where(x => x.Question.Id == questionEntity.Id).ToListAsync();
+            IList<RelQuestionTag> relTags = await _dbContext.RelQuestionTags.Where(x => x.Question.Id == questionEntity.Id).ToListAsync();
             foreach (RelQuestionTag relTagEntity in relTags)
             {
-                _context.Remove(relTagEntity);
+                _dbContext.Remove(relTagEntity);
             }
 
             //CourseInstance Question
-            IList<CourseInstanceQuestion> courseInstaceQuestions = await _context.CourseInstancesQuestion.Where(x => x.Question.Id == questionEntity.Id).ToListAsync();
+            IList<CourseInstanceQuestion> courseInstaceQuestions = await _dbContext.CourseInstancesQuestion.Where(x => x.Question.Id == questionEntity.Id).ToListAsync();
             foreach (CourseInstanceQuestion ciQ in courseInstaceQuestions)
             {
-                _context.Remove(ciQ);
+                _dbContext.Remove(ciQ);
             }
 
             //Images
-            IList<RelQuestionImage> relImages = await _context.RelQuestionImages.Where(x => x.Question.Id == questionEntity.Id).ToListAsync();
+            IList<RelQuestionImage> relImages = await _dbContext.RelQuestionImages.Where(x => x.Question.Id == questionEntity.Id).ToListAsync();
             foreach (RelQuestionImage relImage in relImages)
             {
-                _context.Remove(relImage);
+                _dbContext.Remove(relImage);
             }
 
             //Ratings
-            IList<Rating> ratigns = await _context.Ratings.Where(x => x.Question.Id == questionEntity.Id).ToListAsync();
+            IList<Rating> ratigns = await _dbContext.Ratings.Where(x => x.Question.Id == questionEntity.Id).ToListAsync();
             foreach(Rating rating in ratigns)
             {
-                _context.Remove(rating);
+                _dbContext.Remove(rating);
             }
 
             //Comments
-            IList<Comment> comments = await _context.Comments.Where(x => x.Question.Id == questionEntity.Id).ToListAsync();
+            IList<Comment> comments = await _dbContext.Comments.Where(x => x.Question.Id == questionEntity.Id).ToListAsync();
             foreach(Comment comment in comments)
             {
-                _context.Remove(comment);
+                _dbContext.Remove(comment);
             }
 
             //Copy sources
-            IList<Question> copies = await _context.Questions.Where(x => x.IdQuestionCopySource == idQuestion).ToListAsync();
+            IList<Question> copies = await _dbContext.Questions.Where(x => x.IdQuestionCopySource == idQuestion).ToListAsync();
             foreach(Question copy in copies)
             {
                 copy.IdQuestionCopySource = null;
             }
-            _context.Remove(questionEntity);
-            await SaveChangesAsync();
+            _dbContext.Remove(questionEntity);
+            await _dbContext.SaveChangesAsync();
            
         }
 
-       
-       
-
         public async Task<PagedResultDto<QuestionListEntryDto>> GetMyQuestionsAsync(int page)
         {
-            string userId = GetUserId();
+            string userId = _securityService.GetUserId();
 
-            IQueryable<Question> query = _context.Questions.Where(q => q.User.UserId == userId)
+            IQueryable<Question> query = _dbContext.Questions.Where(q => q.User.UserId == userId)
                 .OrderBy(x => x.Title)
                 .ThenBy(x => x.Id);
-            PagedResultDto<QuestionListEntryDto> result = await ToPagedResult(query, page, MaterializeQuestionList);
+            PagedResultDto<QuestionListEntryDto> result = await PagedResultUtil.ToPagedResult(query, page, MaterializeQuestionList);
             
 
             return result;            
@@ -300,7 +344,7 @@ namespace cran.Services
         public async Task<PagedResultDto<QuestionListEntryDto>> SearchForQuestionsAsync(SearchQParametersDto parameters)
         {
 
-            IQueryable<Question> queryBeforeSkipAndTake = _context.Questions
+            IQueryable<Question> queryBeforeSkipAndTake = _dbContext.Questions
                 .OrderBy(x => x.Title)
                 .ThenBy(x => x.Id);
 
@@ -324,9 +368,12 @@ namespace cran.Services
                 queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x => x.RelTags.Any(rel => tagids.Contains(rel.Tag.Id)));
             }
 
-            if(parameters.Language.HasValue)
-            {
-                queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x => x.Language == parameters.Language);
+            if(!string.IsNullOrWhiteSpace(parameters.Language))
+            {       
+                if(Enum.TryParse(parameters.Language, out Language lang))
+                {
+                    queryBeforeSkipAndTake = queryBeforeSkipAndTake.Where(x => x.Language == lang);
+                }                
             }
 
             if(parameters.StatusCreated || parameters.StatusReleased || parameters.StatusObsolete)
@@ -343,15 +390,15 @@ namespace cran.Services
                    x.Status == QuestionStatus.Released);
             }
 
-            PagedResultDto<QuestionListEntryDto> result = await ToPagedResult(queryBeforeSkipAndTake, parameters.Page, MaterializeQuestionList);
+            PagedResultDto<QuestionListEntryDto> result = await PagedResultUtil.ToPagedResult(queryBeforeSkipAndTake, parameters.Page, MaterializeQuestionList);
             return result;
         }
 
         public async Task CheckWriteAccessToQuestion(int idQuestion)
         {
             //Security Check
-            Question question = await _context.FindAsync<Question>(idQuestion);
-            bool hasWriteAccess = await HasWriteAccess(question.IdUser);
+            Question question = await _dbContext.FindAsync<Question>(idQuestion);
+            bool hasWriteAccess = await _businessSecurityService.HasWriteAccess(question.IdUser);
 
             if (!hasWriteAccess)
             {
@@ -367,11 +414,11 @@ namespace cran.Services
 
         private async Task<IList<QuestionListEntryDto>> MaterializeQuestionListItems(IQueryable<int> questionIds)
         {           
-            IList<QuestionListEntryDto> result = await _context.Questions.Where(x => questionIds.Contains(x.Id))
+            IList<QuestionListEntryDto> result = await _dbContext.Questions.Where(x => questionIds.Contains(x.Id))
               .Select(q => new QuestionListEntryDto { Title = q.Title, Id = q.Id, Status = (int)q.Status })
               .ToListAsync();
 
-            var relTags = await _context.RelQuestionTags.Where(rel => questionIds.Contains(rel.Question.Id))
+            var relTags = await _dbContext.RelQuestionTags.Where(rel => questionIds.Contains(rel.Question.Id))
                 .Select(rel => new {
                     TagId = rel.Tag.Id,
                     QuestionId = rel.Question.Id,

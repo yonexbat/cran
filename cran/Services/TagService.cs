@@ -2,29 +2,35 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security;
-using System.Security.Principal;
 using System.Threading.Tasks;
 using cran.Data;
 using cran.Model.Dto;
 using cran.Model.Entities;
 using cran.Services.Exceptions;
+using cran.Services.Util;
 using Microsoft.EntityFrameworkCore;
 
 namespace cran.Services
 {
-    public class TagService : CraniumService, ITagService
+    public class TagService : ITagService
     {
         private readonly ICacheService _cacheService;
+        private readonly ISecurityService _securityService;
+        private readonly ApplicationDbContext _dbContext;
 
-        public TagService(ApplicationDbContext context, IDbLogService dbLogService, IPrincipal principal,
-            ICacheService cacheService) : base(context, dbLogService, principal)
+        public TagService(
+            ApplicationDbContext context,
+            ICacheService cacheService, 
+            ISecurityService securityService)
         {
             _cacheService = cacheService;
+            _securityService = securityService;
+            _dbContext = context;
         }
 
         public async Task<TagDto> GetTagAsync(int id)
         {
-            Tag tag = await _context.FindAsync<Tag>(id);
+            Tag tag = await _dbContext.FindAsync<Tag>(id);
             if(tag == null)
             {
                 throw new EntityNotFoundException(id, typeof(Tag));
@@ -34,9 +40,9 @@ namespace cran.Services
 
         public async Task UpdateTagAsync(TagDto vm)
         {
-            Tag tag = await _context.FindAsync<Tag>(vm.Id);
+            Tag tag = await _dbContext.FindAsync<Tag>(vm.Id);
             UpdateEntity(tag, vm);          
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<int> InsertTagAsync(TagDto dto)
@@ -44,8 +50,8 @@ namespace cran.Services
             Tag tag = new Tag();
             tag.TagType = TagType.Standard;
             UpdateEntity(tag, dto);
-            _context.Tags.Add(tag);
-            await SaveChangesAsync();
+            _dbContext.Tags.Add(tag);
+            await _dbContext.SaveChangesAsync();
             return tag.Id;           
         }
 
@@ -59,7 +65,7 @@ namespace cran.Services
 
         public async Task<IList<TagDto>> FindTagsAsync(string searchTerm)
         {
-            IQueryable<Tag> tagQueryable = _context.Tags
+            IQueryable<Tag> tagQueryable = _dbContext.Tags
                 .Where(x => x.Name.Contains(searchTerm))
                 .Where(x => x.TagType == TagType.Standard)
                 .OrderBy(x => x.Name);
@@ -69,7 +75,7 @@ namespace cran.Services
 
         public async Task<PagedResultDto<TagDto>> SearchForTagsAsync(SearchTags parameters)
         {
-            IQueryable<Tag> query = _context.Tags
+            IQueryable<Tag> query = _dbContext.Tags
                 .OrderBy(x => x.Name)
                 .ThenBy(x => x.Id);
             if(!string.IsNullOrWhiteSpace(parameters.Name))
@@ -77,43 +83,43 @@ namespace cran.Services
                 query = query.Where(x => x.Name.Contains(parameters.Name));
             }
 
-            PagedResultDto<TagDto> result = await ToPagedResult(query, parameters.Page, ToDto);
+            PagedResultDto<TagDto> result = await PagedResultUtil.ToPagedResult(query, parameters.Page, ToDto);
             return result;
 
         }
        
         public async Task DeleteTagAsync(int id)
         {
-            if(!_currentPrincipal.IsInRole(Roles.Admin))
+            if(!_securityService.IsInRole(Roles.Admin))
             {
                 throw new SecurityException($"No rights to delete a tag");
             }
 
-            Tag tag = await _context.FindAsync<Tag>(id);
+            Tag tag = await _dbContext.FindAsync<Tag>(id);
             
             //Tags question
-            IList<RelQuestionTag> relQuestionTags = await _context.RelQuestionTags.Where(x => x.Tag.Id == id).ToListAsync(); 
+            IList<RelQuestionTag> relQuestionTags = await _dbContext.RelQuestionTags.Where(x => x.Tag.Id == id).ToListAsync(); 
             foreach(RelQuestionTag relQuestionTag in relQuestionTags)
             {
-                _context.Remove(relQuestionTag);
+                _dbContext.Remove(relQuestionTag);
             }
 
             //Tags Course
-            IList<RelCourseTag> relCourseTags = await _context.RelCourseTags.Where(x => x.Tag.Id == id).ToListAsync();
+            IList<RelCourseTag> relCourseTags = await _dbContext.RelCourseTags.Where(x => x.Tag.Id == id).ToListAsync();
             foreach (RelCourseTag relcourseTag in relCourseTags)
             {
-                _context.Remove(relcourseTag);
+                _dbContext.Remove(relcourseTag);
             }
 
-            _context.Remove(tag);
+            _dbContext.Remove(tag);
 
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<IList<TagDto>> GetTagsAsync(IList<int> ids)
         {
             IEnumerable<int> idsEnumearble = ids.AsEnumerable();
-            IQueryable<Tag> query = _context.Tags
+            IQueryable<Tag> query = _dbContext.Tags
                 .Where(x => idsEnumearble.Contains(x.Id))
                 .OrderBy(x => x.Name);
             IList<TagDto> tags = await ToDto(query);
@@ -159,7 +165,7 @@ namespace cran.Services
 
         private async Task<TagDto> GetDeprecatedTag()
         {
-            Tag tag =  await _context.Tags.Where(x => x.Name == "Deprecated").SingleAsync();
+            Tag tag =  await _dbContext.Tags.Where(x => x.Name == "Deprecated").SingleAsync();
             return ToTagDto(tag);
         }
     }

@@ -12,20 +12,28 @@ namespace cran.tests
     public class CourseInstanceServiceTest
     {
 
+        private void InitTestingContext(TestingContext testingContext)
+        {
+            testingContext.AddPrincipalMock();
+            testingContext.AddBinaryServiceMock();
+            testingContext.AddInMemoryDb();
+            testingContext.AddUserService();
+            testingContext.AddBusinessSecurityService();
+            testingContext.AddLogServiceMock();
+            testingContext.AddGermanCultureServiceMock();
+            testingContext.AddQuestionService();
+        }
+
         [Fact]
         public async Task TestStartTest()
         {
-            TestingContext context = new TestingContext();
-            context.AddPrincipalMock();
-            context.AddBinaryServiceMock();
-            context.AddInMemoryDb();
-            context.AddLogServiceMock();
-            context.AddGermanCultureServiceMock();
-            context.AddQuestionService();
-            ICourseService courseService = context.GetService<CourseService>();
-            context.DependencyMap[typeof(ICourseService)] = courseService;
+            TestingContext testingContext = new TestingContext();
+            InitTestingContext(testingContext);
+          
+            ICourseService courseService = testingContext.GetService<CourseService>();
+            testingContext.DependencyMap[typeof(ICourseService)] = courseService;
 
-            ICourseInstanceService courseInstanceService = context.GetService<CourseInstanceService>();
+            ICourseInstanceService courseInstanceService = testingContext.GetService<CourseInstanceService>();
 
 
             var courses = await courseService.GetCoursesAsync(0);
@@ -81,21 +89,17 @@ namespace cran.tests
         public async Task TestNotEnoughQuestion()
         {
             //Prepare
-            TestingContext context = new TestingContext();
-            context.AddPrincipalMock();
-            context.AddBinaryServiceMock();
-            context.AddInMemoryDb();
-            context.AddLogServiceMock();
-            context.AddGermanCultureServiceMock();
-            context.AddQuestionService();
-            CourseService courseService = context.GetService<CourseService>();
-            context.DependencyMap[typeof(ICourseService)] = courseService;
+            TestingContext testingContext = new TestingContext();
+            InitTestingContext(testingContext);
 
-            ApplicationDbContext dbContext = context.GetSimple<ApplicationDbContext>();
+            CourseService courseService = testingContext.GetService<CourseService>();
+            testingContext.DependencyMap[typeof(ICourseService)] = courseService;
+
+            ApplicationDbContext dbContext = testingContext.GetSimple<ApplicationDbContext>();
             Course course = dbContext.Courses.First();
             course.NumQuestionsToAsk = 100;
 
-            ICourseInstanceService courseInstanceService = context.GetService<CourseInstanceService>();
+            ICourseInstanceService courseInstanceService = testingContext.GetService<CourseInstanceService>();
 
             //Act
             var courseInstance = await courseInstanceService.StartCourseAsync(course.Id);

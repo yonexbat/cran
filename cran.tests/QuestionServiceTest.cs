@@ -23,15 +23,17 @@ namespace cran.tests
             return questionService;
         }
 
-        private void InitContext(TestingContext context)
+        private void InitContext(TestingContext testingContext)
         {
-            context.AddPrincipalMock();
-            context.AddInMemoryDb();
-            context.AddLogServiceMock();
-            context.AddGermanCultureServiceMock();
-            context.AddBinaryServiceMock();
-            context.AddQuestionService();
-            context.DependencyMap[typeof(IBinaryService)] = context.GetService<BinaryService>();
+            testingContext.AddPrincipalMock();
+            testingContext.AddInMemoryDb();
+            testingContext.AddUserService();
+            testingContext.AddBusinessSecurityService();
+            testingContext.AddLogServiceMock();
+            testingContext.AddGermanCultureServiceMock();
+            testingContext.AddBinaryServiceMock();
+            testingContext.AddQuestionService();
+            testingContext.DependencyMap[typeof(IBinaryService)] = testingContext.GetService<BinaryService>();
         }
 
         [Fact]
@@ -43,7 +45,8 @@ namespace cran.tests
             ApplicationDbContext dbContext = testingContext.GetSimple<ApplicationDbContext>();
             Question question = dbContext.Questions.First();           
 
-            testingContext.AddPrincipalMock(question.User.UserId, Roles.User);           
+            testingContext.AddPrincipalMock(question.User.UserId, Roles.User);
+            testingContext.AddBusinessSecurityService();
             IQuestionService questionService = testingContext.GetService<QuestionService>();
 
             QuestionDto dto = await questionService.GetQuestionAsync(question.Id);

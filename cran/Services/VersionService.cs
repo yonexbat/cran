@@ -2,6 +2,7 @@
 using cran.Model.Dto;
 using cran.Model.Entities;
 using cran.Services.Exceptions;
+using cran.Services.Util;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,34 +12,34 @@ using System.Threading.Tasks;
 
 namespace cran.Services
 {
-    public class VersionService : CraniumService, IVersionService
+    public class VersionService : IVersionService
     {
-        private IQuestionService _questionService;
-        private ITagService _tagService;
-        private INotificationService _notificationService;
-        private ITextService _textService;
+        private readonly IQuestionService _questionService;
+        private readonly ITagService _tagService;
+        private readonly INotificationService _notificationService;
+        private readonly ITextService _textService;
+        private readonly ApplicationDbContext _dbContext;
 
         public VersionService(ApplicationDbContext context,
-            IDbLogService dbLogService,
-            IPrincipal principal,
             IQuestionService questionService,
             ITagService tagService,
             INotificationService notificationService,
-            ITextService textService) : base(context, dbLogService, principal)
+            ITextService textService)
         {
             _questionService = questionService;
             _tagService = tagService;
             _notificationService = notificationService;
             _textService = textService;
+            _dbContext = context;
         }
 
         public async Task<int> CopyQuestionAsync(int id)
         {
             QuestionDto questionDto = await CreateQuestionDtoCopy(id);
             int newId = await _questionService.InsertQuestionAsync(questionDto);
-            Question questionNew = await _context.FindAsync<Question>(newId);
+            Question questionNew = await _dbContext.FindAsync<Question>(newId);
             questionNew.IdQuestionCopySource = id;
-            await SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
             return newId;
         }
 
@@ -47,7 +48,7 @@ namespace cran.Services
             //security check
             await _questionService.CheckWriteAccessToQuestion(id);
 
-            Question questionSourceEntity = await _context.FindAsync<Question>(id);
+            Question questionSourceEntity = await _dbContext.FindAsync<Question>(id);
             if (questionSourceEntity.Status != QuestionStatus.Released)
             {
                 new CraniumException($"Question #{id} is not in state released.");
@@ -60,10 +61,12 @@ namespace cran.Services
             newQuestion.IdContainer = questionSourceEntity.IdContainer;
             newQuestion.User = questionSourceEntity.User;
             newQuestion.IdQuestionCopySource = id;
-            CopyData(questionDto, newQuestion);
+            newQuestion.Text = string.Empty;
+            newQuestion.Title = string.Empty;
+            newQuestion.Language = Language.De;
 
-            await _context.Questions.AddAsync(newQuestion);
-            await SaveChangesAsync();
+            await _dbContext.Questions.AddAsync(newQuestion);
+            await _dbContext.SaveChangesAsync();
 
             //Copy all data                    
             questionDto.Id = newQuestion.Id;
@@ -91,7 +94,7 @@ namespace cran.Services
             //security check
             await _questionService.CheckWriteAccessToQuestion(id);
 
-            Question question = await _context.FindAsync<Question>(id);
+            Question question = await _dbContext.FindAsync<Question>(id);
             if (question.Status != QuestionStatus.Created)
             {
                 new CraniumException($"Question #{id} is not in state created.");
@@ -99,7 +102,7 @@ namespace cran.Services
             question.Status = QuestionStatus.Released;
             question.ApprovalDate = DateTime.Now;
 
-            IList<Question> previousQuestions = await _context.Questions
+            IList<Question> previousQuestions = await _dbContext.Questions
                 .Where(x => x.IdContainer == question.IdContainer)
                 .Where(x => x.Status == QuestionStatus.Released)
                 .Where(x => x.Id != id)
@@ -107,7 +110,7 @@ namespace cran.Services
                 .ToListAsync();
 
             TagDto deprecatedTag = await _tagService.GetSpecialTagAsync(SpecialTag.Deprecated);
-            Tag deprecatedTagEntity = await _context.FindAsync<Tag>(deprecatedTag.Id);
+            Tag deprecatedTagEntity = await _dbContext.FindAsync<Tag>(deprecatedTag.Id);
 
             foreach (Question previousQuestion in previousQuestions)
             {
@@ -119,18 +122,18 @@ namespace cran.Services
                         Question = previousQuestion,
                         Tag = deprecatedTagEntity,
                     };
-                    await _context.RelQuestionTags.AddAsync(relQuestionTag);
+                    await _dbContext.RelQuestionTags.AddAsync(relQuestionTag);
                 }
             }
 
-            await _context.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
             await SendNotification(id, "QuestionAcceptTitle", "QuestionAcceptText");
             
         }
 
         private async Task SendNotification(int id, string title, string text)
         {
-            Question question = await _context.FindAsync<Question>(id);
+            Question question = await _dbContext.FindAsync<Question>(id);
             title = await _textService.GetTextAsync(title, question.Title);
             text = await _textService.GetTextAsync(text, question.Title);
             await _notificationService.SendNotificationAboutQuestionAsync(id, title, text);
@@ -139,12 +142,12 @@ namespace cran.Services
 
         public async Task<PagedResultDto<VersionInfoDto>> GetVersionsAsync(VersionInfoParametersDto versionInfoParameters)
         {
-            Question questionEntity  = await _context.FindAsync<Question>(versionInfoParameters.IdQuestion);
+            Question questionEntity  = await _dbContext.FindAsync<Question>(versionInfoParameters.IdQuestion);
 
-            IQueryable<Question> query = _context.Questions.Where(x => x.Container.Id == questionEntity.IdContainer)
+            IQueryable<Question> query = _dbContext.Questions.Where(x => x.Container.Id == questionEntity.IdContainer)
                 .OrderByDescending(x => x.Id);
 
-            return await ToPagedResult(query, versionInfoParameters.Page, MaterializeQuestionList);
+            return await PagedResultUtil.ToPagedResult(query, versionInfoParameters.Page, MaterializeQuestionList);
         }
 
         private async Task<IList<VersionInfoDto>> MaterializeQuestionList(IQueryable<Question> query)

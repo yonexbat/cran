@@ -20,7 +20,7 @@ export class ImagelistComponent implements OnInit {
   ngOnInit() {
   }
 
-  private removeImage(image) {
+  public removeImage(image) {
     if (this.imagesDeletable) {
       this.onDeleted.emit(image);
     }

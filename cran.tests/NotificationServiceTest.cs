@@ -163,7 +163,8 @@ namespace cran.tests
             testingContext.AddLogServiceMock();
             testingContext.AddCranAppSettings();
             testingContext.AddInfoTextServiceMock();
-            testingContext.AddInMemoryDb();   
+            testingContext.AddInMemoryDb();
+            testingContext.AddUserService();
 
             Mock<IWebPushClient> webPushClientMock =  new Mock<IWebPushClient>(MockBehavior.Loose);
             webPushClientMock.Setup(x => x.SendNotificationAsync(It.IsAny<PushSubscription>(), 

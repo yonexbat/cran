@@ -13,25 +13,30 @@ using Newtonsoft.Json;
 
 namespace cran.Services
 {
-    public class ExportService : CraniumService, IExportService
+    public class ExportService : IExportService
     {
         private IQuestionService _questionService;
         private IBinaryService _binaryService;
+        private ISecurityService _securityService;
+        private readonly ApplicationDbContext _dbContext;
 
         public ExportService(ApplicationDbContext context, 
             IDbLogService dbLogService,
             IPrincipal principal,
             IQuestionService questionService,
-            IBinaryService binaryService) : base(context, dbLogService, principal)
+            IBinaryService binaryService,
+            ISecurityService securityService)
         {
             _questionService = questionService;
             _binaryService = binaryService;
+            _securityService = securityService;
+            _dbContext = context;
         }
 
         public async Task<Stream> Export()
         {
             //Security Check
-            if(!_currentPrincipal.IsInRole(Roles.Admin))
+            if(!_securityService.IsInRole(Roles.Admin))
             {
                 throw new SecurityException($"Admin rights required");
             }
@@ -58,7 +63,7 @@ namespace cran.Services
         private async Task ExportBinaries(ZipArchive zip)
         {
             IQueryable<int> questionList = GetQuestionIds();
-            var result = await _context.RelQuestionImages
+            var result = await _dbContext.RelQuestionImages
                 .Where(x => questionList.Contains(x.Question.Id))
                 .Select(x => new
                 {
@@ -102,7 +107,7 @@ namespace cran.Services
 
         private IQueryable<int> GetQuestionIds()
         {
-            return _context.Questions
+            return _dbContext.Questions
                 .Where(x => x.Status == Model.Entities.QuestionStatus.Released || x.Status == Model.Entities.QuestionStatus.Created)
                 .Select(x => x.Id);
 

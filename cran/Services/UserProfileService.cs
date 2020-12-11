@@ -8,15 +8,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace cran.Services
 {
-    public class UserProfileService : CraniumService, IUserProfileService
+    public class UserProfileService : IUserProfileService
     {
-        public UserProfileService(ApplicationDbContext context, IDbLogService dbLogService, IPrincipal principal) : base(context, dbLogService, principal)
+        private readonly ApplicationDbContext _dbContext;
+        private readonly IUserService _userService;
+
+        public UserProfileService(
+            ApplicationDbContext context, 
+            IUserService userService)
         {
+            _dbContext = context;
+            _userService = userService;
         }
 
         public async Task CreateUserAsync(UserInfoDto info)
         {
-            CranUser user = await _context.CranUsers.Where(x => x.UserId == info.Name).SingleOrDefaultAsync();
+            CranUser user = await _dbContext.CranUsers.Where(x => x.UserId == info.Name).SingleOrDefaultAsync();
             if(user == null)
             {
                 user = new CranUser
@@ -24,14 +31,14 @@ namespace cran.Services
                     UserId = info.Name,
                     IsAnonymous = info.IsAnonymous,
                 };
-                _context.CranUsers.Add(user);
-                await SaveChangesAsync();
+                _dbContext.CranUsers.Add(user);
+                await _dbContext.SaveChangesAsync();
             }         
         }
 
         public async Task<UserInfoDto> GetUserInfoAsync()
         {
-            CranUser user = await GetCranUserAsync();
+            CranUser user = await _userService.GetOrCreateCranUserAsync();
             return ToProfileDto(user);
         }
 

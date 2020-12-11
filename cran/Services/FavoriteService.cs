@@ -7,24 +7,38 @@ using cran.Data;
 using cran.Mappers;
 using cran.Model.Dto;
 using cran.Model.Entities;
+using cran.Services.Util;
 using Microsoft.EntityFrameworkCore;
 
 namespace cran.Services
 {
-    public class FavoriteService : CraniumService, IFavoriteService
+    public class FavoriteService : IFavoriteService
     {
-        public FavoriteService(ApplicationDbContext context, IDbLogService dbLogService, IPrincipal principal) 
-            : base(context, dbLogService, principal)
+        private readonly ISecurityService _securityService;
+        private readonly ApplicationDbContext _dbContext;
+        private readonly IUserService _userService;
+        private readonly IDbLogService _dbLogService;
+
+
+        public FavoriteService(
+            ApplicationDbContext context, 
+            IDbLogService dbLogService, 
+            ISecurityService securityService, 
+            IUserService userService)
         {
+            _securityService = securityService;
+            _dbContext = context;
+            _userService = userService;
+            _dbLogService = dbLogService;
         }
 
         public async Task AddCourseToFavoritesAsync(CourseToFavoritesDto dto)
         {
 
-            CranUser cranUser = await this.GetCranUserAsync();
-            Course course = await _context.Courses.FindAsync(dto.CourseId);
+            CranUser cranUser = await _userService.GetOrCreateCranUserAsync();
+            Course course = await _dbContext.Courses.FindAsync(dto.CourseId);
 
-            bool exists = await _context.RelUserCourseFavorites.AnyAsync(x => x.User.Id == cranUser.Id && x.Course.Id == course.Id);
+            bool exists = await _dbContext.RelUserCourseFavorites.AnyAsync(x => x.User.Id == cranUser.Id && x.Course.Id == course.Id);
             if(!exists)
             {
                 RelUserCourseFavorite relUserCourseFavorite = new RelUserCourseFavorite()
@@ -32,23 +46,23 @@ namespace cran.Services
                     User = cranUser,
                     Course = course,
                 };
-                _context.RelUserCourseFavorites.Add(relUserCourseFavorite);
-                await SaveChangesAsync();
+                _dbContext.RelUserCourseFavorites.Add(relUserCourseFavorite);
+                await _dbContext.SaveChangesAsync();
             }
         }
 
         public async Task<PagedResultDto<CourseDto>> GetFavoriteCourseAsync(int page)
         {
-            string userId = this.GetUserId();
-            IQueryable<Course> query = from x in _context.Courses
-                                       join relUser in _context.RelUserCourseFavorites on x.Id equals relUser.Course.Id
+            string userId = this._securityService.GetUserId();
+            IQueryable<Course> query = from x in _dbContext.Courses
+                                       join relUser in _dbContext.RelUserCourseFavorites on x.Id equals relUser.Course.Id
                                        where
                                            relUser.User.UserId == userId
                                        select x;
 
 
             query = query.OrderBy(x => x.Title).ThenBy(x => x.Id);
-            return await ToPagedResult(query, page, ToDto);
+            return await PagedResultUtil.ToPagedResult(query, page, ToDto);
         }
 
         private async Task<IList<CourseDto>> ToDto(IQueryable<Course> query)
@@ -60,29 +74,29 @@ namespace cran.Services
                .Include(x => x.RelTags)
                .ThenInclude(x => x.Tag)
                .ToListAsync();
-            return ToDtoList(list, ToCourseDto);
+            return ListUtil.ToDtoList(list, ToCourseDto);
         }
 
 
 
         private CourseDto ToCourseDto(Course course)
         {
-            bool isEditable = _currentPrincipal.IsInRole(Roles.Admin);
+            bool isEditable = _securityService.IsInRole(Roles.Admin);
             CourseDto courseVm = course.Map(isEditable, true);                    
             return courseVm;
         }
 
         public async Task RemoveCoureFromFavoritesAsync(CourseToFavoritesDto dto)
         {
-            CranUser cranUser = await this.GetCranUserAsync();
+            CranUser cranUser = await _userService.GetOrCreateCranUserAsync();
 
-            RelUserCourseFavorite rel = await _context.RelUserCourseFavorites.Where(x => x.User.Id == cranUser.Id && x.Course.Id == dto.CourseId)
+            RelUserCourseFavorite rel = await _dbContext.RelUserCourseFavorites.Where(x => x.User.Id == cranUser.Id && x.Course.Id == dto.CourseId)
                 .FirstOrDefaultAsync();
             
             if(rel != null)
             {
-                _context.Remove(rel);
-                await this.SaveChangesAsync();
+                _dbContext.Remove(rel);
+                await this._dbContext.SaveChangesAsync();
             }
         }
     }

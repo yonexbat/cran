@@ -27,12 +27,13 @@ namespace cran.tests
         public async Task SaveBinaryTest()
         {
 
-            TestingContext context = new TestingContext();
-            context.AddAdminPrincipalMock();
-            context.AddLogServiceMock();
-            context.AddRealDb();
+            TestingContext testingContext = new TestingContext();
+            testingContext.AddAdminPrincipalMock();
+            testingContext.AddLogServiceMock();            
+            testingContext.AddRealDb();
+            testingContext.AddUserService();
 
-            IBinaryService service = context.GetService<BinaryService>();
+            IBinaryService service = testingContext.GetService<BinaryService>();
 
             string testWord = "Hello World";
             var bytes = System.Text.Encoding.UTF8.GetBytes(testWord);
