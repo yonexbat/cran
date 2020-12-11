@@ -109,7 +109,7 @@ namespace cran.Services
 
                 relCourseTagDtos.Add(relCourseTag);
             }
-            UpdateRelation(relCourseTagDtos, relTagEntities, CopyDataRelCourse);
+            _dbContext.UpdateRelation(relCourseTagDtos, relTagEntities, CopyDataRelCourse);
 
             CopyDataCourse(courseDto, courseEntity);
 

@@ -143,7 +143,7 @@ namespace cran.Services
 
             //Options
             IList<QuestionOption> questionOptionEntities = await _dbContext.QuestionOptions.Where(x => x.IdQuestion == questionEntity.Id).ToListAsync();
-            UpdateRelation(questionDto.Options, questionOptionEntities, CopyDataQuestionOption);
+            _dbContext.UpdateRelation(questionDto.Options, questionOptionEntities, CopyDataQuestionOption);
 
             //QuestionType
             questionEntity.QuestionType = questionDto.Options.Count(x => x.IsTrue) == 1 ?
@@ -171,7 +171,7 @@ namespace cran.Services
                 relQuestionTagDtos.Add(relQuestionTagDto);
             }
 
-            UpdateRelation(relQuestionTagDtos, relTagEntities, CopyDataRelQuestonTag);
+            _dbContext.UpdateRelation(relQuestionTagDtos, relTagEntities, CopyDataRelQuestonTag);
 
             //Image Relation
             IList<RelQuestionImage> relImages = await _dbContext.RelQuestionImages.Where(x => x.IdQuestion == questionEntity.Id).ToListAsync();
@@ -191,7 +191,7 @@ namespace cran.Services
                 }
                 relImagesDtos.Add(relQuestionImageDto);
             }
-            UpdateRelation(relImagesDtos, relImages, CopyDataRelImage);
+            _dbContext.UpdateRelation(relImagesDtos, relImages, CopyDataRelImage);
 
             //Image Data           
             foreach (ImageDto imageDto in questionDto.Images)
