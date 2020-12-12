@@ -42,7 +42,7 @@ export class CranDataServiceMock implements ICranDataService {
   addCourseToFavorites(favorite: CourseToFavorites): Promise<any> {
     const promiseResult = new Promise<any>((resolve, reject) => {
       setTimeout(() => {
-        resolve();
+        resolve(undefined);
       }, 1000);
     });
     return promiseResult;
@@ -50,7 +50,7 @@ export class CranDataServiceMock implements ICranDataService {
   removeCoureFromFavorites(favorite: CourseToFavorites): Promise<any> {
     const promiseResult = new Promise<any>((resolve, reject) => {
       setTimeout(() => {
-        resolve();
+        resolve(undefined);
       }, 1000);
     });
     return promiseResult;
@@ -63,7 +63,7 @@ export class CranDataServiceMock implements ICranDataService {
   sendNotificationToUser(message: Notification): Promise<any> {
     const promiseResult = new Promise<any>((resolve, reject) => {
       setTimeout(() => {
-        resolve();
+        resolve(undefined);
       }, 1000);
     });
     return promiseResult;
@@ -95,7 +95,7 @@ export class CranDataServiceMock implements ICranDataService {
   addPushRegistration(subscription: any): Promise<any> {
     const promiseResult = new Promise<any>((resolve, reject) => {
       setTimeout(() => {
-        resolve();
+        resolve(undefined);
       }, 1000);
     });
     return promiseResult;
@@ -153,7 +153,7 @@ export class CranDataServiceMock implements ICranDataService {
   updateText(text: Text): Promise<any> {
     const promiseResult = new Promise<Text>((resolve, reject) => {
       setTimeout(() => {
-        resolve();
+        resolve(undefined);
       }, 1000);
     });
     return promiseResult;
@@ -206,7 +206,7 @@ export class CranDataServiceMock implements ICranDataService {
   answerQuestion(answer: QuestionAnswer): Promise<any> {
     const promiseResult = new Promise<any>((resolve, reject) => {
       setTimeout(() => {
-        resolve();
+        resolve(undefined);
       }, 1000);
     });
     return promiseResult;
@@ -242,7 +242,7 @@ export class CranDataServiceMock implements ICranDataService {
   deleteTag(id: number): Promise<any> {
     const promiseResult = new Promise<any>((resolve, reject) => {
       setTimeout(() => {
-        resolve();
+        resolve(undefined);
       }, 1000);
     });
     return promiseResult;
@@ -279,7 +279,7 @@ export class CranDataServiceMock implements ICranDataService {
   updateCourse(course: Course): Promise<any> {
     const promiseResult = new Promise<any>((resolve, reject) => {
       setTimeout(() => {
-        resolve();
+        resolve(undefined);
       }, 1000);
     });
     return promiseResult;
@@ -314,7 +314,7 @@ export class CranDataServiceMock implements ICranDataService {
   updateTag(tag: Tag): Promise<any> {
     const promiseResult = new Promise<number>((resolve, reject) => {
       setTimeout(() => {
-        resolve();
+        resolve(undefined);
       }, 1000);
      });
     return promiseResult;
@@ -381,7 +381,7 @@ export class CranDataServiceMock implements ICranDataService {
   deleteComment(id: number): Promise<any> {
     const promiseResult = new Promise<any>((resolve, reject) => {
       setTimeout(() => {
-        resolve();
+        resolve(undefined);
       }, 1000);
     });
     return promiseResult;
@@ -466,7 +466,7 @@ export class CranDataServiceMock implements ICranDataService {
 
     const promiseResult = new Promise<any>((resolve, reject) => {
       setTimeout(() => {
-        resolve();
+        resolve(undefined);
       }, 1000);
     });
     return promiseResult;
@@ -532,7 +532,7 @@ export class CranDataServiceMock implements ICranDataService {
   deleteQuestion(id: number): Promise<any> {
     const promiseResult = new Promise<any>((resolve, reject) => {
       setTimeout(() => {
-        resolve();
+        resolve(undefined);
       }, 1000);
     });
     return promiseResult;
